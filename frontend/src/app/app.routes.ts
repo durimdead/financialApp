@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
+import { HomeComponent } from './home/home.component';
 
 export const AppRoutes: Routes = [
     // default route
     {
         path: '', // <your-domain>/
-        redirectTo: 'about',
-        pathMatch: 'full'
+        component: HomeComponent
     },
     {
         path: 'about', // <your-domain>/about

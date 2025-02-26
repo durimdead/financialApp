@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
-import { HomeComponent } from './home/home.component';
 import { FinancesComponent } from './finances/finances.component';
 
 export const AppRoutes: Routes = [

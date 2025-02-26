@@ -1,2 +1,31 @@
 <p>This is going to be a financial application to track expenses.</p>
 <p>To see the progress and feature list, please navigate to <a [routerLink]="['/about']">About</a></p>
+
+
+<!-- <table mat-table [dataSource]="dataSource"> -->
+<table mat-table>
+    <ng-container matColumnDef="expenseDate">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let currentExpense">{{currentExpense.expenseDate}}</td>
+    </ng-container>
+    <ng-container matColumnDef="expenseDescription">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let currentExpense">{{currentExpense.expenseDescription}}</td>
+    </ng-container>
+    <ng-container matColumnDef="expenseAmount">
+        <th mat-header-cell *matHeaderCellDef>Cost</th>
+        <td mat-cell *matCellDef="let currentExpense">{{currentExpense.expenseAmount}}</td>
+    </ng-container>
+    <ng-container matColumnDef="expenseType">
+        <th mat-header-cell *matHeaderCellDef>Expense Type</th>
+        <td mat-cell *matCellDef="let currentExpense">{{currentExpense.dateEntered}}</td>
+    </ng-container>
+    <ng-container matColumnDef="paymentType">
+        <th mat-header-cell *matHeaderCellDef>Payment Type</th>
+        <td mat-cell *matCellDef="let currentExpense">{{currentExpense.paymentType}}</td>
+    </ng-container>
+    <ng-container matColumnDef="paymentDescription">
+        <th mat-header-cell *matHeaderCellDef>Payment Description</th>
+        <td mat-cell *matCellDef="let currentExpense">{{currentExpense.paymentDescription}}</td>
+    </ng-container>
+</table>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import {MatTableModule, MatTableDataSource} from '@angular/material/table'
 
 @Component({
   selector: 'app-finances',
@@ -8,5 +9,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './finances.component.css'
 })
 export class FinancesComponent {
-
+  myData = [];
 }

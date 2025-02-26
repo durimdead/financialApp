@@ -14,4 +14,11 @@ body {
 .table-icon-column {
   display: flex;
   flex-wrap: wrap;
+  max-width: 100px;
+}
+.red-text{
+  color: rgb(223, 57, 57);
+}
+.blue-text{
+  color: rgb(0, 109, 139);
 }

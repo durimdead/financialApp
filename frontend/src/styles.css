@@ -11,3 +11,7 @@ body {
 .body-content {
   margin: 0px 50px;
 }
+.table-icon-column {
+  display: flex;
+  flex-wrap: wrap;
+}

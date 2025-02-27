@@ -1,4 +1,4 @@
-<p><button mat-flat-button (click)="test('Add')">Add</button></p>
+<p><button mat-flat-button (click)="addRow()">Add</button></p>
 
 <table
   mat-table
@@ -12,15 +12,15 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let element">
       <div class="table-icon-column">
-        @if(isEditing){ 
-          <button mat-icon-button (click)="save('save ' + element.position)">
+        @if(element.isEditing){ 
+          <button mat-icon-button (click)="saveRow(element.position)">
             <mat-icon class="green-text">checkmark</mat-icon>
           </button>
         } @else {
-        <button mat-icon-button (click)="edit('Edit ' + element.position)">
+        <button mat-icon-button (click)="editRow(element.position)">
           <mat-icon class="blue-text">edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="test('Delete ' + element.position)">
+        <button mat-icon-button (click)="deleteRow(element.position)">
           <mat-icon class="red-text">delete</mat-icon>
         </button>
         }

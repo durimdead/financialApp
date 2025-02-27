@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 
 export interface PeriodicElement {
+  isEditing: boolean;
   actions: string;
   name: string;
   position: number;
@@ -13,16 +14,16 @@ export interface PeriodicElement {
   symbol: string;
 }
 const ELEMENT_DATA: PeriodicElement[] = [
-  { actions: '',position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { actions: '',position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { actions: '',position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { actions: '',position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { actions: '',position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { actions: '',position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { actions: '',position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { actions: '',position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { actions: '',position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { actions: '',position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+  { isEditing: false, actions: '',position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+  { isEditing: false, actions: '',position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+  { isEditing: false, actions: '',position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+  { isEditing: false, actions: '',position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+  { isEditing: false, actions: '',position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+  { isEditing: false, actions: '',position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+  { isEditing: false, actions: '',position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+  { isEditing: false, actions: '',position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+  { isEditing: false, actions: '',position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+  { isEditing: false, actions: '',position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
 ];
 
 @Component({
@@ -32,7 +33,6 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './material-test.component.css',
 })
 export class MaterialTestComponent implements AfterViewInit {
-  isEditing = false;
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   displayedColumns: string[] = ['actions', 'position', 'name', 'weight', 'symbol'];
@@ -57,17 +57,27 @@ export class MaterialTestComponent implements AfterViewInit {
     }
   }
 
-  test(message: string){
-    console.log(message);
-  }
-  
-  edit(message: string){
-    console.log(message);
-    this.isEditing = true;
+  addRow(){
+    console.log('adding new row');
   }
 
-  save(message: string){
-    console.log(message);
-    this.isEditing = false;
+  deleteRow(itemId: number){
+    console.log('delete: ' + itemId);
+  }
+  
+  editRow(itemId: number){
+    console.log('edit: ' + itemId);
+    let currentRow = this.dataSource.data.find((item) => item.position === itemId);
+    if (currentRow){
+      currentRow.isEditing = true;
+    }
+  }
+  
+  saveRow(itemId: number){
+    console.log('save: ' + itemId);
+    let currentRow = this.dataSource.data.find((item) => item.position === itemId);
+    if (currentRow){
+      currentRow.isEditing = false;
+    }
   }
 }

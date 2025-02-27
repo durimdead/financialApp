@@ -38,7 +38,7 @@ export class MaterialTestComponent implements AfterViewInit {
   identifiers = {
     name: 'elementName_',
     weight: 'elementWeight_',
-    symbol: 'elementSymbol'
+    symbol: 'elementSymbol_'
   };
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);

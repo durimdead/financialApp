@@ -80,16 +80,24 @@ export class MaterialTestComponent implements AfterViewInit {
     //TODO: initialize confirmation of deletion of row, then delete row upon confirmation (probably needs more methods)
     console.log('delete: ' + rowId);
     const currentRow = this.getRowDataById(rowId);
-    console.log(JSON.stringify(currentRow));
     
     // let dialogRef = this.dialog.open(ConfirmationDialogComponent, JSON.stringify(currentRow));
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent);
+    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: JSON.stringify(currentRow)
+    });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      if(result === true){
+        this.deleteElement(currentRow.position);
+      }
     });
   }
-  
+
+  // delete Element by rowId
+  deleteElement(rowId: number){
+    this.dataSource.data = this.dataSource.data.filter(itemToDelete => itemToDelete.position !== rowId);
+  }
+
   // updates row state to editable
   editRow(rowId: number){
     console.log('edit: ' + rowId);

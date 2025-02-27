@@ -88,8 +88,13 @@ export class MaterialTestComponent implements AfterViewInit {
   getAllRowDataToSave(rowId: number){
     let oldRowData = this.getRowDataById(rowId) as PeriodicElement;
     let rowData: PeriodicElement = oldRowData;
+
+    let weightOfElement = (document.getElementById('elementWeight_' + rowData?.position) as HTMLInputElement).value;
+    console.log(Number(weightOfElement));
+    console.log(Number.isNaN(weightOfElement));
+    rowData.weight = Number.isNaN(Number(weightOfElement)) ? oldRowData.weight : Number(weightOfElement);
+    
     rowData.name = (document.getElementById('elementName_' + rowData?.position) as HTMLInputElement).value;
-    rowData.weight = Number((document.getElementById('elementWeight_' + rowData?.position) as HTMLInputElement).value);
     rowData.symbol = (document.getElementById('elementSymbol_' + rowData?.position) as HTMLInputElement).value;
     
     return rowData;

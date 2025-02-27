@@ -32,6 +32,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './material-test.component.css',
 })
 export class MaterialTestComponent implements AfterViewInit {
+  isEditing = false;
   private _liveAnnouncer = inject(LiveAnnouncer);
 
   displayedColumns: string[] = ['actions', 'position', 'name', 'weight', 'symbol'];
@@ -58,5 +59,15 @@ export class MaterialTestComponent implements AfterViewInit {
 
   test(message: string){
     console.log(message);
+  }
+  
+  edit(message: string){
+    console.log(message);
+    this.isEditing = true;
+  }
+
+  save(message: string){
+    console.log(message);
+    this.isEditing = false;
   }
 }

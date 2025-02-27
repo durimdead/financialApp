@@ -57,14 +57,19 @@ export class MaterialTestComponent implements AfterViewInit {
     }
   }
 
+  // brings up modal to add another row of data
   addRow(){
+    //TODO: initialize modal to add new row
     console.log('adding new row');
   }
 
+  // requests confirmation of row deletion, then deletes row
   deleteRow(rowId: number){
+    //TODO: initialize confirmation of deletion of row, then delete row upon confirmation (probably needs more methods)
     console.log('delete: ' + rowId);
   }
   
+  // updates row state to editable
   editRow(rowId: number){
     console.log('edit: ' + rowId);
     let currentRow = this.getRowDataById(rowId);
@@ -73,6 +78,7 @@ export class MaterialTestComponent implements AfterViewInit {
     }
   }
   
+  // saves new data into row and changes state to no longer be in edit mode
   saveRow(rowId: number){
     console.log('save: ' + rowId);
     let currentRow = this.getAllRowDataToSave(rowId);
@@ -81,17 +87,18 @@ export class MaterialTestComponent implements AfterViewInit {
     }
   }
 
+  // return object with row data
   getRowDataById(rowId: number){
     return this.dataSource.data.find((item) => item.position === rowId);
   }
 
+  // returns an object with all valid, updated row data
   getAllRowDataToSave(rowId: number){
     let oldRowData = this.getRowDataById(rowId) as PeriodicElement;
     let rowData: PeriodicElement = oldRowData;
 
+    // if the new value for the weight is NaN, revert to previous value before update
     let weightOfElement = (document.getElementById('elementWeight_' + rowData?.position) as HTMLInputElement).value;
-    console.log(Number(weightOfElement));
-    console.log(Number.isNaN(weightOfElement));
     rowData.weight = Number.isNaN(Number(weightOfElement)) ? oldRowData.weight : Number(weightOfElement);
     
     rowData.name = (document.getElementById('elementName_' + rowData?.position) as HTMLInputElement).value;

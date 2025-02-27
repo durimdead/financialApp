@@ -5,7 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { DialogDeleteElementConfirmationComponent } from './dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
 
 export interface PeriodicElement {
   isEditing: boolean;
@@ -82,7 +82,7 @@ export class MaterialTestComponent implements AfterViewInit {
     const currentRow = this.getRowDataById(rowId);
     
     // let dialogRef = this.dialog.open(ConfirmationDialogComponent, JSON.stringify(currentRow));
-    let dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    let dialogRef = this.dialog.open(DialogDeleteElementConfirmationComponent, {
       data: JSON.stringify(currentRow)
     });
 

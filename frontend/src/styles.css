@@ -25,3 +25,8 @@ body {
 .green-text{
   color: rgb(1, 127, 1);
 }
+.input-textbox{
+  border-radius: 5px;
+  border-color: rgb(199, 199, 199);
+  padding: .25em
+}

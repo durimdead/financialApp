@@ -20,7 +20,7 @@
         <button mat-icon-button (click)="editRow(element.position)">
           <mat-icon class="blue-text">edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="deleteRow(element.position)">
+        <button mat-icon-button (click)="confirmDeleteRow(element.position)">
           <mat-icon class="red-text">delete</mat-icon>
         </button>
         }
@@ -56,7 +56,7 @@
         <!-- <mat-form-field> -->
           <!-- <mat-label>Element Name</mat-label> -->
           <!-- <input type="text" matInput id="elementName_{{element.position}}" [value]="element.name"> -->
-          <input class="input-textbox" type="text" id="elementName_{{element.position}}" [value]="element.name">
+          <input class="input-textbox" type="text" id="{{identifiers.name}}{{element.position}}" [value]="element.name">
         <!-- </mat-form-field> -->
       } @else {    
         {{ element.name }}
@@ -80,7 +80,7 @@
           <!-- <mat-form-field> -->
             <!-- <mat-label>Element Weight</mat-label> -->
             <!-- <input type="text" matInput id="elementWeight_{{element.position}}" [value]="element.weight"> -->
-            <input class="input-textbox" type="text" id="elementWeight_{{element.position}}" [value]="element.weight">
+            <input class="input-textbox" type="text" id="{{identifiers.weight}}{{element.position}}" [value]="element.weight">
           <!-- </mat-form-field> -->
         </p>
       } @else {    
@@ -104,7 +104,7 @@
       <!-- <mat-form-field> -->
           <!-- <mat-label>Element Symbol</mat-label>         -->
           <!-- <input type="text" matInput id="elementSymbol_{{element.position}}" [value]="element.symbol"> -->
-          <input class="input-textbox" type="text" id="elementSymbol_{{element.position}}" [value]="element.symbol">
+          <input class="input-textbox" type="text" id="{{identifiers.symbol}}{{element.position}}" [value]="element.symbol">
         <!-- </mat-form-field> -->
       } @else {    
         {{ element.symbol }}

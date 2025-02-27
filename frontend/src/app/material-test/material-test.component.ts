@@ -4,6 +4,8 @@ import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 
 export interface PeriodicElement {
   isEditing: boolean;
@@ -33,8 +35,13 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrl: './material-test.component.css',
 })
 export class MaterialTestComponent implements AfterViewInit {
+  identifiers = {
+    name: 'elementName_',
+    weight: 'elementWeight_',
+    symbol: 'elementSymbol'
+  };
+  readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
-
   displayedColumns: string[] = ['actions', 'position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
@@ -57,6 +64,11 @@ export class MaterialTestComponent implements AfterViewInit {
     }
   }
 
+  //
+  openDialog() {
+    
+  }
+
   // brings up modal to add another row of data
   addRow(){
     //TODO: initialize modal to add new row
@@ -64,9 +76,18 @@ export class MaterialTestComponent implements AfterViewInit {
   }
 
   // requests confirmation of row deletion, then deletes row
-  deleteRow(rowId: number){
+  confirmDeleteRow(rowId: number){
     //TODO: initialize confirmation of deletion of row, then delete row upon confirmation (probably needs more methods)
     console.log('delete: ' + rowId);
+    const currentRow = this.getRowDataById(rowId);
+    console.log(JSON.stringify(currentRow));
+    
+    // let dialogRef = this.dialog.open(ConfirmationDialogComponent, JSON.stringify(currentRow));
+    let dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
   
   // updates row state to editable
@@ -89,7 +110,7 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // return object with row data
   getRowDataById(rowId: number){
-    return this.dataSource.data.find((item) => item.position === rowId);
+    return this.dataSource.data.find((item) => item.position === rowId) as PeriodicElement;
   }
 
   // returns an object with all valid, updated row data
@@ -98,11 +119,11 @@ export class MaterialTestComponent implements AfterViewInit {
     let rowData: PeriodicElement = oldRowData;
 
     // if the new value for the weight is NaN, revert to previous value before update
-    let weightOfElement = (document.getElementById('elementWeight_' + rowData?.position) as HTMLInputElement).value;
+    let weightOfElement = (document.getElementById(this.identifiers.weight + rowData?.position) as HTMLInputElement).value;
     rowData.weight = Number.isNaN(Number(weightOfElement)) ? oldRowData.weight : Number(weightOfElement);
     
-    rowData.name = (document.getElementById('elementName_' + rowData?.position) as HTMLInputElement).value;
-    rowData.symbol = (document.getElementById('elementSymbol_' + rowData?.position) as HTMLInputElement).value;
+    rowData.name = (document.getElementById(this.identifiers.name + rowData?.position) as HTMLInputElement).value;
+    rowData.symbol = (document.getElementById(this.identifiers.symbol + rowData?.position) as HTMLInputElement).value;
     
     return rowData;
   }

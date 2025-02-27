@@ -61,23 +61,37 @@ export class MaterialTestComponent implements AfterViewInit {
     console.log('adding new row');
   }
 
-  deleteRow(itemId: number){
-    console.log('delete: ' + itemId);
+  deleteRow(rowId: number){
+    console.log('delete: ' + rowId);
   }
   
-  editRow(itemId: number){
-    console.log('edit: ' + itemId);
-    let currentRow = this.dataSource.data.find((item) => item.position === itemId);
+  editRow(rowId: number){
+    console.log('edit: ' + rowId);
+    let currentRow = this.getRowDataById(rowId);
     if (currentRow){
       currentRow.isEditing = true;
     }
   }
   
-  saveRow(itemId: number){
-    console.log('save: ' + itemId);
-    let currentRow = this.dataSource.data.find((item) => item.position === itemId);
+  saveRow(rowId: number){
+    console.log('save: ' + rowId);
+    let currentRow = this.getAllRowDataToSave(rowId);
     if (currentRow){
       currentRow.isEditing = false;
     }
+  }
+
+  getRowDataById(rowId: number){
+    return this.dataSource.data.find((item) => item.position === rowId);
+  }
+
+  getAllRowDataToSave(rowId: number){
+    let oldRowData = this.getRowDataById(rowId) as PeriodicElement;
+    let rowData: PeriodicElement = oldRowData;
+    rowData.name = (document.getElementById('elementName_' + rowData?.position) as HTMLInputElement).value;
+    rowData.weight = Number((document.getElementById('elementWeight_' + rowData?.position) as HTMLInputElement).value);
+    rowData.symbol = (document.getElementById('elementSymbol_' + rowData?.position) as HTMLInputElement).value;
+    
+    return rowData;
   }
 }

@@ -88,10 +88,7 @@ export class MaterialTestComponent implements AfterViewInit {
     const elementIds = this.ELEMENT_DATA.map(element => element.elementId);
     elementToAdd.elementId = Math.max(...elementIds) + 1;
     this.ELEMENT_DATA.push(elementToAdd);
-    console.log(elementToAdd);
-    console.log('---------')
-    console.log(this.ELEMENT_DATA);
-    console.log('---------------------------------------------------------------');
+    this.dataSource.data = this.ELEMENT_DATA;
   }
 
   // requests confirmation of row deletion, then deletes row
@@ -114,7 +111,8 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // delete Element by rowId
   deleteElement(rowId: number){
-    this.dataSource.data = this.dataSource.data.filter(itemToDelete => itemToDelete.elementId !== rowId);
+    this.ELEMENT_DATA = this.dataSource.data.filter(itemToDelete => itemToDelete.elementId !== rowId);
+    this.dataSource.data = this.ELEMENT_DATA;
   }
 
   // updates row state to editable

@@ -11,21 +11,21 @@ export interface PeriodicElement {
   isEditing: boolean;
   actions: string;
   name: string;
-  position: number;
+  elementId: number;
   weight: number;
   symbol: string;
 }
 const ELEMENT_DATA: PeriodicElement[] = [
-  { isEditing: false, actions: '',position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { isEditing: false, actions: '',position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { isEditing: false, actions: '',position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { isEditing: false, actions: '',position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { isEditing: false, actions: '',position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { isEditing: false, actions: '',position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { isEditing: false, actions: '',position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { isEditing: false, actions: '',position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { isEditing: false, actions: '',position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { isEditing: false, actions: '',position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+  { isEditing: false, actions: '',elementId: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+  { isEditing: false, actions: '',elementId: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+  { isEditing: false, actions: '',elementId: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+  { isEditing: false, actions: '',elementId: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+  { isEditing: false, actions: '',elementId: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+  { isEditing: false, actions: '',elementId: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+  { isEditing: false, actions: '',elementId: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+  { isEditing: false, actions: '',elementId: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+  { isEditing: false, actions: '',elementId: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+  { isEditing: false, actions: '',elementId: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
 ];
 
 @Component({
@@ -42,7 +42,7 @@ export class MaterialTestComponent implements AfterViewInit {
   };
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
-  displayedColumns: string[] = ['actions', 'position', 'name', 'weight', 'symbol'];
+  displayedColumns: string[] = ['actions', 'elementId', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -88,21 +88,21 @@ export class MaterialTestComponent implements AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result === true){
-        this.deleteElement(currentRow.position);
+        this.deleteElement(currentRow.elementId);
       }
     });
   }
 
   // delete Element by rowId
   deleteElement(rowId: number){
-    this.dataSource.data = this.dataSource.data.filter(itemToDelete => itemToDelete.position !== rowId);
+    this.dataSource.data = this.dataSource.data.filter(itemToDelete => itemToDelete.elementId !== rowId);
   }
 
   // updates row state to editable
   editRow(rowId: number){
     console.log('edit: ' + rowId);
     let currentRow = this.getRowDataById(rowId);
-    if (currentRow){
+    if (currentRow?.elementId > 0){
       currentRow.isEditing = true;
     }
   }
@@ -118,7 +118,7 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // return object with row data
   getRowDataById(rowId: number){
-    return this.dataSource.data.find((item) => item.position === rowId) as PeriodicElement;
+    return this.dataSource.data.find((item) => item.elementId === rowId) as PeriodicElement;
   }
 
   // returns an object with all valid, updated row data
@@ -127,11 +127,11 @@ export class MaterialTestComponent implements AfterViewInit {
     let rowData: PeriodicElement = oldRowData;
 
     // if the new value for the weight is NaN, revert to previous value before update
-    let weightOfElement = (document.getElementById(this.identifiers.weight + rowData?.position) as HTMLInputElement).value;
+    let weightOfElement = (document.getElementById(this.identifiers.weight + rowData?.elementId) as HTMLInputElement).value;
     rowData.weight = Number.isNaN(Number(weightOfElement)) ? oldRowData.weight : Number(weightOfElement);
     
-    rowData.name = (document.getElementById(this.identifiers.name + rowData?.position) as HTMLInputElement).value;
-    rowData.symbol = (document.getElementById(this.identifiers.symbol + rowData?.position) as HTMLInputElement).value;
+    rowData.name = (document.getElementById(this.identifiers.name + rowData?.elementId) as HTMLInputElement).value;
+    rowData.symbol = (document.getElementById(this.identifiers.symbol + rowData?.elementId) as HTMLInputElement).value;
     
     return rowData;
   }

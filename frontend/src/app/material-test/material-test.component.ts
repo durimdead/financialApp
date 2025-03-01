@@ -68,10 +68,12 @@ export class MaterialTestComponent implements AfterViewInit {
     let dialogRef = this.dialog.open(DialogAddElementComponent);
 
     dialogRef.afterClosed().subscribe((result: PeriodicElement) => {
-      this.addRow(result);
+      // this.addRow(result);
+      console.log(result);
     });
   }
 
+  //TODO: delete this method as it's not needed after modal is working.
   testAddNewElement(){
     let newElement: PeriodicElement = {
       elementId: 0,

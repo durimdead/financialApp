@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, ViewChild, inject } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -30,6 +30,8 @@ export class MaterialTestComponent implements AfterViewInit {
     { isEditing: false, actions: '',elementId: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
     { isEditing: false, actions: '',elementId: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
   ];
+
+  private destroyRef = inject(DestroyRef);
 
   identifiers = {
     name: 'elementName_',
@@ -65,14 +67,18 @@ export class MaterialTestComponent implements AfterViewInit {
     let dialogRef = this.dialog.open(DialogAddElementComponent);
 
     // if the user submits a new element, we will get back an element to add to the table, else ''
-    dialogRef.afterClosed().subscribe((result: PeriodicElement | '') => {
+    const subscription = dialogRef.afterClosed().subscribe((result: PeriodicElement | '') => {
       if (result !== ''){
         this.addRow(result);
       }
     });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
-  //
+  // will take the periodic element sent in, update Id to valid one, add to the table
   addRow(elementToAdd: PeriodicElement){
     const elementIds = this.ELEMENT_DATA.map(element => element.elementId);
     elementToAdd.elementId = Math.max(...elementIds) + 1;
@@ -91,10 +97,14 @@ export class MaterialTestComponent implements AfterViewInit {
     });
 
     // if the user confirms deletion
-    dialogRef.afterClosed().subscribe(result => {
+    const subscription = dialogRef.afterClosed().subscribe(result => {
       if(result === true){
         this.deleteElement(currentRow.elementId);
       }
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
     });
   }
 

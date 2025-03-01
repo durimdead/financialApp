@@ -62,30 +62,17 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // brings up modal to add another row of data
   openAddRowModal(){
-    //TODO: initialize modal to add new row
-    console.log('adding new row');
-    
     let dialogRef = this.dialog.open(DialogAddElementComponent);
 
-    dialogRef.afterClosed().subscribe((result: PeriodicElement) => {
-      // this.addRow(result);
-      console.log(result);
+    // if the user submits a new element, we will get back an element to add to the table, else ''
+    dialogRef.afterClosed().subscribe((result: PeriodicElement | '') => {
+      if (result !== ''){
+        this.addRow(result);
+      }
     });
   }
 
-  //TODO: delete this method as it's not needed after modal is working.
-  testAddNewElement(){
-    let newElement: PeriodicElement = {
-      elementId: 0,
-      isEditing: false,
-      actions: '',
-      name: 'someElement',
-      weight: 1.023,
-      symbol: 'NA',
-    }
-    this.addRow(newElement);
-  }
-
+  //
   addRow(elementToAdd: PeriodicElement){
     const elementIds = this.ELEMENT_DATA.map(element => element.elementId);
     elementToAdd.elementId = Math.max(...elementIds) + 1;

@@ -25,13 +25,12 @@ export class ElementService {
   // add element provided it is not already in the list AND it has a valid elementId
   addElement(elementToAdd: PeriodicElement){
     let isDuplicate = (this.ELEMENT_DATA.find(element => element.elementId === elementToAdd.elementId) !== undefined);
-    if (elementToAdd.elementId > 0 && !isDuplicate){
-      this.ELEMENT_DATA.push(elementToAdd);
-    }
-    else{
+    
+    // this is either a duplicate or does not have an Id, so we need a unique Id to add the element
+    if (elementToAdd.elementId < 1 || isDuplicate){
       elementToAdd.elementId = this.getNextElementId();
-      this.ELEMENT_DATA.push(elementToAdd);
     }
+    this.ELEMENT_DATA.push(elementToAdd);
   }
 
   // ensures we get a unique Id for adding another element
@@ -45,6 +44,7 @@ export class ElementService {
     this.ELEMENT_DATA = this.ELEMENT_DATA.filter(itemToDelete => itemToDelete.elementId !== elementId);
   }
 
+  // ensures that the source of data is completely up to date. We should not need this once we switch to a database
   updateDataSource(elementArray: PeriodicElement[]): PeriodicElement[]{
     this.ELEMENT_DATA = elementArray;
     return this.getElements();

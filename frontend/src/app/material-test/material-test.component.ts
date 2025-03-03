@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteElementConfirmationComponent } from './dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
 import { PeriodicElement } from '../../app.interfaces';
 import { DialogAddElementComponent } from './dialog-add-element/dialog-add-element.component';
+import { ElementService } from '../element.service';
 
 
 
@@ -18,18 +19,7 @@ import { DialogAddElementComponent } from './dialog-add-element/dialog-add-eleme
   styleUrl: './material-test.component.css',
 })
 export class MaterialTestComponent implements AfterViewInit {
-  private ELEMENT_DATA: PeriodicElement[] = [
-    { isEditing: false, actions: '',elementId: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { isEditing: false, actions: '',elementId: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-    { isEditing: false, actions: '',elementId: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-    { isEditing: false, actions: '',elementId: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-    { isEditing: false, actions: '',elementId: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-    { isEditing: false, actions: '',elementId: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-    { isEditing: false, actions: '',elementId: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-    { isEditing: false, actions: '',elementId: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-    { isEditing: false, actions: '',elementId: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-    { isEditing: false, actions: '',elementId: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-  ];
+  private elementService = inject(ElementService);
 
   private destroyRef = inject(DestroyRef);
 
@@ -41,7 +31,7 @@ export class MaterialTestComponent implements AfterViewInit {
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
   displayedColumns: string[] = ['actions', 'elementId', 'name', 'weight', 'symbol'];
-  dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource(this.elementService.getElements());
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
@@ -80,10 +70,10 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // will take the periodic element sent in, update Id to valid one, add to the table
   addRow(elementToAdd: PeriodicElement){
-    const elementIds = this.ELEMENT_DATA.map(element => element.elementId);
+    const elementIds = this.elementService.getElements().map(element => element.elementId);
     elementToAdd.elementId = Math.max(...elementIds) + 1;
-    this.ELEMENT_DATA.push(elementToAdd);
-    this.dataSource.data = this.ELEMENT_DATA;
+    this.elementService.addElement(elementToAdd);
+    this.dataSource.data = this.elementService.getElements();
   }
 
   // requests confirmation of row deletion, then deletes row
@@ -109,9 +99,9 @@ export class MaterialTestComponent implements AfterViewInit {
   }
 
   // delete Element by rowId
-  deleteElement(rowId: number){
-    this.ELEMENT_DATA = this.dataSource.data.filter(itemToDelete => itemToDelete.elementId !== rowId);
-    this.dataSource.data = this.ELEMENT_DATA;
+  deleteElement(elementId: number){
+    this.elementService.deleteElement(elementId);
+    this.dataSource.data = this.elementService.getElements();
   }
 
   // updates row state to editable

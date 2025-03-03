@@ -28,8 +28,13 @@ export class ElementService {
     if (elementToAdd.elementId > 0 && !isDuplicate){
       this.ELEMENT_DATA.push(elementToAdd);
     }
+    else{
+      elementToAdd.elementId = this.getNextElementId();
+      this.ELEMENT_DATA.push(elementToAdd);
+    }
   }
 
+  // ensures we get a unique Id for adding another element
   getNextElementId(){
     const elementIds = this.getElements().map(element => element.elementId);
     return Math.max(...elementIds) + 1;

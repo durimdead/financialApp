@@ -13,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
 import { PeriodicElement } from '../../../app.interfaces';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from '../../element.service';
 
@@ -34,6 +34,7 @@ import { ElementService } from '../../element.service';
 export class DialogAddElementComponent {
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   private elementService = inject(ElementService);
+  public dialogRef = inject(MatDialogRef<DialogAddElementComponent>);
 
 
 
@@ -56,7 +57,7 @@ export class DialogAddElementComponent {
       weight: Number(this.form.controls.elementWeight.value),
       symbol: this.form.controls.elementSymbol.value as string,
     };
-    return newElement;
+    this.dialogRef.close(newElement);
   }
 
   // errorMessage = signal('');

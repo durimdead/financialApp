@@ -1,7 +1,21 @@
 <h2 mat-dialog-title>Add New Element</h2>
 <mat-dialog-content class="mat-typography">
     <div class="example-container">
-        <mat-form-field>
+      <form [formGroup]="form">
+        <div class="control">
+          <label for="elementName">Element Name</label>
+          <input id="elementName" type="text" name="elementName" formControlName="elementName"/>
+        </div>
+        <div class="control">
+          <label for="elementWeight">Element Weight</label>
+          <input id="elementWeight" type="text" name="elementWeight" formControlName="elementWeight"/>
+        </div>
+        <div class="control">
+          <label for="elementSymbol">Element Symbol</label>
+          <input id="elementSymbol" type="text" name="elementSymbol" formControlName="elementSymbol"/>
+        </div>
+      </form>
+        <!-- <mat-form-field>
           <mat-label>Enter your email</mat-label>
           <input
             matInput
@@ -13,7 +27,7 @@
           @if (email.invalid) {
             <mat-error>{{errorMessage()}}</mat-error>
           }
-        </mat-form-field>
+        </mat-form-field> -->
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

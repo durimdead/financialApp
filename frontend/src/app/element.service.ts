@@ -41,4 +41,10 @@ export class ElementService {
   }
 
   constructor() { }
+  
+  // not the best place for this, but it was a better option than continuing to hide it inside the individual typescript classes
+  //TODO: extract out to better location.
+  isNotANumber(valueToCheck: string): boolean{
+    return Number.isNaN(Number(valueToCheck));
+  }
 }

@@ -35,5 +35,10 @@ export class ElementService {
     this.ELEMENT_DATA = this.ELEMENT_DATA.filter(itemToDelete => itemToDelete.elementId !== elementId);
   }
 
+  updateDataSource(elementArray: PeriodicElement[]): PeriodicElement[]{
+    this.ELEMENT_DATA = elementArray;
+    return this.getElements();
+  }
+
   constructor() { }
 }

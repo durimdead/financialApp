@@ -20,16 +20,19 @@ import { ElementService } from '../element.service';
 })
 export class MaterialTestComponent implements AfterViewInit {
   private elementService = inject(ElementService);
-
   private destroyRef = inject(DestroyRef);
+  readonly dialog = inject(MatDialog);
+  private _liveAnnouncer = inject(LiveAnnouncer);
 
+  // makeshift way of naming HTML element ids to grab the data from the HTML table
+  // since the way Angular Material doesn't lend itself well to the way I wanted to
+  // use it
   identifiers = {
     name: 'elementName_',
     weight: 'elementWeight_',
     symbol: 'elementSymbol_'
   };
-  readonly dialog = inject(MatDialog);
-  private _liveAnnouncer = inject(LiveAnnouncer);
+  
   displayedColumns: string[] = ['actions', 'elementId', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(this.elementService.getElements());
 
@@ -62,7 +65,6 @@ export class MaterialTestComponent implements AfterViewInit {
         this.addRow(result);
       }
     });
-
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
@@ -92,13 +94,12 @@ export class MaterialTestComponent implements AfterViewInit {
         this.deleteElement(currentRow.elementId);
       }
     });
-
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
   }
 
-  // delete Element by rowId
+  // delete Element by rowId and refresh the table
   deleteElement(elementId: number){
     this.elementService.deleteElement(elementId);
     this.dataSource.data = this.elementService.getElements();
@@ -111,6 +112,8 @@ export class MaterialTestComponent implements AfterViewInit {
     if (currentRow?.elementId > 0){
       currentRow.isEditing = true;
     }
+
+    this.updateElementArrayWithDataSource();
   }
   
   // saves new data into row and changes state to no longer be in edit mode
@@ -120,6 +123,8 @@ export class MaterialTestComponent implements AfterViewInit {
     if (currentRow){
       currentRow.isEditing = false;
     }
+    
+    this.updateElementArrayWithDataSource();
   }
 
   // return object with row data
@@ -140,5 +145,11 @@ export class MaterialTestComponent implements AfterViewInit {
     rowData.symbol = (document.getElementById(this.identifiers.symbol + rowData?.elementId) as HTMLInputElement).value;
     
     return rowData;
+  }
+
+  // if the datasource for the table has been updated and we need to update the "source data" with the new information
+  //TODO: do this better!
+  updateElementArrayWithDataSource(){
+    this.dataSource.data = this.elementService.updateDataSource(this.dataSource.data);
   }
 }

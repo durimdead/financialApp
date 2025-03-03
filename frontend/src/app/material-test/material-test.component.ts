@@ -72,8 +72,9 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // will take the periodic element sent in, update Id to valid one, add to the table
   addRow(elementToAdd: PeriodicElement){
-    const elementIds = this.elementService.getElements().map(element => element.elementId);
-    elementToAdd.elementId = Math.max(...elementIds) + 1;
+    if (elementToAdd.elementId < 1){
+      elementToAdd.elementId = this.elementService.getNextElementId();
+    }
     this.elementService.addElement(elementToAdd);
     this.dataSource.data = this.elementService.getElements();
   }

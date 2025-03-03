@@ -30,6 +30,11 @@ export class ElementService {
     }
   }
 
+  getNextElementId(){
+    const elementIds = this.getElements().map(element => element.elementId);
+    return Math.max(...elementIds) + 1;
+  }
+
   // "delete" the element from the table of data
   deleteElement(elementId: number){
     this.ELEMENT_DATA = this.ELEMENT_DATA.filter(itemToDelete => itemToDelete.elementId !== elementId);

@@ -44,13 +44,15 @@ export class DialogAddElementComponent {
     elementSymbol: new FormControl('', { validators: [Validators.required] }),
   });
 
+  // if the form is valid, submit the element information.
   submitNewElement() {
     if (this.form.invalid || this.elementService.isNotANumber(this.form.controls.elementWeight.value as string)) {
       console.log('form invalid');
       return;
     }
+    
     let newElement: PeriodicElement = {
-      elementId: 0,
+      elementId: this.elementService.getNextElementId(),
       isEditing: false,
       actions: '',
       name: this.form.controls.elementName.value as string,

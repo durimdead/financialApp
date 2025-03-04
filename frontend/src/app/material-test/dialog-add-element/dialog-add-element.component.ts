@@ -39,17 +39,20 @@ import { FormValidators } from '../../../app.form-validators';
   styleUrl: './dialog-add-element.component.css',
 })
 export class DialogAddElementComponent {
-//   readonly email = new FormControl('', [Validators.required, Validators.email]);
+  //   readonly email = new FormControl('', [Validators.required, Validators.email]);
   private elementService = inject(ElementService);
   public dialogRef = inject(MatDialogRef<DialogAddElementComponent>);
   private formValidator = inject(FormValidators);
 
   form = new FormGroup({
-    elementName: new FormControl('', { validators: [Validators.required, Validators.minLength(3)] }),
-    elementWeight: new FormControl('', {
-      validators: [Validators.required, this.formValidator.mustBeNumber],
+    elementName: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)],
     }),
-    elementSymbol: new FormControl('', { validators: [Validators.required] }),
+    elementWeight: new FormControl('', [
+      Validators.required,
+      this.formValidator.mustBeNumber,
+    ]),
+    elementSymbol: new FormControl('', [Validators.required]),
   });
 
   // if the form is valid, submit the element information.
@@ -67,46 +70,40 @@ export class DialogAddElementComponent {
       this.dialogRef.close(newElement);
     }
     // the form is invalid, ensure we show which have issues
-	this.formValidator.markFormGroupAsDirtyTouched(this.form);
+    this.formValidator.markFormGroupAsDirtyTouched(this.form);
   }
 
-  hasError(formControl: FormControl){
-	if(formControl.touched && formControl.dirty && formControl.invalid){
-		return true;
-	}
-	return false;
+  hasError(formControl: FormControl) {
+    if (formControl.touched && formControl.dirty && formControl.invalid) {
+      return true;
+    }
+    return false;
   }
 
-  getFormControlErrorDetails(formControl: FormControl){
-	let messageToShow = '';
-	const controlErrors: ValidationErrors = formControl.errors as ValidationErrors;
-	Object.keys(controlErrors).forEach(currentError => {
-		console.log('keyError: ' + currentError);
-		console.log('errorValue: ');
-		console.log(controlErrors[currentError]);
-		let currentErrorMessage = '';
-		if(currentError === 'required'){
-			currentErrorMessage = 'Field is required.';
-		}
-		else if (currentError === 'minlength'){
-			currentErrorMessage = 'Minimum Length : ' + controlErrors[currentError].requiredLength;
-		}
-		else if (currentError === '_subscribe'){
-			currentErrorMessage = 'Must Be a Number.';
-			// currentErrorMessage = 'customError : Must Be a Number (most likely)';
-			//TODO: look up "subscribe to custom validation errors"
-		}
-		else{
-			currentErrorMessage = 'some other message';
-		}
-		console.log('current error\'s message : ' + currentErrorMessage);
-		// else if (currentError.)
-		if (messageToShow.length > 0){
-			messageToShow += '<br/>';
-		}
-		messageToShow += currentErrorMessage;
-	});
-	return messageToShow;
+  getFormControlErrorDetails(formControl: FormControl) {
+    let messageToShow = '';
+    const controlErrors: ValidationErrors =
+      formControl.errors as ValidationErrors;
+    Object.keys(controlErrors).forEach((currentError) => {
+      let currentErrorMessage = '';
+      if (currentError === 'required') {
+        currentErrorMessage = 'Field is required.';
+      } else if (currentError === 'minlength') {
+        currentErrorMessage =
+          'Minimum Length : ' + controlErrors[currentError].requiredLength;
+      }else if (currentError === 'isNotANumber') {
+		currentErrorMessage = "This must be Numeric.";
+	  }else {
+        currentErrorMessage = 'Unknown validation error.';
+      }
+
+	  //TODO: still need to fix this part
+      if (messageToShow.length > 0) {
+        messageToShow += '<br/>';
+      }
+      messageToShow += currentErrorMessage;
+    });
+    return messageToShow;
   }
 
   // constructor() {

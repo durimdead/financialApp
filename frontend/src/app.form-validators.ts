@@ -5,7 +5,6 @@ import {
   FormControl,
   FormGroup,
 } from '@angular/forms';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ import { of } from 'rxjs';
 export class FormValidators {
   mustBeNumber(control: AbstractControl) {
     if (Number.isNaN(Number(control.value))) {
-      return of({ isNotNumber: true });
+      return { isNotANumber: true };
     }
     return null;
   }

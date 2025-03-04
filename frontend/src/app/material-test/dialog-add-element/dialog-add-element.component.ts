@@ -99,7 +99,7 @@ export class DialogAddElementComponent {
 
 	  //TODO: still need to fix this part
       if (messageToShow.length > 0) {
-        messageToShow += '<br/>';
+        messageToShow += ' :::: ';
       }
       messageToShow += currentErrorMessage;
     });

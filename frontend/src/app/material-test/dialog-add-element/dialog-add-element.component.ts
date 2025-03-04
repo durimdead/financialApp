@@ -94,6 +94,7 @@ export class DialogAddElementComponent {
 		else if (currentError === '_subscribe'){
 			currentErrorMessage = 'Must Be a Number.';
 			// currentErrorMessage = 'customError : Must Be a Number (most likely)';
+			//TODO: look up "subscribe to custom validation errors"
 		}
 		else{
 			currentErrorMessage = 'some other message';

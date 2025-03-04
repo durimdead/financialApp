@@ -69,7 +69,12 @@ export class DialogAddElementComponent {
 	this.formValidator.markFormGroupAsDirtyTouched(this.form);
   }
 
-  // errorMessage = signal('');
+  hasError(formControl: FormControl){
+	if(formControl.touched && formControl.dirty && formControl.invalid){
+		return true;
+	}
+	return false;
+  }
 
   // constructor() {
   // merge(this.email.statusChanges, this.email.valueChanges)

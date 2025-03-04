@@ -2,7 +2,7 @@
 <mat-dialog-content class="mat-typography">
   <div class="example-container">
     <form [formGroup]="form" class="form-flex-column">
-      <div class="control">
+      <div class="control form-group-div">
         <label for="elementName" class="input-label-modal">Element Name :</label>
         <input
           id="elementName"
@@ -11,8 +11,12 @@
           name="elementName"
           formControlName="elementName"
         />
+		@if(hasError(form.controls.elementName)){
+			<!-- <label class="error-label">{{showError(form.controls.elementName)}}</label> -->
+			<label class="error-label">has error</label>
+		}
       </div>
-      <div class="control">
+      <div class="control form-group-div">
         <label for="elementWeight" class="input-label-modal">Element Weight :</label>
         <input
           id="elementWeight"
@@ -21,8 +25,12 @@
           name="elementWeight"
           formControlName="elementWeight"
         />
+		@if(hasError(form.controls.elementWeight)){
+			<!-- <label class="error-label">{{showError(form.controls.elementWeight)}}</label> -->
+			<label class="error-label">has error</label>
+		}
       </div>
-      <div class="control">
+      <div class="control form-group-div">
         <label for="elementSymbol" class="input-label-modal">Element Symbol :</label>
         <input
           id="elementSymbol"
@@ -31,6 +39,10 @@
           name="elementSymbol"
           formControlName="elementSymbol"
         />
+		@if(hasError(form.controls.elementSymbol)){
+			<!-- <label class="error-label">{{showError(form.controls.elementSymbol)}}</label> -->
+			<label class="error-label">has error</label>
+		}
       </div>
     </form>
     <!-- <mat-form-field>

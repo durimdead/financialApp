@@ -18,16 +18,17 @@ export class FormValidators {
     return null;
   }
 
+  /***************************************************
+   *
+   * START: marking form controls as dirty/touched.
+   * 		Might need more functions later
+   *
+   **************************************************/
+  // entry point for marking the form group dirty/touched
   markFormGroupAsDirtyTouched(form: FormGroup) {
     this.markGroupDirtyTouched(form);
   }
 
-  /********************************************
-   *
-   * START: marking form controls as dirty.
-   * 		Might need more functions later
-   *
-   *******************************************/
   // recursively marks a formGroup as dirty and Touched
   private markGroupDirtyTouched(formGroup: FormGroup) {
     formGroup.markAllAsTouched();
@@ -60,10 +61,10 @@ export class FormValidators {
     formControl.markAsDirty();
   }
 
-  /********************************************
+  /***************************************************
    *
-   * END:   marking form controls as dirty.
+   * END:   marking form controls as dirty/touched.
    * 		Might need more functions later
    *
-   *******************************************/
+   **************************************************/
 }

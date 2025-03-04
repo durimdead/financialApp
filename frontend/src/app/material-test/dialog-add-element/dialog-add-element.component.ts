@@ -12,6 +12,7 @@ import {
   FormsModule,
   NgForm,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -38,13 +39,13 @@ import { FormValidators } from '../../../app.form-validators';
   styleUrl: './dialog-add-element.component.css',
 })
 export class DialogAddElementComponent {
-  readonly email = new FormControl('', [Validators.required, Validators.email]);
+//   readonly email = new FormControl('', [Validators.required, Validators.email]);
   private elementService = inject(ElementService);
   public dialogRef = inject(MatDialogRef<DialogAddElementComponent>);
   private formValidator = inject(FormValidators);
 
   form = new FormGroup({
-    elementName: new FormControl('', { validators: [Validators.required] }),
+    elementName: new FormControl('', { validators: [Validators.required, Validators.minLength(3)] }),
     elementWeight: new FormControl('', {
       validators: [Validators.required, this.formValidator.mustBeNumber],
     }),
@@ -74,6 +75,37 @@ export class DialogAddElementComponent {
 		return true;
 	}
 	return false;
+  }
+
+  getFormControlErrorDetails(formControl: FormControl){
+	let messageToShow = '';
+	const controlErrors: ValidationErrors = formControl.errors as ValidationErrors;
+	Object.keys(controlErrors).forEach(currentError => {
+		console.log('keyError: ' + currentError);
+		console.log('errorValue: ');
+		console.log(controlErrors[currentError]);
+		let currentErrorMessage = '';
+		if(currentError === 'required'){
+			currentErrorMessage = 'Field is required.';
+		}
+		else if (currentError === 'minlength'){
+			currentErrorMessage = 'Minimum Length : ' + controlErrors[currentError].requiredLength;
+		}
+		else if (currentError === '_subscribe'){
+			currentErrorMessage = 'Must Be a Number.';
+			// currentErrorMessage = 'customError : Must Be a Number (most likely)';
+		}
+		else{
+			currentErrorMessage = 'some other message';
+		}
+		console.log('current error\'s message : ' + currentErrorMessage);
+		// else if (currentError.)
+		if (messageToShow.length > 0){
+			messageToShow += '<br/>';
+		}
+		messageToShow += currentErrorMessage;
+	});
+	return messageToShow;
   }
 
   // constructor() {

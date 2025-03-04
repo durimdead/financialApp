@@ -12,8 +12,7 @@
           formControlName="elementName"
         />
 		@if(hasError(form.controls.elementName)){
-			<!-- <label class="error-label">{{showError(form.controls.elementName)}}</label> -->
-			<label class="error-label">has error</label>
+			<label class="error-label">{{getFormControlErrorDetails(form.controls.elementName)}}</label>
 		}
       </div>
       <div class="control form-group-div">
@@ -26,8 +25,7 @@
           formControlName="elementWeight"
         />
 		@if(hasError(form.controls.elementWeight)){
-			<!-- <label class="error-label">{{showError(form.controls.elementWeight)}}</label> -->
-			<label class="error-label">has error</label>
+			<label class="error-label">{{getFormControlErrorDetails(form.controls.elementWeight)}}</label>
 		}
       </div>
       <div class="control form-group-div">
@@ -40,8 +38,7 @@
           formControlName="elementSymbol"
         />
 		@if(hasError(form.controls.elementSymbol)){
-			<!-- <label class="error-label">{{showError(form.controls.elementSymbol)}}</label> -->
-			<label class="error-label">has error</label>
+			<label class="error-label">{{getFormControlErrorDetails(form.controls.elementSymbol)}}</label>
 		}
       </div>
     </form>

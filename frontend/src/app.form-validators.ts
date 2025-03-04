@@ -18,9 +18,7 @@ export class FormValidators {
     return null;
   }
 
-  compileValidationErrorMessage(formGroup: FormGroup){
-	
-  }
+  compileValidationErrorMessage(formGroup: FormGroup) {}
 
   //#region mark-form-group-dirty-touched
   //********************************************
@@ -33,7 +31,8 @@ export class FormValidators {
 
   // recursively marks a formGroup as dirty and Touched
   private markGroupDirtyTouched(formGroup: FormGroup) {
-    formGroup.markAllAsTouched();
+    formGroup.markAsDirty();
+    formGroup.markAsTouched();
     Object.keys(formGroup.controls).forEach((key) => {
       let currentItem = formGroup.get(key);
       if (currentItem instanceof FormGroup) {
@@ -46,8 +45,10 @@ export class FormValidators {
     });
   }
 
+  // recursively mark formArray as dirty and touched
   private markArrayDirtyTouched(formArray: FormArray) {
-    formArray.markAllAsTouched();
+    formArray.markAsDirty();
+    formArray.markAsTouched();
     formArray.controls.forEach((control) => {
       if (control instanceof FormGroup) {
         this.markGroupDirtyTouched(control as FormGroup);
@@ -59,8 +60,10 @@ export class FormValidators {
     });
   }
 
+  // mark form control dirty and touched
   private markControlDirty(formControl: FormControl) {
     formControl.markAsDirty();
+    formControl.markAsTouched();
   }
 
   //********************************************

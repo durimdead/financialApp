@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -40,29 +45,28 @@ export class DialogAddElementComponent {
 
   form = new FormGroup({
     elementName: new FormControl('', { validators: [Validators.required] }),
-    elementWeight: new FormControl('', { validators: [Validators.required, this.formValidator.mustBeNumber] }),
+    elementWeight: new FormControl('', {
+      validators: [Validators.required, this.formValidator.mustBeNumber],
+    }),
     elementSymbol: new FormControl('', { validators: [Validators.required] }),
   });
 
   // if the form is valid, submit the element information.
   submitNewElement() {
-    if (this.form.invalid) {
-		this.form.markAllAsTouched();
-		this.form.controls.elementName.markAsDirty();
-		this.form.controls.elementWeight.markAsDirty();
-		this.form.controls.elementSymbol.markAsDirty();
-      return;
+    // form is valid - bubble up element to Add
+    if (!this.form.invalid) {
+      let newElement: PeriodicElement = {
+        elementId: this.elementService.getNextElementId(),
+        isEditing: false,
+        actions: '',
+        name: this.form.controls.elementName.value as string,
+        weight: Number(this.form.controls.elementWeight.value),
+        symbol: this.form.controls.elementSymbol.value as string,
+      };
+      this.dialogRef.close(newElement);
     }
-
-    let newElement: PeriodicElement = {
-      elementId: this.elementService.getNextElementId(),
-      isEditing: false,
-      actions: '',
-      name: this.form.controls.elementName.value as string,
-      weight: Number(this.form.controls.elementWeight.value),
-      symbol: this.form.controls.elementSymbol.value as string,
-    };
-    this.dialogRef.close(newElement);
+    // the form is invalid, ensure we show which have issues
+	this.formValidator.markFormGroupAsDirtyTouched(this.form);
   }
 
   // errorMessage = signal('');

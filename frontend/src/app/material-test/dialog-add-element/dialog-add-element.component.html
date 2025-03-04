@@ -1,24 +1,42 @@
 <h2 mat-dialog-title>Add New Element</h2>
 <mat-dialog-content class="mat-typography">
-    <div class="example-container">
-      <form [formGroup]="form">
-        <div class="control">
-          <label for="elementName">Element Name</label>
-          <input id="elementName" type="text" name="elementName" formControlName="elementName"/>
-        </div>
-        <div class="control">
-          <label for="elementWeight">Element Weight</label>
-          <input id="elementWeight" type="text" name="elementWeight" formControlName="elementWeight"/>
-        </div>
-        <div class="control">
-          <label for="elementSymbol">Element Symbol</label>
-          <input id="elementSymbol" type="text" name="elementSymbol" formControlName="elementSymbol"/>
-        </div>
-      </form>
-        <!-- <mat-form-field>
+  <div class="example-container">
+    <form [formGroup]="form" class="form-flex-column">
+      <div class="control">
+        <label for="elementName" class="input-label-modal">Element Name :</label>
+        <input
+          id="elementName"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="elementName"
+          formControlName="elementName"
+        />
+      </div>
+      <div class="control">
+        <label for="elementWeight" class="input-label-modal">Element Weight :</label>
+        <input
+          id="elementWeight"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="elementWeight"
+          formControlName="elementWeight"
+        />
+      </div>
+      <div class="control">
+        <label for="elementSymbol" class="input-label-modal">Element Symbol :</label>
+        <input
+          id="elementSymbol"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="elementSymbol"
+          formControlName="elementSymbol"
+        />
+      </div>
+    </form>
+    <!-- <mat-form-field>
           <mat-label>Enter your email</mat-label>
           <input
-            matInput
+		  matInput
             placeholder="pat@example.com"
             [formControl]="email"
             (blur)="updateErrorMessage()"
@@ -28,7 +46,7 @@
             <mat-error>{{errorMessage()}}</mat-error>
           }
         </mat-form-field> -->
-    </div>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>

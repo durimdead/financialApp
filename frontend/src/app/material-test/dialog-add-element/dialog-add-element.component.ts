@@ -16,6 +16,7 @@ import { PeriodicElement } from '../../../app.interfaces';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from '../../element.service';
+import { FormValidators } from '../../../app.form-validators';
 
 @Component({
   selector: 'app-dialog-add-element',
@@ -35,22 +36,24 @@ export class DialogAddElementComponent {
   readonly email = new FormControl('', [Validators.required, Validators.email]);
   private elementService = inject(ElementService);
   public dialogRef = inject(MatDialogRef<DialogAddElementComponent>);
-
-
+  private formValidator = inject(FormValidators);
 
   form = new FormGroup({
     elementName: new FormControl('', { validators: [Validators.required] }),
-    elementWeight: new FormControl('', { validators: [Validators.required] }),
+    elementWeight: new FormControl('', { validators: [Validators.required, this.formValidator.mustBeNumber] }),
     elementSymbol: new FormControl('', { validators: [Validators.required] }),
   });
 
   // if the form is valid, submit the element information.
   submitNewElement() {
-    if (this.form.invalid || this.elementService.isNotANumber(this.form.controls.elementWeight.value as string)) {
-      console.log('form invalid');
+    if (this.form.invalid) {
+		this.form.markAllAsTouched();
+		this.form.controls.elementName.markAsDirty();
+		this.form.controls.elementWeight.markAsDirty();
+		this.form.controls.elementSymbol.markAsDirty();
       return;
     }
-    
+
     let newElement: PeriodicElement = {
       elementId: this.elementService.getNextElementId(),
       isEditing: false,

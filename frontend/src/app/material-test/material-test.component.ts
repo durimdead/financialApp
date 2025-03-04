@@ -1,5 +1,11 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, DestroyRef, ViewChild, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DestroyRef,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,8 +15,7 @@ import { DialogDeleteElementConfirmationComponent } from './dialog-delete-elemen
 import { PeriodicElement } from '../../app.interfaces';
 import { DialogAddElementComponent } from './dialog-add-element/dialog-add-element.component';
 import { ElementService } from '../element.service';
-
-
+import { FormValidators } from '../../app.form-validators';
 
 @Component({
   selector: 'app-material-test',
@@ -30,10 +35,16 @@ export class MaterialTestComponent implements AfterViewInit {
   identifiers = {
     name: 'elementName_',
     weight: 'elementWeight_',
-    symbol: 'elementSymbol_'
+    symbol: 'elementSymbol_',
   };
-  
-  displayedColumns: string[] = ['actions', 'elementId', 'name', 'weight', 'symbol'];
+
+  displayedColumns: string[] = [
+    'actions',
+    'elementId',
+    'name',
+    'weight',
+    'symbol',
+  ];
   dataSource = new MatTableDataSource(this.elementService.getElements());
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -56,23 +67,25 @@ export class MaterialTestComponent implements AfterViewInit {
   }
 
   // brings up modal to add another row of data
-  openAddRowModal(){
+  openAddRowModal() {
     let dialogRef = this.dialog.open(DialogAddElementComponent);
 
     // if the user submits a new element, we will get back an element to add to the table, else ''
-    const subscription = dialogRef.afterClosed().subscribe((result: PeriodicElement | '') => {
-      if (result !== ''){
-        this.addRow(result);
-      }
-    });
+    const subscription = dialogRef
+      .afterClosed()
+      .subscribe((result: PeriodicElement | '') => {
+        if (result !== '') {
+          this.addRow(result);
+        }
+      });
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
   }
 
   // will take the periodic element sent in, update Id to valid one, add to the table
-  addRow(elementToAdd: PeriodicElement){
-    if (elementToAdd.elementId < 1){
+  addRow(elementToAdd: PeriodicElement) {
+    if (elementToAdd.elementId < 1) {
       elementToAdd.elementId = this.elementService.getNextElementId();
     }
     this.elementService.addElement(elementToAdd);
@@ -80,18 +93,18 @@ export class MaterialTestComponent implements AfterViewInit {
   }
 
   // requests confirmation of row deletion, then deletes row
-  confirmDeleteRow(rowId: number){
+  confirmDeleteRow(rowId: number) {
     console.log('delete: ' + rowId);
     const currentRow = this.getRowDataById(rowId);
-    
+
     // open the dialog and send data to display
     let dialogRef = this.dialog.open(DialogDeleteElementConfirmationComponent, {
-      data: JSON.stringify(currentRow)
+      data: JSON.stringify(currentRow),
     });
 
     // if the user confirms deletion
-    const subscription = dialogRef.afterClosed().subscribe(result => {
-      if(result === true){
+    const subscription = dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {
         this.deleteElement(currentRow.elementId);
       }
     });
@@ -101,56 +114,74 @@ export class MaterialTestComponent implements AfterViewInit {
   }
 
   // delete Element by rowId and refresh the table
-  deleteElement(elementId: number){
+  deleteElement(elementId: number) {
     this.elementService.deleteElement(elementId);
     this.dataSource.data = this.elementService.getElements();
   }
 
   // updates row state to editable
-  editRow(rowId: number){
+  editRow(rowId: number) {
     console.log('edit: ' + rowId);
     let currentRow = this.getRowDataById(rowId);
-    if (currentRow?.elementId > 0){
+    if (currentRow?.elementId > 0) {
       currentRow.isEditing = true;
     }
 
     this.updateElementArrayWithDataSource();
   }
-  
+
   // saves new data into row and changes state to no longer be in edit mode
-  saveRow(rowId: number){
+  saveRow(rowId: number) {
     console.log('save: ' + rowId);
     let currentRow = this.getAllRowDataToSave(rowId);
-    if (currentRow){
+    if (currentRow) {
       currentRow.isEditing = false;
     }
-    
+
     this.updateElementArrayWithDataSource();
   }
 
   // return object with row data
-  getRowDataById(rowId: number){
-    return this.dataSource.data.find((item) => item.elementId === rowId) as PeriodicElement;
+  getRowDataById(rowId: number) {
+    return this.dataSource.data.find(
+      (item) => item.elementId === rowId
+    ) as PeriodicElement;
   }
 
   // returns an object with all valid, updated row data
-  getAllRowDataToSave(rowId: number){
+  getAllRowDataToSave(rowId: number) {
     let oldRowData = this.getRowDataById(rowId) as PeriodicElement;
     let rowData: PeriodicElement = oldRowData;
 
     // if the new value for the weight is NaN, revert to previous value before update
-    let weightOfElement = (document.getElementById(this.identifiers.weight + rowData?.elementId) as HTMLInputElement).value;
-    rowData.weight = Number.isNaN(Number(weightOfElement)) ? oldRowData.weight : Number(weightOfElement);
-    
-    rowData.name = (document.getElementById(this.identifiers.name + rowData?.elementId) as HTMLInputElement).value;
-    rowData.symbol = (document.getElementById(this.identifiers.symbol + rowData?.elementId) as HTMLInputElement).value;
-    
+    let weightOfElement = (
+      document.getElementById(
+        this.identifiers.weight + rowData?.elementId
+      ) as HTMLInputElement
+    ).value;
+    rowData.weight = Number.isNaN(Number(weightOfElement))
+      ? oldRowData.weight
+      : Number(weightOfElement);
+
+    rowData.name = (
+      document.getElementById(
+        this.identifiers.name + rowData?.elementId
+      ) as HTMLInputElement
+    ).value;
+    rowData.symbol = (
+      document.getElementById(
+        this.identifiers.symbol + rowData?.elementId
+      ) as HTMLInputElement
+    ).value;
+
     return rowData;
   }
 
   // if the datasource for the table has been updated and we need to update the "source data" with the new information
   //TODO: do this better!
-  updateElementArrayWithDataSource(){
-    this.dataSource.data = this.elementService.updateDataSource(this.dataSource.data);
+  updateElementArrayWithDataSource() {
+    this.dataSource.data = this.elementService.updateDataSource(
+      this.dataSource.data
+    );
   }
 }

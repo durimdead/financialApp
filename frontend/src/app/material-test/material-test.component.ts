@@ -11,10 +11,9 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogDeleteElementConfirmationComponent } from '../dialogs/dialog-element-crud-operations/dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
-import { PeriodicElement, PeriodicElementCrudData } from '../../app.interfaces';
-import { DialogAddElementComponent } from '../dialogs/dialog-element-crud-operations/dialog-add-element/dialog-add-element.component';
+import { PeriodicElement } from '../../app.interfaces';
 import { ElementService } from '../element.service';
+import { DialogElementCrudOperationsComponent } from '../dialogs/dialog-element-crud-operations/dialog-element-crud-operations.component';
 
 @Component({
   selector: 'app-material-test',
@@ -68,7 +67,7 @@ export class MaterialTestComponent implements AfterViewInit {
   // brings up modal to add another element of data
   openAddElementModal() {
 	const modalData = this.elementService.getElementDataForCrudModal(0, this.elementService.crudStates.create);
-    let dialogRef = this.dialog.open(DialogAddElementComponent, {
+    let dialogRef = this.dialog.open(DialogElementCrudOperationsComponent, {
       data: modalData,
     });
 
@@ -93,7 +92,7 @@ export class MaterialTestComponent implements AfterViewInit {
     );
 
     // open the dialog and send data to display
-    let dialogRef = this.dialog.open(DialogAddElementComponent, {
+    let dialogRef = this.dialog.open(DialogElementCrudOperationsComponent, {
       data: modalData,
     });
 
@@ -130,7 +129,7 @@ export class MaterialTestComponent implements AfterViewInit {
       elementId,
       this.elementService.crudStates.update
     );
-    let dialogRef = this.dialog.open(DialogAddElementComponent, {
+    let dialogRef = this.dialog.open(DialogElementCrudOperationsComponent, {
       data: modalData,
     });
 

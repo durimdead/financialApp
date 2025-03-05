@@ -5,20 +5,16 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
   FormGroup,
-  FormGroupDirective,
   FormsModule,
-  NgForm,
   ReactiveFormsModule,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { merge } from 'rxjs';
 import { PeriodicElement } from '../../../../app.interfaces';
 import {
   MAT_DIALOG_DATA,
@@ -85,23 +81,6 @@ export class DialogEditElementComponent {
       editedElement.symbol = this.form.controls.elementSymbol.value;
       this.dialogRef.close(editedElement);
     }
-  }
-
-  // if the form is valid, submit the element information.
-  submitNewElement() {
-    // form is valid - bubble up element to Add
-    if (!this.form.invalid) {
-      let newElement: PeriodicElement = {
-        elementId: this.elementService.getNextElementId(),
-        actions: '',
-        name: this.form.controls.elementName.value as string,
-        weight: Number(this.form.controls.elementWeight.value),
-        symbol: this.form.controls.elementSymbol.value as string,
-      };
-      this.dialogRef.close(newElement);
-    }
-    // the form is invalid, ensure we show which have issues
-    this.formValidator.markFormGroupAsDirtyTouched(this.form);
   }
 
   hasError(formControl: FormControl) {

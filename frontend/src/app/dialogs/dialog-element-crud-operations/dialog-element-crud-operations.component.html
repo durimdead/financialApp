@@ -1,5 +1,5 @@
 @if(inputData.elementState === getElementCrudStates().create){
-	<app-dialog-add-element [elementData]="inputData.elementData"/>
+	<app-dialog-add-element/>
 }
 @else if (inputData.elementState === getElementCrudStates().update) {
 	<app-dialog-edit-element [elementData]="inputData.elementData"/>

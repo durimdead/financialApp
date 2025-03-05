@@ -1,4 +1,4 @@
-<p><button mat-flat-button (click)="openAddRowModal()">Add</button></p>
+<p><button mat-flat-button (click)="openAddElementModal()">Add</button></p>
 
 <table
   mat-table
@@ -12,10 +12,10 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let element">
       <div class="table-icon-column">
-        <button mat-icon-button (click)="editRow(element.elementId)">
+        <button mat-icon-button (click)="editElement(element.elementId)">
           <mat-icon class="blue-text">edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="confirmDeleteRow(element.elementId)">
+        <button mat-icon-button (click)="confirmDeleteElement(element.elementId)">
           <mat-icon class="red-text">delete</mat-icon>
         </button>
       </div>

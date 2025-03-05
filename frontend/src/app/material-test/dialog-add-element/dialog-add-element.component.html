@@ -66,6 +66,12 @@
 @else if (inputData.itemState === getElementCrudStates().update) {
 	<h2 mat-dialog-title>Edit Element</h2>
 		<mat-dialog-content class="mat-typography">
+			<ul>
+				<li>elementId: {{inputData.elementToEdit.elementId}}</li>
+				<li>Name: {{inputData.elementToEdit.name}}</li>
+				<li>Weight: {{inputData.elementToEdit.weight}}</li>
+				<li>Symbol: {{inputData.elementToEdit.symbol}}</li>
+			</ul>
 		</mat-dialog-content>
 	<mat-dialog-actions align="end">
 	<button mat-button mat-dialog-close>Cancel</button>

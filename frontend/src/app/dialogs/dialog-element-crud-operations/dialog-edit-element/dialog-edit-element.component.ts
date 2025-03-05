@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -18,21 +19,17 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
-import { PeriodicElement } from '../../../app.interfaces';
+import { PeriodicElement } from '../../../../app.interfaces';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { ElementService } from '../../element.service';
-import { FormValidators } from '../../../app.form-validators';
-import { DialogDeleteElementConfirmationComponent } from './dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
-import { DialogAddElementComponent } from './dialog-add-element/dialog-add-element.component';
-import { DialogEditElementComponent } from './dialog-edit-element/dialog-edit-element.component';
-
+import { ElementService } from '../../../element.service';
+import { FormValidators } from '../../../../app.form-validators';
 @Component({
-  selector: 'app-dialog-element-crud-operations',
+  selector: 'app-dialog-edit-element',
   imports: [
     MatFormFieldModule,
     MatInputModule,
@@ -40,19 +37,17 @@ import { DialogEditElementComponent } from './dialog-edit-element/dialog-edit-el
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-    DialogDeleteElementConfirmationComponent,
-    DialogAddElementComponent,
-	DialogEditElementComponent
-],
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './dialog-element-crud-operations.component.html',
-  styleUrl: './dialog-element-crud-operations.component.css',
+  templateUrl: './dialog-edit-element.component.html',
+  styleUrl: './dialog-edit-element.component.css',
 })
-export class DialogElementCrudOperationsComponent {
+export class DialogEditElementComponent {
   //   readonly email = new FormControl('', [Validators.required, Validators.email]);
+  elementData = input.required<PeriodicElement>();
   readonly inputData = inject(MAT_DIALOG_DATA);
   private elementService = inject(ElementService);
-  public dialogRef = inject(MatDialogRef<DialogAddElementComponent>);
+  public dialogRef = inject(MatDialogRef<DialogEditElementComponent>);
   private formValidator = inject(FormValidators);
 
   form = new FormGroup({

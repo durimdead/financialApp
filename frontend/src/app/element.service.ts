@@ -6,16 +6,16 @@ import { PeriodicElement } from '../app.interfaces';
 })
 export class ElementService {
   private ELEMENT_DATA: PeriodicElement[] = [
-    { isEditing: false, actions: '',elementId: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-    { isEditing: false, actions: '',elementId: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-    { isEditing: false, actions: '',elementId: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-    { isEditing: false, actions: '',elementId: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-    { isEditing: false, actions: '',elementId: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-    { isEditing: false, actions: '',elementId: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-    { isEditing: false, actions: '',elementId: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-    { isEditing: false, actions: '',elementId: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-    { isEditing: false, actions: '',elementId: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-    { isEditing: false, actions: '',elementId: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+    { actions: '',elementId: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+    { actions: '',elementId: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+    { actions: '',elementId: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+    { actions: '',elementId: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+    { actions: '',elementId: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
+    { actions: '',elementId: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
+    { actions: '',elementId: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
+    { actions: '',elementId: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
+    { actions: '',elementId: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
+    { actions: '',elementId: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
   ];
 
   readonly crudStates = {

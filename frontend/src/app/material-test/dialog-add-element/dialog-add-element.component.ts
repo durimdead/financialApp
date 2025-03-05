@@ -70,7 +70,6 @@ export class DialogAddElementComponent {
     if (!this.form.invalid) {
       let newElement: PeriodicElement = {
         elementId: this.elementService.getNextElementId(),
-        isEditing: false,
         actions: '',
         name: this.form.controls.elementName.value as string,
         weight: Number(this.form.controls.elementWeight.value),

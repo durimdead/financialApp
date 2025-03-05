@@ -123,24 +123,24 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // updates row state to editable
   editRow(rowId: number) {
-    console.log('edit: ' + rowId);
-    let currentRow = this.getRowDataById(rowId);
-    if (currentRow?.elementId > 0) {
-      currentRow.isEditing = true;
-    }
+    // console.log('edit: ' + rowId);
+    // let currentRow = this.getRowDataById(rowId);
+    // if (currentRow?.elementId > 0) {
+    //   currentRow.isEditing = true;
+    // }
 
-    this.updateElementArrayWithDataSource();
+    // this.updateElementArrayWithDataSource();
   }
 
   // saves new data into row and changes state to no longer be in edit mode
   saveRow(rowId: number) {
-    console.log('save: ' + rowId);
-    let currentRow = this.getAllRowDataToSave(rowId);
-    if (currentRow) {
-      currentRow.isEditing = false;
-    }
+    // console.log('save: ' + rowId);
+    // let currentRow = this.getAllRowDataToSave(rowId);
+    // if (currentRow) {
+    //   currentRow.isEditing = false;
+    // }
 
-    this.updateElementArrayWithDataSource();
+    // this.updateElementArrayWithDataSource();
   }
 
   // return object with row data

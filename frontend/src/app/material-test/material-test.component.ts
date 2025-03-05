@@ -68,7 +68,9 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // brings up modal to add another row of data
   openAddRowModal() {
-    let dialogRef = this.dialog.open(DialogAddElementComponent);
+    let dialogRef = this.dialog.open(DialogAddElementComponent, {
+      data: JSON.stringify({itemState: this.elementService.crudStates.create}),
+    });
 
     // if the user submits a new element, we will get back an element to add to the table, else ''
     const subscription = dialogRef

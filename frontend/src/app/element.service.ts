@@ -18,6 +18,13 @@ export class ElementService {
     { isEditing: false, actions: '',elementId: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
   ];
 
+  readonly crudStates = {
+	create: 'add',
+	read: 'read',
+	update: 'edit',
+	delete: 'delete'
+  }
+
   getElements(){
     return this.ELEMENT_DATA;
   }

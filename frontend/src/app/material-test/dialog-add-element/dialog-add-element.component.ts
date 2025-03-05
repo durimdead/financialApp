@@ -19,7 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
 import { PeriodicElement } from '../../../app.interfaces';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from '../../element.service';
 import { FormValidators } from '../../../app.form-validators';
@@ -40,6 +40,7 @@ import { FormValidators } from '../../../app.form-validators';
 })
 export class DialogAddElementComponent {
   //   readonly email = new FormControl('', [Validators.required, Validators.email]);
+  readonly inputData = JSON.parse(inject(MAT_DIALOG_DATA));
   private elementService = inject(ElementService);
   public dialogRef = inject(MatDialogRef<DialogAddElementComponent>);
   private formValidator = inject(FormValidators);
@@ -54,6 +55,14 @@ export class DialogAddElementComponent {
     ]),
     elementSymbol: new FormControl('', [Validators.required]),
   });
+
+  getElementCrudStates() {
+    return this.elementService.crudStates;
+  }
+
+  saveEditedElement(){
+	this.dialogRef.close();
+  }
 
   // if the form is valid, submit the element information.
   submitNewElement() {
@@ -91,13 +100,13 @@ export class DialogAddElementComponent {
       } else if (currentError === 'minlength') {
         currentErrorMessage =
           'Minimum Length : ' + controlErrors[currentError].requiredLength;
-      }else if (currentError === 'isNotANumber') {
-		currentErrorMessage = "This must be Numeric.";
-	  }else {
+      } else if (currentError === 'isNotANumber') {
+        currentErrorMessage = 'This must be Numeric.';
+      } else {
         currentErrorMessage = 'Unknown validation error.';
       }
 
-	  //TODO: still need to fix this part
+      //TODO: still need to fix this part
       if (messageToShow.length > 0) {
         messageToShow += ' :::: ';
       }

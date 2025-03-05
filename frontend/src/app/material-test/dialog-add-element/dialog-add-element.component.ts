@@ -23,6 +23,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from '../../element.service';
 import { FormValidators } from '../../../app.form-validators';
+import { DialogDeleteElementConfirmationComponent } from '../dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
 
 @Component({
   selector: 'app-dialog-add-element',
@@ -33,6 +34,7 @@ import { FormValidators } from '../../../app.form-validators';
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
+	DialogDeleteElementConfirmationComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dialog-add-element.component.html',

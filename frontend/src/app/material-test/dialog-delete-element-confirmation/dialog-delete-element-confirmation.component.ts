@@ -1,6 +1,7 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, input, OnInit} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import { PeriodicElement } from '../../../app.interfaces';
 
 @Component({
   selector: 'app-dialog-delete-element-confirmation',
@@ -10,5 +11,5 @@ import { MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
   styleUrl: './dialog-delete-element-confirmation.component.css'
 })
 export class DialogDeleteElementConfirmationComponent {
-  readonly inputData = JSON.parse(inject(MAT_DIALOG_DATA));
+  elementData = input.required<PeriodicElement>()
 }

@@ -40,34 +40,40 @@ import { FormValidators } from '../../../app.form-validators';
 })
 export class DialogAddElementComponent {
   //   readonly email = new FormControl('', [Validators.required, Validators.email]);
-  readonly inputData = JSON.parse(inject(MAT_DIALOG_DATA));
+  readonly inputData = inject(MAT_DIALOG_DATA);
   private elementService = inject(ElementService);
   public dialogRef = inject(MatDialogRef<DialogAddElementComponent>);
   private formValidator = inject(FormValidators);
 
   form = new FormGroup({
-    elementName: new FormControl((this.inputData.elementToEdit) ? this.inputData.elementToEdit.name : '', {
-      validators: [Validators.required, Validators.minLength(3)],
-    }),
-    elementWeight: new FormControl((this.inputData.elementToEdit) ? this.inputData.elementToEdit.weight : '', [
-      Validators.required,
-      this.formValidator.mustBeNumber,
-    ]),
-    elementSymbol: new FormControl((this.inputData.elementToEdit) ? this.inputData.elementToEdit.symbol : '', [Validators.required]),
+    elementName: new FormControl(
+      this.inputData.elementData ? this.inputData.elementData.name : '',
+      {
+        validators: [Validators.required, Validators.minLength(3)],
+      }
+    ),
+    elementWeight: new FormControl(
+      this.inputData.elementData ? this.inputData.elementData.weight : '',
+      [Validators.required, this.formValidator.mustBeNumber]
+    ),
+    elementSymbol: new FormControl(
+      this.inputData.elementData ? this.inputData.elementData.symbol : '',
+      [Validators.required]
+    ),
   });
 
   getElementCrudStates() {
     return this.elementService.crudStates;
   }
 
-  saveEditedElement(){
-	if (!this.form.invalid) {
-		let editedElement = this.inputData.elementToEdit;
-		editedElement.name = this.form.controls.elementName.value;
-		editedElement.weight = this.form.controls.elementWeight.value;
-		editedElement.symbol = this.form.controls.elementSymbol.value;
-		this.dialogRef.close(editedElement);
-	}
+  saveEditedElement() {
+    if (!this.form.invalid) {
+      let editedElement = this.inputData.elementData;
+      editedElement.name = this.form.controls.elementName.value;
+      editedElement.weight = this.form.controls.elementWeight.value;
+      editedElement.symbol = this.form.controls.elementSymbol.value;
+      this.dialogRef.close(editedElement);
+    }
   }
 
   // if the form is valid, submit the element information.

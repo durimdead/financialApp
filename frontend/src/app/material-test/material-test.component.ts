@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteElementConfirmationComponent } from './dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
-import { PeriodicElement } from '../../app.interfaces';
+import { PeriodicElement, PeriodicElementCrudData } from '../../app.interfaces';
 import { DialogAddElementComponent } from './dialog-add-element/dialog-add-element.component';
 import { ElementService } from '../element.service';
 
@@ -68,9 +68,9 @@ export class MaterialTestComponent implements AfterViewInit {
   // brings up modal to add another element of data
   openAddElementModal() {
     let dialogRef = this.dialog.open(DialogAddElementComponent, {
-      data: JSON.stringify({
+      data: {
         itemState: this.elementService.crudStates.create,
-      }),
+      },
     });
 
     // if the user submits a new element, we will get back an element to add to the table, else ''
@@ -84,15 +84,6 @@ export class MaterialTestComponent implements AfterViewInit {
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
-  }
-
-  // will take the periodic element sent in, update Id to valid one, add to the table
-  addElement(elementToAdd: PeriodicElement) {
-    if (elementToAdd.elementId < 1) {
-      elementToAdd.elementId = this.elementService.getNextElementId();
-    }
-    this.elementService.addElement(elementToAdd);
-    this.dataSource.data = this.elementService.getElements();
   }
 
   // requests confirmation of element deletion, then deletes element
@@ -116,18 +107,30 @@ export class MaterialTestComponent implements AfterViewInit {
   }
 
   // delete Element by elementId and refresh the table
-  deleteElement(elementId: number) {
+  private deleteElement(elementId: number) {
     this.elementService.deleteElement(elementId);
+    this.dataSource.data = this.elementService.getElements();
+  }
+  // save edited element and refresh the table
+  private saveEditedElement(element: PeriodicElement) {
+    this.elementService.updateElement(element);
+    this.dataSource.data = this.elementService.getElements();
+  }
+  // will take the periodic element sent in, update Id to valid one, add to the table
+  private addElement(elementToAdd: PeriodicElement) {
+    this.elementService.addElement(elementToAdd);
     this.dataSource.data = this.elementService.getElements();
   }
 
   // opens modal to edit element
   editElement(elementId: number) {
+    let elementData = this.elementService.getElementDataForCrudModal(
+      elementId,
+      this.elementService.crudStates.update
+    );
+	console.log(elementData);
     let dialogRef = this.dialog.open(DialogAddElementComponent, {
-      data: JSON.stringify({
-        itemState: this.elementService.crudStates.update,
-        elementToEdit: this.getElementDataById(elementId),
-      }),
+      data: elementData,
     });
 
     // if the user submits a new element, we will get back an element to add to the table, else ''
@@ -136,9 +139,7 @@ export class MaterialTestComponent implements AfterViewInit {
       .subscribe((result: PeriodicElement | '') => {
         if (result !== '') {
           try {
-			console.log(result);
-            this.elementService.updateElement(result);
-            this.dataSource.data = this.elementService.getElements();
+            this.saveEditedElement(result);
           } catch (e) {
             //TODO: better error handling
             console.log(e);

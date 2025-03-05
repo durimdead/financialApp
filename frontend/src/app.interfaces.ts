@@ -5,3 +5,9 @@ export interface PeriodicElement {
     weight: number;
     symbol: string;
 }
+
+export interface PeriodicElementCrudData{
+	elementState: string;
+	elementData: PeriodicElement;
+}
+

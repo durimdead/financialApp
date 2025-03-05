@@ -63,11 +63,11 @@
 	<button mat-button (click)="submitNewElement()" cdkFocusInitial>Add</button>
 	</mat-dialog-actions>
 }
-@else if (inputData.itemState === getElementCrudStates().update) {
+@else if (inputData.elementState === getElementCrudStates().update) {
 	<h2 mat-dialog-title>Edit Element</h2>
 		<mat-dialog-content class="mat-typography">
 			<ul>
-				<li>elementId: {{inputData.elementToEdit.elementId}}</li>
+				<li>elementId: {{inputData.elementData.elementId}}</li>
 			</ul>
 
 			<form [formGroup]="form" class="form-flex-column">

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PeriodicElement } from '../app.interfaces';
+import { PeriodicElement, PeriodicElementCrudData } from '../app.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -51,6 +51,31 @@ export class ElementService {
 
   getElements() {
     return this.ELEMENT_DATA;
+  }
+
+  getElementDataForCrudModal(elementId: number, actionToTake: string) {
+    let elementData: PeriodicElement = {
+      actions: '',
+      name: '',
+      elementId: elementId,
+      weight: 0,
+      symbol: '',
+    };
+    let returnValue: PeriodicElementCrudData = {
+      elementState: actionToTake,
+      elementData: elementData,
+    };
+    if (actionToTake === this.crudStates.read || actionToTake === this.crudStates.delete || actionToTake === this.crudStates.update) {
+      	returnValue.elementData = this.getElementById(elementId);
+	}
+	else if (actionToTake !== this.crudStates.create){
+		throw "Invalid Parameter: actionToTake"
+	}
+	return returnValue;
+  }
+
+  getElementById(elementId: number){
+	return this.ELEMENT_DATA.find((item) => item.elementId === elementId) as PeriodicElement;
   }
 
   // add element provided it is not already in the list AND it has a valid elementId

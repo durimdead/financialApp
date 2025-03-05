@@ -19,14 +19,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { merge } from 'rxjs';
 import { PeriodicElement } from '../../../app.interfaces';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from '../../element.service';
 import { FormValidators } from '../../../app.form-validators';
-import { DialogDeleteElementConfirmationComponent } from '../dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
+import { DialogDeleteElementConfirmationComponent } from './dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
+import { DialogAddElementComponent } from './dialog-add-element/dialog-add-element.component';
 
 @Component({
-  selector: 'app-dialog-add-element',
+  selector: 'app-dialog-element-crud-operations',
   imports: [
     MatFormFieldModule,
     MatInputModule,
@@ -34,13 +39,14 @@ import { DialogDeleteElementConfirmationComponent } from '../dialog-delete-eleme
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
-	DialogDeleteElementConfirmationComponent
-  ],
+    DialogDeleteElementConfirmationComponent,
+    DialogAddElementComponent
+],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './dialog-add-element.component.html',
-  styleUrl: './dialog-add-element.component.css',
+  templateUrl: './dialog-element-crud-operations.component.html',
+  styleUrl: './dialog-element-crud-operations.component.css',
 })
-export class DialogAddElementComponent {
+export class DialogElementCrudOperationsComponent {
   //   readonly email = new FormControl('', [Validators.required, Validators.email]);
   readonly inputData = inject(MAT_DIALOG_DATA);
   private elementService = inject(ElementService);

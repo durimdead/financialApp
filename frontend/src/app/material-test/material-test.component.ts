@@ -11,9 +11,9 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogDeleteElementConfirmationComponent } from './dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
+import { DialogDeleteElementConfirmationComponent } from '../dialogs/dialog-element-crud-operations/dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
 import { PeriodicElement, PeriodicElementCrudData } from '../../app.interfaces';
-import { DialogAddElementComponent } from './dialog-add-element/dialog-add-element.component';
+import { DialogAddElementComponent } from '../dialogs/dialog-element-crud-operations/dialog-add-element/dialog-add-element.component';
 import { ElementService } from '../element.service';
 
 @Component({

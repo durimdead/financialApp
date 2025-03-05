@@ -67,10 +67,9 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // brings up modal to add another element of data
   openAddElementModal() {
+	let elementData = this.elementService.getElementDataForCrudModal(0, this.elementService.crudStates.create);
     let dialogRef = this.dialog.open(DialogAddElementComponent, {
-      data: {
-        itemState: this.elementService.crudStates.create,
-      },
+      data: elementData,
     });
 
     // if the user submits a new element, we will get back an element to add to the table, else ''

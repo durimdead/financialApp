@@ -47,17 +47,23 @@ export class DialogAddElementComponent {
 
   form = new FormGroup({
     elementName: new FormControl(
-      this.inputData.elementData ? this.inputData.elementData.name : '',
+      this.inputData.elementData.elementId > 0
+        ? this.inputData.elementData.name
+        : '',
       {
         validators: [Validators.required, Validators.minLength(3)],
       }
     ),
     elementWeight: new FormControl(
-      this.inputData.elementData ? this.inputData.elementData.weight : '',
+      this.inputData.elementData.elementId > 0
+        ? this.inputData.elementData.weight
+        : '',
       [Validators.required, this.formValidator.mustBeNumber]
     ),
     elementSymbol: new FormControl(
-      this.inputData.elementData ? this.inputData.elementData.symbol : '',
+      this.inputData.elementData.elementId > 0
+        ? this.inputData.elementData.symbol
+        : '',
       [Validators.required]
     ),
   });

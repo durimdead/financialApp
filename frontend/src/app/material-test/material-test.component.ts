@@ -136,7 +136,9 @@ export class MaterialTestComponent implements AfterViewInit {
       .subscribe((result: PeriodicElement | '') => {
         if (result !== '') {
           try {
+			console.log(result);
             this.elementService.updateElement(result);
+            this.dataSource.data = this.elementService.getElements();
           } catch (e) {
             //TODO: better error handling
             console.log(e);
@@ -153,13 +155,5 @@ export class MaterialTestComponent implements AfterViewInit {
     return this.dataSource.data.find(
       (item) => item.elementId === elementId
     ) as PeriodicElement;
-  }
-
-  // if the datasource for the table has been updated and we need to update the "source data" with the new information
-  //TODO: do this better!
-  updateElementArrayWithDataSource() {
-    this.dataSource.data = this.elementService.updateDataSource(
-      this.dataSource.data
-    );
   }
 }

@@ -61,7 +61,13 @@ export class DialogAddElementComponent {
   }
 
   saveEditedElement(){
-	this.dialogRef.close();
+	if (!this.form.invalid) {
+		let editedElement = this.inputData.elementToEdit;
+		editedElement.name = this.form.controls.elementName.value;
+		editedElement.weight = this.form.controls.elementWeight.value;
+		editedElement.symbol = this.form.controls.elementSymbol.value;
+		this.dialogRef.close(editedElement);
+	}
   }
 
   // if the form is valid, submit the element information.

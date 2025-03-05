@@ -80,23 +80,39 @@ export class ElementService {
     );
   }
 
+  // determines if any data for this elementId exists in the ELEMENT_DATA array
+  elementDataExists(elementId: number) {
+    return this.ELEMENT_DATA.find((element) => element.elementId === elementId)
+      ? true
+      : false;
+  }
+
+  // update the data for the edited element in the ELEMENT_DATA array
   updateElement(elementToUpdate: PeriodicElement) {
     try {
-      let currentElementData = this.ELEMENT_DATA.find(
+      //get current data for element we are trying to update
+      let currentElementDataIndex = this.ELEMENT_DATA.findIndex(
         (item) => item.elementId === elementToUpdate.elementId
-      ) as PeriodicElement;
+      );
 
       // cannot save the data if the element weight isn't numeric.
-      if (Number.isNaN(Number(elementToUpdate.weight))) {
+      if (
+        Number.isNaN(Number(elementToUpdate.weight)) ||
+        elementToUpdate.name.length < 3 ||
+        elementToUpdate.symbol === '' ||
+        !this.elementDataExists(elementToUpdate.elementId)
+      ) {
         throw (
           "Element weight must be a number. Current value: '" +
           elementToUpdate.weight +
           "'. Previous value: '" +
-          currentElementData.weight +
+          this.ELEMENT_DATA[currentElementDataIndex].weight +
           "'."
         );
       }
-      currentElementData = elementToUpdate;
+
+      // update with new element data
+      this.ELEMENT_DATA[currentElementDataIndex] = elementToUpdate;
     } catch (e) {
       console.log(e);
       throw e;

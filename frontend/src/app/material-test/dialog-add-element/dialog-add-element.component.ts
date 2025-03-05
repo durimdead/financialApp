@@ -46,14 +46,14 @@ export class DialogAddElementComponent {
   private formValidator = inject(FormValidators);
 
   form = new FormGroup({
-    elementName: new FormControl('', {
+    elementName: new FormControl((this.inputData.elementToEdit) ? this.inputData.elementToEdit.name : '', {
       validators: [Validators.required, Validators.minLength(3)],
     }),
-    elementWeight: new FormControl('', [
+    elementWeight: new FormControl((this.inputData.elementToEdit) ? this.inputData.elementToEdit.weight : '', [
       Validators.required,
       this.formValidator.mustBeNumber,
     ]),
-    elementSymbol: new FormControl('', [Validators.required]),
+    elementSymbol: new FormControl((this.inputData.elementToEdit) ? this.inputData.elementToEdit.symbol : '', [Validators.required]),
   });
 
   getElementCrudStates() {

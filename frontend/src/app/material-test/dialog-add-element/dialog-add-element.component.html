@@ -68,10 +68,49 @@
 		<mat-dialog-content class="mat-typography">
 			<ul>
 				<li>elementId: {{inputData.elementToEdit.elementId}}</li>
-				<li>Name: {{inputData.elementToEdit.name}}</li>
-				<li>Weight: {{inputData.elementToEdit.weight}}</li>
-				<li>Symbol: {{inputData.elementToEdit.symbol}}</li>
 			</ul>
+
+			<form [formGroup]="form" class="form-flex-column">
+				<div class="control form-group-div">
+					<label for="elementName" class="input-label-modal">Element Name :</label>
+					<input
+					id="elementName"
+					class="input-textbox input-textbox-modal"
+					type="text"
+					name="elementName"
+					formControlName="elementName"
+					/>
+					@if(hasError(form.controls.elementName)){
+						<label class="error-label">{{getFormControlErrorDetails(form.controls.elementName)}}</label>
+					}
+				</div>
+				<div class="control form-group-div">
+					<label for="elementWeight" class="input-label-modal">Element Weight :</label>
+					<input
+					id="elementWeight"
+					class="input-textbox input-textbox-modal"
+					type="text"
+					name="elementWeight"
+					formControlName="elementWeight"
+					/>
+					@if(hasError(form.controls.elementWeight)){
+						<label class="error-label">{{getFormControlErrorDetails(form.controls.elementWeight)}}</label>
+					}
+				</div>
+				<div class="control form-group-div">
+					<label for="elementSymbol" class="input-label-modal">Element Symbol :</label>
+					<input
+					id="elementSymbol"
+					class="input-textbox input-textbox-modal"
+					type="text"
+					name="elementSymbol"
+					formControlName="elementSymbol"
+					/>
+					@if(hasError(form.controls.elementSymbol)){
+						<label class="error-label">{{getFormControlErrorDetails(form.controls.elementSymbol)}}</label>
+					}
+				</div>
+			</form>
 		</mat-dialog-content>
 	<mat-dialog-actions align="end">
 	<button mat-button mat-dialog-close>Cancel</button>

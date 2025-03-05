@@ -67,9 +67,9 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // brings up modal to add another element of data
   openAddElementModal() {
-	let elementData = this.elementService.getElementDataForCrudModal(0, this.elementService.crudStates.create);
+	const modalData = this.elementService.getElementDataForCrudModal(0, this.elementService.crudStates.create);
     let dialogRef = this.dialog.open(DialogAddElementComponent, {
-      data: elementData,
+      data: modalData,
     });
 
     // if the user submits a new element, we will get back an element to add to the table, else ''
@@ -87,17 +87,20 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // requests confirmation of element deletion, then deletes element
   confirmDeleteElement(elementId: number) {
-    const currentElement = this.getElementDataById(elementId);
+    const modalData = this.elementService.getElementDataForCrudModal(
+      elementId,
+      this.elementService.crudStates.delete
+    );
 
     // open the dialog and send data to display
-    let dialogRef = this.dialog.open(DialogDeleteElementConfirmationComponent, {
-      data: JSON.stringify(currentElement),
+    let dialogRef = this.dialog.open(DialogAddElementComponent, {
+      data: modalData,
     });
 
     // if the user confirms deletion
     const subscription = dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.deleteElement(currentElement.elementId);
+        this.deleteElement(modalData.elementData.elementId);
       }
     });
     this.destroyRef.onDestroy(() => {
@@ -123,13 +126,12 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // opens modal to edit element
   editElement(elementId: number) {
-    let elementData = this.elementService.getElementDataForCrudModal(
+    const modalData = this.elementService.getElementDataForCrudModal(
       elementId,
       this.elementService.crudStates.update
     );
-	console.log(elementData);
     let dialogRef = this.dialog.open(DialogAddElementComponent, {
-      data: elementData,
+      data: modalData,
     });
 
     // if the user submits a new element, we will get back an element to add to the table, else ''

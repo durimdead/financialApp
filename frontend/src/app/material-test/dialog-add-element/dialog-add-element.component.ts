@@ -106,6 +106,8 @@ export class DialogAddElementComponent {
     return false;
   }
 
+  //TODO: 	need to update this to put these messages more specfically WITHIN the form as this appears to be
+  // 		the more standardized way to do this
   getFormControlErrorDetails(formControl: FormControl) {
     let messageToShow = '';
     const controlErrors: ValidationErrors =

@@ -65,17 +65,22 @@ export class ElementService {
       elementState: actionToTake,
       elementData: elementData,
     };
-    if (actionToTake === this.crudStates.read || actionToTake === this.crudStates.delete || actionToTake === this.crudStates.update) {
-      	returnValue.elementData = this.getElementById(elementId);
-	}
-	else if (actionToTake !== this.crudStates.create){
-		throw "Invalid Parameter: actionToTake"
-	}
-	return returnValue;
+    if (
+      actionToTake === this.crudStates.read ||
+      actionToTake === this.crudStates.delete ||
+      actionToTake === this.crudStates.update
+    ) {
+      returnValue.elementData = this.getElementById(elementId);
+    } else if (actionToTake !== this.crudStates.create) {
+      throw 'Invalid Parameter: actionToTake';
+    }
+    return returnValue;
   }
 
-  getElementById(elementId: number){
-	return this.ELEMENT_DATA.find((item) => item.elementId === elementId) as PeriodicElement;
+  getElementById(elementId: number) {
+    return this.ELEMENT_DATA.find(
+      (item) => item.elementId === elementId
+    ) as PeriodicElement;
   }
 
   // add element provided it is not already in the list AND it has a valid elementId

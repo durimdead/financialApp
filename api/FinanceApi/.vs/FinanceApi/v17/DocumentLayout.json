@@ -1,37 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|c:\\development\\_personalprojects\\financialapp\\api\\financeapi\\financeapi\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|solutionrelative:financeapi\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Controllers\\WeatherForecastController.cs",
-              "RelativeDocumentMoniker": "FinanceApi\\Controllers\\WeatherForecastController.cs",
-              "ToolTip": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Controllers\\WeatherForecastController.cs",
-              "RelativeToolTip": "FinanceApi\\Controllers\\WeatherForecastController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-06T21:17:01.362Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

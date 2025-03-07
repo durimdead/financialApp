@@ -5,6 +5,7 @@ import {
   DestroyRef,
   ViewChild,
   inject,
+  signal,
 } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -14,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PeriodicElement } from '../../app.interfaces';
 import { ElementService } from '../element.service';
 import { DialogElementCrudOperationsComponent } from '../dialogs/dialog-element-crud-operations/dialog-element-crud-operations.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-material-test',
@@ -26,6 +28,7 @@ export class MaterialTestComponent implements AfterViewInit {
   private destroyRef = inject(DestroyRef);
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
+  private refreshGridInterval: any = null;
 
   // makeshift way of naming HTML element ids to grab the data from the HTML table
   // since the way Angular Material doesn't lend itself well to the way I wanted to
@@ -43,12 +46,26 @@ export class MaterialTestComponent implements AfterViewInit {
     'weight',
     'symbol',
   ];
-  dataSource = new MatTableDataSource(this.elementService.getElements());
+  dataSource = signal<MatTableDataSource<PeriodicElement, MatPaginator>>(
+    new MatTableDataSource(this.elementService.ELEMENT_DATA())
+  );
+
+  ngOnInit() {
+    this.elementService.getElements();
+    console.log('element data inside material-test ngOnInit():');
+    console.log(this.elementService.ELEMENT_DATA());
+  }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
   ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
+	console.log('afterViewInit');
+	if (this.refreshGridInterval === null){	
+		this.refreshGridInterval = setInterval(() => {
+		this.dataSource().data = this.elementService.ELEMENT_DATA();
+		this.dataSource().sort = this.sort;
+		}, 200);
+	}
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -66,7 +83,10 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // brings up modal to add another element of data
   openAddElementModal() {
-	const modalData = this.elementService.getElementDataForCrudModal(0, this.elementService.crudStates.create);
+    const modalData = this.elementService.getElementDataForCrudModal(
+      0,
+      this.elementService.crudStates.create
+    );
     let dialogRef = this.dialog.open(DialogElementCrudOperationsComponent, {
       data: modalData,
     });
@@ -110,17 +130,14 @@ export class MaterialTestComponent implements AfterViewInit {
   // delete Element by elementId and refresh the table
   private deleteElement(elementId: number) {
     this.elementService.deleteElement(elementId);
-    this.dataSource.data = this.elementService.getElements();
   }
   // save edited element and refresh the table
   private saveEditedElement(element: PeriodicElement) {
     this.elementService.updateElement(element);
-    this.dataSource.data = this.elementService.getElements();
   }
   // will take the periodic element sent in, update Id to valid one, add to the table
   private addElement(elementToAdd: PeriodicElement) {
     this.elementService.addElement(elementToAdd);
-    this.dataSource.data = this.elementService.getElements();
   }
 
   // opens modal to edit element
@@ -153,8 +170,16 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // return object with element data
   getElementDataById(elementId: number) {
-    return this.dataSource.data.find(
+    return this.dataSource().data.find(
       (item) => item.elementId === elementId
     ) as PeriodicElement;
+  }
+
+  getElementServiceELEMENT_DATA() {
+    return this.elementService.ELEMENT_DATA();
+  }
+
+  getElementService_private_elements() {
+    return this.elementService.get_private_elements();
   }
 }

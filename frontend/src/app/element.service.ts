@@ -1,4 +1,4 @@
-import { DestroyRef, inject, Injectable, OnInit } from '@angular/core';
+import { DestroyRef, inject, Injectable, OnInit, signal } from '@angular/core';
 import { PeriodicElement, PeriodicElementCrudData } from '../app.interfaces';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap, throwError } from 'rxjs';
@@ -6,51 +6,14 @@ import { catchError, map, tap, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class ElementService implements OnInit {
+export class ElementService {
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
+  private elementData = signal<PeriodicElement[]>([]);
   private ApiUrlBase: string = 'https://localhost:7107/';
   private urlElements: string = this.ApiUrlBase + 'WeatherForecast/';
 
-  ngOnInit(): void {
-  }
-
-  private ELEMENT_DATA: PeriodicElement[] = [
-    {
-      actions: '',
-      elementId: 1,
-      name: 'Hydrogen',
-      weight: 1.0079,
-      symbol: 'H',
-    },
-    { actions: '', elementId: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-    { actions: '', elementId: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-    {
-      actions: '',
-      elementId: 4,
-      name: 'Beryllium',
-      weight: 9.0122,
-      symbol: 'Be',
-    },
-    { actions: '', elementId: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-    { actions: '', elementId: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-    {
-      actions: '',
-      elementId: 7,
-      name: 'Nitrogen',
-      weight: 14.0067,
-      symbol: 'N',
-    },
-    { actions: '', elementId: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-    {
-      actions: '',
-      elementId: 9,
-      name: 'Fluorine',
-      weight: 18.9984,
-      symbol: 'F',
-    },
-    { actions: '', elementId: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-  ];
+  ELEMENT_DATA = this.elementData.asReadonly();
 
   readonly crudStates = {
     create: 'add',
@@ -59,22 +22,24 @@ export class ElementService implements OnInit {
     delete: 'delete',
   };
 
-  getElements() {
-	let returnValue: PeriodicElement[] = [];
+  elementsFetcher() {
+    return this.fetchElements(this.urlElements, 'Error getting Elements').pipe(
+      tap({
+        next: (results) => {
+          if (results.httpStatusCode === 200) {
+            this.elementData.set(results.elementData);
+            console.log(this.elementData());
+            console.log(this.ELEMENT_DATA());
+          } else if (results.httpStatusCode >= 500) {
+            console.log(results.errorMessage);
+          }
+        },
+      })
+    );
+  }
 
-    const subscription = this.fetchElements(
-      this.urlElements,
-      'Error getting Elements'
-    ).subscribe({
-		next: (results) => {
-			if (results.result === 200){
-				returnValue = results.elementData;
-			}
-			else if (results.result >= 500){
-				console.log(results.errorMessage)
-			}
-			return returnValue;
-		},
+  getElements() {
+    const subscription = this.elementsFetcher().subscribe({
       error: (error: Error) => {
         console.log(error);
         //   this.error.set(error.message);
@@ -87,14 +52,14 @@ export class ElementService implements OnInit {
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
-    // this.ELEMENT_DATA = this.fetchElements(this.urlElements);
-
-    return this.ELEMENT_DATA;
   }
 
   fetchElements(fetchElementsUrl: string, errorMessage: string) {
-    return this.httpClient
-      .get<{ result: number, elementData: PeriodicElement[], errorMessage: string }>(fetchElementsUrl);
+    return this.httpClient.get<{
+      httpStatusCode: number;
+      elementData: PeriodicElement[];
+      errorMessage: string;
+    }>(fetchElementsUrl);
   }
 
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
@@ -122,7 +87,7 @@ export class ElementService implements OnInit {
   }
 
   getElementById(elementId: number) {
-    return this.ELEMENT_DATA.find(
+    return this.elementData().find(
       (item) => item.elementId === elementId
     ) as PeriodicElement;
   }
@@ -130,7 +95,7 @@ export class ElementService implements OnInit {
   // add element provided it is not already in the list AND it has a valid elementId
   addElement(elementToAdd: PeriodicElement) {
     let isDuplicate =
-      this.ELEMENT_DATA.find(
+      this.elementData().find(
         (element) => element.elementId === elementToAdd.elementId
       ) !== undefined;
 
@@ -138,34 +103,36 @@ export class ElementService implements OnInit {
     if (elementToAdd.elementId < 1 || isDuplicate) {
       elementToAdd.elementId = this.getNextElementId();
     }
-    this.ELEMENT_DATA.push(elementToAdd);
+    this.elementData().push(elementToAdd);
   }
 
   // ensures we get a unique Id for adding another element
   getNextElementId() {
-    const elementIds = this.getElements().map((element) => element.elementId);
+    const elementIds = this.elementData().map((element) => element.elementId);
     return Math.max(...elementIds) + 1;
   }
 
   // "delete" the element from the table of data
   deleteElement(elementId: number) {
-    this.ELEMENT_DATA = this.ELEMENT_DATA.filter(
-      (itemToDelete) => itemToDelete.elementId !== elementId
+    this.elementData.set(
+      this.elementData().filter(
+        (itemToDelete) => itemToDelete.elementId !== elementId
+      )
     );
   }
 
-  // determines if any data for this elementId exists in the ELEMENT_DATA array
+  // determines if any data for this elementId exists in the elementData array
   elementDataExists(elementId: number) {
-    return this.ELEMENT_DATA.find((element) => element.elementId === elementId)
+    return this.elementData().find((element) => element.elementId === elementId)
       ? true
       : false;
   }
 
-  // update the data for the edited element in the ELEMENT_DATA array
+  // update the data for the edited element in the elementData array
   updateElement(elementToUpdate: PeriodicElement) {
     try {
       //get current data for element we are trying to update
-      let currentElementDataIndex = this.ELEMENT_DATA.findIndex(
+      let currentElementDataIndex = this.elementData().findIndex(
         (item) => item.elementId === elementToUpdate.elementId
       );
 
@@ -180,28 +147,26 @@ export class ElementService implements OnInit {
           "Element weight must be a number. Current value: '" +
           elementToUpdate.weight +
           "'. Previous value: '" +
-          this.ELEMENT_DATA[currentElementDataIndex].weight +
+          this.elementData()[currentElementDataIndex].weight +
           "'."
         );
       }
 
       // update with new element data
-      this.ELEMENT_DATA[currentElementDataIndex] = elementToUpdate;
+      this.elementData()[currentElementDataIndex] = elementToUpdate;
     } catch (e) {
       console.log(e);
       throw e;
     }
   }
 
-  // ensures that the source of data is completely up to date. We should not need this once we switch to a database
-  updateDataSource(elementArray: PeriodicElement[]): PeriodicElement[] {
-    this.ELEMENT_DATA = elementArray;
-    return this.getElements();
-  }
-
   // not the best place for this, but it was a better option than continuing to hide it inside the individual typescript classes
   //TODO: extract out to better location.
   isNotANumber(valueToCheck: string): boolean {
     return Number.isNaN(Number(valueToCheck));
+  }
+
+  get_private_elements(){
+	return this.elementData();
   }
 }

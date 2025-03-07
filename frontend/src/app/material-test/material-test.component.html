@@ -1,8 +1,29 @@
 <p><button mat-flat-button (click)="openAddElementModal()">Add</button></p>
 
+<!-- <p>datasource().data</p>
+<ul>
+@for(element of dataSource().data; track element.elementId){
+	<li>{{element}}</li>
+}
+</ul>
+
+<p>this.elementService.ELEMENT_DATA</p>
+<ul>
+@for(element of getElementServiceELEMENT_DATA(); track element.elementId){
+	<li>{{element}}</li>
+}
+</ul>
+
+<p>this.elementService._private_elements</p>
+<ul>
+@for(element of getElementService_private_elements(); track element.elementId){
+	<li>{{element}}</li>
+}
+</ul> -->
+
 <table
   mat-table
-  [dataSource]="dataSource"
+  [dataSource]="dataSource()"
   matSort
   (matSortChange)="announceSortChange($event)"
   class="mat-elevation-z8"

@@ -59,6 +59,7 @@ export class MaterialTestComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
   ngAfterViewInit() {
+	//TODO: fix this mess of a situation to make it no longer use SetInterval()
 	console.log('afterViewInit');
 	if (this.refreshGridInterval === null){	
 		this.refreshGridInterval = setInterval(() => {

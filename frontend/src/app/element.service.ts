@@ -1,10 +1,20 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable, OnInit } from '@angular/core';
 import { PeriodicElement, PeriodicElementCrudData } from '../app.interfaces';
+import { HttpClient } from '@angular/common/http';
+import { catchError, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ElementService {
+export class ElementService implements OnInit {
+  private httpClient = inject(HttpClient);
+  private destroyRef = inject(DestroyRef);
+  private ApiUrlBase: string = 'https://localhost:7107/';
+  private urlElements: string = this.ApiUrlBase + 'WeatherForecast/';
+
+  ngOnInit(): void {
+  }
+
   private ELEMENT_DATA: PeriodicElement[] = [
     {
       actions: '',
@@ -50,7 +60,41 @@ export class ElementService {
   };
 
   getElements() {
+	let returnValue: PeriodicElement[] = [];
+
+    const subscription = this.fetchElements(
+      this.urlElements,
+      'Error getting Elements'
+    ).subscribe({
+		next: (results) => {
+			if (results.result === 200){
+				returnValue = results.elementData;
+			}
+			else if (results.result >= 500){
+				console.log(results.errorMessage)
+			}
+			return returnValue;
+		},
+      error: (error: Error) => {
+        console.log(error);
+        //   this.error.set(error.message);
+      },
+      complete: () => {
+        console.log('complete');
+      },
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+    // this.ELEMENT_DATA = this.fetchElements(this.urlElements);
+
     return this.ELEMENT_DATA;
+  }
+
+  fetchElements(fetchElementsUrl: string, errorMessage: string) {
+    return this.httpClient
+      .get<{ result: number, elementData: PeriodicElement[], errorMessage: string }>(fetchElementsUrl);
   }
 
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
@@ -154,8 +198,6 @@ export class ElementService {
     this.ELEMENT_DATA = elementArray;
     return this.getElements();
   }
-
-  constructor() {}
 
   // not the best place for this, but it was a better option than continuing to hide it inside the individual typescript classes
   //TODO: extract out to better location.

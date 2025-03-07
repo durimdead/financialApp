@@ -1,3 +1,7 @@
+using System.Net;
+using FinanceApi.Models;
+using FinanceApi.Services;
+using FinanceApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinanceApi.Controllers
@@ -12,22 +16,32 @@ namespace FinanceApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ElementService _elementService;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
+            _elementService = new ElementService();
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        //public IEnumerable<PeriodicElement> Get()
+        public JsonResult Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var elements = this._elementService.GetElements();
+            var jsonData = new { result = HttpStatusCode.OK, elementData = elements, errorMessage = ""};
+            if (elements == null)
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                jsonData = new { result = HttpStatusCode.InternalServerError, elementData = new PeriodicElement[] { }, errorMessage = "There was an error retrieving element data" };
+            }
+            return new JsonResult(jsonData);
+            //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            //{
+            //    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            //    TemperatureC = Random.Shared.Next(-20, 55),
+            //    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            //})
+            //.ToArray();
         }
     }
 }

@@ -1,12 +1,105 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|c:\\development\\_personalprojects\\financialapp\\api\\financeapi\\financeapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|solutionrelative:financeapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|c:\\development\\_personalprojects\\financialapp\\api\\financeapi\\financeapi\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|solutionrelative:financeapi\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|c:\\development\\_personalprojects\\financialapp\\api\\financeapi\\financeapi\\services\\elementservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|solutionrelative:financeapi\\services\\elementservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|c:\\development\\_personalprojects\\financialapp\\api\\financeapi\\financeapi\\services\\interfaces\\ielement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|solutionrelative:financeapi\\services\\interfaces\\ielement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|c:\\development\\_personalprojects\\financialapp\\api\\financeapi\\financeapi\\models\\periodicelement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{829B6FA5-F56B-4A84-90D4-2F7D27CF7298}|FinanceApi\\FinanceApi.csproj|solutionrelative:financeapi\\models\\periodicelement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Program.cs",
+              "RelativeDocumentMoniker": "FinanceApi\\Program.cs",
+              "ToolTip": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Program.cs",
+              "RelativeToolTip": "FinanceApi\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T17:25:25.908Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "WeatherForecastController.cs",
+              "DocumentMoniker": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Controllers\\WeatherForecastController.cs",
+              "RelativeDocumentMoniker": "FinanceApi\\Controllers\\WeatherForecastController.cs",
+              "ToolTip": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Controllers\\WeatherForecastController.cs",
+              "RelativeToolTip": "FinanceApi\\Controllers\\WeatherForecastController.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAUwBwAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T17:19:17.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ElementService.cs",
+              "DocumentMoniker": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Services\\ElementService.cs",
+              "RelativeDocumentMoniker": "FinanceApi\\Services\\ElementService.cs",
+              "ToolTip": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Services\\ElementService.cs",
+              "RelativeToolTip": "FinanceApi\\Services\\ElementService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T17:07:12.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IElement.cs",
+              "DocumentMoniker": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Services\\Interfaces\\IElement.cs",
+              "RelativeDocumentMoniker": "FinanceApi\\Services\\Interfaces\\IElement.cs",
+              "ToolTip": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Services\\Interfaces\\IElement.cs",
+              "RelativeToolTip": "FinanceApi\\Services\\Interfaces\\IElement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T17:06:42.206Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PeriodicElement.cs",
+              "DocumentMoniker": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Models\\PeriodicElement.cs",
+              "RelativeDocumentMoniker": "FinanceApi\\Models\\PeriodicElement.cs",
+              "ToolTip": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\Models\\PeriodicElement.cs",
+              "RelativeToolTip": "FinanceApi\\Models\\PeriodicElement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-07T17:04:10.567Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

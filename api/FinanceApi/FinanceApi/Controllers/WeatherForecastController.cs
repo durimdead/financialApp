@@ -29,10 +29,10 @@ namespace FinanceApi.Controllers
         public JsonResult Get()
         {
             var elements = this._elementService.GetElements();
-            var jsonData = new { result = HttpStatusCode.OK, elementData = elements, errorMessage = ""};
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, elementData = elements, errorMessage = ""};
             if (elements == null)
             {
-                jsonData = new { result = HttpStatusCode.InternalServerError, elementData = new PeriodicElement[] { }, errorMessage = "There was an error retrieving element data" };
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, elementData = new PeriodicElement[] { }, errorMessage = "There was an error retrieving element data" };
             }
             return new JsonResult(jsonData);
             //return Enumerable.Range(1, 5).Select(index => new WeatherForecast

@@ -28,7 +28,8 @@ export class MaterialTestComponent implements AfterViewInit {
   private destroyRef = inject(DestroyRef);
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
-  private refreshGridInterval: any = null;
+  private isRefreshingGrid: boolean = false;
+  private refreshGridInterval: any;
 
   // makeshift way of naming HTML element ids to grab the data from the HTML table
   // since the way Angular Material doesn't lend itself well to the way I wanted to
@@ -61,11 +62,20 @@ export class MaterialTestComponent implements AfterViewInit {
   ngAfterViewInit() {
 	//TODO: fix this mess of a situation to make it no longer use SetInterval()
 	console.log('afterViewInit');
-	if (this.refreshGridInterval === null){	
+	if (this.refreshGridInterval === false){	
+		this.isRefreshingGrid = true;
 		this.refreshGridInterval = setInterval(() => {
 		this.dataSource().data = this.elementService.ELEMENT_DATA();
 		this.dataSource().sort = this.sort;
 		}, 200);
+	}
+  }
+
+  // removes the setInterval if the grid is currently in a state of constant refresh
+  private checkIsRefreshingGrid(){
+	if (this.isRefreshingGrid === true){
+		this.isRefreshingGrid = false;
+		clearInterval(this.refreshGridInterval);
 	}
   }
 
@@ -171,16 +181,19 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // return object with element data
   getElementDataById(elementId: number) {
+	this.checkIsRefreshingGrid();
     return this.dataSource().data.find(
       (item) => item.elementId === elementId
     ) as PeriodicElement;
   }
 
   getElementServiceELEMENT_DATA() {
+	this.checkIsRefreshingGrid();
     return this.elementService.ELEMENT_DATA();
   }
 
   getElementService_private_elements() {
+	this.checkIsRefreshingGrid();
     return this.elementService.get_private_elements();
   }
 }

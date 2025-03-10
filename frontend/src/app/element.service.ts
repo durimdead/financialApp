@@ -169,4 +169,10 @@ export class ElementService {
   get_private_elements(){
 	return this.elementData();
   }
+
+//   async asyncGetElements(): Promise<PeriodicElement[]>{
+// 	return new Promise((resolve, reject) =>{
+// 		resolve(this.ELEMENT_DATA());
+// 	})
+//   }
 }

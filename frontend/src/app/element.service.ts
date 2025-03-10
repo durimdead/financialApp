@@ -28,8 +28,6 @@ export class ElementService {
         next: (results) => {
           if (results.httpStatusCode === 200) {
             this.elementData.set(results.elementData);
-            console.log(this.elementData());
-            console.log(this.ELEMENT_DATA());
           } else if (results.httpStatusCode >= 500) {
             console.log(results.errorMessage);
           }

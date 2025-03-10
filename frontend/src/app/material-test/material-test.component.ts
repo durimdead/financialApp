@@ -1,9 +1,11 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   ViewChild,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -22,13 +24,14 @@ import { MatPaginator } from '@angular/material/paginator';
   imports: [MatTableModule, MatSortModule, MatButtonModule, MatIconModule],
   templateUrl: './material-test.component.html',
   styleUrl: './material-test.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MaterialTestComponent implements AfterViewInit {
   private elementService = inject(ElementService);
   private destroyRef = inject(DestroyRef);
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
-  private isRefreshingGrid: boolean = false;
+  private elementData = this.elementService.ELEMENT_DATA;
 
   // makeshift way of naming HTML element ids to grab the data from the HTML table
   // since the way Angular Material doesn't lend itself well to the way I wanted to
@@ -47,16 +50,16 @@ export class MaterialTestComponent implements AfterViewInit {
     'symbol',
   ];
   dataSource = signal<MatTableDataSource<PeriodicElement, MatPaginator>>(
-    new MatTableDataSource(this.elementService.ELEMENT_DATA())
+    new MatTableDataSource(this.elementData())
   );
   asyncDataSource: any;
 
   ngOnInit() {
     // this.elementService.getElements();
     // this.fillElementData();
-	this.updateElementsDataFromSource();
+    this.updateElementsDataFromSource();
     console.log('element data inside material-test ngOnInit():');
-    console.log(this.elementService.ELEMENT_DATA());
+    console.log(this.elementData);
   }
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
@@ -64,16 +67,7 @@ export class MaterialTestComponent implements AfterViewInit {
   ngAfterViewInit() {
     //TODO: fix this mess of a situation to make it no longer use SetInterval()
     console.log('afterViewInit');
-	this.updateElementsDataFromSource();
-    // if (this.isRefreshingGrid === false) {
-    //   console.log('refreshing');
-    //   this.isRefreshingGrid = true;
-    //   setInterval(() => {
-    //     console.log('in interval');
-    //     this.dataSource().data = this.elementService.ELEMENT_DATA();
-    //     this.dataSource().sort = this.sort;
-    //   }, 200);
-    // }
+    this.updateElementsDataFromSource();
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -138,17 +132,17 @@ export class MaterialTestComponent implements AfterViewInit {
   // delete Element by elementId and refresh the table
   private deleteElement(elementId: number) {
     this.elementService.deleteElement(elementId);
-	this.dataSource().data = this.elementService.ELEMENT_DATA();
+    this.dataSource().data = this.elementData();
   }
   // save edited element and refresh the table
   private saveEditedElement(element: PeriodicElement) {
     this.elementService.updateElement(element);
-	this.dataSource().data = this.elementService.ELEMENT_DATA();
+    this.dataSource().data = this.elementData();
   }
   // will take the periodic element sent in, update Id to valid one, add to the table
   private addElement(elementToAdd: PeriodicElement) {
     this.elementService.addElement(elementToAdd);
-	this.dataSource().data = this.elementService.ELEMENT_DATA();
+    this.dataSource().data = this.elementData();
   }
 
   // opens modal to edit element
@@ -198,12 +192,11 @@ export class MaterialTestComponent implements AfterViewInit {
   updateElementsDataFromSource() {
     const subscription = this.elementService.elementsFetcher().subscribe({
       next: (response) => {
-        if (!this.dataSource().data || this.dataSource().data.length === 0){
-			this.dataSource.set(new MatTableDataSource(this.elementService.ELEMENT_DATA()));
-		}
-		else {
-			this.dataSource().data = response.elementData;
-		}
+        if (!this.dataSource().data || this.dataSource().data.length === 0) {
+          this.dataSource.set(new MatTableDataSource(this.elementData()));
+        } else {
+          this.dataSource().data = response.elementData;
+        }
       },
       error: (error: Error) => {
         console.log(error);

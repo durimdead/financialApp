@@ -26,73 +26,6 @@ export class ElementService {
     delete: 'delete',
   };
 
-  //   getElementsAsync = async (): Promise<ElementApiGet> => {
-  // 	let response: Promise<ElementApiGet>;
-  //     try {
-  //       const fetchElementsUrl = this.urlElements;
-  //       const response = await lastValueFrom(
-  //         this.httpClient.get<ElementApiGet>(fetchElementsUrl)
-  //       );
-  //       if (response.httpStatusCode === 200) {
-  //         this.elementData.set(response.elementData);
-  //       } else if (response.httpStatusCode >= 500) {
-  //         console.log(response.errorMessage);
-  //       }
-  // 	  return response;
-  //     } catch (error) {
-  //       if (error) {
-  //         console.log('-----------------------------------------------------');
-  //         console.log('error calling getElementsAsync:');
-  //         console.log(error);
-  //         console.log('-----------------------------------------------------');
-  //       }
-  //     }
-  //   };
-
-  getElementsArray(): PeriodicElement[] {
-    let returnValue: PeriodicElement[] = this.ELEMENT_DATA();
-    // const subscription = this.elementsFetcher().subscribe({
-    //   next: () => {
-	// 	returnValue = this.ELEMENT_DATA();
-	//   },
-    //   error: (error: Error) => {
-    //     console.log(error);
-    //     //   this.error.set(error.message);
-    //   },
-    //   complete: () => {
-    //     console.log('complete');
-    //   },
-    // });
-
-    // this.destroyRef.onDestroy(() => {
-    //   subscription.unsubscribe();
-    // });
-    return returnValue;
-  }
-
-  /*
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   *
-   */
 
   elementsFetcher() {
     return this.fetchElements(this.urlElements, 'Error getting Elements').pipe(
@@ -108,23 +41,7 @@ export class ElementService {
     );
   }
 
-  getElements() {
-    const subscription = this.elementsFetcher().subscribe({
-      error: (error: Error) => {
-        console.log(error);
-        //   this.error.set(error.message);
-      },
-      complete: () => {
-        console.log('complete');
-      },
-    });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
-  }
-
-  fetchElements(fetchElementsUrl: string, errorMessage: string) {
+  private fetchElements(fetchElementsUrl: string, errorMessage: string) {
     return this.httpClient.get<{
       httpStatusCode: number;
       elementData: PeriodicElement[];
@@ -239,10 +156,4 @@ export class ElementService {
   get_private_elements() {
     return this.elementData();
   }
-
-  //   async asyncGetElements(): Promise<PeriodicElement[]>{
-  // 	return new Promise((resolve, reject) =>{
-  // 		resolve(this.ELEMENT_DATA());
-  // 	})
-  //   }
 }

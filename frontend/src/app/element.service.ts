@@ -1,7 +1,11 @@
 import { DestroyRef, inject, Injectable, OnInit, signal } from '@angular/core';
-import { PeriodicElement, PeriodicElementCrudData } from '../app.interfaces';
+import {
+  ElementApiGet,
+  PeriodicElement,
+  PeriodicElementCrudData,
+} from '../app.interfaces';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, tap, throwError } from 'rxjs';
+import { async, catchError, lastValueFrom, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +25,74 @@ export class ElementService {
     update: 'edit',
     delete: 'delete',
   };
+
+  //   getElementsAsync = async (): Promise<ElementApiGet> => {
+  // 	let response: Promise<ElementApiGet>;
+  //     try {
+  //       const fetchElementsUrl = this.urlElements;
+  //       const response = await lastValueFrom(
+  //         this.httpClient.get<ElementApiGet>(fetchElementsUrl)
+  //       );
+  //       if (response.httpStatusCode === 200) {
+  //         this.elementData.set(response.elementData);
+  //       } else if (response.httpStatusCode >= 500) {
+  //         console.log(response.errorMessage);
+  //       }
+  // 	  return response;
+  //     } catch (error) {
+  //       if (error) {
+  //         console.log('-----------------------------------------------------');
+  //         console.log('error calling getElementsAsync:');
+  //         console.log(error);
+  //         console.log('-----------------------------------------------------');
+  //       }
+  //     }
+  //   };
+
+  getElementsArray(): PeriodicElement[] {
+    let returnValue: PeriodicElement[] = this.ELEMENT_DATA();
+    // const subscription = this.elementsFetcher().subscribe({
+    //   next: () => {
+	// 	returnValue = this.ELEMENT_DATA();
+	//   },
+    //   error: (error: Error) => {
+    //     console.log(error);
+    //     //   this.error.set(error.message);
+    //   },
+    //   complete: () => {
+    //     console.log('complete');
+    //   },
+    // });
+
+    // this.destroyRef.onDestroy(() => {
+    //   subscription.unsubscribe();
+    // });
+    return returnValue;
+  }
+
+  /*
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   *
+   */
 
   elementsFetcher() {
     return this.fetchElements(this.urlElements, 'Error getting Elements').pipe(
@@ -164,13 +236,13 @@ export class ElementService {
     return Number.isNaN(Number(valueToCheck));
   }
 
-  get_private_elements(){
-	return this.elementData();
+  get_private_elements() {
+    return this.elementData();
   }
 
-//   async asyncGetElements(): Promise<PeriodicElement[]>{
-// 	return new Promise((resolve, reject) =>{
-// 		resolve(this.ELEMENT_DATA());
-// 	})
-//   }
+  //   async asyncGetElements(): Promise<PeriodicElement[]>{
+  // 	return new Promise((resolve, reject) =>{
+  // 		resolve(this.ELEMENT_DATA());
+  // 	})
+  //   }
 }

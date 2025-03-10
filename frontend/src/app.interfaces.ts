@@ -11,3 +11,8 @@ export interface PeriodicElementCrudData{
 	elementData: PeriodicElement;
 }
 
+export interface ElementApiGet {
+  httpStatusCode: number;
+  elementData: PeriodicElement[];
+  errorMessage: string;
+}

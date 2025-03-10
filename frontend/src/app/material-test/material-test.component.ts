@@ -29,11 +29,6 @@ export class MaterialTestComponent implements AfterViewInit {
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
   private isRefreshingGrid: boolean = false;
-  private refreshGridInterval: any;
-
-  constructor() {
-    this.isRefreshingGrid = false;
-  }
 
   // makeshift way of naming HTML element ids to grab the data from the HTML table
   // since the way Angular Material doesn't lend itself well to the way I wanted to
@@ -54,10 +49,12 @@ export class MaterialTestComponent implements AfterViewInit {
   dataSource = signal<MatTableDataSource<PeriodicElement, MatPaginator>>(
     new MatTableDataSource(this.elementService.ELEMENT_DATA())
   );
+  asyncDataSource: any;
 
   ngOnInit() {
-    this.elementService.getElements();
+    // this.elementService.getElements();
     // this.fillElementData();
+	this.updateElementsDataFromSource();
     console.log('element data inside material-test ngOnInit():');
     console.log(this.elementService.ELEMENT_DATA());
   }
@@ -67,24 +64,16 @@ export class MaterialTestComponent implements AfterViewInit {
   ngAfterViewInit() {
     //TODO: fix this mess of a situation to make it no longer use SetInterval()
     console.log('afterViewInit');
-    if (this.isRefreshingGrid === false) {
-      console.log('refreshing');
-      this.isRefreshingGrid = true;
-      this.refreshGridInterval = setInterval(() => {
-		console.log('in interval');
-        this.dataSource().data = this.elementService.ELEMENT_DATA();
-        this.dataSource().sort = this.sort;
-      }, 200);
-    }
-  }
-
-  // removes the setInterval if the grid is currently in a state of constant refresh
-  private checkIsRefreshingGrid() {
-    if (this.isRefreshingGrid === true) {
-		console.log('killing refresh interval');
-      this.isRefreshingGrid = false;
-      clearInterval(this.refreshGridInterval);
-    }
+	this.updateElementsDataFromSource();
+    // if (this.isRefreshingGrid === false) {
+    //   console.log('refreshing');
+    //   this.isRefreshingGrid = true;
+    //   setInterval(() => {
+    //     console.log('in interval');
+    //     this.dataSource().data = this.elementService.ELEMENT_DATA();
+    //     this.dataSource().sort = this.sort;
+    //   }, 200);
+    // }
   }
 
   /** Announce the change in sort state for assistive technology. */
@@ -149,14 +138,17 @@ export class MaterialTestComponent implements AfterViewInit {
   // delete Element by elementId and refresh the table
   private deleteElement(elementId: number) {
     this.elementService.deleteElement(elementId);
+	this.dataSource().data = this.elementService.ELEMENT_DATA();
   }
   // save edited element and refresh the table
   private saveEditedElement(element: PeriodicElement) {
     this.elementService.updateElement(element);
+	this.dataSource().data = this.elementService.ELEMENT_DATA();
   }
   // will take the periodic element sent in, update Id to valid one, add to the table
   private addElement(elementToAdd: PeriodicElement) {
     this.elementService.addElement(elementToAdd);
+	this.dataSource().data = this.elementService.ELEMENT_DATA();
   }
 
   // opens modal to edit element
@@ -187,13 +179,13 @@ export class MaterialTestComponent implements AfterViewInit {
     });
   }
 
-//   // return object with element data
-//   getElementDataById(elementId: number) {
-//     this.checkIsRefreshingGrid();
-//     return this.dataSource().data.find(
-//       (item) => item.elementId === elementId
-//     ) as PeriodicElement;
-//   }
+  //   // return object with element data
+  //   getElementDataById(elementId: number) {
+  //     this.checkIsRefreshingGrid();
+  //     return this.dataSource().data.find(
+  //       (item) => item.elementId === elementId
+  //     ) as PeriodicElement;
+  //   }
 
   getElementServiceELEMENT_DATA() {
     return this.elementService.ELEMENT_DATA();
@@ -201,6 +193,30 @@ export class MaterialTestComponent implements AfterViewInit {
 
   getElementService_private_elements() {
     return this.elementService.get_private_elements();
+  }
+
+  updateElementsDataFromSource() {
+    const subscription = this.elementService.elementsFetcher().subscribe({
+      next: (response) => {
+        if (!this.dataSource().data || this.dataSource().data.length === 0){
+			this.dataSource.set(new MatTableDataSource(this.elementService.ELEMENT_DATA()));
+		}
+		else {
+			this.dataSource().data = response.elementData;
+		}
+      },
+      error: (error: Error) => {
+        console.log(error);
+        //   this.error.set(error.message);
+      },
+      complete: () => {
+        console.log('complete');
+      },
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   //   async fillElementData(){

@@ -4,7 +4,7 @@ import {
   PeriodicElement,
   PeriodicElementCrudData,
 } from '../app.interfaces';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { async, catchError, lastValueFrom, map, tap, throwError } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -50,6 +50,17 @@ export class ElementService {
       elementData: PeriodicElement[];
       errorMessage: string;
     }>(fetchElementsUrl);
+  }
+
+  postElementUpdate(elementToUpdate: PeriodicElement) {
+	const elementParam = JSON.stringify(elementToUpdate);
+	console.log('elementToUpdate - post method');
+	console.log(elementToUpdate);
+	console.log(elementParam);
+    return this.httpClient.post<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlElements, {value: JSON.stringify(elementToUpdate)});
   }
 
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
@@ -142,9 +153,23 @@ export class ElementService {
         );
       }
 
-      // update with new element data
-      this.elementData()[currentElementDataIndex] = elementToUpdate;
-      console.log(this.elementData()[currentElementDataIndex]);
+      // posts the element to update and updates the datasource appropriately if we don't get an error back.
+      return this.postElementUpdate(elementToUpdate).pipe(
+        tap({
+          next: (results) => {
+            if (results.httpStatusCode === 200) {
+              // this.elementData()[currentElementDataIndex] = elementToUpdate;
+              this.elementData()[currentElementDataIndex] = {
+                actions: '',
+                name: 'testingName',
+                elementId: elementToUpdate.elementId,
+                weight: 111,
+                symbol: 'LL',
+              };
+            }
+          },
+        })
+      );
     } catch (e) {
       console.log(e);
       throw e;

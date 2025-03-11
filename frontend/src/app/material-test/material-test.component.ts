@@ -131,7 +131,27 @@ export class MaterialTestComponent implements AfterViewInit {
   // save edited element and refresh the table
   private saveEditedElement(element: PeriodicElement) {
     this.elementService.updateElement(element);
-    this.refreshMatTableDataSource();
+    const subscription = this.elementService.updateElement(element).subscribe({
+      next: (results) => {
+        if (results.httpStatusCode === 200) {
+          this.refreshMatTableDataSource();
+        } else {
+          console.log(
+            'update element - matTest - "next:" - error' + results.errorMessage
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.log('update element - matTest - "error:" - error' + error.message);
+      },
+      complete: () => {
+        console.log('complete');
+      },
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
   // will take the periodic element sent in, update Id to valid one, add to the table
   private addElement(elementToAdd: PeriodicElement) {

@@ -2,6 +2,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using FinanceApi.Services;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,10 +15,10 @@ namespace FinanceApi.Controllers
         private readonly ILogger<PeriodicElementsController> _logger;
         private readonly ElementService _elementService;
 
-        public PeriodicElementsController(ILogger<PeriodicElementsController> logger)
+        public PeriodicElementsController(ILogger<PeriodicElementsController> logger, ILogger<ElementService> elementsLogger)
         {
             _logger = logger;
-            _elementService = new ElementService();
+            _elementService = new ElementService(elementsLogger);
         }
         // GET: api/<PeriodicElements>
         [HttpGet]
@@ -25,6 +26,8 @@ namespace FinanceApi.Controllers
         {
             var elements = this._elementService.GetElements();
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, elementData = elements, errorMessage = "" };
+
+            // return error if we could not get the elements
             if (elements == null)
             {
                 jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, elementData = new PeriodicElement[] { }, errorMessage = "There was an error retrieving element data" };
@@ -41,8 +44,22 @@ namespace FinanceApi.Controllers
 
         // POST api/<PeriodicElements>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] string value)
         {
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
+
+            try
+            {
+                //PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToSave) ?? new PeriodicElement();
+                //this._elementService.UpdateElement(elementToSave);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
         }
 
         // PUT api/<PeriodicElements>/5

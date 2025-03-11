@@ -158,14 +158,7 @@ export class ElementService {
         tap({
           next: (results) => {
             if (results.httpStatusCode === 200) {
-              // this.elementData()[currentElementDataIndex] = elementToUpdate;
-              this.elementData()[currentElementDataIndex] = {
-                actions: '',
-                name: 'testingName',
-                elementId: elementToUpdate.elementId,
-                weight: 111,
-                symbol: 'LL',
-              };
+              this.elementData()[currentElementDataIndex] = elementToUpdate;
             }
           },
         })

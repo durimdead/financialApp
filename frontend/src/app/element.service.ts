@@ -17,7 +17,7 @@ export class ElementService {
   private destroyRef = inject(DestroyRef);
   private elementData = signal<PeriodicElement[]>([]);
   private ApiUrlBase: string = 'https://localhost:7107/';
-  private urlElements: string = this.ApiUrlBase + 'WeatherForecast/';
+  private urlElements: string = this.ApiUrlBase + 'api/PeriodicElements/';
 
   ELEMENT_DATA = this.elementData.asReadonly();
 

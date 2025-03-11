@@ -16,14 +16,10 @@ export class ElementService {
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
   private elementData = signal<PeriodicElement[]>([]);
-  private DSMatTable = signal<MatTableDataSource<PeriodicElement, MatPaginator>>(
-    new MatTableDataSource(this.elementData())
-  );
   private ApiUrlBase: string = 'https://localhost:7107/';
   private urlElements: string = this.ApiUrlBase + 'WeatherForecast/';
 
   ELEMENT_DATA = this.elementData.asReadonly();
-  DS_MAT_TABLE = this.DSMatTable.asReadonly();
 
   readonly crudStates = {
     create: 'add',
@@ -37,9 +33,10 @@ export class ElementService {
       tap({
         next: (results) => {
           if (results.httpStatusCode === 200) {
+            console.log('tap - next - 200');
             this.elementData.set(results.elementData);
-			this.DSMatTable().data = this.elementData();
           } else if (results.httpStatusCode >= 500) {
+            console.log('tap - next - not 200');
             console.log(results.errorMessage);
           }
         },
@@ -97,7 +94,6 @@ export class ElementService {
       elementToAdd.elementId = this.getNextElementId();
     }
     this.elementData().push(elementToAdd);
-	this.DSMatTable().data = this.elementData();
   }
 
   // ensures we get a unique Id for adding another element
@@ -113,7 +109,6 @@ export class ElementService {
         (itemToDelete) => itemToDelete.elementId !== elementId
       )
     );
-	this.DSMatTable().data = this.elementData();
   }
 
   // determines if any data for this elementId exists in the elementData array
@@ -149,7 +144,7 @@ export class ElementService {
 
       // update with new element data
       this.elementData()[currentElementDataIndex] = elementToUpdate;
-	  this.DSMatTable().data = this.elementData();
+      console.log(this.elementData()[currentElementDataIndex]);
     } catch (e) {
       console.log(e);
       throw e;

@@ -2,6 +2,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   DestroyRef,
   ViewChild,
@@ -10,7 +11,11 @@ import {
   signal,
 } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import {
+  MatTable,
+  MatTableDataSource,
+  MatTableModule,
+} from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,7 +29,6 @@ import { MatPaginator } from '@angular/material/paginator';
   imports: [MatTableModule, MatSortModule, MatButtonModule, MatIconModule],
   templateUrl: './material-test.component.html',
   styleUrl: './material-test.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MaterialTestComponent implements AfterViewInit {
   private elementService = inject(ElementService);
@@ -32,6 +36,7 @@ export class MaterialTestComponent implements AfterViewInit {
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
   private elementData = this.elementService.ELEMENT_DATA;
+  private changeDetectorRefs = inject(ChangeDetectorRef);
 
   // makeshift way of naming HTML element ids to grab the data from the HTML table
   // since the way Angular Material doesn't lend itself well to the way I wanted to
@@ -49,19 +54,7 @@ export class MaterialTestComponent implements AfterViewInit {
     'weight',
     'symbol',
   ];
-  dataSource = signal<MatTableDataSource<PeriodicElement, MatPaginator>>(
-    new MatTableDataSource(this.elementData())
-  );
-  DSMatTable = this.elementService.DS_MAT_TABLE;
-  asyncDataSource: any;
-
-  ngOnInit() {
-    // this.elementService.getElements();
-    // this.fillElementData();
-    this.updateElementsDataFromSource();
-    console.log('element data inside material-test ngOnInit():');
-    console.log(this.elementData);
-  }
+  dataSource = new MatTableDataSource(this.elementData());
 
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
@@ -133,17 +126,17 @@ export class MaterialTestComponent implements AfterViewInit {
   // delete Element by elementId and refresh the table
   private deleteElement(elementId: number) {
     this.elementService.deleteElement(elementId);
-    this.dataSource().data = this.elementData();
+    this.refreshMatTableDataSource();
   }
   // save edited element and refresh the table
   private saveEditedElement(element: PeriodicElement) {
     this.elementService.updateElement(element);
-    this.dataSource().data = this.elementData();
+    this.refreshMatTableDataSource();
   }
   // will take the periodic element sent in, update Id to valid one, add to the table
   private addElement(elementToAdd: PeriodicElement) {
     this.elementService.addElement(elementToAdd);
-    this.dataSource().data = this.elementData();
+    this.refreshMatTableDataSource();
   }
 
   // opens modal to edit element
@@ -174,34 +167,27 @@ export class MaterialTestComponent implements AfterViewInit {
     });
   }
 
-  getElementServiceELEMENT_DATA() {
-    return this.elementService.ELEMENT_DATA();
-  }
-
-  getElementService_private_elements() {
-    return this.elementService.get_private_elements();
-  }
-
+  // gets the data from the "source" (i.e. the API) and then refreshes the table appropriately
   updateElementsDataFromSource() {
     const subscription = this.elementService.elementsFetcher().subscribe({
-      next: (response) => {
-        if (!this.dataSource().data || this.dataSource().data.length === 0) {
-          this.dataSource.set(new MatTableDataSource(this.elementData()));
-        } else {
-          this.dataSource().data = response.elementData;
-        }
-      },
       error: (error: Error) => {
         console.log(error);
         //   this.error.set(error.message);
       },
       complete: () => {
         console.log('complete');
+        this.refreshMatTableDataSource();
       },
     });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
+  }
+
+  // a little bit of a hack, but the most effective, simple way to update the datasource for
+  // the material table.
+  refreshMatTableDataSource() {
+    this.dataSource.data = this.elementData();
   }
 }

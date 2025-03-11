@@ -1,8 +1,8 @@
 <p><button mat-flat-button (click)="openAddElementModal()">Add</button></p>
 
-<p>datasource().data</p>
+<p>DSMatTable().data</p>
 <ul>
-@for(element of dataSource().data; track element.elementId){
+@for(element of DSMatTable().data; track element.elementId){
 	<li>{{element}}</li>
 }
 </ul>
@@ -23,7 +23,7 @@
 
 <table
   mat-table
-  [dataSource]="dataSource()"
+  [dataSource]="DSMatTable()"
   matSort
   (matSortChange)="announceSortChange($event)"
   class="mat-elevation-z8"

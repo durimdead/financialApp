@@ -52,6 +52,7 @@ export class MaterialTestComponent implements AfterViewInit {
   dataSource = signal<MatTableDataSource<PeriodicElement, MatPaginator>>(
     new MatTableDataSource(this.elementData())
   );
+  DSMatTable = this.elementService.DS_MAT_TABLE;
   asyncDataSource: any;
 
   ngOnInit() {
@@ -173,14 +174,6 @@ export class MaterialTestComponent implements AfterViewInit {
     });
   }
 
-  //   // return object with element data
-  //   getElementDataById(elementId: number) {
-  //     this.checkIsRefreshingGrid();
-  //     return this.dataSource().data.find(
-  //       (item) => item.elementId === elementId
-  //     ) as PeriodicElement;
-  //   }
-
   getElementServiceELEMENT_DATA() {
     return this.elementService.ELEMENT_DATA();
   }
@@ -211,9 +204,4 @@ export class MaterialTestComponent implements AfterViewInit {
       subscription.unsubscribe();
     });
   }
-
-  //   async fillElementData(){
-  // 	const elementData = await this.elementService.asyncGetElements();
-  // 	this.dataSource().data = elementData;
-  //   }
 }

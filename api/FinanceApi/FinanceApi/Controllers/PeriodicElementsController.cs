@@ -44,7 +44,13 @@ namespace FinanceApi.Controllers
 
         // POST api/<PeriodicElements>
         [HttpPost]
-        public ActionResult Post([FromBody] JsonElement value)
+        public void Post([FromBody] JsonElement value)
+        {
+        }
+
+        // PUT api/<PeriodicElements>
+        [HttpPut]
+        public JsonResult Put([FromBody] JsonElement value)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
@@ -60,12 +66,6 @@ namespace FinanceApi.Controllers
                 jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
                 return new JsonResult(jsonData);
             }
-        }
-
-        // PUT api/<PeriodicElements>
-        [HttpPut]
-        public void Put([FromBody] string value)
-        {
 
         }
 

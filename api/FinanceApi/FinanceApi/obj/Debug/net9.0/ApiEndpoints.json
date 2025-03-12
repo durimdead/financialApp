@@ -23,7 +23,13 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
@@ -35,7 +41,7 @@
     "Parameters": [
       {
         "Name": "value",
-        "Type": "System.String",
+        "Type": "System.Text.Json.JsonElement",
         "IsRequired": true
       }
     ],

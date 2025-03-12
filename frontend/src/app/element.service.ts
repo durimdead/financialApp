@@ -55,7 +55,7 @@ export class ElementService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
     });
-    return this.httpClient.post<{
+    return this.httpClient.put<{
       httpStatusCode: number;
       errorMessage: string;
     }>(this.urlElements, JSON.stringify(elementToUpdate), {headers: headers});

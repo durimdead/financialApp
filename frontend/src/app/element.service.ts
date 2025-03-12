@@ -4,10 +4,8 @@ import {
   PeriodicElement,
   PeriodicElementCrudData,
 } from '../app.interfaces';
-import { HttpClient, HttpStatusCode } from '@angular/common/http';
-import { async, catchError, lastValueFrom, map, tap, throwError } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
+import { catchError, lastValueFrom, map, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -53,14 +51,14 @@ export class ElementService {
   }
 
   postElementUpdate(elementToUpdate: PeriodicElement) {
-	const elementParam = JSON.stringify(elementToUpdate);
-	console.log('elementToUpdate - post method');
-	console.log(elementToUpdate);
-	console.log(elementParam);
+    const elementParam = JSON.stringify(elementToUpdate);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+    });
     return this.httpClient.post<{
       httpStatusCode: number;
       errorMessage: string;
-    }>(this.urlElements, {value: JSON.stringify(elementToUpdate)});
+    }>(this.urlElements, JSON.stringify(elementToUpdate), {headers: headers});
   }
 
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
@@ -158,7 +156,10 @@ export class ElementService {
         tap({
           next: (results) => {
             if (results.httpStatusCode === 200) {
+              console.log('POST - elementUpdate - tap - 200 response');
               this.elementData()[currentElementDataIndex] = elementToUpdate;
+            } else {
+              console.log('POST - elementUpdate - tap - NOT 200 response');
             }
           },
         })

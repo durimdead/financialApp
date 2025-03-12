@@ -130,22 +130,28 @@ export class MaterialTestComponent implements AfterViewInit {
   }
   // save edited element and refresh the table
   private saveEditedElement(element: PeriodicElement) {
-    this.elementService.updateElement(element);
+    // this.elementService.updateElement(element);
     const subscription = this.elementService.updateElement(element).subscribe({
       next: (results) => {
         if (results.httpStatusCode === 200) {
+          console.log('POST - elementUpdate - matTest - next - 200 response');
           this.refreshMatTableDataSource();
         } else {
+          console.log(
+            'POST - elementUpdate - matTest - next - NOT 200 response'
+          );
           console.log(
             'update element - matTest - "next:" - error' + results.errorMessage
           );
         }
       },
       error: (error: Error) => {
-        console.log('update element - matTest - "error:" - error' + error.message);
+        console.log(
+          'POST - elementUpdate - matTest - error : ' + error.message
+        );
       },
       complete: () => {
-        console.log('complete');
+        console.log('POST - elementUpdate - matTest - complete');
       },
     });
 

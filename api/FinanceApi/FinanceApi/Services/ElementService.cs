@@ -47,11 +47,12 @@ namespace FinanceApi.Services
                 }
                 else if (elementToUpdate.elementId < 1 || this.periodicElements.Count(element => element.elementId == elementToUpdate.elementId) != 1)
                 {
-                    throw new KeyNotFoundException("Element Id is not within our records");
+                    throw new KeyNotFoundException("Element Id is missing or is not within our records. ElementId : " + elementToUpdate.elementId);
                 }
 
                 // update the element with the parameter
                 this.periodicElements[Array.FindIndex(this.periodicElements, element => element.elementId == elementToUpdate.elementId)] = elementToUpdate;
+                var elements = this.periodicElements;
             }
             catch (Exception e)
             {

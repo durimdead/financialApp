@@ -44,14 +44,14 @@ namespace FinanceApi.Controllers
 
         // POST api/<PeriodicElements>
         [HttpPost]
-        public ActionResult Post([FromBody] string value)
+        public ActionResult Post([FromBody] JsonElement value)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
             try
             {
-                //PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToSave) ?? new PeriodicElement();
-                //this._elementService.UpdateElement(elementToSave);
+                PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(value) ?? new PeriodicElement();
+                this._elementService.UpdateElement(elementToSave);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -62,16 +62,18 @@ namespace FinanceApi.Controllers
             }
         }
 
-        // PUT api/<PeriodicElements>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<PeriodicElements>
+        [HttpPut]
+        public void Put([FromBody] string value)
         {
+
         }
 
         // DELETE api/<PeriodicElements>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+
         }
     }
 }

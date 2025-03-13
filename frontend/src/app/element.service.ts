@@ -27,7 +27,10 @@ export class ElementService {
   };
 
   elementsFetcher() {
-    return this.fetchElements(this.urlElements, 'Error getting Elements').pipe(
+    return this.httpFetchElements(
+      this.urlElements,
+      'Error getting Elements'
+    ).pipe(
       tap({
         next: (results) => {
           if (results.httpStatusCode === 200) {
@@ -42,7 +45,7 @@ export class ElementService {
     );
   }
 
-  private fetchElements(fetchElementsUrl: string, errorMessage: string) {
+  private httpFetchElements(fetchElementsUrl: string, errorMessage: string) {
     return this.httpClient.get<{
       httpStatusCode: number;
       elementData: PeriodicElement[];
@@ -50,7 +53,7 @@ export class ElementService {
     }>(fetchElementsUrl);
   }
 
-  postElementUpdate(elementToUpdate: PeriodicElement) {
+  private httpElementUpdate(elementToUpdate: PeriodicElement) {
     const elementParam = JSON.stringify(elementToUpdate);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
@@ -152,7 +155,7 @@ export class ElementService {
       }
 
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
-      return this.postElementUpdate(elementToUpdate).pipe(
+      return this.httpElementUpdate(elementToUpdate).pipe(
         tap({
           next: (results) => {
             if (results.httpStatusCode === 200) {

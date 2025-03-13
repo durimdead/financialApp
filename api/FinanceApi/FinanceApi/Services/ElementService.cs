@@ -34,7 +34,7 @@ namespace FinanceApi.Services
         }
 
         /// <summary>
-        /// 
+        /// update periodic element in source
         /// </summary>
         /// <param name="elementToUpdate">will update this element. Finds the correct record to update based on ElementId in this object</param>
         public void UpdateElement(PeriodicElement elementToUpdate) {
@@ -55,6 +55,23 @@ namespace FinanceApi.Services
                 var elements = this.periodicElements;
             }
             catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// delete periodic element from source
+        /// </summary>
+        /// <param name="elementId">id of the element to delete</param>
+        public void DeleteElement(int elementId)
+        {
+            try
+            {
+                this.periodicElements = this.periodicElements.Where(x => x.elementId != elementId).ToArray();
+            }
+            catch(Exception e)
             {
                 _logger.LogError(e.Message);
                 throw;

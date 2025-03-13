@@ -49,14 +49,19 @@ namespace FinanceApi.Controllers
         }
 
         // PUT api/<PeriodicElements>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>{httpStatusCode: HttpStatusCode, errorMessage: string}</returns>
         [HttpPut]
-        public JsonResult Put([FromBody] JsonElement value)
+        public JsonResult Put([FromBody] JsonElement periodicElementToUpdate)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
             try
             {
-                PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(value) ?? new PeriodicElement();
+                PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToUpdate) ?? new PeriodicElement();
                 this._elementService.UpdateElement(elementToSave);
                 return new JsonResult(jsonData);
             }
@@ -66,14 +71,30 @@ namespace FinanceApi.Controllers
                 jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
                 return new JsonResult(jsonData);
             }
-
         }
 
         // DELETE api/<PeriodicElements>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        /// <summary>
+        /// Delete periodic element
+        /// </summary>
+        /// <param name="elementId">id of the element to delete</param>
+        /// <returns>{httpStatusCode: HttpStatusCode, errorMessage: string}</returns>
+        [HttpDelete("{elementId}")]
+        //[HttpDelete]
+        public JsonResult Delete(int elementId)
         {
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
+            try
+            {
+                this._elementService.DeleteElement(elementId);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e){ 
+                _logger.LogError(e.Message);
+                jsonData = new {httpStatusCode = HttpStatusCode.InternalServerError,errorMessage = e.Message};
+                return new JsonResult(jsonData);
+            }
         }
     }
 }

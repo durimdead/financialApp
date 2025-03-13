@@ -40,8 +40,24 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "value",
+        "Name": "periodicElementToUpdate",
         "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
+    "Method": "Delete",
+    "RelativePath": "api/PeriodicElements/{elementId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "elementId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],
@@ -69,28 +85,6 @@
           "application/json",
           "text/json"
         ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
-    "Method": "Delete",
-    "RelativePath": "api/PeriodicElements/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
         "StatusCode": 200
       }
     ]

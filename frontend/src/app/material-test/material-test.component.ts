@@ -125,8 +125,36 @@ export class MaterialTestComponent implements AfterViewInit {
 
   // delete Element by elementId and refresh the table
   private deleteElement(elementId: number) {
-    this.elementService.deleteElement(elementId);
-    this.refreshMatTableDataSource();
+    // this.elementService.deleteElement(elementId);
+    // this.refreshMatTableDataSource();
+
+    const subscription = this.elementService.deleteElement(elementId).subscribe({
+      next: (results) => {
+        if (results.httpStatusCode === 200) {
+          console.log('DELETE - deleteElement - matTest - next - 200 response');
+          this.refreshMatTableDataSource();
+        } else {
+          console.log(
+            'DELETE - deleteElement - matTest - next - NOT 200 response'
+          );
+          console.log(
+            'DELETE - matTest - "next:" - error' + results.errorMessage
+          );
+        }
+      },
+      error: (error: Error) => {
+        console.log(
+          'DELETE - deleteElement - matTest - error : ' + error.message
+        );
+      },
+      complete: () => {
+        console.log('DELETE - deleteElement - matTest - complete');
+      },
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
   // save edited element and refresh the table
   private saveEditedElement(element: PeriodicElement) {

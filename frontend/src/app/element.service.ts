@@ -61,7 +61,15 @@ export class ElementService {
     return this.httpClient.put<{
       httpStatusCode: number;
       errorMessage: string;
-    }>(this.urlElements, JSON.stringify(elementToUpdate), {headers: headers});
+    }>(this.urlElements, JSON.stringify(elementToUpdate), { headers: headers });
+  }
+
+  private httpDeleteElement(elementId: number) {
+    console.log('about to call api for deleteElement');
+    return this.httpClient.delete<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlElements + elementId);
   }
 
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
@@ -116,10 +124,22 @@ export class ElementService {
 
   // "delete" the element from the table of data
   deleteElement(elementId: number) {
-    this.elementData.set(
-      this.elementData().filter(
-        (itemToDelete) => itemToDelete.elementId !== elementId
-      )
+    console.log('about to call httpDeleteElement()');
+    return this.httpDeleteElement(elementId).pipe(
+      tap({
+        next: (results) => {
+          if (results.httpStatusCode === 200) {
+            console.log('DELETE - elementUpdate - tap - 200 response');
+            this.elementData.set(
+              this.elementData().filter(
+                (itemToDelete) => itemToDelete.elementId !== elementId
+              )
+            );
+          } else {
+            console.log('DELETE - elementUpdate - tap - NOT 200 response');
+          }
+        },
+      })
     );
   }
 

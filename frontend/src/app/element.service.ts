@@ -131,15 +131,17 @@ export class ElementService {
     }
 
     try {
-      // cannot save the data if the element weight isn't numeric.
-      if (
-        Number.isNaN(Number(elementToAdd.weight)) ||
-        elementToAdd.name.length < 3
-      ) {
+      // cannot save the data if the element is not valid.
+      if (Number.isNaN(Number(elementToAdd.weight))) {
         throw (
           "Element weight must be a number. Current value: '" +
           elementToAdd.weight +
           "'."
+        );
+      } else if (elementToAdd.name.length < 3) {
+        throw (
+          'Element name must have a length of at least 3. Element Name = ' +
+          elementToAdd.name
         );
       } else if (elementToAdd.symbol === '') {
         throw (
@@ -215,6 +217,31 @@ export class ElementService {
       let currentElementDataIndex = this.elementData().findIndex(
         (item) => item.elementId === elementToUpdate.elementId
       );
+
+      if (Number.isNaN(Number(elementToUpdate.weight))) {
+        throw (
+          "Element weight must be a number. Current value: '" +
+          elementToUpdate.weight +
+          "'."
+        );
+      } else if (elementToUpdate.name.length < 3) {
+        throw (
+          'Element name must have a length of at least 3. Element Name = ' +
+          elementToUpdate.name
+        );
+      } else if (elementToUpdate.symbol === '') {
+        throw (
+          "Element Symbol must have a value. Element Symbol = '" +
+          elementToUpdate.symbol +
+          "'."
+        );
+      } else if (!this.elementDataExists(elementToUpdate.elementId)) {
+        throw (
+          "ElementId does not exist, but must to edit a periodic element: ElementId = '" +
+          elementToUpdate.elementId +
+          "'."
+        );
+      }
 
       // cannot save the data if the element weight isn't numeric.
       if (

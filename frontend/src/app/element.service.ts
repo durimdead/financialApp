@@ -53,15 +53,17 @@ export class ElementService {
     }>(fetchElementsUrl);
   }
 
-  private httpElementUpdate(elementToUpdate: PeriodicElement) {
+  private httpUpdateElement(elementToUpdate: PeriodicElement) {
     const elementParam = JSON.stringify(elementToUpdate);
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8',
-    });
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+      }),
+    };
     return this.httpClient.put<{
       httpStatusCode: number;
       errorMessage: string;
-    }>(this.urlElements, JSON.stringify(elementToUpdate), { headers: headers });
+    }>(this.urlElements, elementParam, headers);
   }
 
   private httpDeleteElement(elementId: number) {
@@ -70,6 +72,19 @@ export class ElementService {
       httpStatusCode: number;
       errorMessage: string;
     }>(this.urlElements + elementId);
+  }
+
+  private httpAddElement(elementToAdd: PeriodicElement) {
+    const elementParam = JSON.stringify(elementToAdd);
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+      }),
+    };
+    return this.httpClient.post<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlElements, elementParam, headers);
   }
 
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
@@ -110,10 +125,53 @@ export class ElementService {
       ) !== undefined;
 
     // this is either a duplicate or does not have an Id, so we need a unique Id to add the element
+    //TODO: move this to the API controller to have the elementId come from the server side
     if (elementToAdd.elementId < 1 || isDuplicate) {
       elementToAdd.elementId = this.getNextElementId();
     }
-    this.elementData().push(elementToAdd);
+
+    try {
+      // cannot save the data if the element weight isn't numeric.
+      if (
+        Number.isNaN(Number(elementToAdd.weight)) ||
+        elementToAdd.name.length < 3
+      ) {
+        throw (
+          "Element weight must be a number. Current value: '" +
+          elementToAdd.weight +
+          "'."
+        );
+      } else if (elementToAdd.symbol === '') {
+        throw (
+          "Element Symbol must have a value. Element Symbol = '" +
+          elementToAdd.symbol +
+          "'."
+        );
+      } else if (this.elementDataExists(elementToAdd.elementId)) {
+        throw (
+          "ElementId already exists: ElementId = '" +
+          elementToAdd.elementId +
+          "'."
+        );
+      }
+
+      // posts the element to update and updates the datasource appropriately if we don't get an error back.
+      return this.httpAddElement(elementToAdd).pipe(
+        tap({
+          next: (results) => {
+            if (results.httpStatusCode === 200) {
+              console.log('POST - addElement - tap - 200 response');
+              this.elementData().push(elementToAdd);
+            } else {
+              console.log('POST - addElement - tap - NOT 200 response');
+            }
+          },
+        })
+      );
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 
   // ensures we get a unique Id for adding another element
@@ -175,7 +233,7 @@ export class ElementService {
       }
 
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
-      return this.httpElementUpdate(elementToUpdate).pipe(
+      return this.httpUpdateElement(elementToUpdate).pipe(
         tap({
           next: (results) => {
             if (results.httpStatusCode === 200) {

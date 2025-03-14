@@ -128,29 +128,33 @@ export class MaterialTestComponent implements AfterViewInit {
     // this.elementService.deleteElement(elementId);
     // this.refreshMatTableDataSource();
 
-    const subscription = this.elementService.deleteElement(elementId).subscribe({
-      next: (results) => {
-        if (results.httpStatusCode === 200) {
-          console.log('DELETE - deleteElement - matTest - next - 200 response');
-          this.refreshMatTableDataSource();
-        } else {
+    const subscription = this.elementService
+      .deleteElement(elementId)
+      .subscribe({
+        next: (results) => {
+          if (results.httpStatusCode === 200) {
+            console.log(
+              'DELETE - deleteElement - matTest - next - 200 response'
+            );
+            this.refreshMatTableDataSource();
+          } else {
+            console.log(
+              'DELETE - deleteElement - matTest - next - NOT 200 response'
+            );
+            console.log(
+              'DELETE - matTest - "next:" - error' + results.errorMessage
+            );
+          }
+        },
+        error: (error: Error) => {
           console.log(
-            'DELETE - deleteElement - matTest - next - NOT 200 response'
+            'DELETE - deleteElement - matTest - error : ' + error.message
           );
-          console.log(
-            'DELETE - matTest - "next:" - error' + results.errorMessage
-          );
-        }
-      },
-      error: (error: Error) => {
-        console.log(
-          'DELETE - deleteElement - matTest - error : ' + error.message
-        );
-      },
-      complete: () => {
-        console.log('DELETE - deleteElement - matTest - complete');
-      },
-    });
+        },
+        complete: () => {
+          console.log('DELETE - deleteElement - matTest - complete');
+        },
+      });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
@@ -190,7 +194,33 @@ export class MaterialTestComponent implements AfterViewInit {
   // will take the periodic element sent in, update Id to valid one, add to the table
   private addElement(elementToAdd: PeriodicElement) {
     this.elementService.addElement(elementToAdd);
-    this.refreshMatTableDataSource();
+    const subscription = this.elementService
+      .addElement(elementToAdd)
+      .subscribe({
+        next: (results) => {
+          if (results.httpStatusCode === 200) {
+            console.log('POST - addElement - matTest - next - 200 response');
+            this.refreshMatTableDataSource();
+          } else {
+            console.log(
+              'POST - addElement - matTest - next - NOT 200 response'
+            );
+            console.log(
+              'add element - matTest - "next:" - error' +
+                results.errorMessage
+            );
+          }
+        },
+        error: (error: Error) => {
+          console.log(
+            'POST - addElement - matTest - error : ' + error.message
+          );
+        }
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   // opens modal to edit element

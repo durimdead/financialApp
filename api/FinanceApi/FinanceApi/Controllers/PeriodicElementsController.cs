@@ -44,8 +44,22 @@ namespace FinanceApi.Controllers
 
         // POST api/<PeriodicElements>
         [HttpPost]
-        public void Post([FromBody] JsonElement value)
+        public JsonResult Post([FromBody] JsonElement periodicElementToAdd)
         {
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
+
+            try
+            {
+                PeriodicElement elementToAdd = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToAdd) ?? new PeriodicElement();
+                this._elementService.AddElement(elementToAdd);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
         }
 
         // PUT api/<PeriodicElements>

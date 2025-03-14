@@ -61,6 +61,31 @@ namespace FinanceApi.Services
             }
         }
 
+        public void AddElement(PeriodicElement elementToAdd)
+        {
+            try
+            {
+                // ensure we have a valid element to add to the array
+                if (elementToAdd == null)
+                {
+                    throw new NullReferenceException("The elementToUpdate argument cannot be null");
+                }
+                else if (elementToAdd.elementId < 1 || this.periodicElements.Count(element => element.elementId == elementToAdd.elementId) == 1)
+                {
+                    throw new KeyNotFoundException("Element Id is not valid as it is either missing( less than 1 ) or is already within our records. ElementId : " + elementToAdd.elementId);
+                }
+
+                // this is awful - would look for another way, but looking to update the collection to be in a database later anyway.
+                this.periodicElements = this.periodicElements.ToList().Append(elementToAdd).ToArray();
+                var elements = this.periodicElements;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                throw;
+            }
+        }
+
         /// <summary>
         /// delete periodic element from source
         /// </summary>

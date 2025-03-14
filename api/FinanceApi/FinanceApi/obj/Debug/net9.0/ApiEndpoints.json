@@ -18,18 +18,12 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "value",
+        "Name": "periodicElementToAdd",
         "Type": "System.Text.Json.JsonElement",
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
     "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",

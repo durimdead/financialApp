@@ -193,3 +193,100 @@ GO
 *           
 *       #########################################################
 ************************************************************************/
+
+
+/************************************************************************
+*
+*
+*           BEGIN stored procedures -- template gotten from : https://stackoverflow.com/questions/2073737/nested-stored-procedures-containing-try-catch-rollback-pattern/2074139#2074139
+*
+*
+************************************************************************/
+USE [FinancialApp]
+GO
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/17/2025 12:00PM
+=
+=    Description:
+=        Update or insert a periodic element record with the relevant information
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_PeriodicElementUpsert]
+    @periodicElementID AS INTEGER
+    ,@periodicElementName AS VARCHAR(50)
+    ,@periodicElementSymbol AS VARCHAR(3)
+    ,@periodicElementWeight AS DECIMAL(10,6)
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- trim our varchar inputs to ensure we have no whitespace
+        SET @periodicElementName = LTRIM(RTRIM(@periodicElementName));
+        SET @periodicElementSymbol = LTRIM(RTRIM(@periodicElementSymbol));
+
+        -- if we can find a record with the periodicElementID pushed in, let's update the information for it
+        IF EXISTS(SELECT 1 FROM [dbo].[PeriodicElement] WHERE [PeriodicElementId] = @periodicElementID)
+        BEGIN;
+            UPDATE [dbo].[PeriodicElement]
+            SET
+                [PeriodicElementName] = @periodicElementName
+                ,[PeriodicElementSymbol] = @periodicElementSymbol
+                ,[PeriodicElementWeight] = @periodicElementWeight
+            WHERE
+                [PeriodicElementId] = @periodicElementID
+        END;
+        -- else, we check to see if the periodicElementID sent in is 0 - indicating a new record
+        ELSE IF (@periodicElementID = 0)
+        BEGIN;
+            INSERT INTO [dbo].[PeriodicElement](
+                [PeriodicElementName]
+                ,[PeriodicElementSymbol]
+                ,[PeriodicElementWeight]
+            )
+            VALUES(
+                @periodicElementName
+                ,@periodicElementSymbol
+                ,@periodicElementWeight
+            );
+        END;
+        -- if the ID doesn't exists and is not 0, the periodic element doesn't exist and we can't update it.
+        ELSE
+        BEGIN;
+            THROW 51001, 'The PeriodicElementID does not exist', 1;
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
+
+
+/************************************************************************
+*       #########################################################
+*           
+*           END stored procedures
+*           
+*       #########################################################
+************************************************************************/

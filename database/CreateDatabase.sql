@@ -358,7 +358,7 @@ GO
 USE [FinancialApp]
 GO
 
-CREATE VIEW [dbo].[vPeriodicElements]
+CREATE VIEW [dbo].[vPeriodicElement]
 AS
 SELECT
     [PeriodicElementId]

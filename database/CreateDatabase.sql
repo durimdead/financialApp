@@ -175,7 +175,7 @@ CREATE TABLE [dbo].[PeriodicElement](
     [PeriodicElementId] INT IDENTITY(1,1) NOT NULL
     ,[PeriodicElementName] VARCHAR(100) NOT NULL
     ,[PeriodicElementSymbol] VARCHAR(3) NOT NULL
-    ,[PeriodicElementWeight] DECIMAL(10,6) NOT NULL
+    ,[PeriodicElementWeight] FLOAT NOT NULL
     ,CONSTRAINT [PK_PeriodicElementID] PRIMARY KEY CLUSTERED
     ([PeriodicElementId] ASC) 
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START

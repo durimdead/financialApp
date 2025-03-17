@@ -159,3 +159,37 @@ GO
 -- grant execute permissions for Sprocs
 GRANT EXECUTE TO [FinancialAppAccount]
 GO
+
+
+/************************************************************************
+*
+*
+*           BEGIN table creation for [FinancialApp] database
+*
+*
+************************************************************************/
+USE [FinancialApp]
+GO
+
+CREATE TABLE [dbo].[PeriodicElement](
+    [PeriodicElementId] INT IDENTITY(1,1) NOT NULL
+    ,[PeriodicElementName] VARCHAR(100) NOT NULL
+    ,[PeriodicElementSymbol] VARCHAR(3) NOT NULL
+    ,[PeriodicElementWeight] DECIMAL(10,6) NOT NULL
+    ,CONSTRAINT [PK_PeriodicElementID] PRIMARY KEY CLUSTERED
+    ([PeriodicElementId] ASC) 
+    ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
+    ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
+    ,PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo)
+    )
+    WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[PeriodicElementAudit])
+);
+GO
+
+/************************************************************************
+*       #########################################################
+*           
+*           END table creation for [FinancialApp] database
+*           
+*       #########################################################
+************************************************************************/

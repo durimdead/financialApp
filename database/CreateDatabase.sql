@@ -377,3 +377,31 @@ GO
 *           
 *       #########################################################
 ************************************************************************/
+
+
+/************************************************************************
+*
+*
+*           BEGIN Sample Data Entry
+*
+*
+************************************************************************/
+USE [FinancialApp]
+GO
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Hydrogen', N'H', 1.0079
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Helium', N'He', 4.0026
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Lithium', N'Li', 6.941
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Beryllium', N'Be', 9.0122
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Boron', N'B', 10.811
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Carbon', N'C', 12.0107
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Nitrogen', N'N', 14.0067
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Oxygen', N'O', 15.9994
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Fluorine', N'F', 18.9984
+exec [dbo].[usp_PeriodicElementUpsert] 0, N'Neon', N'Ne', 20.1797
+/************************************************************************
+*       #########################################################
+*           
+*           END Sample Data Entry
+*           
+*       #########################################################
+************************************************************************/

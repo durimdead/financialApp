@@ -1,3 +1,6 @@
+using FinanceApi.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var allowLocalhostOrigins = "localhost";
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,7 @@ builder.Services.AddCors(options =>
                             .AllowCredentials();
                       });
 });
+builder.Services.AddDbContext<FinancialAppContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAppDatabase")));
 
 // Add services to the container.
 

@@ -1,5 +1,6 @@
 ﻿using FinanceApi.Controllers;
 using FinanceApi.Models;
+using FinanceApi.Repositories;
 using FinanceApi.Services.Interfaces;
 
 namespace FinanceApi.Services
@@ -7,11 +8,13 @@ namespace FinanceApi.Services
     public class ElementService : IElement
     {
         private readonly ILogger<ElementService> _logger;
-        public ElementService(ILogger<ElementService> logger) {
+        private readonly FinancialAppContext _context;
+        public ElementService(ILogger<ElementService> logger, FinancialAppContext context) {
             this._logger = logger;
+            this._context = context;
         }
 
-        private PeriodicElement[] periodicElements = new PeriodicElement[] {
+        private PeriodicElement[] staticPeriodicElements = new PeriodicElement[] {
             new PeriodicElement(){ actions = "", elementId = 1, name = "Hydrogen", weight = 1.0079, symbol = "H" },
             new PeriodicElement(){ actions = "", elementId = 2, name = "Helium", weight = 4.0026, symbol = "He" },
             new PeriodicElement(){ actions = "", elementId = 3, name = "Lithium", weight = 6.941, symbol = "Li" },
@@ -30,7 +33,17 @@ namespace FinanceApi.Services
         /// <returns></returns>
         public PeriodicElement[] GetElements()
         {
-            return this.periodicElements;
+            //var periodicElements = this._context.vPeriodicElement.ToArray();
+
+            var periodicElements = this._context.vPeriodicElement.Select(x => new PeriodicElement()
+            {
+                actions = "",
+                elementId = x.PeriodicElementID,
+                name = x.PeriodicElementName,
+                weight = x.PeriodicElementWeight,
+                symbol = x.PeriodicElementSymbol
+            }).ToArray();
+            return periodicElements;
         }
 
         /// <summary>
@@ -45,14 +58,14 @@ namespace FinanceApi.Services
                 {
                     throw new NullReferenceException("The elementToUpdate argument cannot be null");
                 }
-                else if (elementToUpdate.elementId < 1 || this.periodicElements.Count(element => element.elementId == elementToUpdate.elementId) != 1)
+                else if (elementToUpdate.elementId < 1 || this.staticPeriodicElements.Count(element => element.elementId == elementToUpdate.elementId) != 1)
                 {
                     throw new KeyNotFoundException("Element Id is missing or is not within our records. ElementId : " + elementToUpdate.elementId);
                 }
 
                 // update the element with the parameter
-                this.periodicElements[Array.FindIndex(this.periodicElements, element => element.elementId == elementToUpdate.elementId)] = elementToUpdate;
-                var elements = this.periodicElements;
+                this.staticPeriodicElements[Array.FindIndex(this.staticPeriodicElements, element => element.elementId == elementToUpdate.elementId)] = elementToUpdate;
+                var elements = this.staticPeriodicElements;
             }
             catch (Exception e)
             {
@@ -70,14 +83,14 @@ namespace FinanceApi.Services
                 {
                     throw new NullReferenceException("The elementToUpdate argument cannot be null");
                 }
-                else if (elementToAdd.elementId < 1 || this.periodicElements.Count(element => element.elementId == elementToAdd.elementId) == 1)
+                else if (elementToAdd.elementId < 1 || this.staticPeriodicElements.Count(element => element.elementId == elementToAdd.elementId) == 1)
                 {
                     throw new KeyNotFoundException("Element Id is not valid as it is either missing( less than 1 ) or is already within our records. ElementId : " + elementToAdd.elementId);
                 }
 
                 // this is awful - would look for another way, but looking to update the collection to be in a database later anyway.
-                this.periodicElements = this.periodicElements.ToList().Append(elementToAdd).ToArray();
-                var elements = this.periodicElements;
+                this.staticPeriodicElements = this.staticPeriodicElements.ToList().Append(elementToAdd).ToArray();
+                var elements = this.staticPeriodicElements;
             }
             catch (Exception e)
             {
@@ -94,7 +107,7 @@ namespace FinanceApi.Services
         {
             try
             {
-                this.periodicElements = this.periodicElements.Where(x => x.elementId != elementId).ToArray();
+                this.staticPeriodicElements = this.staticPeriodicElements.Where(x => x.elementId != elementId).ToArray();
             }
             catch(Exception e)
             {

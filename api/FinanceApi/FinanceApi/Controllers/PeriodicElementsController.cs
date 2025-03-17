@@ -3,6 +3,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using FinanceApi.Services;
 using System.Text.Json;
+using FinanceApi.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,10 +16,10 @@ namespace FinanceApi.Controllers
         private readonly ILogger<PeriodicElementsController> _logger;
         private readonly ElementService _elementService;
 
-        public PeriodicElementsController(ILogger<PeriodicElementsController> logger, ILogger<ElementService> elementsLogger)
+        public PeriodicElementsController(ILogger<PeriodicElementsController> logger, ILogger<ElementService> elementsLogger, FinancialAppContext context)
         {
             _logger = logger;
-            _elementService = new ElementService(elementsLogger);
+            _elementService = new ElementService(elementsLogger, context);
         }
         // GET: api/<PeriodicElements>
         [HttpGet]

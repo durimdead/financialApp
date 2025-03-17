@@ -283,6 +283,59 @@ END CATCH
 GO
 
 
+
+
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/17/2025 12:00PM
+=
+=    Description:
+=        Delete a periodic element record given the PeriodicElementID
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_PeriodicElementDelete]
+    @periodicElementID AS INTEGER
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- if we can find a record for the periodicElementID pushed in, delete it.
+        -- if we don't find it - no matter, the periodic element doesn't exist anyway and there's nothing to do
+        IF EXISTS(SELECT 1 FROM [dbo].[PeriodicElement] WHERE [PeriodicElementId] = @periodicElementID)
+        BEGIN;
+            DELETE FROM [dbo].[PeriodicElement]
+            WHERE
+                [PeriodicElementId] = @periodicElementID
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
+
+
+
 /************************************************************************
 *       #########################################################
 *           

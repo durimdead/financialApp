@@ -50,22 +50,29 @@ namespace FinanceApi.Services
         /// update periodic element in source
         /// </summary>
         /// <param name="elementToUpdate">will update this element. Finds the correct record to update based on ElementId in this object</param>
-        public void UpdateElement(PeriodicElement elementToUpdate) {
+        public void UpdateElement(string elementName, string elementSymbol, double elementWeight, int elementID) {
             try
             {
-                // make sure we are able to update the element sent in
-                if (elementToUpdate == null)
+                //// make sure we are able to update the element sent in
+                //if (elementToUpdate == null)
+                //{
+                //    throw new NullReferenceException("The elementToUpdate argument cannot be null");
+                //}
+                //else if (elementToUpdate.elementId < 1 || this.staticPeriodicElements.Count(element => element.elementId == elementToUpdate.elementId) != 1)
+                //{
+                //    throw new KeyNotFoundException("Element Id is missing or is not within our records. ElementId : " + elementToUpdate.elementId);
+                //}
+
+                // make sure the elementID sent in is going to be valid
+                if (elementID < 1)
                 {
-                    throw new NullReferenceException("The elementToUpdate argument cannot be null");
-                }
-                else if (elementToUpdate.elementId < 1 || this.staticPeriodicElements.Count(element => element.elementId == elementToUpdate.elementId) != 1)
-                {
-                    throw new KeyNotFoundException("Element Id is missing or is not within our records. ElementId : " + elementToUpdate.elementId);
+                    throw new KeyNotFoundException("Element Id is missing. ElementId : " + elementID);
                 }
 
                 // update the element with the parameter
-                this.staticPeriodicElements[Array.FindIndex(this.staticPeriodicElements, element => element.elementId == elementToUpdate.elementId)] = elementToUpdate;
-                var elements = this.staticPeriodicElements;
+                //this.staticPeriodicElements[Array.FindIndex(this.staticPeriodicElements, element => element.elementId == elementToUpdate.elementId)] = elementToUpdate;
+                //var elements = this.staticPeriodicElements;
+                this._context.usp_PeriodicElementUpsert(elementName, elementSymbol, elementWeight, elementID);
             }
             catch (Exception e)
             {

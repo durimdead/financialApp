@@ -77,7 +77,7 @@ namespace FinanceApi.Controllers
             try
             {
                 PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToUpdate) ?? new PeriodicElement();
-                this._elementService.UpdateElement(elementToSave);
+                this._elementService.UpdateElement(elementToSave.name, elementToSave.symbol, elementToSave.weight, elementToSave.elementId);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)

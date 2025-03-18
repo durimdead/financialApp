@@ -34,9 +34,13 @@ namespace FinanceApi.Services
         }
 
         /// <summary>
-        /// update periodic element in source
+        /// update periodic element in database
         /// </summary>
-        /// <param name="elementToUpdate">will update this element. Finds the correct record to update based on ElementId in this object</param>
+        /// <param name="elementName">element name (max 50 characters)</param>
+        /// <param name="elementSymbol">element symbol (max 3 characters)</param>
+        /// <param name="elementWeight">element weight</param>
+        /// <param name="elementID">positive integer representing element ID</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the elementID is < 1, it is invalid as this would never exist in the database</exception>
         public void UpdateElement(string elementName, string elementSymbol, double elementWeight, int elementID) {
             try
             {
@@ -53,7 +57,7 @@ namespace FinanceApi.Services
                 // make sure the elementID sent in is going to be valid
                 if (elementID < 1)
                 {
-                    throw new KeyNotFoundException("Element Id is missing. ElementId : " + elementID);
+                    throw new ArgumentOutOfRangeException("Element ID must be larger than 0. ElementId : " + elementID);
                 }
 
                 // update the element with the parameter
@@ -68,6 +72,12 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Adds new element to the database. Does not take in an ID since the elementID field is an Identity column
+        /// </summary>
+        /// <param name="elementName">element name (max 50 characters)</param>
+        /// <param name="elementSymbol">element symbol (max 3 characters)</param>
+        /// <param name="elementWeight">element weight</param>
         public void AddElement(string elementName, string elementSymbol, double elementWeight)
         {
             try
@@ -97,15 +107,22 @@ namespace FinanceApi.Services
         }
 
         /// <summary>
-        /// delete periodic element from source
+        /// delete periodic element from database
         /// </summary>
-        /// <param name="elementId">id of the element to delete</param>
-        public void DeleteElement(int elementId)
+        /// <param name="elementID">id of the element to delete. Will attempt to delete it</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the elementID is < 1, it is invalid as this would never exist in the database</exception>
+        public void DeleteElement(int elementID)
         {
             try
             {
+                // make sure the elementID sent in is going to be valid
+                if (elementID < 1)
+                {
+                    throw new ArgumentOutOfRangeException("Element ID must be larger than 0. ElementId : " + elementID);
+                }
+
                 //this.staticPeriodicElements = this.staticPeriodicElements.Where(x => x.elementId != elementId).ToArray();
-                this._context.usp_PeriodicElementDelete(elementId);
+                this._context.usp_PeriodicElementDelete(elementID);
             }
             catch(Exception e)
             {

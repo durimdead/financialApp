@@ -117,7 +117,8 @@ namespace FinanceApi.Services
         {
             try
             {
-                this.staticPeriodicElements = this.staticPeriodicElements.Where(x => x.elementId != elementId).ToArray();
+                //this.staticPeriodicElements = this.staticPeriodicElements.Where(x => x.elementId != elementId).ToArray();
+                this._context.usp_PeriodicElementDelete(elementId);
             }
             catch(Exception e)
             {

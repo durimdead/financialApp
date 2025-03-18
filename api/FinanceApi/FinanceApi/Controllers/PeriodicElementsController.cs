@@ -52,7 +52,7 @@ namespace FinanceApi.Controllers
             try
             {
                 PeriodicElement elementToAdd = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToAdd) ?? new PeriodicElement();
-                this._elementService.AddElement(elementToAdd);
+                this._elementService.AddElement(elementToAdd.name, elementToAdd.symbol, elementToAdd.weight);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)

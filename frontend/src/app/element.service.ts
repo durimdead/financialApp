@@ -119,11 +119,6 @@ export class ElementService {
 
   // add element provided it is not already in the list AND it has a valid elementId
   addElement(elementToAdd: PeriodicElement) {
-    let isDuplicate =
-      this.elementData().find(
-        (element) => element.elementId === elementToAdd.elementId
-      ) !== undefined;
-
     try {
       // cannot save the data if the element is not valid.
       if (Number.isNaN(Number(elementToAdd.weight))) {
@@ -206,9 +201,9 @@ export class ElementService {
           'Element name must have a length of at least 3. Element Name = ' +
           elementToUpdate.name
         );
-      } else if (elementToUpdate.symbol === '') {
+      } else if (elementToUpdate.symbol === '' && elementToUpdate.symbol.length <= 3) {
         throw (
-          "Element Symbol must have a value. Element Symbol = '" +
+          "Element Symbol must have a value and be no more then 3 characters long. Element Symbol = '" +
           elementToUpdate.symbol +
           "'."
         );
@@ -235,6 +230,8 @@ export class ElementService {
           "'."
         );
       }
+
+	  console.log('about to run httpUpdateElement function');
 
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
       return this.httpUpdateElement(elementToUpdate).pipe(

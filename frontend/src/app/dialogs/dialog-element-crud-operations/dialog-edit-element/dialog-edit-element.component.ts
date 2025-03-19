@@ -79,7 +79,7 @@ export class DialogEditElementComponent {
     if (!this.form.invalid) {
       let editedElement = this.inputData.elementData;
       editedElement.name = this.form.controls.elementName.value;
-      editedElement.weight = this.form.controls.elementWeight.value;
+      editedElement.weight = Number(this.form.controls.elementWeight.value);
       editedElement.symbol = this.form.controls.elementSymbol.value;
       this.dialogRef.close(editedElement);
     }

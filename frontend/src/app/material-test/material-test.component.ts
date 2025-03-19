@@ -166,8 +166,7 @@ export class MaterialTestComponent implements AfterViewInit {
     const subscription = this.elementService.updateElement(element).subscribe({
       next: (results) => {
         if (results.httpStatusCode === 200) {
-          console.log('POST - elementUpdate - matTest - next - 200 response');
-          this.refreshMatTableDataSource();
+          this.updateElementsDataFromSource();
         } else {
           console.log(
             'POST - elementUpdate - matTest - next - NOT 200 response'

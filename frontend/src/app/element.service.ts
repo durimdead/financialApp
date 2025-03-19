@@ -1,11 +1,10 @@
-import { DestroyRef, inject, Injectable, OnInit, signal } from '@angular/core';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import {
-  ElementApiGet,
   PeriodicElement,
   PeriodicElementCrudData,
 } from '../app.interfaces';
-import { HttpClient, HttpHeaders, HttpStatusCode } from '@angular/common/http';
-import { catchError, lastValueFrom, map, tap, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -34,11 +33,7 @@ export class ElementService {
       tap({
         next: (results) => {
           if (results.httpStatusCode === 200) {
-            console.log('tap - next - 200');
             this.elementData.set(results.elementData);
-          } else if (results.httpStatusCode >= 500) {
-            console.log('tap - next - not 200');
-            console.log(results.errorMessage);
           }
         },
       })
@@ -67,7 +62,6 @@ export class ElementService {
   }
 
   private httpDeleteElement(elementId: number) {
-    console.log('about to call api for deleteElement');
     return this.httpClient.delete<{
       httpStatusCode: number;
       errorMessage: string;
@@ -214,8 +208,6 @@ export class ElementService {
           "'."
         );
       }
-
-	  console.log('about to run httpUpdateElement function');
 
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
       return this.httpUpdateElement(elementToUpdate);

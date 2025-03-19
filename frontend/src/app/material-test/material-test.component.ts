@@ -1,14 +1,10 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   DestroyRef,
   ViewChild,
-  effect,
   inject,
-  signal,
 } from '@angular/core';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
 import {
@@ -22,7 +18,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { PeriodicElement } from '../../app.interfaces';
 import { ElementService } from '../element.service';
 import { DialogElementCrudOperationsComponent } from '../dialogs/dialog-element-crud-operations/dialog-element-crud-operations.component';
-import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-material-test',
@@ -36,7 +31,6 @@ export class MaterialTestComponent implements AfterViewInit {
   readonly dialog = inject(MatDialog);
   private _liveAnnouncer = inject(LiveAnnouncer);
   private elementData = this.elementService.ELEMENT_DATA;
-  private changeDetectorRefs = inject(ChangeDetectorRef);
 
   // makeshift way of naming HTML element ids to grab the data from the HTML table
   // since the way Angular Material doesn't lend itself well to the way I wanted to
@@ -59,8 +53,6 @@ export class MaterialTestComponent implements AfterViewInit {
   @ViewChild(MatSort) sort: MatSort = new MatSort();
 
   ngAfterViewInit() {
-    //TODO: fix this mess of a situation to make it no longer use SetInterval()
-    console.log('afterViewInit');
     this.updateElementsDataFromSource();
   }
 
@@ -162,20 +154,18 @@ export class MaterialTestComponent implements AfterViewInit {
           this.updateElementsDataFromSource();
         } else {
           console.log(
-            'POST - elementUpdate - matTest - next - NOT 200 response'
-          );
-          console.log(
-            'update element - matTest - "next:" - error' + results.errorMessage
+            'server error updating elementId ' +
+              element.elementId +
+              '. Error: ' +
+              results.errorMessage
           );
         }
       },
       error: (error: Error) => {
         console.log(
-          'POST - elementUpdate - matTest - error : ' + error.message
+          'error updating elementId ' + element.elementId + '. Error: '
         );
-      },
-      complete: () => {
-        console.log('POST - elementUpdate - matTest - complete');
+        console.log(error);
       },
     });
 
@@ -191,19 +181,23 @@ export class MaterialTestComponent implements AfterViewInit {
       .subscribe({
         next: (results) => {
           if (results.httpStatusCode === 200) {
-            console.log('POST - addElement - matTest - next - 200 response');
             this.updateElementsDataFromSource();
           } else {
             console.log(
-              'POST - addElement - matTest - next - NOT 200 response'
-            );
-            console.log(
-              'add element - matTest - "next:" - error' + results.errorMessage
+              'server error adding element - element name "' +
+                elementToAdd.name +
+                '". Error: ' +
+                results.errorMessage
             );
           }
         },
         error: (error: Error) => {
-          console.log('POST - addElement - matTest - error : ' + error.message);
+          console.log(
+            'error adding new element - element name - "' +
+              elementToAdd.name +
+              '". Error: '
+          );
+          console.log(error);
         },
       });
 
@@ -244,11 +238,10 @@ export class MaterialTestComponent implements AfterViewInit {
   updateElementsDataFromSource() {
     const subscription = this.elementService.elementsFetcher().subscribe({
       error: (error: Error) => {
+        console.log('error fetching elements from server: ');
         console.log(error);
-        //   this.error.set(error.message);
       },
       complete: () => {
-        console.log('complete');
         this.refreshMatTableDataSource();
       },
     });

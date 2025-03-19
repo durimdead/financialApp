@@ -133,26 +133,19 @@ export class MaterialTestComponent implements AfterViewInit {
       .subscribe({
         next: (results) => {
           if (results.httpStatusCode === 200) {
-            console.log(
-              'DELETE - deleteElement - matTest - next - 200 response'
-            );
             this.updateElementsDataFromSource();
           } else {
             console.log(
-              'DELETE - deleteElement - matTest - next - NOT 200 response'
-            );
-            console.log(
-              'DELETE - matTest - "next:" - error' + results.errorMessage
+              'server error deleting elementId ' +
+                elementId +
+                '. Error: ' +
+                results.errorMessage
             );
           }
         },
         error: (error: Error) => {
-          console.log(
-            'DELETE - deleteElement - matTest - error : ' + error.message
-          );
-        },
-        complete: () => {
-          console.log('DELETE - deleteElement - matTest - complete');
+          console.log('error deleting elementId ' + elementId + '. Error: ');
+          console.log(error);
         },
       });
 
@@ -199,22 +192,19 @@ export class MaterialTestComponent implements AfterViewInit {
         next: (results) => {
           if (results.httpStatusCode === 200) {
             console.log('POST - addElement - matTest - next - 200 response');
-			this.updateElementsDataFromSource();
+            this.updateElementsDataFromSource();
           } else {
             console.log(
               'POST - addElement - matTest - next - NOT 200 response'
             );
             console.log(
-              'add element - matTest - "next:" - error' +
-                results.errorMessage
+              'add element - matTest - "next:" - error' + results.errorMessage
             );
           }
         },
         error: (error: Error) => {
-          console.log(
-            'POST - addElement - matTest - error : ' + error.message
-          );
-        }
+          console.log('POST - addElement - matTest - error : ' + error.message);
+        },
       });
 
     this.destroyRef.onDestroy(() => {

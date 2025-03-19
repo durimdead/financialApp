@@ -156,23 +156,7 @@ export class ElementService {
 
   // "delete" the element from the table of data
   deleteElement(elementId: number) {
-    console.log('about to call httpDeleteElement()');
-    return this.httpDeleteElement(elementId).pipe(
-      tap({
-        next: (results) => {
-          if (results.httpStatusCode === 200) {
-            console.log('DELETE - elementUpdate - tap - 200 response');
-            this.elementData.set(
-              this.elementData().filter(
-                (itemToDelete) => itemToDelete.elementId !== elementId
-              )
-            );
-          } else {
-            console.log('DELETE - elementUpdate - tap - NOT 200 response');
-          }
-        },
-      })
-    );
+    return this.httpDeleteElement(elementId);
   }
 
   // determines if any data for this elementId exists in the elementData array
@@ -234,18 +218,7 @@ export class ElementService {
 	  console.log('about to run httpUpdateElement function');
 
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
-      return this.httpUpdateElement(elementToUpdate).pipe(
-        tap({
-          next: (results) => {
-            if (results.httpStatusCode === 200) {
-              console.log('POST - elementUpdate - tap - 200 response');
-              this.elementData()[currentElementDataIndex] = elementToUpdate;
-            } else {
-              console.log('POST - elementUpdate - tap - NOT 200 response');
-            }
-          },
-        })
-      );
+      return this.httpUpdateElement(elementToUpdate);
     } catch (e) {
       console.log(e);
       throw e;

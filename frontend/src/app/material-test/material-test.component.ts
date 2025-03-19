@@ -136,7 +136,7 @@ export class MaterialTestComponent implements AfterViewInit {
             console.log(
               'DELETE - deleteElement - matTest - next - 200 response'
             );
-            this.refreshMatTableDataSource();
+            this.updateElementsDataFromSource();
           } else {
             console.log(
               'DELETE - deleteElement - matTest - next - NOT 200 response'

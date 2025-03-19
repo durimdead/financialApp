@@ -51,7 +51,9 @@ export class DialogAddElementComponent {
       Validators.required,
       this.formValidator.mustBeNumber,
     ]),
-    elementSymbol: new FormControl('', [Validators.required]),
+    elementSymbol: new FormControl('', {
+		validators: [Validators.required, Validators.maxLength(3)]
+	}),
   });
 
   getElementCrudStates() {
@@ -97,7 +99,9 @@ export class DialogAddElementComponent {
           'Minimum Length : ' + controlErrors[currentError].requiredLength;
       } else if (currentError === 'isNotANumber') {
         currentErrorMessage = 'This must be Numeric.';
-      } else {
+      } else if (currentError === 'maxlength'){
+		currentErrorMessage = 'Maximum Length : ' + controlErrors[currentError].requiredLength;
+	  } else {
         currentErrorMessage = 'Unknown validation error.';
       }
 

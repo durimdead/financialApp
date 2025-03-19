@@ -65,7 +65,9 @@ export class DialogEditElementComponent {
       this.inputData.elementData.elementId > 0
         ? this.inputData.elementData.symbol
         : '',
-      [Validators.required]
+      {
+        validators: [Validators.required, Validators.maxLength(3)],
+      }
     ),
   });
 
@@ -105,6 +107,9 @@ export class DialogEditElementComponent {
           'Minimum Length : ' + controlErrors[currentError].requiredLength;
       } else if (currentError === 'isNotANumber') {
         currentErrorMessage = 'This must be Numeric.';
+      } else if (currentError === 'maxlength') {
+        currentErrorMessage =
+          'Maximum Length : ' + controlErrors[currentError].requiredLength;
       } else {
         currentErrorMessage = 'Unknown validation error.';
       }
@@ -117,20 +122,4 @@ export class DialogEditElementComponent {
     });
     return messageToShow;
   }
-
-  // constructor() {
-  // merge(this.email.statusChanges, this.email.valueChanges)
-  //   .pipe(takeUntilDestroyed())
-  //   .subscribe(() => this.updateErrorMessage());
-  // }
-
-  // updateErrorMessage() {
-  //   if (this.email.hasError('required')) {
-  //     this.errorMessage.set('You must enter a value');
-  //   } else if (this.email.hasError('email')) {
-  //     this.errorMessage.set('Not a valid email');
-  //   } else {
-  //     this.errorMessage.set('');
-  //   }
-  // }
 }

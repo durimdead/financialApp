@@ -124,12 +124,6 @@ export class ElementService {
         (element) => element.elementId === elementToAdd.elementId
       ) !== undefined;
 
-    // this is either a duplicate or does not have an Id, so we need a unique Id to add the element
-    //TODO: move this to the API controller to have the elementId come from the server side
-    if (elementToAdd.elementId < 1 || isDuplicate) {
-      elementToAdd.elementId = this.getNextElementId();
-    }
-
     try {
       // cannot save the data if the element is not valid.
       if (Number.isNaN(Number(elementToAdd.weight))) {
@@ -143,33 +137,16 @@ export class ElementService {
           'Element name must have a length of at least 3. Element Name = ' +
           elementToAdd.name
         );
-      } else if (elementToAdd.symbol === '') {
+      } else if (elementToAdd.symbol === '' && elementToAdd.symbol.length <= 3) {
         throw (
-          "Element Symbol must have a value. Element Symbol = '" +
+          "Element Symbol must have a value and be less than 3 characters long. Element Symbol = '" +
           elementToAdd.symbol +
-          "'."
-        );
-      } else if (this.elementDataExists(elementToAdd.elementId)) {
-        throw (
-          "ElementId already exists: ElementId = '" +
-          elementToAdd.elementId +
           "'."
         );
       }
 
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
-      return this.httpAddElement(elementToAdd).pipe(
-        tap({
-          next: (results) => {
-            if (results.httpStatusCode === 200) {
-              console.log('POST - addElement - tap - 200 response');
-              this.elementData().push(elementToAdd);
-            } else {
-              console.log('POST - addElement - tap - NOT 200 response');
-            }
-          },
-        })
-      );
+      return this.httpAddElement(elementToAdd);
     } catch (e) {
       console.log(e);
       throw e;

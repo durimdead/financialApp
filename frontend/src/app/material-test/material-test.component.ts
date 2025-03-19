@@ -200,7 +200,7 @@ export class MaterialTestComponent implements AfterViewInit {
         next: (results) => {
           if (results.httpStatusCode === 200) {
             console.log('POST - addElement - matTest - next - 200 response');
-            this.refreshMatTableDataSource();
+			this.updateElementsDataFromSource();
           } else {
             console.log(
               'POST - addElement - matTest - next - NOT 200 response'

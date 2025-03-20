@@ -6,7 +6,7 @@ import {
 import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
-import { ElementService } from '../../element.service';
+import { ElementService } from '../../../element.service';
 import { DialogDeleteElementConfirmationComponent } from './dialog-delete-element-confirmation/dialog-delete-element-confirmation.component';
 import { DialogAddElementComponent } from './dialog-add-element/dialog-add-element.component';
 import { DialogEditElementComponent } from './dialog-edit-element/dialog-edit-element.component';

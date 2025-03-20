@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, inject, input, OnInit} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
-import { PeriodicElement } from '../../../../app.interfaces';
+import { PeriodicElement } from '../../../../../app.interfaces';
 
 @Component({
   selector: 'app-dialog-delete-element-confirmation',

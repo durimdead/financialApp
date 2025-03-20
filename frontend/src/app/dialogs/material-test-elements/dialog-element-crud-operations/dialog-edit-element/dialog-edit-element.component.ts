@@ -15,15 +15,15 @@ import {
 } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { PeriodicElement } from '../../../../app.interfaces';
+import { PeriodicElement } from '../../../../../app.interfaces';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { ElementService } from '../../../element.service';
-import { FormValidators } from '../../../../app.form-validators';
+import { ElementService } from '../../../../element.service';
+import { FormValidators } from '../../../../../app.form-validators';
 @Component({
   selector: 'app-dialog-edit-element',
   imports: [

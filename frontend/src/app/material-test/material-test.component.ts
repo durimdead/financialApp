@@ -17,7 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { PeriodicElement } from '../../app.interfaces';
 import { ElementService } from '../element.service';
-import { DialogElementCrudOperationsComponent } from '../dialogs/dialog-element-crud-operations/dialog-element-crud-operations.component';
+import { DialogElementCrudOperationsComponent } from '../dialogs/material-test-elements/dialog-element-crud-operations/dialog-element-crud-operations.component';
 
 @Component({
   selector: 'app-material-test',

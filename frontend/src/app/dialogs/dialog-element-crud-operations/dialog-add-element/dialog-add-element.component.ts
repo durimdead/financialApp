@@ -67,9 +67,9 @@ export class DialogAddElementComponent {
       let newElement: PeriodicElement = {
         elementId: this.elementService.getNextElementId(),
         actions: '',
-        name: this.form.controls.elementName.value as string,
-        weight: Number(this.form.controls.elementWeight.value),
-        symbol: this.form.controls.elementSymbol.value as string,
+        elementName: this.form.controls.elementName.value as string,
+        elementWeight: Number(this.form.controls.elementWeight.value),
+        elementSymbol: this.form.controls.elementSymbol.value as string,
       };
       this.dialogRef.close(newElement);
     }

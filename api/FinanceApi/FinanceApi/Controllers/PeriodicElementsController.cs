@@ -52,7 +52,7 @@ namespace FinanceApi.Controllers
             try
             {
                 PeriodicElement elementToAdd = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToAdd) ?? new PeriodicElement();
-                this._elementService.AddElement(elementToAdd.name, elementToAdd.symbol, elementToAdd.weight);
+                this._elementService.AddElement(elementToAdd.elementName, elementToAdd.elementSymbol, elementToAdd.elementWeight);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -77,7 +77,7 @@ namespace FinanceApi.Controllers
             try
             {
                 PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToUpdate) ?? new PeriodicElement();
-                this._elementService.UpdateElement(elementToSave.name, elementToSave.symbol, elementToSave.weight, elementToSave.elementId);
+                this._elementService.UpdateElement(elementToSave.elementName, elementToSave.elementSymbol, elementToSave.elementWeight, elementToSave.elementId);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)

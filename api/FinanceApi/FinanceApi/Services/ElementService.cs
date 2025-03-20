@@ -26,9 +26,9 @@ namespace FinanceApi.Services
             {
                 actions = "",
                 elementId = x.PeriodicElementID,
-                name = x.PeriodicElementName,
-                weight = x.PeriodicElementWeight,
-                symbol = x.PeriodicElementSymbol
+                elementName = x.PeriodicElementName,
+                elementWeight = x.PeriodicElementWeight,
+                elementSymbol = x.PeriodicElementSymbol
             }).ToArray();
             return periodicElements;
         }

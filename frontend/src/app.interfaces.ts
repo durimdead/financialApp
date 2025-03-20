@@ -1,9 +1,9 @@
 export interface PeriodicElement {
     actions: string;
-    name: string;
+    elementName: string;
     elementId: number;
-    weight: number;
-    symbol: string;
+    elementWeight: number;
+    elementSymbol: string;
 }
 
 export interface PeriodicElementCrudData{

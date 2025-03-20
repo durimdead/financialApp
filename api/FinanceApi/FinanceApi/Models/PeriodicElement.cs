@@ -4,8 +4,8 @@
     {
         public int elementId { get; set; }
         public string actions { get; set; }
-        public string name { get; set; }
-        public string symbol { get; set; }
-        public double weight { get; set; }
+        public string elementName { get; set; }
+        public string elementSymbol { get; set; }
+        public double elementWeight { get; set; }
     }
 }

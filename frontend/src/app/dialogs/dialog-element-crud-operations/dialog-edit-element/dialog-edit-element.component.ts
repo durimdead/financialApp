@@ -49,7 +49,7 @@ export class DialogEditElementComponent {
   form = new FormGroup({
     elementName: new FormControl(
       this.inputData.elementData.elementId > 0
-        ? this.inputData.elementData.name
+        ? this.inputData.elementData.elementName
         : '',
       {
         validators: [Validators.required, Validators.minLength(3)],
@@ -57,13 +57,13 @@ export class DialogEditElementComponent {
     ),
     elementWeight: new FormControl(
       this.inputData.elementData.elementId > 0
-        ? this.inputData.elementData.weight
+        ? this.inputData.elementData.elementWeight
         : '',
       [Validators.required, this.formValidator.mustBeNumber]
     ),
     elementSymbol: new FormControl(
       this.inputData.elementData.elementId > 0
-        ? this.inputData.elementData.symbol
+        ? this.inputData.elementData.elementSymbol
         : '',
       {
         validators: [Validators.required, Validators.maxLength(3)],
@@ -78,9 +78,9 @@ export class DialogEditElementComponent {
   saveEditedElement() {
     if (!this.form.invalid) {
       let editedElement = this.inputData.elementData;
-      editedElement.name = this.form.controls.elementName.value;
-      editedElement.weight = Number(this.form.controls.elementWeight.value);
-      editedElement.symbol = this.form.controls.elementSymbol.value;
+      editedElement.elementName = this.form.controls.elementName.value;
+      editedElement.elementWeight = Number(this.form.controls.elementWeight.value);
+      editedElement.elementSymbol = this.form.controls.elementSymbol.value;
       this.dialogRef.close(editedElement);
     }
   }

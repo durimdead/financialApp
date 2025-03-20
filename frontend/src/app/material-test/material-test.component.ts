@@ -44,9 +44,9 @@ export class MaterialTestComponent implements AfterViewInit {
   displayedColumns: string[] = [
     'actions',
     'elementId',
-    'name',
-    'weight',
-    'symbol',
+    'elementName',
+    'elementWeight',
+    'elementSymbol',
   ];
   dataSource = new MatTableDataSource(this.elementData());
 
@@ -185,7 +185,7 @@ export class MaterialTestComponent implements AfterViewInit {
           } else {
             console.log(
               'server error adding element - element name "' +
-                elementToAdd.name +
+                elementToAdd.elementName +
                 '". Error: ' +
                 results.errorMessage
             );
@@ -194,7 +194,7 @@ export class MaterialTestComponent implements AfterViewInit {
         error: (error: Error) => {
           console.log(
             'error adding new element - element name - "' +
-              elementToAdd.name +
+              elementToAdd.elementName +
               '". Error: '
           );
           console.log(error);

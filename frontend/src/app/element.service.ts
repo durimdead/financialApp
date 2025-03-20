@@ -84,10 +84,10 @@ export class ElementService {
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
     let elementData: PeriodicElement = {
       actions: '',
-      name: '',
+      elementName: '',
       elementId: elementId,
-      weight: 0,
-      symbol: '',
+      elementWeight: 0,
+      elementSymbol: '',
     };
     let returnValue: PeriodicElementCrudData = {
       elementState: actionToTake,
@@ -115,21 +115,21 @@ export class ElementService {
   addElement(elementToAdd: PeriodicElement) {
     try {
       // cannot save the data if the element is not valid.
-      if (Number.isNaN(Number(elementToAdd.weight))) {
+      if (Number.isNaN(Number(elementToAdd.elementWeight))) {
         throw (
           "Element weight must be a number. Current value: '" +
-          elementToAdd.weight +
+          elementToAdd.elementWeight +
           "'."
         );
-      } else if (elementToAdd.name.length < 3) {
+      } else if (elementToAdd.elementName.length < 3) {
         throw (
           'Element name must have a length of at least 3. Element Name = ' +
-          elementToAdd.name
+          elementToAdd.elementName
         );
-      } else if (elementToAdd.symbol === '' && elementToAdd.symbol.length <= 3) {
+      } else if (elementToAdd.elementSymbol === '' && elementToAdd.elementSymbol.length <= 3) {
         throw (
           "Element Symbol must have a value and be less than 3 characters long. Element Symbol = '" +
-          elementToAdd.symbol +
+          elementToAdd.elementSymbol +
           "'."
         );
       }
@@ -168,21 +168,21 @@ export class ElementService {
         (item) => item.elementId === elementToUpdate.elementId
       );
 
-      if (Number.isNaN(Number(elementToUpdate.weight))) {
+      if (Number.isNaN(Number(elementToUpdate.elementWeight))) {
         throw (
           "Element weight must be a number. Current value: '" +
-          elementToUpdate.weight +
+          elementToUpdate.elementWeight +
           "'."
         );
-      } else if (elementToUpdate.name.length < 3) {
+      } else if (elementToUpdate.elementName.length < 3) {
         throw (
           'Element name must have a length of at least 3. Element Name = ' +
-          elementToUpdate.name
+          elementToUpdate.elementName
         );
-      } else if (elementToUpdate.symbol === '' && elementToUpdate.symbol.length <= 3) {
+      } else if (elementToUpdate.elementSymbol === '' && elementToUpdate.elementSymbol.length <= 3) {
         throw (
           "Element Symbol must have a value and be no more then 3 characters long. Element Symbol = '" +
-          elementToUpdate.symbol +
+          elementToUpdate.elementSymbol +
           "'."
         );
       } else if (!this.elementDataExists(elementToUpdate.elementId)) {
@@ -195,16 +195,16 @@ export class ElementService {
 
       // cannot save the data if the element weight isn't numeric.
       if (
-        Number.isNaN(Number(elementToUpdate.weight)) ||
-        elementToUpdate.name.length < 3 ||
-        elementToUpdate.symbol === '' ||
+        Number.isNaN(Number(elementToUpdate.elementWeight)) ||
+        elementToUpdate.elementName.length < 3 ||
+        elementToUpdate.elementSymbol === '' ||
         !this.elementDataExists(elementToUpdate.elementId)
       ) {
         throw (
           "Element weight must be a number. Current value: '" +
-          elementToUpdate.weight +
+          elementToUpdate.elementWeight +
           "'. Previous value: '" +
-          this.elementData()[currentElementDataIndex].weight +
+          this.elementData()[currentElementDataIndex].elementWeight +
           "'."
         );
       }

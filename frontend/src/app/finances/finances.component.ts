@@ -9,5 +9,5 @@ import { RouterLink } from '@angular/router';
   styleUrl: './finances.component.css'
 })
 export class FinancesComponent {
-  myData = [];
+  //TODO: start filling in with code for the finance component items.
 }

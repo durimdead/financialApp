@@ -2,3 +2,117 @@
 <p>To see the progress and feature list, please navigate to <a [routerLink]="['/about']">About</a></p>
 
 <p><button mat-flat-button (click)="openAddExpenseModal()">Add</button></p>
+
+
+<table
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  class="mat-elevation-z8"
+>
+  <!-- actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let expense">
+      <div class="table-icon-column">
+        <button mat-icon-button (click)="editExpense(expense.expenseId)">
+          <mat-icon class="blue-text">edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="confirmDeleteExpense(expense.expenseId)">
+          <mat-icon class="red-text">delete</mat-icon>
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- expenseId Column -->
+  <ng-container matColumnDef="expenseDate">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Date"
+    >
+      Date
+    </th>
+    <td mat-cell *matCellDef="let expense">{{ expense.expenseDate }}</td>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="expenseDescription">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Description"
+    >
+      Description
+    </th>
+    <td mat-cell *matCellDef="let expense">  
+        {{ expense.expenseDescription }}
+    </td>
+  </ng-container>
+
+  <!-- Amount Column -->
+  <ng-container matColumnDef="expenseAmount">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Amount"
+    >
+      Amount
+    </th>
+    <td mat-cell *matCellDef="let expense">  
+        {{ expense.expenseAmount }}
+    </td>
+  </ng-container>
+
+  <!-- Expense Type Column -->
+  <ng-container matColumnDef="expenseType">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Expense Type"
+    >
+      Expense Type
+    </th>
+    <td mat-cell *matCellDef="let expense">
+        {{ expense.expense }}
+    </td>
+  </ng-container>
+
+  <!-- Payment Type Column -->
+  <ng-container matColumnDef="expensePaymentType">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Payment Type"
+    >
+      Payment Type
+    </th>
+    <td mat-cell *matCellDef="let expense">
+        {{ expense.expensePaymentType }}
+    </td>
+  </ng-container>
+
+  <!-- Payment Description Column -->
+  <ng-container matColumnDef="expensePaymentDescription">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header
+      sortActionDescription="Sort by Payment Description"
+    >
+		Payment Description
+    </th>
+    <td mat-cell *matCellDef="let expense">
+        {{ expense.expensePaymentDescription }}
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>

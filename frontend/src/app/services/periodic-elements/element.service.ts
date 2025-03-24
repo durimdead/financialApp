@@ -2,7 +2,7 @@ import { DestroyRef, inject, Injectable, signal } from '@angular/core';
 import {
   PeriodicElement,
   PeriodicElementCrudData,
-} from '../app.interfaces';
+} from '../../../app.interfaces';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { tap } from 'rxjs';
 

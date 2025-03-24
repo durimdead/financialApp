@@ -20,7 +20,7 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { ElementService } from '../../../../element.service';
+import { ElementService } from '../../../../services/periodic-elements/element.service';
 import { FormValidators } from '../../../../../app.form-validators';
 
 @Component({

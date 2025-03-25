@@ -43,6 +43,10 @@ CREATE TABLE [dbo].[TableName](
 GO
 
 
+
+
+
+
 /********************************************************************************************************************************************************************
 *	####### FOREIGN KEY #######
 *
@@ -69,6 +73,10 @@ REFERENCES [dbo].[FKSourceTable] ([FKSourceTableColumnname])
 GO
 ALTER TABLE [dbo].[FKDefineTable] CHECK CONSTRAINT [FK_FKSourceTable_FKDefineTable_FKDefineTableColumnname]
 GO
+
+
+
+
 
 
 /********************************************************************************************************************************************************************
@@ -109,3 +117,120 @@ SELECT
 FROM
     [dbo].[Table1]
 GO  
+
+
+
+
+
+
+/********************************************************************************************************************************************************************
+*	####### STORED PROCEDURE #######
+*	template gotten from : https://stackoverflow.com/questions/2073737/nested-stored-procedures-containing-try-catch-rollback-pattern/2074139#2074139
+*
+*	Variables:
+*		- SprocName : The name you would like to give the stored procedure. It will be prefixed with "usp_" meaning "user stored procedure" to ensure we do not
+*			potentially clash with anything in "master" which prefixes with "sp"
+*		- AuthorName : Name of the person writing the stored procedure
+*		- CreateDateTime : DateTime of the creation of the stored procedure
+*		- StoredProcedureDescription : Description of the stored procedure purpose.
+*	Usage : 
+*		- Ensure you are scoped to the database that you would like to run this script for!
+*		- Find and replace all of the variables with the relevant information
+*		- Add any parameters you need to add into the "Add any parameters you need here" section
+*		- Add your sproc content to the "Contents of your stored procedure go here" section
+*	example : 
+*		- deletion of a user from the User table:
+*			/*
+*			===========================================================================================================================================
+*			=    Author:
+*			=        David Lancellotti
+*			=
+*			=    Create date: 
+*			=        09/17/2022 14:06 PM
+*			=
+*			=    Description:
+*			=        Delete a user record given the UserID
+*			=
+*			=    UPDATES:
+*			=                                DateTime
+*			=    Author                        mm/dd/yyyy HH:mm    Description
+*			=    =====================        =============        =======================================================================================
+*			=
+*			=
+*			===========================================================================================================================================
+*			*/
+*			CREATE PROCEDURE [dbo].[usp_UserDelete]
+*			    @userID AS INTEGER
+*			AS
+*			SET XACT_ABORT, NOCOUNT ON
+*			DECLARE @starttrancount int
+*			BEGIN TRY
+*			    SELECT @starttrancount = @@TRANCOUNT
+*			
+*			    IF @starttrancount = 0
+*			        BEGIN TRANSACTION
+*			
+*			        -- if we can find a record for the userID pushed in, delete it.
+*			        -- if we don't find it - no matter, the user doesn't exist anyway and there's nothing to do
+*			        IF EXISTS(SELECT 1 FROM [dbo].[User] WHERE [UserID] = @userID)
+*			        BEGIN;
+*			            DELETE FROM [dbo].[User]
+*			            WHERE
+*			                [UserID] = @userID
+*			        END;
+*			
+*			    IF @starttrancount = 0 
+*			        COMMIT TRANSACTION
+*			END TRY
+*			BEGIN CATCH
+*			    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+*			        ROLLBACK TRANSACTION;
+*			    THROW;
+*			END CATCH
+*			GO
+*
+********************************************************************************************************************************************************************/ 
+/*
+===============================================================================================================================================
+=    Author:
+=        AuthorName
+=
+=    Create date: 
+=        CreateDateTime
+=
+=    Description:
+=        StoredProcedureDescription
+=
+=    UPDATES:
+=                                DateTime
+=    Author                       mm/dd/yyyy HH:mm    	Description
+=    =====================        =============        	=======================================================================================
+=
+=
+===============================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_SprocName]
+    -- Add any parameters you need here
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- Contents of your stored procedure go here.
+		-- Do not add anything outside of this section of the body of the sproc unless you are 100% certain of what you are doing.
+		-- Everything else in the body outside this section manages transaction state.
+		-- This allows your sprocs to call other sprocs and have it all be part of the same transaction.
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO

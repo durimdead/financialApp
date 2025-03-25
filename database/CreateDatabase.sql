@@ -186,6 +186,20 @@ CREATE TABLE [dbo].[PeriodicElement](
 );
 GO
 
+CREATE TABLE [dbo].[ExpenseType](
+	[ExpenseTypeID] INT IDENTITY(1,1) NOT NULL
+	,[ExpenseTypeName] VARCHAR(30) NOT NULL
+	,[ExpenseTypeDescription] VARCHAR(250)
+    ,CONSTRAINT [ExpenseTypeID] PRIMARY KEY CLUSTERED
+	([ExpenseTypeID] ASC)
+	,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
+    ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
+    ,PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo)
+    )
+    WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[ExpenseTypeAudit])
+);
+GO
+
 /************************************************************************
 *       #########################################################
 *           

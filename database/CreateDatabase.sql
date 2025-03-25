@@ -200,6 +200,20 @@ CREATE TABLE [dbo].[ExpenseType](
 );
 GO
 
+CREATE TABLE [dbo].[PaymentType](
+    [PaymentTypeID] INT IDENTITY(1,1) NOT NULL
+    ,[PaymentTypeName] VARCHAR(30) NOT NULL
+    ,[PaymentTypeDescription] VARCHAR(250) NOT NULL
+    ,CONSTRAINT [PaymentTypeID] PRIMARY KEY CLUSTERED
+    ([PaymentTypeID] ASC)
+    ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
+    ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
+    ,PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo)
+    )
+    WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[PaymentTypeAudit])
+);
+GO
+
 /************************************************************************
 *       #########################################################
 *           

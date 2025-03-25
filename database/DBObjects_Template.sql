@@ -2,7 +2,8 @@
 *	#######	TABLE #######
 *
 *	Variables :
-*		- TableName : The name of the table you would like to create.
+*		- TableName : 
+*			The name of the table you would like to create.
 *	Usage : 
 *		- Ensure you are scoped to the database that you would like to run this script for!
 *		- Do a find and replace on "TableName" with the name you would like to use for the table
@@ -51,10 +52,14 @@ GO
 *	####### FOREIGN KEY #######
 *
 *	Variables:
-*		- FKDefineTable : The table you are defining the FK for
-*		- FKSourceTable : The table the foreign key is referencing for the constraint
-*		- FKDefineTableColumnname : The column in the "define" table that will have the FK constraint against it
-*		- FKSourceTableColumnname : The column in the "source" table that will be the basis for the FK constraint
+*		- FKDefineTable : 
+*			The table you are defining the FK for
+*		- FKSourceTable : 
+*			The table the foreign key is referencing for the constraint
+*		- FKDefineTableColumnname : 
+*			The column in the "define" table that will have the FK constraint against it
+*		- FKSourceTableColumnname : 
+*			The column in the "source" table that will be the basis for the FK constraint
 *	Usage : 
 *		- Ensure you are scoped to the database that you would like to run this script for!
 *		- Find/replace each variable name with the appropriate information
@@ -83,9 +88,12 @@ GO
 *	####### VIEW #######
 *
 *	Variables:
-*		- ViewName : the name you would like to give your view (a "v" will be added as a prefix to indicate it is a "view")
-*		- ColumnName1 : at least one column name for at least one of the tables in your select
-*		- Table1 : at least one table to grab the information from
+*		- ViewName : 
+*			The name you would like to give your view (a "v" will be added as a prefix to indicate it is a "view")
+*		- ColumnName1 : 
+*			At least one column name for at least one of the tables in your select
+*		- Table1 : 
+*			At least one table to grab the information from
 *	Usage : 
 *		- Ensure you are scoped to the database that you would like to run this script for!
 *		- Find and replace "ViewName" with the name you would like your view to have
@@ -128,11 +136,15 @@ GO
 *	template gotten from : https://stackoverflow.com/questions/2073737/nested-stored-procedures-containing-try-catch-rollback-pattern/2074139#2074139
 *
 *	Variables:
-*		- SprocName : The name you would like to give the stored procedure. It will be prefixed with "usp_" meaning "user stored procedure" to ensure we do not
+*		- SprocName : 
+*			The name you would like to give the stored procedure. It will be prefixed with "usp_" meaning "user stored procedure" to ensure we do not
 *			potentially clash with anything in "master" which prefixes with "sp"
-*		- AuthorName : Name of the person writing the stored procedure
-*		- CreateDateTime : DateTime of the creation of the stored procedure
-*		- StoredProcedureDescription : Description of the stored procedure purpose.
+*		- AuthorName : 
+*			Name of the person writing the stored procedure
+*		- CreateDateTime : 
+*			DateTime of the creation of the stored procedure
+*		- StoredProcedureDescription : 
+*			Description of the stored procedure purpose.
 *	Usage : 
 *		- Ensure you are scoped to the database that you would like to run this script for!
 *		- Find and replace all of the variables with the relevant information

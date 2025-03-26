@@ -186,9 +186,10 @@ CREATE TABLE [dbo].[PeriodicElement](
 );
 GO
 
+-- date night, car maintenance, tolls, grocery, etc.
 CREATE TABLE [dbo].[ExpenseType](
 	[ExpenseTypeID] INT IDENTITY(1,1) NOT NULL
-	,[ExpenseTypeName] VARCHAR(30) NOT NULL
+	,[ExpenseTypeName] VARCHAR(50) NOT NULL
 	,[ExpenseTypeDescription] VARCHAR(250)
     ,CONSTRAINT [ExpenseTypeID] PRIMARY KEY CLUSTERED
 	([ExpenseTypeID] ASC)
@@ -200,9 +201,25 @@ CREATE TABLE [dbo].[ExpenseType](
 );
 GO
 
+-- credit card, debit card, cash app, check, etc
+CREATE TABLE [dbo].[PaymentTypeCategory](
+    [PaymentTypeCategoryID] INT IDENTITY(1,1) NOT NULL
+    ,[PaymentTypeCategoryName] VARCHAR(30) NOT NULL
+    ,CONSTRAINT [PaymentTypeCategoryID] PRIMARY KEY CLUSTERED
+    ([PaymentTypeCategoryID] ASC)
+    ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
+    ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
+    ,PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo)
+    )
+    WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[PaymentTypeCategoryAudit])
+);
+GO
+
+-- chase freedom, chase debit, cash, venmo, zelle, etc
 CREATE TABLE [dbo].[PaymentType](
     [PaymentTypeID] INT IDENTITY(1,1) NOT NULL
-    ,[PaymentTypeName] VARCHAR(30) NOT NULL
+	,[PaymentTypeCategoryID] INT NOT NULL
+    ,[PaymentTypeName] VARCHAR(50) NOT NULL
     ,[PaymentTypeDescription] VARCHAR(250) NOT NULL
     ,CONSTRAINT [PaymentTypeID] PRIMARY KEY CLUSTERED
     ([PaymentTypeID] ASC)
@@ -213,6 +230,32 @@ CREATE TABLE [dbo].[PaymentType](
     WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[PaymentTypeAudit])
 );
 GO
+
+--TODO : Add Foreign Keys
+
+CREATE TABLE [dbo].[Expense](
+    [ExpenseID] INT IDENTITY(1,1) NOT NULL
+    ,[ExpenseTypeID] INT NOT NULL
+    ,[PaymentTypeID] INT NOT NULL
+	,[PaymentTypeCategoryID] INT NOT NULL
+    ,[ExpenseDescription] NVARCHAR(200) NOT NULL
+    ,[IsIncome] BIT NOT NULL
+    ,[IsInvestment] BIT NOT NULL
+    ,CONSTRAINT [ExpenseID] PRIMARY KEY CLUSTERED
+    ([ExpenseID] ASC)
+    ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
+    ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
+    ,PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo)
+    )
+    WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[ExpenseAudit])
+);
+GO
+
+--TODO : Add Foreign Keys
+--TODO : Add Foreign Keys
+--TODO : Add Foreign Keys
+--TODO : Add Foreign Keys
+
 
 /************************************************************************
 *       #########################################################

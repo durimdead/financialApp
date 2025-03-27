@@ -251,10 +251,26 @@ CREATE TABLE [dbo].[Expense](
 );
 GO
 
---TODO : Add Foreign Keys
---TODO : Add Foreign Keys
---TODO : Add Foreign Keys
---TODO : Add Foreign Keys
+-- FK for PaymentTypeID
+ALTER TABLE [dbo].[Expense]  WITH CHECK ADD  CONSTRAINT [FK_PaymentType_Expense_PaymentTypeID] FOREIGN KEY([PaymentTypeID])
+REFERENCES [dbo].[PaymentType] ([PaymentTypeID])
+GO
+ALTER TABLE [dbo].[Expense] CHECK CONSTRAINT [FK_PaymentType_Expense_PaymentTypeID]
+GO
+
+-- FK for PaymentTypeCategoryID
+ALTER TABLE [dbo].[Expense]  WITH CHECK ADD  CONSTRAINT [FK_PaymentTypeCategory_Expense_PaymentTypeCategoryID] FOREIGN KEY([PaymentTypeCategoryID])
+REFERENCES [dbo].[PaymentTypeCategory] ([PaymentTypeCategoryID])
+GO
+ALTER TABLE [dbo].[Expense] CHECK CONSTRAINT [FK_PaymentTypeCategory_Expense_PaymentTypeCategoryID]
+GO
+
+-- FK for ExpenseTypeID
+ALTER TABLE [dbo].[Expense]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseTypeID_Expense_ExpenseTypeID] FOREIGN KEY([ExpenseTypeID])
+REFERENCES [dbo].[ExpenseTypeID] ([ExpenseTypeID])
+GO
+ALTER TABLE [dbo].[Expense] CHECK CONSTRAINT [FK_ExpenseTypeID_Expense_ExpenseTypeID]
+GO
 
 
 /************************************************************************

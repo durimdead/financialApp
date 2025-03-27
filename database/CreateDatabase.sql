@@ -428,6 +428,144 @@ GO
 
 
 
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/27/2025 03:00PM
+=
+=    Description:
+=        Update or insert an Expense Type with the relevant information
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_ExpenseTypeUpsert]
+    @expenseTypeID AS INTEGER
+    ,@expenseTypeName AS VARCHAR(50)
+    ,@expenseTypeDescription AS VARCHAR(250)
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- trim our varchar inputs to ensure we have no whitespace
+        SET @expenseTypeName = LTRIM(RTRIM(@expenseTypeName));
+        SET @expenseTypeDescription = LTRIM(RTRIM(@expenseTypeDescription));
+
+        -- if we can find a record with the ExpenseTypeID pushed in, let's update the information for it
+        IF EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [expenseTypeID] = @expenseTypeID)
+        BEGIN;
+            UPDATE [dbo].[ExpenseType]
+            SET
+                [ExpenseTypeName] = @expenseTypeName
+                ,[ExpenseTypeDescription] = @expenseTypeDescription
+            WHERE
+                [ExpenseTypeID] = @expenseTypeID
+        END;
+        -- else, we check to see if the ExpenseTypeID sent in is 0 - indicating a new record
+        ELSE IF (@expenseTypeID = 0)
+        BEGIN;
+            INSERT INTO [dbo].[ExpenseType](
+                [ExpenseTypeName]
+                ,[ExpenseTypeDescription]
+            )
+            VALUES(
+                @expenseTypeName
+                ,@expenseTypeDescription
+            );
+        END;
+        -- if the ID doesn't exists and is not 0, the expense type doesn't exist and we can't update it.
+        ELSE
+        BEGIN;
+            THROW 51001, 'The ExpenseTypeID does not exist: ' + @expenseTypeID, 1;
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
+
+
+
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/27/2025 3:00PM
+=
+=    Description:
+=        Delete a expense type record given the ExpenseTypeID
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_ExpenseTypeDelete]
+    @expenseTypeID AS INTEGER
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- if we can find a record for the expense type pushed in, delete it.
+        -- if we don't find it - no matter, the expernse type referenced doesn't exist and there's nothing to do
+        IF EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [ExpenseTypeID] = @expenseTypeID)
+        BEGIN;
+            DELETE FROM [dbo].[ExpenseType]
+            WHERE
+                [ExpenseTypeID] = @expenseTypeID
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /************************************************************************
 *       #########################################################
 *           

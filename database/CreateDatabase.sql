@@ -465,7 +465,7 @@ BEGIN TRY
         SET @expenseTypeDescription = LTRIM(RTRIM(@expenseTypeDescription));
 
         -- if we can find a record with the ExpenseTypeID pushed in, let's update the information for it
-        IF EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [expenseTypeID] = @expenseTypeID)
+        IF EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [ExpenseTypeID] = @expenseTypeID)
         BEGIN;
             UPDATE [dbo].[ExpenseType]
             SET
@@ -513,7 +513,7 @@ GO
 =        03/27/2025 3:00PM
 =
 =    Description:
-=        Delete a expense type record given the ExpenseTypeID
+=        Delete an expense type record given the ExpenseTypeID
 =
 =    UPDATES:
 =                                DateTime
@@ -535,7 +535,7 @@ BEGIN TRY
         BEGIN TRANSACTION
 
         -- if we can find a record for the expense type pushed in, delete it.
-        -- if we don't find it - no matter, the expernse type referenced doesn't exist and there's nothing to do
+        -- if we don't find it - no matter, the expense type referenced doesn't exist and there's nothing to do
         IF EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [ExpenseTypeID] = @expenseTypeID)
         BEGIN;
             DELETE FROM [dbo].[ExpenseType]
@@ -553,7 +553,125 @@ BEGIN CATCH
 END CATCH
 GO
 
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/27/2025 03:05PM
+=
+=    Description:
+=        Update or insert an Payment Type Category with the relevant information
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_PaymentTypeCategoryUpsert]
+    @paymentTypeCategoryID AS INTEGER
+    ,@paymentTypeCategoryName AS VARCHAR(50)
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
 
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- trim our varchar inputs to ensure we have no whitespace
+        SET @paymentTypeCategoryName = LTRIM(RTRIM(@paymentTypeCategoryName));
+
+        -- if we can find a record with the PaymentTypeCategoryID pushed in, let's update the information for it
+        IF EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
+        BEGIN;
+            UPDATE [dbo].[PaymentTypeCategory]
+            SET
+                [PaymentTypeCategoryName] = @paymentTypeCategoryName
+            WHERE
+                [PaymentTypeCategoryID] = @paymentTypeCategoryID
+        END;
+        -- else, we check to see if the PaymentTypeCategoryID sent in is 0 - indicating a new record
+        ELSE IF (@paymentTypeCategoryID = 0)
+        BEGIN;
+            INSERT INTO [dbo].[PaymentTypeCategory](
+                [PaymentTypeCategoryName]
+            )
+            VALUES(
+                @paymentTypeCategoryName
+            );
+        END;
+        -- if the ID doesn't exists and is not 0, the payment type category doesn't exist and we can't update it.
+        ELSE
+        BEGIN;
+            THROW 51001, 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID, 1;
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
+
+
+
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/27/2025 3:05PM
+=
+=    Description:
+=        Delete a payment type category record given the PaymentTypeCategoryID
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_PaymentTypeCategoryDelete]
+    @paymentTypeCategoryID AS INTEGER
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- if we can find a record for the payment type category pushed in, delete it.
+        -- if we don't find it - no matter, the payment type category referenced doesn't exist and there's nothing to do
+        IF EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
+        BEGIN;
+            DELETE FROM [dbo].[PaymentTypeCategory]
+            WHERE
+                [PaymentTypeCategoryID] = @paymentTypeCategoryID
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
 
 
 

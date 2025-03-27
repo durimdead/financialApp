@@ -49,34 +49,34 @@ GO
 
 
 /********************************************************************************************************************************************************************
-*	####### FOREIGN KEY #######
+*   ####### FOREIGN KEY #######
 *
-*	Variables:
-*		- FKDefineTable : 
-*			The table you are defining the FK for
-*		- FKSourceTable : 
-*			The table the foreign key is referencing for the constraint
-*		- FKDefineTableColumnname : 
-*			The column in the "define" table that will have the FK constraint against it
-*		- FKSourceTableColumnname : 
-*			The column in the "source" table that will be the basis for the FK constraint
-*	Usage : 
-*		- Ensure you are scoped to the database that you would like to run this script for!
-*		- Find/replace each variable name with the appropriate information
-*	example : 
-*		- You have a [dbo].[User] table with a column for [UserID] and a [dbo].[Account] table with a [CreatedBy] column that 
-*			will have a FK to the [UserID] in the [User] table.
+*   Variables:
+*       - TargetTable : 
+*           The table you are defining the FK for
+*       - SourceTable : 
+*           The table the foreign key is referencing for the constraint
+*       - TargetColumn : 
+*           The column in the "define" table that will have the FK constraint against it
+*       - SourceColumn : 
+*           The column in the "source" table that will be the basis for the FK constraint
+*   Usage : 
+*       - Ensure you are scoped to the database that you would like to run this script for!
+*       - Find/replace each variable name with the appropriate information
+*   example : 
+*       - You have a [dbo].[User] table with a column for [UserID] and a [dbo].[Account] table with a [CreatedBy] column that 
+*           will have a FK to the [UserID] in the [User] table.
 *
-*			ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FK_User_Account_CreatedBy] FOREIGN KEY([CreatedBy])
-*			REFERENCES [dbo].[User] ([UserID])
-*			GO
-*			ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Account_CreatedBy]
-*			GO
+*           ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FK_User_Account_CreatedBy] FOREIGN KEY([CreatedBy])
+*           REFERENCES [dbo].[User] ([UserID])
+*           GO
+*           ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Account_CreatedBy]
+*           GO
 ********************************************************************************************************************************************************************/
-ALTER TABLE [dbo].[FKDefineTable]  WITH CHECK ADD  CONSTRAINT [FK_FKSourceTable_FKDefineTable_FKDefineTableColumnname] FOREIGN KEY([FKDefineTableColumnname])
-REFERENCES [dbo].[FKSourceTable] ([FKSourceTableColumnname])
+ALTER TABLE [dbo].[TargetTable]  WITH CHECK ADD  CONSTRAINT [FK_SourceTable_TargetTable_TargetColumn] FOREIGN KEY([TargetColumn])
+REFERENCES [dbo].[SourceTable] ([SourceColumn])
 GO
-ALTER TABLE [dbo].[FKDefineTable] CHECK CONSTRAINT [FK_FKSourceTable_FKDefineTable_FKDefineTableColumnname]
+ALTER TABLE [dbo].[TargetTable] CHECK CONSTRAINT [FK_SourceTable_TargetTable_TargetColumn]
 GO
 
 

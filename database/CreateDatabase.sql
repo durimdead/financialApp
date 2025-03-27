@@ -231,7 +231,12 @@ CREATE TABLE [dbo].[PaymentType](
 );
 GO
 
---TODO : Add Foreign Keys
+-- PaymentTypeCategoryID
+ALTER TABLE [dbo].[PaymentType]  WITH CHECK ADD  CONSTRAINT [FK_PaymentTypeCategory_PaymentType_PaymentTypeCategoryID] FOREIGN KEY([PaymentTypeCategoryID])
+REFERENCES [dbo].[PaymentTypeCategory] ([PaymentTypeCategoryID])
+GO
+ALTER TABLE [dbo].[PaymentType] CHECK CONSTRAINT [FK_PaymentTypeCategory_PaymentType_PaymentTypeCategoryID]
+GO
 
 CREATE TABLE [dbo].[Expense](
     [ExpenseID] INT IDENTITY(1,1) NOT NULL

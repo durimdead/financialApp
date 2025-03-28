@@ -674,7 +674,93 @@ END CATCH
 GO
 
 
---TODO: create more complex sproc for the upserts for the next set of tables
+/*
+===========================================================================================================================================
+=    Author:
+=       David Lancellotti
+=
+=    Create date: 
+=       03/28/2022 02:05 PM
+=
+=    Description:
+=       Update or insert a payment type record with the relevant information.
+=       Additionally, ensure that the paymentTypeCategoryID exists - throws error if it does not.
+=
+=    UPDATES:
+=                                DateTime
+=    Author                       mm/dd/yyyy HH:mm     Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_PaymentTypeUpsert]
+    @paymentTypeID AS INTEGER
+    ,@paymentTypeName AS VARCHAR(50)
+    ,@paymentTypeDescription AS VARCHAR(250)
+    ,@paymentTypeCategoryID AS INT
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- trim our varchar inputs to ensure we have no whitespace
+        SET @paymentTypeName = LTRIM(RTRIM(@paymentTypeName));
+        SET @paymentTypeDescription = LTRIM(RTRIM(@paymentTypeDescription));
+
+        -- Ensure that the paymentTypeCategoryID exists
+        IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategoryID] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
+        BEGIN;
+            THROW 51001, 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID, 1;
+        END;
+
+        -- if we can find a record with the paymentTypeID pushed in, let's update the information for it
+        IF EXISTS(SELECT 1 FROM [dbo].[PaymentType] WHERE [PaymentTypeID] = @paymentTypeID)
+        BEGIN;
+            -- Update PaymentType Table
+            UPDATE [dbo].[PaymentType]
+            SET
+                [PaymentTypeName] = @paymentTypeName
+                ,[PaymentTypeDescription] = @paymentTypeDescription
+                ,[PaymentTypeCategoryID] = @paymentTypeCategoryID
+            WHERE
+                [PaymentTypeID] = @paymentTypeID
+        END;
+        -- else, we check to see if the paymentTypeID sent in is 0 - indicating a new payment type
+        ELSE IF (@paymentTypeID = 0)
+        BEGIN;
+            -- create new payment type
+            INSERT INTO [dbo].[PaymentType](
+                [PaymentTypeName]
+                ,[PaymentTypeDescription]
+                ,[PaymentTypeCategoryID]
+            )
+            VALUES(
+                @paymentTypeName
+                ,@paymentTypeDescription
+                ,@paymentTypeCategoryID
+            );
+        END;
+        -- if the ID doesn't exists and is not 0, the payment type doesn't exist and we can't update it.
+        ELSE
+        BEGIN;
+            THROW 51001, 'The paymentTypeID does not exist', 1;
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
+
 --TODO: create more complex sproc for the upserts for the next set of tables
 --TODO: create more complex sproc for the upserts for the next set of tables
 --TODO: create more complex sproc for the upserts for the next set of tables

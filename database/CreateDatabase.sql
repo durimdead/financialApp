@@ -811,22 +811,61 @@ BEGIN CATCH
     THROW;
 END CATCH
 GO
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
+
+
+
+
+
+
+
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/29/2025 05:50 PM
+=
+=    Description:
+=        Delete a expense record given the expenseID
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_ExpenseDelete]
+    @expenseID AS INTEGER
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- if we can find a record for the expenseID pushed in, delete it.
+        -- if we don't find it - no matter, the expense doesn't exist anyway and there's nothing to do
+        IF EXISTS(SELECT 1 FROM [dbo].[Expense] WHERE [ExpenseID] = @expenseID)
+        BEGIN;
+            DELETE FROM [dbo].[Expense]
+            WHERE
+                [ExpenseID] = @expenseID
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
 --TODO: create more complex sproc for the upserts for the next set of tables
 --TODO: create more complex sproc for the upserts for the next set of tables
 --TODO: create more complex sproc for the upserts for the next set of tables

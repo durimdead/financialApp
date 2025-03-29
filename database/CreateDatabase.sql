@@ -9,7 +9,7 @@
 USE [master]
 GO
 
-/****** Object:  Database [FinancialApp]    Script Date: 9/17/2022 12:58:43 PM ******/
+/****** Object:  Database [FinancialApp] ******/
 CREATE DATABASE [FinancialApp]
  CONTAINMENT = NONE
  ON  PRIMARY 

@@ -1029,6 +1029,20 @@ FROM
     [dbo].[PeriodicElement]
 GO
 
+CREATE VIEW [dbo].[vExpenseType]
+AS
+SELECT
+    [ExpenseTypeID]
+    ,[ExpenseTypeName]
+    ,[ExpenseTypeDescription]
+    ,[ValidFrom] AS [LastUpdated]
+FROM
+    [dbo].[ExpenseType]
+GO
+
+
+
+
 --TODO: create the views for the expense tables
 
 

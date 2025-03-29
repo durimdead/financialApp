@@ -814,7 +814,130 @@ GO
 
 
 
+/*
+===========================================================================================================================================
+=    Author:
+=       David Lancellotti
+=
+=    Create date: 
+=       03/29/2025 06:10 PM
+=
+=    Description:
+=       Update or insert a expense record with the relevant information.
+=       Additionally, ensure that the FK IDs exist - throws error if any do not.
+=
+=    UPDATES:
+=                                DateTime
+=    Author                       mm/dd/yyyy HH:mm     Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_ExpenseUpsert]
+    @expenseID AS INTEGER
+    ,@expenseTypeID INT
+    ,@paymentTypeID INT
+    ,@paymentTypeCategoryID INT
+    ,@expenseDescription NVARCHAR(200)
+    ,@isIncome BIT
+    ,@isInvestment BIT
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
 
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- trim our varchar inputs to ensure we have no whitespace
+        SET @paymentTypeName = LTRIM(RTRIM(@paymentTypeName));
+        SET @paymentTypeDescription = LTRIM(RTRIM(@paymentTypeDescription));
+
+        /***************************
+         * Check for FKs existing
+         **************************/
+        DECLARE @errorMessage_FKsDoNotExist VARCHAR(200) = '';
+
+        -- Ensure that the expenseTypeID exists
+        IF NOT EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [ExpenseTypeID] = @expenseTypeID)
+        BEGIN;
+            @errorMessage_FKsDoNotExist += 'The ExpenseTypeID does not exist: ' + @expenseTypeID + ' :::: ';
+        END;
+
+        -- Ensure that the paymentTypeID exists
+        IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentType] WHERE [PaymentTypeID] = @paymentTypeID)
+        BEGIN;
+            @errorMessage_FKsDoNotExist += 'The PaymentTypeID does not exist: ' + @paymentTypeID + ' :::: ';
+        END;
+
+        -- Ensure that the paymentTypeCategoryID exists
+        IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
+        BEGIN;
+            @errorMessage_FKsDoNotExist += 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID + ' :::: ';;
+        END;
+
+        -- if there were any FKs that had an issue, send a message back indicating all that had an issue.
+        IF (LEN(@errorMessage_FKsDoNotExist) > 0)
+        BEGIN;
+            THROW 51001, @errorMessage_FKsDoNotExist, 1;
+        END;
+
+        /***************************
+         * ### END FK check
+         **************************/
+
+        -- if we can find a record with the expenseID pushed in, let's update the information for it
+        IF EXISTS(SELECT 1 FROM [dbo].[Expense] WHERE [ExpenseID] = @expenseID)
+        BEGIN;
+            UPDATE [dbo].[Expense]
+            SET
+                [ExpenseTypeID]             = @expenseTypeID
+                ,[PaymentTypeID]            = @paymentTypeID
+                ,[PaymentTypeCategoryID]    = @paymentTypeCategoryID
+                ,[ExpenseDescription]       = @expenseDescription
+                ,[IsIncome]                 = @isIncome
+                ,[IsInvestment]             = @isInvestment
+            WHERE
+                [expenseID] = @expenseID
+        END;
+        -- else, we check to see if the expenseID sent in is 0 - indicating a new payment type
+        ELSE IF (@expenseID = 0)
+        BEGIN;
+            -- create new expense
+            INSERT INTO [dbo].[Expense](
+                [ExpenseTypeID]
+                ,[PaymentTypeID]
+                ,[PaymentTypeCategoryID]
+                ,[ExpenseDescription]
+                ,[IsIncome]
+                ,[IsInvestment]
+            )
+            VALUES(
+                @expenseTypeID
+                ,@paymentTypeID
+                ,@paymentTypeCategoryID
+                ,@expenseDescription
+                ,@isIncome
+                ,@isInvestment
+            );
+        END;
+        -- if the ID doesn't exists and is not 0, the expense doesn't exist and we can't update it.
+        ELSE
+        BEGIN;
+            THROW 51001, 'The expenseID does not exist: ' + @expenseID, 1;
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
 
 
 

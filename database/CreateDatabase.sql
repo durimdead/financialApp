@@ -1040,6 +1040,28 @@ FROM
     [dbo].[ExpenseType]
 GO
 
+CREATE VIEW [dbo].[vPaymentTypeCategory]
+AS
+SELECT
+    [PaymentTypeCategoryID]
+    ,[PaymentTypeCategoryName]
+FROM
+    [dbo].[PaymentTypeCategory]
+GO
+
+CREATE VIEW [dbo].[vPaymentType]
+AS
+SELECT
+    pt.[PaymentTypeID]				AS [PaymentTypeID]
+    ,pt.[PaymentTypeName]			AS [PaymentTypeName]
+    ,pt.[PaymentTypeDescription]	AS [PaymentTypeDescription]
+    ,ptc.[PaymentTypeCategoryID]	AS [PaymentTypeCategoryID]
+    ,ptc.[PaymentTypeCategoryName]	AS [PaymentTypeCategoryName]
+FROM
+    [dbo].[PaymentType] pt
+		JOIN [dbo].[PaymentTypeCategory] ptc ON pt.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
+GO
+
 
 
 

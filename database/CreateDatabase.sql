@@ -994,17 +994,6 @@ BEGIN CATCH
     THROW;
 END CATCH
 GO
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
---TODO: create more complex sproc for the upserts for the next set of tables
-
-
-
-
-
-
-
 
 
 /************************************************************************
@@ -1038,7 +1027,9 @@ SELECT
     ,[PeriodicElementWeight]
 FROM
     [dbo].[PeriodicElement]
-GO    
+GO
+
+--TODO: create the views for the expense tables
 
 
 /************************************************************************

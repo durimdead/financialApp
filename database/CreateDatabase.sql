@@ -361,7 +361,7 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the periodic element doesn't exist and we can't update it.
         ELSE
         BEGIN;
-            THROW 51001, 'The PeriodicElementID does not exist', 1;
+            THROW 51001, 'The PeriodicElementID does not exist: ' + @periodicElementID, 1;
         END;
 
     IF @starttrancount = 0 
@@ -748,7 +748,7 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the payment type doesn't exist and we can't update it.
         ELSE
         BEGIN;
-            THROW 51001, 'The paymentTypeID does not exist', 1;
+            THROW 51001, 'The paymentTypeID does not exist: ' + @paymentTypeID, 1;
         END;
 
     IF @starttrancount = 0 

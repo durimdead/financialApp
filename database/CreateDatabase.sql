@@ -361,7 +361,8 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the periodic element doesn't exist and we can't update it.
         ELSE
         BEGIN;
-            THROW 51001, 'The PeriodicElementID does not exist: ' + @periodicElementID, 1;
+			DECLARE @errorMessage VARCHAR(100) = 'The PeriodicElementID does not exist: ' + @periodicElementID;
+            THROW 51001, @errorMessage , 1;
         END;
 
     IF @starttrancount = 0 
@@ -489,7 +490,8 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the expense type doesn't exist and we can't update it.
         ELSE
         BEGIN;
-            THROW 51001, 'The ExpenseTypeID does not exist: ' + @expenseTypeID, 1;
+			DECLARE @errorMessage VARCHAR(100) = 'The ExpenseTypeID does not exist: ' + @expenseTypeID;
+            THROW 51001, @errorMessage, 1;
         END;
 
     IF @starttrancount = 0 
@@ -609,7 +611,8 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the payment type category doesn't exist and we can't update it.
         ELSE
         BEGIN;
-            THROW 51001, 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID, 1;
+			DECLARE @errorMessage VARCHAR(100) = 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID;
+            THROW 51001, @errorMessage, 1;
         END;
 
     IF @starttrancount = 0 
@@ -715,7 +718,8 @@ BEGIN TRY
         -- Ensure that the paymentTypeCategoryID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
         BEGIN;
-            THROW 51001, 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID, 1;
+        	DECLARE @errorMessage_FKsDoNotExist VARCHAR(200) = 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID;
+            THROW 51001, @errorMessage_FKsDoNotExist, 1;
         END;
 
         -- if we can find a record with the paymentTypeID pushed in, let's update the information for it
@@ -748,7 +752,8 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the payment type doesn't exist and we can't update it.
         ELSE
         BEGIN;
-            THROW 51001, 'The paymentTypeID does not exist: ' + @paymentTypeID, 1;
+			DECLARE @errorMessage VARCHAR(100) = 'The paymentTypeID does not exist: ' + @paymentTypeID;
+            THROW 51001, @errorMessage, 1;
         END;
 
     IF @starttrancount = 0 
@@ -852,8 +857,7 @@ BEGIN TRY
         BEGIN TRANSACTION
 
         -- trim our varchar inputs to ensure we have no whitespace
-        SET @paymentTypeName = LTRIM(RTRIM(@paymentTypeName));
-        SET @paymentTypeDescription = LTRIM(RTRIM(@paymentTypeDescription));
+        SET @expenseDescription = LTRIM(RTRIM(@expenseDescription));
 
         /***************************
          * Check for FKs existing
@@ -863,19 +867,19 @@ BEGIN TRY
         -- Ensure that the expenseTypeID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [ExpenseTypeID] = @expenseTypeID)
         BEGIN;
-            @errorMessage_FKsDoNotExist += 'The ExpenseTypeID does not exist: ' + @expenseTypeID + ' :::: ';
+            SET @errorMessage_FKsDoNotExist += 'The ExpenseTypeID does not exist: ' + @expenseTypeID + ' :::: ';
         END;
 
         -- Ensure that the paymentTypeID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentType] WHERE [PaymentTypeID] = @paymentTypeID)
         BEGIN;
-            @errorMessage_FKsDoNotExist += 'The PaymentTypeID does not exist: ' + @paymentTypeID + ' :::: ';
+            SET @errorMessage_FKsDoNotExist += 'The PaymentTypeID does not exist: ' + @paymentTypeID + ' :::: ';
         END;
 
         -- Ensure that the paymentTypeCategoryID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
         BEGIN;
-            @errorMessage_FKsDoNotExist += 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID + ' :::: ';;
+            SET @errorMessage_FKsDoNotExist += 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID + ' :::: ';;
         END;
 
         -- if there were any FKs that had an issue, send a message back indicating all that had an issue.
@@ -926,7 +930,8 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the expense doesn't exist and we can't update it.
         ELSE
         BEGIN;
-            THROW 51001, 'The expenseID does not exist: ' + @expenseID, 1;
+			DECLARE @errorMessage VARCHAR(100) = 'The expenseID does not exist: ' + @expenseID;
+            THROW 51001, @errorMessage, 1;
         END;
 
     IF @starttrancount = 0 

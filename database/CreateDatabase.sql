@@ -272,7 +272,7 @@ GO
 
 -- FK for ExpenseTypeID
 ALTER TABLE [dbo].[Expense]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseTypeID_Expense_ExpenseTypeID] FOREIGN KEY([ExpenseTypeID])
-REFERENCES [dbo].[ExpenseTypeID] ([ExpenseTypeID])
+REFERENCES [dbo].[ExpenseType] ([ExpenseTypeID])
 GO
 ALTER TABLE [dbo].[Expense] CHECK CONSTRAINT [FK_ExpenseTypeID_Expense_ExpenseTypeID]
 GO
@@ -713,7 +713,7 @@ BEGIN TRY
         SET @paymentTypeDescription = LTRIM(RTRIM(@paymentTypeDescription));
 
         -- Ensure that the paymentTypeCategoryID exists
-        IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategoryID] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
+        IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
         BEGIN;
             THROW 51001, 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID, 1;
         END;

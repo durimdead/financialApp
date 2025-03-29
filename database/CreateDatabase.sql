@@ -510,7 +510,7 @@ GO
 =        David Lancellotti
 =
 =    Create date: 
-=        03/27/2025 3:00PM
+=        03/27/2025 03:00PM
 =
 =    Description:
 =        Delete an expense type record given the ExpenseTypeID
@@ -630,7 +630,7 @@ GO
 =        David Lancellotti
 =
 =    Create date: 
-=        03/27/2025 3:05PM
+=        03/27/2025 03:05PM
 =
 =    Description:
 =        Delete a payment type category record given the PaymentTypeCategoryID
@@ -655,7 +655,7 @@ BEGIN TRY
         BEGIN TRANSACTION
 
         -- if we can find a record for the payment type category pushed in, delete it.
-        -- if we don't find it - no matter, the payment type category referenced doesn't exist and there's nothing to do
+        -- if we don't find it - no matter, the payment type category referenced doesn't exist and there's nothing to do.
         IF EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
         BEGIN;
             DELETE FROM [dbo].[PaymentTypeCategory]
@@ -680,7 +680,7 @@ GO
 =       David Lancellotti
 =
 =    Create date: 
-=       03/28/2022 02:05 PM
+=       03/28/2025 02:05 PM
 =
 =    Description:
 =       Update or insert a payment type record with the relevant information.
@@ -761,7 +761,56 @@ BEGIN CATCH
 END CATCH
 GO
 
---TODO: create more complex sproc for the upserts for the next set of tables
+
+
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        03/29/2025 05:47 PM
+=
+=    Description:
+=        Delete a payment type record given the paymentTypeID
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE PROCEDURE [dbo].[usp_PaymentTypeDelete]
+    @paymentTypeID AS INTEGER
+AS
+SET XACT_ABORT, NOCOUNT ON
+DECLARE @starttrancount int
+BEGIN TRY
+    SELECT @starttrancount = @@TRANCOUNT
+
+    IF @starttrancount = 0
+        BEGIN TRANSACTION
+
+        -- if we can find a record for the paymentTypeID pushed in, delete it.
+        -- if we don't find it - no matter, the paymentType doesn't exist anyway and there's nothing to do
+        IF EXISTS(SELECT 1 FROM [dbo].[PaymentType] WHERE [PaymentTypeID] = @paymentTypeID)
+        BEGIN;
+            DELETE FROM [dbo].[PaymentType]
+            WHERE
+                [PaymentTypeID] = @paymentTypeID
+        END;
+
+    IF @starttrancount = 0 
+        COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+        ROLLBACK TRANSACTION;
+    THROW;
+END CATCH
+GO
 --TODO: create more complex sproc for the upserts for the next set of tables
 --TODO: create more complex sproc for the upserts for the next set of tables
 --TODO: create more complex sproc for the upserts for the next set of tables

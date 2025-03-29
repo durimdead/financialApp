@@ -1062,10 +1062,25 @@ FROM
 		JOIN [dbo].[PaymentTypeCategory] ptc ON pt.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
 GO
 
-
-
-
---TODO: create the views for the expense tables
+CREATE VIEW [dbo].[vExpense]
+AS
+SELECT
+    e.[ExpenseID]					AS [ExpenseID]
+    ,et.[ExpenseTypeName]			AS [ExpenseTypeName]
+    ,pt.[PaymentTypeName]			AS [PaymentTypeName]
+    ,ptc.[PaymentTypeCategoryName]	AS [PaymentTypeCategoryName]
+    ,e.[IsIncome]					AS [IsIncome]
+    ,e.[IsInvestment]				AS [IsInvenstment]
+    ,et.[ExpenseTypeID]				AS [ExpenseTypeID]
+	,pt.[PaymentTypeID]				AS [PaymentTypeID]
+    ,pt.[PaymentTypeDescription]	AS [PaymentTypeDescription]
+    ,ptc.[PaymentTypeCategoryID]	AS [PaymentTypeCategoryID]
+FROM
+    [dbo].[Expense] e
+		JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
+		JOIN [dbo].[PaymentType] pt ON e.[PaymentTypeID] = pt.[PaymentTypeID]
+		JOIN [dbo].[PaymentTypeCategory] ptc ON e.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
+GO
 
 
 /************************************************************************

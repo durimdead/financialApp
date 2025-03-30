@@ -1035,7 +1035,6 @@ SELECT
     [ExpenseTypeID]
     ,[ExpenseTypeName]
     ,[ExpenseTypeDescription]
-    ,[ValidFrom] AS [LastUpdated]
 FROM
     [dbo].[ExpenseType]
 GO
@@ -1063,6 +1062,22 @@ FROM
 GO
 
 CREATE VIEW [dbo].[vExpense]
+AS
+SELECT
+    e.[ExpenseID]					AS [ExpenseID]
+    ,e.[IsIncome]					AS [IsIncome]
+    ,e.[IsInvestment]				AS [IsInvenstment]
+    ,et.[ExpenseTypeID]				AS [ExpenseTypeID]
+	,pt.[PaymentTypeID]				AS [PaymentTypeID]
+    ,ptc.[PaymentTypeCategoryID]	AS [PaymentTypeCategoryID]
+FROM
+    [dbo].[Expense] e
+		JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
+		JOIN [dbo].[PaymentType] pt ON e.[PaymentTypeID] = pt.[PaymentTypeID]
+		JOIN [dbo].[PaymentTypeCategory] ptc ON e.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
+GO
+
+CREATE VIEW [dbo].[vExpenseDetails]
 AS
 SELECT
     e.[ExpenseID]					AS [ExpenseID]

@@ -105,5 +105,31 @@ namespace FinanceApi.Repositories
             // execute sproc
             this.Database.ExecuteSqlRaw("exec usp_PaymentTypeDelete @paymentTypeID", parameters);
         }
+
+        public void usp_ExpenseUpsert(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, int expenseID = 0)
+        {
+            // parameterize the data for executing the stored procedure
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@expenseID", expenseID));
+            parameters.Add(new SqlParameter("@expenseTypeID", expenseTypeID));
+            parameters.Add(new SqlParameter("@paymentTypeID", paymentTypeID));
+            parameters.Add(new SqlParameter("@paymentTypeCategoryID", paymentTypeCategoryID));
+            parameters.Add(new SqlParameter("@expenseDescription", expenseDescription));
+            parameters.Add(new SqlParameter("@isIncome", isIncome));
+            parameters.Add(new SqlParameter("@isInvestment", isInvestment));
+
+            // execute sproc
+            this.Database.ExecuteSqlRaw("exec usp_ExpenseUpsert @expenseID, @expenseTypeID, @paymentTypeID, @paymentTypeCategoryID, @expenseDescription, @isIncome, @isInvestment", parameters);
+        }
+
+        public void usp_ExpenseDelete(int expenseID)
+        {
+            // parameterize the data for executing the stored procedure
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@expenseID", expenseID));
+
+            // execute sproc
+            this.Database.ExecuteSqlRaw("exec usp_ExpenseDelete @expenseID", parameters);
+        }
     }
 }

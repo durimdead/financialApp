@@ -11,6 +11,11 @@ namespace FinanceApi.Repositories
         public FinancialAppContext(DbContextOptions options) : base(options) { }
 
         public virtual DbSet<vPeriodicElement> vPeriodicElement { get; set; }
+        public virtual DbSet<vExpenseType> vExpenseType { get; set; }
+        public virtual DbSet<vPaymentTypeCategory> vPaymentTypeCategory { get; set; }
+        public virtual DbSet<vPaymentType> vPaymentType { get; set; }
+        public virtual DbSet<vExpense> vExpense { get; set; }
+        public virtual DbSet<vExpenseDetails> VExpenseDetails { get; set; }
 
         public void usp_PeriodicElementUpsert(string periodicElementName, string periodicElementSymbol, double periodicElementWeight, int periodicElementID = 0)
         {

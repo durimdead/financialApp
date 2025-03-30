@@ -39,5 +39,27 @@ namespace FinanceApi.Repositories
             // execute sproc
             this.Database.ExecuteSqlRaw("exec usp_PeriodicElementDelete @periodicElementID", parameters);
         }
+
+        public void usp_ExpenseTypeUpsert(string expenseTypeName, string expenseTypeDescription, int expenseTypeID = 0)
+        {
+            // parameterize the data for executing the stored procedure
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@expenseTypeID", expenseTypeID));
+            parameters.Add(new SqlParameter("@expenseTypeName", expenseTypeName));
+            parameters.Add(new SqlParameter("@expenseTypeDescription", expenseTypeDescription));
+
+            // execute sproc
+            this.Database.ExecuteSqlRaw("exec usp_ExpenseTypeUpsert @expenseTypeID, @expenseTypeName, @expenseTypeDescription", parameters);
+        }
+
+        public void usp_ExpenseTypeDelete(int expenseTypeID)
+        {
+            // parameterize the data for executing the stored procedure
+            var parameters = new List<SqlParameter>();
+            parameters.Add(new SqlParameter("@expenseTypeID", expenseTypeID));
+
+            // execute sproc
+            this.Database.ExecuteSqlRaw("exec usp_ExpenseTypeDelete @expenseTypeID", parameters);
+        }
     }
 }

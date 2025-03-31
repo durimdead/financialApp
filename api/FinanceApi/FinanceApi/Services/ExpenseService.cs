@@ -141,7 +141,6 @@ namespace FinanceApi.Services
 
         public void DeleteExpense(int expenseID)
         {
-
             try
             {
                 // check for invalid ID for the Deletion
@@ -166,17 +165,74 @@ namespace FinanceApi.Services
 
         public void DeleteExpenseType(int expenseTypeID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // check for invalid ID for the Deletion
+                if (expenseTypeID <= 0)
+                {
+                    throw new ArgumentOutOfRangeException("expenseTypeID must be a positive integer. Current value : " + expenseTypeID.ToString());
+                }
+                // attempt to delete the Expense Type
+                this._context.usp_ExpenseTypeDelete(expenseTypeID);
+            }
+            catch (Exception ex)
+            {
+                // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
+                this._logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    this._logger.LogError(ex.InnerException.Message);
+                }
+                throw;
+            }
         }
 
         public void DeletePaymentType(int paymentTypeID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // check for invalid ID for the Deletion
+                if (paymentTypeID <= 0)
+                {
+                    throw new ArgumentOutOfRangeException("paymentTypeID must be a positive integer. Current value : " + paymentTypeID.ToString());
+                }
+                // attempt to delete the Payment Type
+                this._context.usp_PaymentTypeDelete(paymentTypeID);
+            }
+            catch (Exception ex)
+            {
+                // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
+                this._logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    this._logger.LogError(ex.InnerException.Message);
+                }
+                throw;
+            }
         }
 
         public void DeletePaymentTypeCategory(int paymentTypeCategoryID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // check for invalid ID for the Deletion
+                if (paymentTypeCategoryID <= 0)
+                {
+                    throw new ArgumentOutOfRangeException("paymentTypeCategoryID must be a positive integer. Current value : " + paymentTypeCategoryID.ToString());
+                }
+                // attempt to delete the Expense Type
+                this._context.usp_PaymentTypeCategoryDelete(paymentTypeCategoryID);
+            }
+            catch (Exception ex)
+            {
+                // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
+                this._logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    this._logger.LogError(ex.InnerException.Message);
+                }
+                throw;
+            }
         }
 
         public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment)

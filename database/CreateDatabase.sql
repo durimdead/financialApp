@@ -143,8 +143,10 @@ GO
 -- create the user in master db
 USE [master]
 GO
-CREATE LOGIN [FinancialAppAccount] WITH PASSWORD=N'myTestAccount123'
-     , DEFAULT_DATABASE=[FinancialApp]
+IF NOT EXISTS (SELECT 1 FROM master.sys.server_principals WHERE name = 'FinancialAppAccount')
+BEGIN;
+	CREATE LOGIN [FinancialAppAccount] WITH PASSWORD=N'myTestAccount123', DEFAULT_DATABASE=[FinancialApp]
+END;
 GO
 
 -- create the user in the application db and then tie it to the account created on the server

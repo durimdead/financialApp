@@ -1,5 +1,15 @@
 [
   {
+    "ContainingType": "FinanceApi.Controllers.ExpenseController",
+    "Method": "Get",
+    "RelativePath": "api/Expense",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
     "Method": "Get",
     "RelativePath": "api/PeriodicElements",

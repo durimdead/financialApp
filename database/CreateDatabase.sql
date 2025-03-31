@@ -188,12 +188,12 @@ GO
 
 -- date night, car maintenance, tolls, grocery, etc.
 CREATE TABLE [dbo].[ExpenseType](
-	[ExpenseTypeID] INT IDENTITY(1,1) NOT NULL
-	,[ExpenseTypeName] VARCHAR(50) NOT NULL
-	,[ExpenseTypeDescription] VARCHAR(250)
+    [ExpenseTypeID] INT IDENTITY(1,1) NOT NULL
+    ,[ExpenseTypeName] VARCHAR(50) NOT NULL
+    ,[ExpenseTypeDescription] VARCHAR(250)
     ,CONSTRAINT [ExpenseTypeID] PRIMARY KEY CLUSTERED
-	([ExpenseTypeID] ASC)
-	,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
+    ([ExpenseTypeID] ASC)
+    ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
     ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
     ,PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo)
     )
@@ -218,7 +218,7 @@ GO
 -- chase freedom, chase debit, cash, venmo, zelle, etc
 CREATE TABLE [dbo].[PaymentType](
     [PaymentTypeID] INT IDENTITY(1,1) NOT NULL
-	,[PaymentTypeCategoryID] INT NOT NULL
+    ,[PaymentTypeCategoryID] INT NOT NULL
     ,[PaymentTypeName] VARCHAR(50) NOT NULL
     ,[PaymentTypeDescription] VARCHAR(250) NOT NULL
     ,CONSTRAINT [PaymentTypeID] PRIMARY KEY CLUSTERED
@@ -242,7 +242,7 @@ CREATE TABLE [dbo].[Expense](
     [ExpenseID] INT IDENTITY(1,1) NOT NULL
     ,[ExpenseTypeID] INT NOT NULL
     ,[PaymentTypeID] INT NOT NULL
-	,[PaymentTypeCategoryID] INT NOT NULL
+    ,[PaymentTypeCategoryID] INT NOT NULL
     ,[ExpenseDescription] NVARCHAR(200) NOT NULL
     ,[IsIncome] BIT NOT NULL
     ,[IsInvestment] BIT NOT NULL
@@ -316,7 +316,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_PeriodicElementUpsert]
-    @periodicElementID AS INTEGER
+    @periodicElementID AS INT
     ,@periodicElementName AS VARCHAR(50)
     ,@periodicElementSymbol AS VARCHAR(3)
     ,@periodicElementWeight AS DECIMAL(10,6)
@@ -361,7 +361,7 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the periodic element doesn't exist and we can't update it.
         ELSE
         BEGIN;
-			DECLARE @errorMessage VARCHAR(100) = 'The PeriodicElementID does not exist: ' + @periodicElementID;
+            DECLARE @errorMessage VARCHAR(100) = 'The PeriodicElementID does not exist: ' + CONVERT(VARCHAR(20), @periodicElementID);
             THROW 51001, @errorMessage , 1;
         END;
 
@@ -398,7 +398,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_PeriodicElementDelete]
-    @periodicElementID AS INTEGER
+    @periodicElementID AS INT
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int
@@ -449,7 +449,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_ExpenseTypeUpsert]
-    @expenseTypeID AS INTEGER
+    @expenseTypeID AS INT
     ,@expenseTypeName AS VARCHAR(50)
     ,@expenseTypeDescription AS VARCHAR(250)
 AS
@@ -490,7 +490,7 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the expense type doesn't exist and we can't update it.
         ELSE
         BEGIN;
-			DECLARE @errorMessage VARCHAR(100) = 'The ExpenseTypeID does not exist: ' + @expenseTypeID;
+            DECLARE @errorMessage VARCHAR(100) = 'The ExpenseTypeID does not exist: ' + CONVERT(VARCHAR(20), @expenseTypeID);
             THROW 51001, @errorMessage, 1;
         END;
 
@@ -526,7 +526,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_ExpenseTypeDelete]
-    @expenseTypeID AS INTEGER
+    @expenseTypeID AS INT
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int
@@ -575,7 +575,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_PaymentTypeCategoryUpsert]
-    @paymentTypeCategoryID AS INTEGER
+    @paymentTypeCategoryID AS INT
     ,@paymentTypeCategoryName AS VARCHAR(50)
 AS
 SET XACT_ABORT, NOCOUNT ON
@@ -611,7 +611,7 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the payment type category doesn't exist and we can't update it.
         ELSE
         BEGIN;
-			DECLARE @errorMessage VARCHAR(100) = 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID;
+            DECLARE @errorMessage VARCHAR(100) = 'The PaymentTypeCategoryID does not exist: ' + CONVERT(VARCHAR(20), @paymentTypeCategoryID);
             THROW 51001, @errorMessage, 1;
         END;
 
@@ -647,7 +647,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_PaymentTypeCategoryDelete]
-    @paymentTypeCategoryID AS INTEGER
+    @paymentTypeCategoryID AS INT
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int
@@ -698,7 +698,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_PaymentTypeUpsert]
-    @paymentTypeID AS INTEGER
+    @paymentTypeID AS INT
     ,@paymentTypeName AS VARCHAR(50)
     ,@paymentTypeDescription AS VARCHAR(250)
     ,@paymentTypeCategoryID AS INT
@@ -718,7 +718,7 @@ BEGIN TRY
         -- Ensure that the paymentTypeCategoryID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
         BEGIN;
-        	DECLARE @errorMessage_FKsDoNotExist VARCHAR(200) = 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID;
+            DECLARE @errorMessage_FKsDoNotExist VARCHAR(200) = 'The PaymentTypeCategoryID does not exist: ' + CONVERT(VARCHAR(20), @paymentTypeCategoryID);
             THROW 51001, @errorMessage_FKsDoNotExist, 1;
         END;
 
@@ -752,7 +752,7 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the payment type doesn't exist and we can't update it.
         ELSE
         BEGIN;
-			DECLARE @errorMessage VARCHAR(100) = 'The paymentTypeID does not exist: ' + @paymentTypeID;
+            DECLARE @errorMessage VARCHAR(100) = 'The paymentTypeID does not exist: ' + CONVERT(VARCHAR(20), @paymentTypeID);
             THROW 51001, @errorMessage, 1;
         END;
 
@@ -788,7 +788,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_PaymentTypeDelete]
-    @paymentTypeID AS INTEGER
+    @paymentTypeID AS INT
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int
@@ -840,7 +840,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_ExpenseUpsert]
-    @expenseID AS INTEGER
+    @expenseID AS INT
     ,@expenseTypeID INT
     ,@paymentTypeID INT
     ,@paymentTypeCategoryID INT
@@ -867,19 +867,19 @@ BEGIN TRY
         -- Ensure that the expenseTypeID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[ExpenseType] WHERE [ExpenseTypeID] = @expenseTypeID)
         BEGIN;
-            SET @errorMessage_FKsDoNotExist += 'The ExpenseTypeID does not exist: ' + @expenseTypeID + ' :::: ';
+            SET @errorMessage_FKsDoNotExist += 'The ExpenseTypeID does not exist: ' + CONVERT(VARCHAR(20), @expenseTypeID) + ' :::: ';
         END;
 
         -- Ensure that the paymentTypeID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentType] WHERE [PaymentTypeID] = @paymentTypeID)
         BEGIN;
-            SET @errorMessage_FKsDoNotExist += 'The PaymentTypeID does not exist: ' + @paymentTypeID + ' :::: ';
+            SET @errorMessage_FKsDoNotExist += 'The PaymentTypeID does not exist: ' + CONVERT(VARCHAR(20), @paymentTypeID) + ' :::: ';
         END;
 
         -- Ensure that the paymentTypeCategoryID exists
         IF NOT EXISTS(SELECT 1 FROM [dbo].[PaymentTypeCategory] WHERE [PaymentTypeCategoryID] = @paymentTypeCategoryID)
         BEGIN;
-            SET @errorMessage_FKsDoNotExist += 'The PaymentTypeCategoryID does not exist: ' + @paymentTypeCategoryID + ' :::: ';;
+            SET @errorMessage_FKsDoNotExist += 'The PaymentTypeCategoryID does not exist: ' + CONVERT(VARCHAR(20), @paymentTypeCategoryID) + ' :::: ';;
         END;
 
         -- if there were any FKs that had an issue, send a message back indicating all that had an issue.
@@ -930,7 +930,7 @@ BEGIN TRY
         -- if the ID doesn't exists and is not 0, the expense doesn't exist and we can't update it.
         ELSE
         BEGIN;
-			DECLARE @errorMessage VARCHAR(100) = 'The expenseID does not exist: ' + @expenseID;
+            DECLARE @errorMessage VARCHAR(100) = 'The expenseID does not exist: ' + CONVERT(VARCHAR(20), @expenseID);
             THROW 51001, @errorMessage, 1;
         END;
 
@@ -966,7 +966,7 @@ GO
 ===========================================================================================================================================
 */
 CREATE PROCEDURE [dbo].[usp_ExpenseDelete]
-    @expenseID AS INTEGER
+    @expenseID AS INT
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int
@@ -1051,50 +1051,50 @@ GO
 CREATE VIEW [dbo].[vPaymentType]
 AS
 SELECT
-    pt.[PaymentTypeID]				AS [PaymentTypeID]
-    ,pt.[PaymentTypeName]			AS [PaymentTypeName]
-    ,pt.[PaymentTypeDescription]	AS [PaymentTypeDescription]
-    ,ptc.[PaymentTypeCategoryID]	AS [PaymentTypeCategoryID]
-    ,ptc.[PaymentTypeCategoryName]	AS [PaymentTypeCategoryName]
+    pt.[PaymentTypeID]              AS [PaymentTypeID]
+    ,pt.[PaymentTypeName]           AS [PaymentTypeName]
+    ,pt.[PaymentTypeDescription]    AS [PaymentTypeDescription]
+    ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
+    ,ptc.[PaymentTypeCategoryName]  AS [PaymentTypeCategoryName]
 FROM
     [dbo].[PaymentType] pt
-		JOIN [dbo].[PaymentTypeCategory] ptc ON pt.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
+        JOIN [dbo].[PaymentTypeCategory] ptc ON pt.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
 GO
 
 CREATE VIEW [dbo].[vExpense]
 AS
 SELECT
-    e.[ExpenseID]					AS [ExpenseID]
-    ,e.[IsIncome]					AS [IsIncome]
-    ,e.[IsInvestment]				AS [IsInvenstment]
-    ,et.[ExpenseTypeID]				AS [ExpenseTypeID]
-	,pt.[PaymentTypeID]				AS [PaymentTypeID]
-    ,ptc.[PaymentTypeCategoryID]	AS [PaymentTypeCategoryID]
+    e.[ExpenseID]                   AS [ExpenseID]
+    ,e.[IsIncome]                   AS [IsIncome]
+    ,e.[IsInvestment]               AS [IsInvenstment]
+    ,et.[ExpenseTypeID]             AS [ExpenseTypeID]
+    ,pt.[PaymentTypeID]             AS [PaymentTypeID]
+    ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
 FROM
     [dbo].[Expense] e
-		JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
-		JOIN [dbo].[PaymentType] pt ON e.[PaymentTypeID] = pt.[PaymentTypeID]
-		JOIN [dbo].[PaymentTypeCategory] ptc ON e.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
+        JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
+        JOIN [dbo].[PaymentType] pt ON e.[PaymentTypeID] = pt.[PaymentTypeID]
+        JOIN [dbo].[PaymentTypeCategory] ptc ON e.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
 GO
 
 CREATE VIEW [dbo].[vExpenseDetails]
 AS
 SELECT
-    e.[ExpenseID]					AS [ExpenseID]
-    ,et.[ExpenseTypeName]			AS [ExpenseTypeName]
-    ,pt.[PaymentTypeName]			AS [PaymentTypeName]
-    ,ptc.[PaymentTypeCategoryName]	AS [PaymentTypeCategoryName]
-    ,e.[IsIncome]					AS [IsIncome]
-    ,e.[IsInvestment]				AS [IsInvenstment]
-    ,et.[ExpenseTypeID]				AS [ExpenseTypeID]
-	,pt.[PaymentTypeID]				AS [PaymentTypeID]
-    ,pt.[PaymentTypeDescription]	AS [PaymentTypeDescription]
-    ,ptc.[PaymentTypeCategoryID]	AS [PaymentTypeCategoryID]
+    e.[ExpenseID]                   AS [ExpenseID]
+    ,et.[ExpenseTypeName]           AS [ExpenseTypeName]
+    ,pt.[PaymentTypeName]           AS [PaymentTypeName]
+    ,ptc.[PaymentTypeCategoryName]  AS [PaymentTypeCategoryName]
+    ,e.[IsIncome]                   AS [IsIncome]
+    ,e.[IsInvestment]               AS [IsInvenstment]
+    ,et.[ExpenseTypeID]             AS [ExpenseTypeID]
+    ,pt.[PaymentTypeID]             AS [PaymentTypeID]
+    ,pt.[PaymentTypeDescription]    AS [PaymentTypeDescription]
+    ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
 FROM
     [dbo].[Expense] e
-		JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
-		JOIN [dbo].[PaymentType] pt ON e.[PaymentTypeID] = pt.[PaymentTypeID]
-		JOIN [dbo].[PaymentTypeCategory] ptc ON e.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
+        JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
+        JOIN [dbo].[PaymentType] pt ON e.[PaymentTypeID] = pt.[PaymentTypeID]
+        JOIN [dbo].[PaymentTypeCategory] ptc ON e.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
 GO
 
 

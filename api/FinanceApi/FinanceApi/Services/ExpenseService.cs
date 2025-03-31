@@ -17,28 +17,8 @@ namespace FinanceApi.Services
         {
             try
             {
-                // check for invalid IDs for the insert
-                string argumentOutOfRangeMessage = string.Empty;
-                if (expenseTypeID <= 0)
-                {
-                    argumentOutOfRangeMessage += "expenseTypeID must be a positive integer. Current value : " + expenseTypeID.ToString();
-                }
-                if (paymentTypeID <= 0)
-                {
-                    argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
-                    argumentOutOfRangeMessage += "paymentTypeID must be a positive integer. Current value : " + paymentTypeID.ToString();
-                }
-                if (paymentTypeCategoryID <= 0)
-                {
-                    argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
-                    argumentOutOfRangeMessage += "paymentTypeCategoryID must be a positive integer. Current value : " + paymentTypeCategoryID.ToString();
-                }
-
-                // if any were found, throw an error
-                if (argumentOutOfRangeMessage != string.Empty)
-                {
-                    throw new ArgumentOutOfRangeException(argumentOutOfRangeMessage);
-                }
+                // check for valid IDs for the PK and FKs of the expense record
+                this.CheckExpenseUpsertIDs(expenseTypeID, paymentTypeID, paymentTypeCategoryID);
 
                 // ensure all strings are trimmed
                 expenseDescription = expenseDescription.Trim();
@@ -237,7 +217,59 @@ namespace FinanceApi.Services
 
         public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // check for valid IDs for the PK and FKs of the expense record
+                this.CheckExpenseUpsertIDs(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID, false);
+
+                // ensure all strings are trimmed
+                expenseDescription = expenseDescription.Trim();
+
+
+                // attempt to upsert the Expense
+                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment);
+            }
+            catch (Exception ex)
+            {
+                // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
+                this._logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    this._logger.LogError(ex.InnerException.Message);
+                }
+                throw;
+            }
+        }
+
+        private void CheckExpenseUpsertIDs(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, int expenseID = 0, bool isNewRecord = true)
+        {
+            // check for invalid IDs for the insert
+            string argumentOutOfRangeMessage = string.Empty;
+            if (expenseID <= 0 && isNewRecord == false)
+            {
+                argumentOutOfRangeMessage += "expenseID must be a positive integer. Current value : " + expenseID.ToString();
+            }
+            if (expenseTypeID <= 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "expenseTypeID must be a positive integer. Current value : " + expenseTypeID.ToString();
+            }
+            if (paymentTypeID <= 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "paymentTypeID must be a positive integer. Current value : " + paymentTypeID.ToString();
+            }
+            if (paymentTypeCategoryID <= 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "paymentTypeCategoryID must be a positive integer. Current value : " + paymentTypeCategoryID.ToString();
+            }
+
+            // if any were found, throw an error
+            if (argumentOutOfRangeMessage != string.Empty)
+            {
+                throw new ArgumentOutOfRangeException(argumentOutOfRangeMessage);
+            }
         }
 
         public void UpdateExpenseType(int expenseTypeID, string expenseTypeName, string expenseTypeDescription)

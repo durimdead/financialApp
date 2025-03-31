@@ -22,10 +22,23 @@ namespace FinanceApi.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            this._expenseService.AddExpense(1, 1, 1, "something", true, true);
+            try {
+            this._expenseService.AddExpense(-1, -2, -3, "something", true, true);
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
             return new JsonResult(jsonData);
+            }
+            catch(Exception ex)
+            {
+                var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = ex.Message };
+
+                this._logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    this._logger.LogError(ex.InnerException.Message);
+                }
+                return new JsonResult(jsonData);
+            }
         }
     }
 }

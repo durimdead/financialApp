@@ -1,6 +1,4 @@
-﻿using FinanceApi.Models;
-
-namespace FinanceApi.Services.Interfaces
+﻿namespace FinanceApi.Services.Interfaces
 {
     public interface IElement
     {

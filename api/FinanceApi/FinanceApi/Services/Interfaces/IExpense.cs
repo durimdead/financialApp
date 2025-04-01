@@ -43,9 +43,32 @@ namespace FinanceApi.Services.Interfaces
         #endregion Add_New_Records
 
         #region Delete_Records
+        /// <summary>
+        /// Delete an expense record from the database give the expense ID
+        /// </summary>
+        /// <param name="expenseID">expense ID to delete</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void DeleteExpense(int expenseID);
+
+        /// <summary>
+        /// Delete an expense type record from the database give the expense type ID
+        /// </summary>
+        /// <param name="expenseTypeID">expense type ID to delete</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void DeleteExpenseType(int expenseTypeID);
+
+        /// <summary>
+        /// Delete payment type record from the database give the payment type ID
+        /// </summary>
+        /// <param name="paymentTypeID">payment type ID to delete</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void DeletePaymentType(int paymentTypeID);
+
+        /// <summary>
+        /// Delete payment type category record from the database give the payment type category ID
+        /// </summary>
+        /// <param name="paymentTypeCategoryID">payment type category ID to delete</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void DeletePaymentTypeCategory(int paymentTypeCategoryID);
         #endregion Delete_Records
 

@@ -327,13 +327,13 @@ namespace FinanceApi.Services
         #region Upsert_ID_Checks
 
         /// <summary>
-        /// checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
+        /// Checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
         /// </summary>
         /// <param name="expenseTypeID">expense type ID</param>
         /// <param name="paymentTypeID">payment type ID</param>
         /// <param name="paymentTypeCategoryID">payment type categoryID</param>
-        /// <param name="expenseID">0 if this is not an existing record (0 default)</param>
-        /// <param name="isNewRecord">true if this is not an existing record (true default)</param>
+        /// <param name="expenseID">expense ID (0 by default for "new" record)</param>
+        /// <param name="isNewRecord">true if this is a new record being added to the database (true by default)</param>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         private void CheckExpenseUpsertIDs(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, int expenseID = 0, bool isNewRecord = true)
         {
@@ -366,6 +366,12 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
+        /// </summary>
+        /// <param name="expenseTypeID">expense type ID (0 by default for "new" record)</param>
+        /// <param name="isNewRecord">true if this is a new record being added to the database (true by default)</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         private void CheckExpenseTypeUpsertIDs(int expenseTypeID = 0, bool isNewRecord = true)
         {
             // check for invalid IDs for the insert
@@ -382,6 +388,13 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
+        /// </summary>
+        /// <param name="paymentTypeCategoryID">payment type category ID</param>
+        /// <param name="paymentTypeID">payment type ID (0 by default for "new" record)</param>
+        /// <param name="isNewRecord">true if this is a new record being added to the database (true by default)</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         private void CheckPaymentTypeUpsertIDs(int paymentTypeCategoryID, int paymentTypeID = 0, bool isNewRecord = false)
         {
             // check for invalid IDs for the insert
@@ -402,6 +415,13 @@ namespace FinanceApi.Services
                 throw new ArgumentOutOfRangeException(argumentOutOfRangeMessage);
             }
         }
+
+        /// <summary>
+        /// Checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
+        /// </summary>
+        /// <param name="paymentTypeCategoryID">payment type categoryID (0 by default for "new" record)</param>
+        /// <param name="isNewRecord">true if this is a new record being added to the database (true by default)</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         private void CheckPaymentTypeCategoryUpsertIDs(int paymentTypeCategoryID = 0, bool isNewRecord = true)
         {
             // check for invalid IDs for the insert

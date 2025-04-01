@@ -14,6 +14,17 @@ namespace FinanceApi.Services
         }
 
         #region Add_New_Records
+
+        /// <summary>
+        /// Add expense to database
+        /// </summary>
+        /// <param name="expenseTypeID">expense type ID</param>
+        /// <param name="paymentTypeID">payment type ID</param>
+        /// <param name="paymentTypeCategoryID">payment type category ID</param>
+        /// <param name="expenseDescription">description of the expense</param>
+        /// <param name="isIncome">if this is income</param>
+        /// <param name="isInvestment">if this expense is being put into an investment vehicle</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void AddExpense(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment)
         {
             try
@@ -315,6 +326,15 @@ namespace FinanceApi.Services
 
         #region Upsert_ID_Checks
 
+        /// <summary>
+        /// checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
+        /// </summary>
+        /// <param name="expenseTypeID">expense type ID</param>
+        /// <param name="paymentTypeID">payment type ID</param>
+        /// <param name="paymentTypeCategoryID">payment type categoryID</param>
+        /// <param name="expenseID">0 if this is not an existing record (0 default)</param>
+        /// <param name="isNewRecord">true if this is not an existing record (true default)</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         private void CheckExpenseUpsertIDs(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, int expenseID = 0, bool isNewRecord = true)
         {
             // check for invalid IDs for the insert

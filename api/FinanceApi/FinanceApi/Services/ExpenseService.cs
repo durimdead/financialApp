@@ -259,6 +259,17 @@ namespace FinanceApi.Services
         #endregion Delete_Records
 
         #region Update_Existing_Records
+        /// <summary>
+        /// Update an expense record
+        /// </summary>
+        /// <param name="expenseID">ID of the expense record to update</param>
+        /// <param name="expenseTypeID">expense type ID</param>
+        /// <param name="paymentTypeID">payment type ID</param>
+        /// <param name="paymentTypeCategoryID">payment type category ID</param>
+        /// <param name="expenseDescription">Description of the Expense</param>
+        /// <param name="isIncome">true if this is a source of income</param>
+        /// <param name="isInvestment">true of this expense is for putting money into an "investment vehicle"</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment)
         {
             try
@@ -284,6 +295,13 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Update an expense type record
+        /// </summary>
+        /// <param name="expenseTypeID">ID of the expense type to update</param>
+        /// <param name="expenseTypeName">expense type name</param>
+        /// <param name="expenseTypeDescription">description of the expense type</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void UpdateExpenseType(int expenseTypeID, string expenseTypeName, string expenseTypeDescription)
         {
             try
@@ -310,6 +328,14 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Update a payment type record
+        /// </summary>
+        /// <param name="paymentTypeID">ID of the payment type to update</param>
+        /// <param name="paymentTypeName">payment type name</param>
+        /// <param name="paymentTypeDescription">description of the payment type</param>
+        /// <param name="paymentTypeCategoryID">payment type category ID</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void UpdatePaymentType(int paymentTypeID, string paymentTypeName, string paymentTypeDescription, int paymentTypeCategoryID)
         {
             try
@@ -336,6 +362,12 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Update a payment type category record
+        /// </summary>
+        /// <param name="paymentTypeCategoryID">ID of the payment type category to update</param>
+        /// <param name="paymentTypeCategoryName">payment type category name</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void UpdatePaymentTypeCategory(int paymentTypeCategoryID, string paymentTypeCategoryName)
         {
             try

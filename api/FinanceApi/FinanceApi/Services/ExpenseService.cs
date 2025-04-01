@@ -16,7 +16,7 @@ namespace FinanceApi.Services
         #region Add_New_Records
 
         /// <summary>
-        /// Add expense to database
+        /// Add expense record to database
         /// </summary>
         /// <param name="expenseTypeID">expense type ID</param>
         /// <param name="paymentTypeID">payment type ID</param>
@@ -51,6 +51,12 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Add Expense Type record to the database
+        /// </summary>
+        /// <param name="expenseTypeName">expense type name</param>
+        /// <param name="expenseTypeDescription">description of the expense type</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void AddExpenseType(string expenseTypeName, string expenseTypeDescription)
         {
             try
@@ -73,6 +79,13 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Add payment type record to the database
+        /// </summary>
+        /// <param name="paymentTypeName">payment type name</param>
+        /// <param name="paymentTypeDescription">description of the payment type</param>
+        /// <param name="paymentTypeCategoryID">payment type category ID</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void AddPaymentType(string paymentTypeName, string paymentTypeDescription, int paymentTypeCategoryID)
         {
             try
@@ -99,6 +112,11 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Add payment type category record to the database
+        /// </summary>
+        /// <param name="paymentTypeCategoryName">payment type category name</param>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
         public void AddPaymentTypeCategory(string paymentTypeCategoryName)
         {
             try

@@ -21,8 +21,6 @@ namespace FinanceApi.Services
         /// <returns></returns>
         public PeriodicElement[] GetElements()
         {
-            //var periodicElements = this._context.vPeriodicElement.ToArray();
-
             var periodicElements = this._context.vPeriodicElement.Select(x => new PeriodicElement()
             {
                 actions = "",

@@ -13,6 +13,38 @@ namespace FinanceApi.Services
             this._context = context;
         }
 
+        #region Get_Records
+        public void GetExpenses()
+        {
+            throw new NotImplementedException();
+        }
+        public void GetExpenses(int expenseID = 0)
+        {
+            throw new NotImplementedException();
+        }
+        public void GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
+        {
+            throw new NotImplementedException();
+        }
+        public void GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
+        {
+            throw new NotImplementedException();
+        }
+        public void GetExpenseTypes(int expenseTypeID = 0)
+        {
+            throw new NotImplementedException();
+        }
+        public void GetPaymentTypes(int paymentTypeID = 0)
+        {
+            throw new NotImplementedException();
+        }
+        public void GetPaymentTypeCategories(int paymentTypeCategoryID = 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Get_Records
+
         #region Add_New_Records
 
         /// <summary>

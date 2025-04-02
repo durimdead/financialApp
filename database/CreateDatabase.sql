@@ -835,9 +835,9 @@ GO
 =
 =    UPDATES:
 =                                DateTime
-=    Author                       mm/dd/yyyy HH:mm     Description
-=    =====================        =============        =======================================================================================
-=
+=    Author                      mm/dd/yyyy HH:mm     Description
+=    =====================       =============        =======================================================================================
+=	 David Lancellotti			 04/02/2025 12:35	  Added in "expenseDate" param as this column was added to the table
 =
 ===========================================================================================================================================
 */
@@ -849,6 +849,7 @@ CREATE PROCEDURE [dbo].[usp_ExpenseUpsert]
     ,@expenseDescription NVARCHAR(200)
     ,@isIncome BIT
     ,@isInvestment BIT
+	,@expenseDate datetime2
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int
@@ -894,6 +895,12 @@ BEGIN TRY
          * ### END FK check
          **************************/
 
+		-- throw error if we have a null date for the expense date
+		IF (@expenseDate IS NULL)
+		BEGIN;
+			THROW 51002, 'Expense Date cannot be null and must have a value', 1;
+		END;
+
         -- if we can find a record with the expenseID pushed in, let's update the information for it
         IF EXISTS(SELECT 1 FROM [dbo].[Expense] WHERE [ExpenseID] = @expenseID)
         BEGIN;
@@ -905,6 +912,7 @@ BEGIN TRY
                 ,[ExpenseDescription]       = @expenseDescription
                 ,[IsIncome]                 = @isIncome
                 ,[IsInvestment]             = @isInvestment
+				,[ExpenseDate]				= @expenseDate
             WHERE
                 [expenseID] = @expenseID
         END;
@@ -919,6 +927,7 @@ BEGIN TRY
                 ,[ExpenseDescription]
                 ,[IsIncome]
                 ,[IsInvestment]
+				,[ExpenseDate]
             )
             VALUES(
                 @expenseTypeID
@@ -927,6 +936,7 @@ BEGIN TRY
                 ,@expenseDescription
                 ,@isIncome
                 ,@isInvestment
+				,@expenseDate
             );
         END;
         -- if the ID doesn't exists and is not 0, the expense doesn't exist and we can't update it.
@@ -1072,6 +1082,7 @@ SELECT
     ,et.[ExpenseTypeID]             AS [ExpenseTypeID]
     ,pt.[PaymentTypeID]             AS [PaymentTypeID]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
+	,e.[ExpenseDate]				AS [ExpenseDate]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
@@ -1092,6 +1103,7 @@ SELECT
     ,pt.[PaymentTypeID]             AS [PaymentTypeID]
     ,pt.[PaymentTypeDescription]    AS [PaymentTypeDescription]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
+	,e.[ExpenseDate]				AS [ExpenseDate]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]

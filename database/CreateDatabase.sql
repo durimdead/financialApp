@@ -248,7 +248,7 @@ CREATE TABLE [dbo].[Expense](
     ,[ExpenseDescription] NVARCHAR(200) NOT NULL
     ,[IsIncome] BIT NOT NULL
     ,[IsInvestment] BIT NOT NULL
-	,[ExpenseDate] datetime2 NOT NULL
+	,[ExpenseDate] DATE NOT NULL
     ,CONSTRAINT [ExpenseID] PRIMARY KEY CLUSTERED
     ([ExpenseID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
@@ -850,7 +850,7 @@ CREATE PROCEDURE [dbo].[usp_ExpenseUpsert]
     ,@expenseDescription NVARCHAR(200)
     ,@isIncome BIT
     ,@isInvestment BIT
-	,@expenseDate datetime2
+	,@expenseDate DATE
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int

@@ -1,4 +1,4 @@
-﻿namespace FinanceApi.Models
+﻿namespace FinanceApi.Models.Testing
 {
     public class PeriodicElement
     {

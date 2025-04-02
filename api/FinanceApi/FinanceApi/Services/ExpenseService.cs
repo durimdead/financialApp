@@ -1,4 +1,6 @@
-﻿using FinanceApi.Repositories;
+﻿using FinanceApi.Models;
+using FinanceApi.Models.Expenses;
+using FinanceApi.Repositories;
 using FinanceApi.Services.Interfaces;
 
 namespace FinanceApi.Services
@@ -14,19 +16,19 @@ namespace FinanceApi.Services
         }
 
         #region Get_Records
-        public void GetExpenses()
+        public List<Expense> GetExpenses()
         {
             throw new NotImplementedException();
         }
-        public void GetExpenses(int expenseID = 0)
+        public List<Expense> GetExpenses(int expenseID = 0)
         {
             throw new NotImplementedException();
         }
-        public void GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
+        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
         {
             throw new NotImplementedException();
         }
-        public void GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
+        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
         {
             throw new NotImplementedException();
         }

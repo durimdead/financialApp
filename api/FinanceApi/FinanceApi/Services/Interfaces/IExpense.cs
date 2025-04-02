@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using FinanceApi.Models.Expenses;
+using Microsoft.Data.SqlClient;
 
 namespace FinanceApi.Services.Interfaces
 {
@@ -6,10 +7,10 @@ namespace FinanceApi.Services.Interfaces
     {
         #region Get_Records
 
-        public void GetExpenses();
-        public void GetExpenses(int expenseID = 0);
-        public void GetExpenses(int expenseTypeID = 0,int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
-        public void GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
+        public List<Expense> GetExpenses();
+        public List<Expense> GetExpenses(int expenseID = 0);
+        public List<Expense> GetExpenses(int expenseTypeID = 0,int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
+        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
         public void GetExpenseTypes(int expenseTypeID = 0);
         public void GetPaymentTypes(int paymentTypeID = 0);
         public void GetPaymentTypeCategories(int paymentTypeCategoryID = 0);

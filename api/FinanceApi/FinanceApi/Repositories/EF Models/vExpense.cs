@@ -11,5 +11,8 @@ namespace FinanceApi.Repositories.EF_Models
         public int ExpenseTypeID {  get; set; }
         public int PaymentTypeID { get; set; }
         public int PaymentTypeCategoryID { get; set; }
+        public string ExpenseDescription { get; set; }
+        public DateTime ExpenseDate { get; set; }
+        public DateTime LastUpdated { get; set; }
     }
 }

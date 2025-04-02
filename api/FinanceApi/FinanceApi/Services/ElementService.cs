@@ -1,5 +1,5 @@
 ﻿using FinanceApi.Controllers;
-using FinanceApi.Models;
+using FinanceApi.Models.Testing;
 using FinanceApi.Repositories;
 using FinanceApi.Services.Interfaces;
 

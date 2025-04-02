@@ -23,7 +23,7 @@ namespace FinanceApi.Controllers
         public JsonResult Get()
         {
             try {
-            this._expenseService.AddExpense(-1, -2, -3, "something", true, true);
+            this._expenseService.AddExpense(-1, -2, -3, "something", true, true, DateOnly.FromDateTime(DateTime.Now));
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
             return new JsonResult(jsonData);

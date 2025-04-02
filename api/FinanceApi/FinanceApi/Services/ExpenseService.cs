@@ -58,8 +58,9 @@ namespace FinanceApi.Services
         /// <param name="expenseDescription">description of the expense</param>
         /// <param name="isIncome">if this is income</param>
         /// <param name="isInvestment">if this expense is being put into an investment vehicle</param>
+        /// <param name="expenseDate">the date that the expense was made</param>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
-        public void AddExpense(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment)
+        public void AddExpense(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate)
         {
             try
             {
@@ -71,7 +72,7 @@ namespace FinanceApi.Services
 
 
                 // attempt to upsert the Expense
-                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment);
+                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate);
             }
             catch (Exception ex)
             {
@@ -303,8 +304,9 @@ namespace FinanceApi.Services
         /// <param name="expenseDescription">Description of the Expense</param>
         /// <param name="isIncome">true if this is a source of income</param>
         /// <param name="isInvestment">true of this expense is for putting money into an "investment vehicle"</param>
+        /// <param name="expenseDate">the date that the expense was made</param>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
-        public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment)
+        public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate)
         {
             try
             {
@@ -315,7 +317,7 @@ namespace FinanceApi.Services
                 expenseDescription = expenseDescription.Trim();
 
                 // attempt to upsert the Expense
-                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseID);
+                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseID);
             }
             catch (Exception ex)
             {

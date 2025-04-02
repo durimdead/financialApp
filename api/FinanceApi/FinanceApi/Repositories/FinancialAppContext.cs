@@ -106,7 +106,7 @@ namespace FinanceApi.Repositories
             this.Database.ExecuteSqlRaw("exec usp_PaymentTypeDelete @paymentTypeID", parameters);
         }
 
-        public void usp_ExpenseUpsert(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateTime expenseDate, int expenseID = 0)
+        public void usp_ExpenseUpsert(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, int expenseID = 0)
         {
             // parameterize the data for executing the stored procedure
             var parameters = new List<SqlParameter>();

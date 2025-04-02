@@ -18,18 +18,26 @@ namespace FinanceApi.Services
         /// <summary>
         /// returns all elements in the array
         /// </summary>
-        /// <returns></returns>
+        /// <returns>array of all elements in the database</returns>
         public PeriodicElement[] GetElements()
         {
-            var periodicElements = this._context.vPeriodicElement.Select(x => new PeriodicElement()
+            try
             {
-                actions = "",
-                elementId = x.PeriodicElementID,
-                elementName = x.PeriodicElementName,
-                elementWeight = x.PeriodicElementWeight,
-                elementSymbol = x.PeriodicElementSymbol
-            }).ToArray();
-            return periodicElements;
+                var periodicElements = this._context.vPeriodicElement.Select(x => new PeriodicElement()
+                {
+                    actions = "",
+                    elementId = x.PeriodicElementID,
+                    elementName = x.PeriodicElementName,
+                    elementWeight = x.PeriodicElementWeight,
+                    elementSymbol = x.PeriodicElementSymbol
+                }).ToArray();
+                return periodicElements;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                throw;
+            }
         }
 
         /// <summary>

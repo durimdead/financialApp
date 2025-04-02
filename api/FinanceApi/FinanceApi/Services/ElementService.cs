@@ -9,7 +9,8 @@ namespace FinanceApi.Services
     {
         private readonly ILogger<ElementService> _logger;
         private readonly FinancialAppContext _context;
-        public ElementService(ILogger<ElementService> logger, FinancialAppContext context) {
+        public ElementService(ILogger<ElementService> logger, FinancialAppContext context)
+        {
             this._logger = logger;
             this._context = context;
         }
@@ -41,19 +42,10 @@ namespace FinanceApi.Services
         /// <param name="elementWeight">element weight</param>
         /// <param name="elementID">positive integer representing element ID</param>
         /// <exception cref="ArgumentOutOfRangeException">If the elementID is < 1, it is invalid as this would never exist in the database</exception>
-        public void UpdateElement(string elementName, string elementSymbol, double elementWeight, int elementID) {
+        public void UpdateElement(string elementName, string elementSymbol, double elementWeight, int elementID)
+        {
             try
             {
-                //// make sure we are able to update the element sent in
-                //if (elementToUpdate == null)
-                //{
-                //    throw new NullReferenceException("The elementToUpdate argument cannot be null");
-                //}
-                //else if (elementToUpdate.elementId < 1 || this.staticPeriodicElements.Count(element => element.elementId == elementToUpdate.elementId) != 1)
-                //{
-                //    throw new KeyNotFoundException("Element Id is missing or is not within our records. ElementId : " + elementToUpdate.elementId);
-                //}
-
                 // make sure the elementID sent in is going to be valid
                 if (elementID < 1)
                 {
@@ -61,8 +53,6 @@ namespace FinanceApi.Services
                 }
 
                 // update the element with the parameter
-                //this.staticPeriodicElements[Array.FindIndex(this.staticPeriodicElements, element => element.elementId == elementToUpdate.elementId)] = elementToUpdate;
-                //var elements = this.staticPeriodicElements;
                 this._context.usp_PeriodicElementUpsert(elementName, elementSymbol, elementWeight, elementID);
             }
             catch (Exception e)
@@ -82,22 +72,8 @@ namespace FinanceApi.Services
         {
             try
             {
-                //// ensure we have a valid element to add to the array
-                //if (elementToAdd == null)
-                //{
-                //    throw new NullReferenceException("The elementToUpdate argument cannot be null");
-                //}
-                //else if (elementToAdd.elementId < 1 || this.staticPeriodicElements.Count(element => element.elementId == elementToAdd.elementId) == 1)
-                //{
-                //    throw new KeyNotFoundException("Element Id is not valid as it is either missing( less than 1 ) or is already within our records. ElementId : " + elementToAdd.elementId);
-                //}
-
                 // call the db upsert
                 this._context.usp_PeriodicElementUpsert(elementName, elementSymbol, elementWeight, 0);
-
-                // this is awful - would look for another way, but looking to update the collection to be in a database later anyway.
-                //this.staticPeriodicElements = this.staticPeriodicElements.ToList().Append(elementToAdd).ToArray();
-                //var elements = this.staticPeriodicElements;
             }
             catch (Exception e)
             {
@@ -121,10 +97,9 @@ namespace FinanceApi.Services
                     throw new ArgumentOutOfRangeException("Element ID must be larger than 0. ElementId : " + elementID);
                 }
 
-                //this.staticPeriodicElements = this.staticPeriodicElements.Where(x => x.elementId != elementId).ToArray();
                 this._context.usp_PeriodicElementDelete(elementID);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e.Message);
                 throw;

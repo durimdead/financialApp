@@ -1,6 +1,7 @@
 ﻿using FinanceApi.Models;
 using FinanceApi.Models.Expenses;
 using FinanceApi.Repositories;
+using FinanceApi.Repositories.EF_Models;
 using FinanceApi.Services.Interfaces;
 
 namespace FinanceApi.Services
@@ -16,11 +17,44 @@ namespace FinanceApi.Services
         }
 
         #region Get_Records
-        public List<Expense> GetExpenses()
+        /// <summary>
+        /// attempts to grab an individual expense by ID
+        /// </summary>
+        /// <param name="expenseID">the expense ID you would like to get a record for</param>
+        /// <returns>The Expense record for the expenseID - otherwise, returns an empty "Expense" object if expense ID not found</returns>
+        public Expense GetExpense(int expenseID = 0)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // ensure we will be able to attempt to find a valid record
+                this.CheckExpenseUpsertIDs(0, 0, 0, expenseID);
+
+                // grab "SingleOrDefault" since we should never have more than one record coming back.
+                Expense returnValue = new Expense();
+                var record = this._context.vExpense.SingleOrDefault(x => x.ExpenseID == expenseID);
+
+                if (record != new vExpense() && record != null)
+                {
+                    returnValue.ExpenseId = record.ExpenseID;
+                    returnValue.ExpenseDescription = record.ExpenseDescription;
+                    returnValue.ExpenseTypeId = record.ExpenseTypeID;
+                    returnValue.PaymentTypeId = record.PaymentTypeID;
+                    returnValue.PaymentTypeCategoryId = record.PaymentTypeCategoryID;
+                    returnValue.IsIncome = record.IsIncome;
+                    returnValue.IsInvestment = record.IsInvestment;
+                    returnValue.ExpenseDate = record.ExpenseDate;
+                    returnValue.LastUpdated = record.LastUpdated;
+                }
+                return returnValue;
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex.Message, ex);
+                throw;
+            }
         }
-        public List<Expense> GetExpenses(int expenseID = 0)
+
+        public List<Expense> GetExpenses()
         {
             throw new NotImplementedException();
         }

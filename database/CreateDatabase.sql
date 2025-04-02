@@ -248,6 +248,7 @@ CREATE TABLE [dbo].[Expense](
     ,[ExpenseDescription] NVARCHAR(200) NOT NULL
     ,[IsIncome] BIT NOT NULL
     ,[IsInvestment] BIT NOT NULL
+	,[ExpenseDate] datetime2 NOT NULL
     ,CONSTRAINT [ExpenseID] PRIMARY KEY CLUSTERED
     ([ExpenseID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START

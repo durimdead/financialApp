@@ -12,6 +12,11 @@ namespace FinanceApi.Services.Interfaces
         /// <param name="expenseID">the expense ID you would like to get a record for</param>
         /// <returns>The Expense record for the expenseID - otherwise, returns an empty "Expense" object if expense ID not found</returns>
         public Expense GetExpense(int expenseID = 0);
+
+        /// <summary>
+        /// Returns all records from vExpense as a list of Expense objects
+        /// </summary>
+        /// <returns>a list of expense objects</returns>
         public List<Expense> GetExpenses();
         public List<Expense> GetExpenses(int expenseTypeID = 0,int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
         public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);

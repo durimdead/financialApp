@@ -54,9 +54,35 @@ namespace FinanceApi.Services
             }
         }
 
+        /// <summary>
+        /// Returns all records from vExpense as a list of Expense objects
+        /// </summary>
+        /// <returns>a list of expense objects</returns>
         public List<Expense> GetExpenses()
         {
-            throw new NotImplementedException();
+            try
+            {
+                // grab "SingleOrDefault" since we should never have more than one record coming back.
+                List<Expense> returnValue = this._context.vExpense.Select(record => new Expense()
+                {
+                    ExpenseId = record.ExpenseID,
+                    ExpenseDescription = record.ExpenseDescription,
+                    ExpenseTypeId = record.ExpenseTypeID,
+                    PaymentTypeId = record.PaymentTypeID,
+                    PaymentTypeCategoryId = record.PaymentTypeCategoryID,
+                    IsIncome = record.IsIncome,
+                    IsInvestment = record.IsInvestment,
+                    ExpenseDate = record.ExpenseDate,
+                    LastUpdated = record.LastUpdated
+                }).ToList();
+
+                return returnValue;
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex.Message, ex);
+                throw;
+            }
         }
         public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
         {

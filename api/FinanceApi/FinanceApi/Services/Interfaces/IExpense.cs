@@ -11,6 +11,7 @@ namespace FinanceApi.Services.Interfaces
         /// </summary>
         /// <param name="expenseID">the expense ID you would like to get a record for</param>
         /// <returns>The Expense record for the expenseID - otherwise, returns an empty "Expense" object if expense ID not found</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public Expense GetExpense(int expenseID = 0);
 
         /// <summary>
@@ -18,7 +19,17 @@ namespace FinanceApi.Services.Interfaces
         /// </summary>
         /// <returns>a list of expense objects</returns>
         public List<Expense> GetExpenses();
-        public List<Expense> GetExpenses(int expenseTypeID = 0,int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
+
+        /// <summary>
+        /// returns a list of filtered expenses based on parameters
+        /// </summary>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <returns>a list of expenses based on the search criteria passed in.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public List<Expense> GetExpenses(int expenseTypeID = 0,int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
         public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
         public void GetExpenseTypes(int expenseTypeID = 0);
         public void GetPaymentTypes(int paymentTypeID = 0);

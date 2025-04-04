@@ -22,12 +22,13 @@ namespace FinanceApi.Services
         /// </summary>
         /// <param name="expenseID">the expense ID you would like to get a record for</param>
         /// <returns>The Expense record for the expenseID - otherwise, returns an empty "Expense" object if expense ID not found</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public Expense GetExpense(int expenseID = 0)
         {
             try
             {
                 // ensure we will be able to attempt to find a valid record
-                this.CheckExpenseUpsertIDs(0, 0, 0, expenseID);
+                this.CheckExpenseSearchCriteria(0, 0, 0, expenseID);
 
                 // grab "SingleOrDefault" since we should never have more than one record coming back.
                 Expense returnValue = new Expense();
@@ -84,9 +85,48 @@ namespace FinanceApi.Services
                 throw;
             }
         }
-        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
+
+        /// <summary>
+        /// returns a list of filtered expenses based on parameters
+        /// </summary>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <returns>a list of expenses based on the search criteria passed in.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // ensure we will be able to attempt to find a valid record
+                this.CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
+
+                // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
+                var returnValue = this._context.vExpense.Where(x => 
+                    (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID: 1 == 1) 
+                    && (expenseID > 0 ? expenseID == x.ExpenseID : 1 == 1)
+                    && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : 1 == 1)
+                    && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1))
+                .Select(record => new Expense()
+                {
+                    ExpenseId = record.ExpenseID,
+                    ExpenseDescription = record.ExpenseDescription,
+                    ExpenseTypeId = record.ExpenseTypeID,
+                    PaymentTypeId = record.PaymentTypeID,
+                    PaymentTypeCategoryId = record.PaymentTypeCategoryID,
+                    IsIncome = record.IsIncome,
+                    IsInvestment = record.IsInvestment,
+                    ExpenseDate = record.ExpenseDate,
+                    LastUpdated = record.LastUpdated
+                }).ToList();
+                return returnValue;
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex.Message, ex);
+                throw;
+            }
         }
         public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
         {
@@ -605,5 +645,49 @@ namespace FinanceApi.Services
         }
 
         #endregion Upsert_ID_Checks
+
+        #region Search_Criteria_Checks
+
+        /// <summary>
+        /// Checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
+        /// </summary>
+        /// <param name="expenseTypeID">expense type ID</param>
+        /// <param name="paymentTypeID">payment type ID</param>
+        /// <param name="paymentTypeCategoryID">payment type categoryID</param>
+        /// <param name="expenseID">expense ID (0 by default for "new" record)</param>
+        /// <param name="isSearching">true if this is a new record being added to the database (true by default)</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        private void CheckExpenseSearchCriteria(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, int expenseID = 0)
+        {
+            // check for invalid IDs for the insert
+            string argumentOutOfRangeMessage = string.Empty;
+            if (expenseID < 0)
+            {
+                argumentOutOfRangeMessage += "expenseID must be a positive integer. Current value : " + expenseID.ToString();
+            }
+            if (expenseTypeID < 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "expenseTypeID must be a positive integer. Current value : " + expenseTypeID.ToString();
+            }
+            if (paymentTypeID < 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "paymentTypeID must be a positive integer. Current value : " + paymentTypeID.ToString();
+            }
+            if (paymentTypeCategoryID < 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "paymentTypeCategoryID must be a positive integer. Current value : " + paymentTypeCategoryID.ToString();
+            }
+
+            // if any were found, throw an error
+            if (argumentOutOfRangeMessage != string.Empty)
+            {
+                throw new ArgumentOutOfRangeException(argumentOutOfRangeMessage);
+            }
+        }
+
+        #endregion Search_Criteria_Checks
     }
 }

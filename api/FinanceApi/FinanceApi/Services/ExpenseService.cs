@@ -87,13 +87,13 @@ namespace FinanceApi.Services
         }
 
         /// <summary>
-        /// returns a list of filtered expenses based on parameters
+        /// Get the list of expenses with the search criteria (can search by date)
         /// </summary>
         /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
         /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
         /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
         /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <returns>a list of expenses based on the search criteria passed in.</returns>
+        /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
         {
@@ -128,10 +128,62 @@ namespace FinanceApi.Services
                 throw;
             }
         }
-        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0)
+
+        /// <summary>
+        /// Get the list of expenses with the search criteria (can search by date)
+        /// </summary>
+        /// <param name="dateStart">start of the date range to search within (must be <= dateEnd)</param>
+        /// <param name="dateEnd">end of the date range to search within (must be >= dateStart)</param>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <returns>A list of expenses based on the search criteria passed in.</returns>
+        /// <exception cref="InvalidOperationException">if dateStart > dateEnd</exception>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // ensure we will be able to attempt to find a valid record
+                this.CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
+
+                // ensure that start date <= end date
+                if (dateStart > dateEnd)
+                {
+                    throw new InvalidOperationException("Start Date cannot be later than End Date: Start (" + dateStart + ") ::: End (" + dateEnd + ")");
+                }
+
+                // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
+                var returnValue = this._context.vExpense.Where(x =>
+                    (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : 1 == 1)
+                    && (expenseID > 0 ? expenseID == x.ExpenseID : 1 == 1)
+                    && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : 1 == 1)
+                    && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1)
+                    && (dateStart.Date >= x.ExpenseDate.Date)
+                    && (dateEnd.Date <= x.ExpenseDate.Date)
+                )
+                .Select(record => new Expense()
+                {
+                    ExpenseId = record.ExpenseID,
+                    ExpenseDescription = record.ExpenseDescription,
+                    ExpenseTypeId = record.ExpenseTypeID,
+                    PaymentTypeId = record.PaymentTypeID,
+                    PaymentTypeCategoryId = record.PaymentTypeCategoryID,
+                    IsIncome = record.IsIncome,
+                    IsInvestment = record.IsInvestment,
+                    ExpenseDate = record.ExpenseDate,
+                    LastUpdated = record.LastUpdated
+                }).ToList();
+                return returnValue;
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex.Message, ex);
+                throw;
+            }
         }
+
         public void GetExpenseTypes(int expenseTypeID = 0)
         {
             throw new NotImplementedException();

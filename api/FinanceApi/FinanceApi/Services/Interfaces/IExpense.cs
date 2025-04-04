@@ -21,16 +21,29 @@ namespace FinanceApi.Services.Interfaces
         public List<Expense> GetExpenses();
 
         /// <summary>
-        /// returns a list of filtered expenses based on parameters
+        /// Get the list of expenses with the search criteria (can search by date)
         /// </summary>
         /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
         /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
         /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
         /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <returns>a list of expenses based on the search criteria passed in.</returns>
+        /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<Expense> GetExpenses(int expenseTypeID = 0,int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
-        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategory = 0, int expenseID = 0);
+
+        /// <summary>
+        /// Get the list of expenses with the search criteria (can search by date)
+        /// </summary>
+        /// <param name="dateStart">start of the date range to search within (must be <= dateEnd)</param>
+        /// <param name="dateEnd">end of the date range to search within (must be >= dateStart)</param>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <returns>A list of expenses based on the search criteria passed in.</returns>
+        /// <exception cref="InvalidOperationException">if dateStart > dateEnd</exception>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public List<Expense> GetExpenses(DateOnly dateStart, DateOnly dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
         public void GetExpenseTypes(int expenseTypeID = 0);
         public void GetPaymentTypes(int paymentTypeID = 0);
         public void GetPaymentTypeCategories(int paymentTypeCategoryID = 0);

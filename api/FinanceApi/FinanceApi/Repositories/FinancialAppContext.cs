@@ -52,6 +52,10 @@ namespace FinanceApi.Repositories
             this.Database.ExecuteSqlRaw("exec usp_ExpenseTypeUpsert @expenseTypeID, @expenseTypeName, @expenseTypeDescription", parameters);
         }
 
+        /// <summary>
+        /// delete expense type record from database given expenseTypeID
+        /// </summary>
+        /// <param name="expenseTypeID">expense type ID of record to delete</param>
         public void usp_ExpenseTypeDelete(int expenseTypeID)
         {
             // parameterize the data for executing the stored procedure

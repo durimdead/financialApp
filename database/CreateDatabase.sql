@@ -253,6 +253,7 @@ CREATE TABLE [dbo].[Expense](
     ,[IsIncome] BIT NOT NULL
     ,[IsInvestment] BIT NOT NULL
 	,[ExpenseDate] DATE NOT NULL
+	,[ExpenseAmount] DECIMAL(20,4) -- can store up to 1 quadrillion with 4 decimal places to cover most to all currency types
     ,CONSTRAINT [ExpenseID] PRIMARY KEY CLUSTERED
     ([ExpenseID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
@@ -840,9 +841,10 @@ GO
 =
 =    UPDATES:
 =                                DateTime
-=    Author                      mm/dd/yyyy HH:mm     Description
-=    =====================       =============        =======================================================================================
-=	 David Lancellotti			 04/02/2025 12:35	  Added in "expenseDate" param as this column was added to the table
+=    Author                      mm/dd/yyyy HH:mm   	Description
+=    =====================       =============      	===================================================================================
+=	 David Lancellotti			 04/02/2025 12:35		Added in "expenseDate" param as this column was added to the table
+=	 David Lancellotti			 04/07/2025 12:00		Added in "expenseAmount" param as this column was added to the table
 =
 ===========================================================================================================================================
 */
@@ -855,6 +857,7 @@ CREATE PROCEDURE [dbo].[usp_ExpenseUpsert]
     ,@isIncome BIT
     ,@isInvestment BIT
 	,@expenseDate DATE
+	,@expenseAmount DECIMAL(20,4)
 AS
 SET XACT_ABORT, NOCOUNT ON
 DECLARE @starttrancount int
@@ -906,6 +909,12 @@ BEGIN TRY
 			THROW 51002, 'Expense Date cannot be null and must have a value', 1;
 		END;
 
+		-- throw error if the expense amount is 0 as you cannot have an expense (or income) = 0
+		IF (@expenseAmount = 0)
+		BEGIN;
+			THROW 51003, 'Expense Amount cannot be valued at "0"', 1;
+		END;
+
         -- if we can find a record with the expenseID pushed in, let's update the information for it
         IF EXISTS(SELECT 1 FROM [dbo].[Expense] WHERE [ExpenseID] = @expenseID)
         BEGIN;
@@ -918,6 +927,7 @@ BEGIN TRY
                 ,[IsIncome]                 = @isIncome
                 ,[IsInvestment]             = @isInvestment
 				,[ExpenseDate]				= @expenseDate
+				,[ExpenseAmount]			= @expenseAmount
             WHERE
                 [expenseID] = @expenseID
         END;
@@ -933,6 +943,7 @@ BEGIN TRY
                 ,[IsIncome]
                 ,[IsInvestment]
 				,[ExpenseDate]
+				,[ExpenseAmount]
             )
             VALUES(
                 @expenseTypeID
@@ -942,6 +953,7 @@ BEGIN TRY
                 ,@isIncome
                 ,@isInvestment
 				,@expenseDate
+				,@expenseAmount
             );
         END;
         -- if the ID doesn't exists and is not 0, the expense doesn't exist and we can't update it.
@@ -1088,6 +1100,7 @@ SELECT
     ,pt.[PaymentTypeID]             AS [PaymentTypeID]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
 	,e.[ExpenseDate]				AS [ExpenseDate]
+	,e.[ExpenseAmount]				AS [ExpenseAmount]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
@@ -1109,6 +1122,7 @@ SELECT
     ,pt.[PaymentTypeDescription]    AS [PaymentTypeDescription]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
 	,e.[ExpenseDate]				AS [ExpenseDate]
+	,e.[ExpenseAmount]				AS [ExpenseAmount]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
@@ -1163,8 +1177,9 @@ exec [dbo].[usp_PaymentTypeUpsert] 0, 'cash app', 'virtual currency changing han
 DECLARE @paymentTypeID_cash_app INT = @@IDENTITY;
 
 -- expense
-exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash, @paymentTypeCategoryID_cash, 'sample hard cash transation', 0, 0, GETDATE()
-exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash, @paymentTypeCategoryID_cash_app, 'sample cash app transation', 0, 0, GETDATE()
+DECLARE @currentDate DATE = CONVERT(DATE, GETDATE());
+exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash, @paymentTypeCategoryID_cash, 'sample hard cash transation', 0, 0, @currentDate, 100
+exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash_app, @paymentTypeCategoryID_cash, 'sample cash app transation', 0, 0, @currentDate, 234.22
 
 /************************************************************************
 *       #########################################################
@@ -1173,3 +1188,11 @@ exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash, @pa
 *           
 *       #########################################################
 ************************************************************************/
+
+/*
+select * from vExpense
+select * from vExpenseDetails
+select * from vExpenseType
+select * from vpaymenttypecategory
+select * from vpaymenttype
+*/

@@ -178,6 +178,7 @@ CREATE TABLE [dbo].[PeriodicElement](
     ,[PeriodicElementName] VARCHAR(100) NOT NULL
     ,[PeriodicElementSymbol] VARCHAR(3) NOT NULL
     ,[PeriodicElementWeight] FLOAT NOT NULL
+	,CONSTRAINT [AK_PeriodicElement_PeriodicElementName] UNIQUE(PeriodicElementName)
     ,CONSTRAINT [PK_PeriodicElementID] PRIMARY KEY CLUSTERED
     ([PeriodicElementId] ASC) 
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
@@ -193,6 +194,7 @@ CREATE TABLE [dbo].[ExpenseType](
     [ExpenseTypeID] INT IDENTITY(1,1) NOT NULL
     ,[ExpenseTypeName] VARCHAR(50) NOT NULL
     ,[ExpenseTypeDescription] VARCHAR(250)
+	,CONSTRAINT [AK_ExpenseType_ExpenseTypeName] UNIQUE(ExpenseTypeName)
     ,CONSTRAINT [ExpenseTypeID] PRIMARY KEY CLUSTERED
     ([ExpenseTypeID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
@@ -207,6 +209,7 @@ GO
 CREATE TABLE [dbo].[PaymentTypeCategory](
     [PaymentTypeCategoryID] INT IDENTITY(1,1) NOT NULL
     ,[PaymentTypeCategoryName] VARCHAR(30) NOT NULL
+	,CONSTRAINT [AK_PaymentTypeCategory_PaymentTypeCategoryName] UNIQUE(PaymentTypeCategoryName)
     ,CONSTRAINT [PaymentTypeCategoryID] PRIMARY KEY CLUSTERED
     ([PaymentTypeCategoryID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
@@ -223,6 +226,7 @@ CREATE TABLE [dbo].[PaymentType](
     ,[PaymentTypeCategoryID] INT NOT NULL
     ,[PaymentTypeName] VARCHAR(50) NOT NULL
     ,[PaymentTypeDescription] VARCHAR(250) NOT NULL
+	,CONSTRAINT [AK_PaymentType_PaymentTypeName] UNIQUE(PaymentTypeName)
     ,CONSTRAINT [PaymentTypeID] PRIMARY KEY CLUSTERED
     ([PaymentTypeID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
@@ -274,10 +278,10 @@ ALTER TABLE [dbo].[Expense] CHECK CONSTRAINT [FK_PaymentTypeCategory_Expense_Pay
 GO
 
 -- FK for ExpenseTypeID
-ALTER TABLE [dbo].[Expense]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseTypeID_Expense_ExpenseTypeID] FOREIGN KEY([ExpenseTypeID])
+ALTER TABLE [dbo].[Expense]  WITH CHECK ADD  CONSTRAINT [FK_ExpenseType_Expense_ExpenseTypeID] FOREIGN KEY([ExpenseTypeID])
 REFERENCES [dbo].[ExpenseType] ([ExpenseTypeID])
 GO
-ALTER TABLE [dbo].[Expense] CHECK CONSTRAINT [FK_ExpenseTypeID_Expense_ExpenseTypeID]
+ALTER TABLE [dbo].[Expense] CHECK CONSTRAINT [FK_ExpenseType_Expense_ExpenseTypeID]
 GO
 
 
@@ -1131,6 +1135,8 @@ GO
 ************************************************************************/
 USE [FinancialApp]
 GO
+
+-- Periodic Elements for "test" area
 exec [dbo].[usp_PeriodicElementUpsert] 0, N'Hydrogen', N'H', 1.0079
 exec [dbo].[usp_PeriodicElementUpsert] 0, N'Helium', N'He', 4.0026
 exec [dbo].[usp_PeriodicElementUpsert] 0, N'Lithium', N'Li', 6.941

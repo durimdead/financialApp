@@ -45,6 +45,7 @@ namespace FinanceApi.Services
                     returnValue.IsInvestment = record.IsInvestment;
                     returnValue.ExpenseDate = record.ExpenseDate;
                     returnValue.LastUpdated = record.LastUpdated;
+                    returnValue.ExpenseAmount = record.ExpenseAmount;
                 }
                 return returnValue;
             }

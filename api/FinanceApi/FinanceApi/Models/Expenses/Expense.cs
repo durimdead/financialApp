@@ -11,5 +11,6 @@
         public bool IsInvestment { get; set; }
         public DateTime ExpenseDate { get; set; }
         public DateTime LastUpdated { get; set; }
+        public decimal ExpenseAmount { get; set; }
     }
 }

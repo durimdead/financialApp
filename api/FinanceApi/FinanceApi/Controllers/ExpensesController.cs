@@ -27,7 +27,7 @@ namespace FinanceApi.Controllers
         /// GET: api/<Expenses>
         /// get the data for all expenses in the database and return it to the caller 
         /// </summary>
-        /// <returns>A list of Expense objects in JSON format</returns>
+        /// <returns>{httpStatusCode, expenseData, errorMessage} : success will have 200 status code, a list of Expense objects in JSON format, and a blank error message. error will not have "expenseData"</returns>
         [HttpGet]
         public JsonResult Get()
         {
@@ -69,16 +69,21 @@ namespace FinanceApi.Controllers
             throw new NotImplementedException();
         }
 
-
-        public JsonResult Post([FromBody] JsonElement expense)
+        /// <summary>
+        /// POST: api/<Expenses>
+        /// Add expense to the database
+        /// </summary>
+        /// <param name="expenseToAdd"></param>
+        /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        public JsonResult Post([FromBody] JsonElement expenseToAdd)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
             try
             {
-                Expense expenseToAdd = JsonSerializer.Deserialize<Expense>(expense) ?? new Expense();
-                DateOnly expenseDate = new DateOnly(expenseToAdd.ExpenseDate.Year, expenseToAdd.ExpenseDate.Month, expenseToAdd.ExpenseDate.Day);
-                this._expenseService.AddExpense(expenseToAdd.ExpenseTypeID, expenseToAdd.PaymentTypeID, expenseToAdd.PaymentTypeCategoryID, expenseToAdd.ExpenseDescription, expenseToAdd.IsIncome, expenseToAdd.IsInvestment, expenseDate, expenseToAdd.ExpenseAmount);
+                Expense expense = JsonSerializer.Deserialize<Expense>(expenseToAdd) ?? new Expense();
+                DateOnly expenseDate = new DateOnly(expense.ExpenseDate.Year, expense.ExpenseDate.Month, expense.ExpenseDate.Day);
+                this._expenseService.AddExpense(expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -89,9 +94,29 @@ namespace FinanceApi.Controllers
             }
         }
 
-        public JsonResult Put([FromBody] JsonElement expense)
+        /// <summary>
+        /// PUT: api/<Expenses>
+        /// Update expense in the database
+        /// </summary>
+        /// <param name="expenseToUpdate"></param>
+        /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        public JsonResult Put([FromBody] JsonElement expenseToUpdate)
         {
-            throw new NotImplementedException();
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
+
+            try
+            {
+                Expense expense = JsonSerializer.Deserialize<Expense>(expenseToUpdate) ?? new Expense();
+                DateOnly expenseDate = new DateOnly(expense.ExpenseDate.Year, expense.ExpenseDate.Month, expense.ExpenseDate.Day);
+                this._expenseService.UpdateExpense(expense.ExpenseID, expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
         }
 
         public JsonResult Delete(int expenseID)

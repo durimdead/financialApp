@@ -77,8 +77,9 @@ namespace FinanceApi.Services.Interfaces
         /// <param name="isIncome">if this is income</param>
         /// <param name="isInvestment">if this expense is being put into an investment vehicle</param>
         /// <param name="expenseDate">the date that the expense was made</param>
+        /// <param name="expenseAmount">the amount for the expense</param>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
-        public void AddExpense(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate);
+        public void AddExpense(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, double expenseAmount);
 
         /// <summary>
         /// Add Expense Type record to the database
@@ -147,8 +148,9 @@ namespace FinanceApi.Services.Interfaces
         /// <param name="isIncome">true if this is a source of income</param>
         /// <param name="isInvestment">true of this expense is for putting money into an "investment vehicle"</param>
         /// <param name="expenseDate">the date that the expense was made</param>
+        /// <param name="expenseAmount">the amount for the expense</param>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
-        public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate);
+        public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, double expenseAmount);
 
         /// <summary>
         /// Update an expense type record

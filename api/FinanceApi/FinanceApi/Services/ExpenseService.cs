@@ -36,16 +36,16 @@ namespace FinanceApi.Services
 
                 if (record != new vExpense() && record != null)
                 {
-                    returnValue.ExpenseId = record.ExpenseID;
+                    returnValue.ExpenseID = record.ExpenseID;
                     returnValue.ExpenseDescription = record.ExpenseDescription;
-                    returnValue.ExpenseTypeId = record.ExpenseTypeID;
-                    returnValue.PaymentTypeId = record.PaymentTypeID;
-                    returnValue.PaymentTypeCategoryId = record.PaymentTypeCategoryID;
+                    returnValue.ExpenseTypeID = record.ExpenseTypeID;
+                    returnValue.PaymentTypeID = record.PaymentTypeID;
+                    returnValue.PaymentTypeCategoryID = record.PaymentTypeCategoryID;
                     returnValue.IsIncome = record.IsIncome;
                     returnValue.IsInvestment = record.IsInvestment;
                     returnValue.ExpenseDate = record.ExpenseDate;
                     returnValue.LastUpdated = record.LastUpdated;
-                    returnValue.ExpenseAmount = record.ExpenseAmount;
+                    returnValue.ExpenseAmount = (double)record.ExpenseAmount;
                 }
                 return returnValue;
             }
@@ -67,15 +67,16 @@ namespace FinanceApi.Services
                 // grab "SingleOrDefault" since we should never have more than one record coming back.
                 List<Expense> returnValue = this._context.vExpense.Select(record => new Expense()
                 {
-                    ExpenseId = record.ExpenseID,
+                    ExpenseID = record.ExpenseID,
                     ExpenseDescription = record.ExpenseDescription,
-                    ExpenseTypeId = record.ExpenseTypeID,
-                    PaymentTypeId = record.PaymentTypeID,
-                    PaymentTypeCategoryId = record.PaymentTypeCategoryID,
+                    ExpenseTypeID = record.ExpenseTypeID,
+                    PaymentTypeID = record.PaymentTypeID,
+                    PaymentTypeCategoryID = record.PaymentTypeCategoryID,
                     IsIncome = record.IsIncome,
                     IsInvestment = record.IsInvestment,
                     ExpenseDate = record.ExpenseDate,
-                    LastUpdated = record.LastUpdated
+                    LastUpdated = record.LastUpdated,
+                    ExpenseAmount = (double)record.ExpenseAmount
                 }).ToList();
 
                 return returnValue;
@@ -111,15 +112,16 @@ namespace FinanceApi.Services
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1))
                 .Select(record => new Expense()
                 {
-                    ExpenseId = record.ExpenseID,
+                    ExpenseID = record.ExpenseID,
                     ExpenseDescription = record.ExpenseDescription,
-                    ExpenseTypeId = record.ExpenseTypeID,
-                    PaymentTypeId = record.PaymentTypeID,
-                    PaymentTypeCategoryId = record.PaymentTypeCategoryID,
+                    ExpenseTypeID = record.ExpenseTypeID,
+                    PaymentTypeID = record.PaymentTypeID,
+                    PaymentTypeCategoryID = record.PaymentTypeCategoryID,
                     IsIncome = record.IsIncome,
                     IsInvestment = record.IsInvestment,
                     ExpenseDate = record.ExpenseDate,
-                    LastUpdated = record.LastUpdated
+                    LastUpdated = record.LastUpdated,
+                    ExpenseAmount = (double)record.ExpenseAmount
                 }).ToList();
                 return returnValue;
             }
@@ -166,15 +168,16 @@ namespace FinanceApi.Services
                 )
                 .Select(record => new Expense()
                 {
-                    ExpenseId = record.ExpenseID,
+                    ExpenseID = record.ExpenseID,
                     ExpenseDescription = record.ExpenseDescription,
-                    ExpenseTypeId = record.ExpenseTypeID,
-                    PaymentTypeId = record.PaymentTypeID,
-                    PaymentTypeCategoryId = record.PaymentTypeCategoryID,
+                    ExpenseTypeID = record.ExpenseTypeID,
+                    PaymentTypeID = record.PaymentTypeID,
+                    PaymentTypeCategoryID = record.PaymentTypeCategoryID,
                     IsIncome = record.IsIncome,
                     IsInvestment = record.IsInvestment,
                     ExpenseDate = record.ExpenseDate,
-                    LastUpdated = record.LastUpdated
+                    LastUpdated = record.LastUpdated,
+                    ExpenseAmount = (double)record.ExpenseAmount
                 }).ToList();
                 return returnValue;
             }
@@ -301,8 +304,9 @@ namespace FinanceApi.Services
         /// <param name="isIncome">if this is income</param>
         /// <param name="isInvestment">if this expense is being put into an investment vehicle</param>
         /// <param name="expenseDate">the date that the expense was made</param>
+        /// <param name="expenseAmount">the amount for the expense</param>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
-        public void AddExpense(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate)
+        public void AddExpense(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, double expenseAmount)
         {
             try
             {
@@ -314,7 +318,7 @@ namespace FinanceApi.Services
 
 
                 // attempt to upsert the Expense
-                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate);
+                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseAmount);
             }
             catch (Exception ex)
             {
@@ -547,8 +551,9 @@ namespace FinanceApi.Services
         /// <param name="isIncome">true if this is a source of income</param>
         /// <param name="isInvestment">true of this expense is for putting money into an "investment vehicle"</param>
         /// <param name="expenseDate">the date that the expense was made</param>
+        /// <param name="expenseAmount">the amount for the expense</param>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
-        public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate)
+        public void UpdateExpense(int expenseID, int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, double expenseAmount)
         {
             try
             {
@@ -559,7 +564,7 @@ namespace FinanceApi.Services
                 expenseDescription = expenseDescription.Trim();
 
                 // attempt to upsert the Expense
-                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseID);
+                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseAmount, expenseID);
             }
             catch (Exception ex)
             {

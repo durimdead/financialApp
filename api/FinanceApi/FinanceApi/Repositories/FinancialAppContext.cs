@@ -157,8 +157,9 @@ namespace FinanceApi.Repositories
         /// <param name="isIncome">"true" if this is income (i.e. paycheck, selling of an item, etc)</param>
         /// <param name="isInvestment">"true" if this money is being put into an investment vehicle (i.e. stocks, bonds, etc)</param>
         /// <param name="expenseDate">Date the expense occurred</param>
+        /// <param name="expenseAmount">the amount for the expense</param>
         /// <param name="expenseID">ID of the record (only required for update - has default of "0" for inserts)</param>
-        public void usp_ExpenseUpsert(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, int expenseID = 0)
+        public void usp_ExpenseUpsert(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, double expenseAmount, int expenseID = 0)
         {
             // parameterize the data for executing the stored procedure
             var parameters = new List<SqlParameter>();
@@ -170,9 +171,10 @@ namespace FinanceApi.Repositories
             parameters.Add(new SqlParameter("@isIncome", isIncome));
             parameters.Add(new SqlParameter("@isInvestment", isInvestment));
             parameters.Add(new SqlParameter("@expenseDate", expenseDate));
+            parameters.Add(new SqlParameter("@expenseAmount", expenseAmount));
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_ExpenseUpsert @expenseID, @expenseTypeID, @paymentTypeID, @paymentTypeCategoryID, @expenseDescription, @isIncome, @isInvestment, @expenseDate", parameters);
+            this.Database.ExecuteSqlRaw("exec usp_ExpenseUpsert @expenseID, @expenseTypeID, @paymentTypeID, @paymentTypeCategoryID, @expenseDescription, @isIncome, @isInvestment, @expenseDate, @expenseAmount", parameters);
         }
 
         /// <summary>

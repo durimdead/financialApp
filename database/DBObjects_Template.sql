@@ -246,3 +246,29 @@ BEGIN CATCH
     THROW;
 END CATCH
 GO
+
+
+
+
+
+
+
+
+
+
+
+/********************************************************************************************************************************************************************
+*	####### OTHER USEFUL SQL RESOURCES #######
+* 		Currency formatting: 
+*			- https://www.mssqltips.com/sqlservertip/7023/sql-format-currency-options/
+*			- https://learn.microsoft.com/en-us/sql/t-sql/data-types/money-and-smallmoney-transact-sql?view=sql-server-ver16
+*			- 
+*
+*
+*
+*
+*
+*
+*
+*
+********************************************************************************************************************************************************************/

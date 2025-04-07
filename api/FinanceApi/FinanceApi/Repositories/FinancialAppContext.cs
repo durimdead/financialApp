@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinanceApi.Repositories
 {
-    public class FinancialAppContext: DbContext
+    public class FinancialAppContext : DbContext
     {
         public FinancialAppContext(DbContextOptions options) : base(options) { }
 

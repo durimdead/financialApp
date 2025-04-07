@@ -104,8 +104,8 @@ namespace FinanceApi.Services
                 this.CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = this._context.vExpense.Where(x => 
-                    (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID: 1 == 1) 
+                var returnValue = this._context.vExpense.Where(x =>
+                    (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : 1 == 1)
                     && (expenseID > 0 ? expenseID == x.ExpenseID : 1 == 1)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : 1 == 1)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1))

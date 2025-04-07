@@ -105,9 +105,10 @@ namespace FinanceApi.Controllers
                 this._elementService.DeleteElement(elementId);
                 return new JsonResult(jsonData);
             }
-            catch (Exception e){ 
+            catch (Exception e)
+            {
                 _logger.LogError(e.Message);
-                jsonData = new {httpStatusCode = HttpStatusCode.InternalServerError,errorMessage = e.Message};
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
                 return new JsonResult(jsonData);
             }
         }

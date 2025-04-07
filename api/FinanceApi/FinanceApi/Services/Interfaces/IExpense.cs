@@ -30,7 +30,7 @@ namespace FinanceApi.Services.Interfaces
         /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
         /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<Expense> GetExpenses(int expenseTypeID = 0,int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
+        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
 
         /// <summary>
         /// Get the list of expenses with the search criteria (can search by date)

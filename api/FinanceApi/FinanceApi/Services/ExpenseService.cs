@@ -231,7 +231,7 @@ namespace FinanceApi.Services
         {
             try
             {
-                // ensure this is a valid expenseTypeID
+                // ensure this is a valid paymentTypeID
                 this.CheckPaymentTypeSearchCriteria(paymentTypeID);
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
@@ -258,9 +258,33 @@ namespace FinanceApi.Services
             }
         }
 
-        public void GetPaymentTypeCategories(int paymentTypeCategoryID = 0)
+        public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // ensure this is a valid paymentTypeCategoryID
+                this.CheckPaymentTypeCategorySearchCriteria(paymentTypeCategoryID);
+
+                // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
+                var returnValue = this._context.vPaymentTypeCategory.Where(x =>
+                    (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1))
+                .Select(record => new PaymentTypeCategory()
+                {
+                    PaymentTypeCategoryID = record.PaymentTypeCategoryID,
+                    PaymentTypeCategoryName = record.PaymentTypeCategoryName,
+                }).ToList();
+                return returnValue;
+            }
+            catch (Exception ex)
+            {
+                // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
+                this._logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    this._logger.LogError(ex.InnerException.Message);
+                }
+                throw;
+            }
         }
 
         #endregion Get_Records
@@ -774,10 +798,10 @@ namespace FinanceApi.Services
         /// <param name="paymentTypeID">payment type ID</param>
         /// <param name="paymentTypeCategoryID">payment type categoryID</param>
         /// <param name="expenseID">expense ID (0 by default for "new" record)</param>
-        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid search range for the ID</exception>
         private void CheckExpenseSearchCriteria(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
         {
-            // check for invalid criteria for the search
+            // check for invalid criteria for the search - "0" is ok, because we shouldn't be searching on it anyway.
             string argumentOutOfRangeMessage = string.Empty;
             if (expenseID < 0)
             {
@@ -811,10 +835,10 @@ namespace FinanceApi.Services
         /// If you are not restricting your search by the param, use the default value of "0"
         /// </summary>
         /// <param name="expenseTypeID">expense type ID</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the ID is outside of a valid range for the ID</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If the ID is outside of a valid search range for the ID</exception>
         private void CheckExpenseTypeSearchCriteria(int expenseTypeID = 0)
         {
-            // check for invalid criteria for the search
+            // check for invalid criteria for the search - "0" is ok, because we shouldn't be searching on it anyway.
             string argumentOutOfRangeMessage = string.Empty;
             if (expenseTypeID < 0)
             {
@@ -834,15 +858,38 @@ namespace FinanceApi.Services
         /// If you are not restricting your search by the param, use the default value of "0"
         /// </summary>
         /// <param name="paymentTypeID">payment type ID</param>
-        /// <exception cref="ArgumentOutOfRangeException">If the ID is outside of a valid range for the ID</exception>
-        private void CheckPaymentTypeSearchCriteria(int paymentTypeID)
+        /// <exception cref="ArgumentOutOfRangeException">If the ID is outside of a valid search range for the ID</exception>
+        private void CheckPaymentTypeSearchCriteria(int paymentTypeID = 0)
         {
-            // check for invalid criteria for the search
+            // check for invalid criteria for the search - "0" is ok, because we shouldn't be searching on it anyway.
             string argumentOutOfRangeMessage = string.Empty;
             if (paymentTypeID < 0)
             {
                 argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
                 argumentOutOfRangeMessage += "paymentTypeID must be a positive integer. Current value : " + paymentTypeID.ToString();
+            }
+
+            // if any were found, throw an error
+            if (argumentOutOfRangeMessage != string.Empty)
+            {
+                throw new ArgumentOutOfRangeException(argumentOutOfRangeMessage);
+            }
+        }
+
+        /// <summary>
+        /// Checks to ensure that all the IDs sent in are within the valid range for the search. Throws an error if there is any issue.
+        /// If you are not restricting your search by the param, use the default value of "0"
+        /// </summary>
+        /// <param name="paymentTypeCategoryID">payment type category ID</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the ID is outside of a valid search range for the ID</exception>
+        private void CheckPaymentTypeCategorySearchCriteria(int paymentTypeCategoryID = 0)
+        {
+            // check for invalid criteria for the search - "0" is ok, because we shouldn't be searching on it anyway.
+            string argumentOutOfRangeMessage = string.Empty;
+            if (paymentTypeCategoryID < 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "paymentTypeCategoryID must be a positive integer. Current value : " + paymentTypeCategoryID.ToString();
             }
 
             // if any were found, throw an error

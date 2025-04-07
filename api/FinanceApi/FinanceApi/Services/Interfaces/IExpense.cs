@@ -1,4 +1,5 @@
 ﻿using FinanceApi.Models.Expenses;
+using FinanceApi.Repositories.EF_Models;
 using Microsoft.Data.SqlClient;
 
 namespace FinanceApi.Services.Interfaces
@@ -60,7 +61,7 @@ namespace FinanceApi.Services.Interfaces
         /// <returns>A list of Payment Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<PaymentType> GetPaymentTypes(int paymentTypeID = 0);
-        public void GetPaymentTypeCategories(int paymentTypeCategoryID = 0);
+        public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0);
 
         #endregion Get_Records
 

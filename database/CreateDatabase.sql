@@ -1137,16 +1137,35 @@ USE [FinancialApp]
 GO
 
 -- Periodic Elements for "test" area
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Hydrogen', N'H', 1.0079
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Helium', N'He', 4.0026
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Lithium', N'Li', 6.941
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Beryllium', N'Be', 9.0122
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Boron', N'B', 10.811
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Carbon', N'C', 12.0107
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Nitrogen', N'N', 14.0067
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Oxygen', N'O', 15.9994
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Fluorine', N'F', 18.9984
-exec [dbo].[usp_PeriodicElementUpsert] 0, N'Neon', N'Ne', 20.1797
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Hydrogen', 'H', 1.0079
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Helium', 'He', 4.0026
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Lithium', 'Li', 6.941
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Beryllium', 'Be', 9.0122
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Boron', 'B', 10.811
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Carbon', 'C', 12.0107
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Nitrogen', 'N', 14.0067
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Oxygen', 'O', 15.9994
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Fluorine', 'F', 18.9984
+exec [dbo].[usp_PeriodicElementUpsert] 0, 'Neon', 'Ne', 20.1797
+
+-- expense type
+exec [dbo].[usp_ExpenseTypeUpsert] 0, 'other', 'this expense does not fit into any other category';
+DECLARE @expenseTypeID_other INT = @@IDENTITY
+
+-- payment type category
+exec [dbo].[usp_PaymentTypeCategoryUpsert] 0, 'cash'
+DECLARE @paymentTypeCategoryID_cash INT = @@IDENTITY;
+
+-- payment type
+exec [dbo].[usp_PaymentTypeUpsert] 0, 'cash', 'hard currency physically changing hands (i.e. not a cash app)', @paymentTypeCategoryID_cash
+DECLARE @paymentTypeID_cash INT = @@IDENTITY;
+exec [dbo].[usp_PaymentTypeUpsert] 0, 'cash app', 'virtual currency changing hands (i.e. paypal, venmo, zelle, etc.)', @paymentTypeCategoryID_cash
+DECLARE @paymentTypeID_cash_app INT = @@IDENTITY;
+
+-- expense
+exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash, @paymentTypeCategoryID_cash, 'sample hard cash transation', 0, 0, GETDATE()
+exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash, @paymentTypeCategoryID_cash_app, 'sample cash app transation', 0, 0, GETDATE()
+
 /************************************************************************
 *       #########################################################
 *           

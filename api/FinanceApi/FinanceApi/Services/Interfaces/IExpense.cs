@@ -44,7 +44,14 @@ namespace FinanceApi.Services.Interfaces
         /// <exception cref="InvalidOperationException">if dateStart > dateEnd</exception>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
-        public void GetExpenseTypes(int expenseTypeID = 0);
+
+        /// <summary>
+        /// Get the list of expense types with the search criteria
+        /// </summary>
+        /// <param name="expenseTypeID">the expense type ID of the records to return</param>
+        /// <returns>A list of Expense Type records based on the search criteria</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0);
         public void GetPaymentTypes(int paymentTypeID = 0);
         public void GetPaymentTypeCategories(int paymentTypeCategoryID = 0);
 

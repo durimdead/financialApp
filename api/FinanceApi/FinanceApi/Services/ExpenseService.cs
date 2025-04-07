@@ -185,9 +185,34 @@ namespace FinanceApi.Services
             }
         }
 
-        public void GetExpenseTypes(int expenseTypeID = 0)
+        /// <summary>
+        /// Get the list of expense types with the search criteria
+        /// </summary>
+        /// <param name="expenseTypeID">the expense type ID of the records to return</param>
+        /// <returns>A list of Expense Type records based on the search criteria</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // ensure this is a valid expenseTypeID
+                this.CheckExpenseTypeSearchCriteria(expenseTypeID);
+
+                // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
+                var returnValue = this._context.vExpenseType.Where(x =>
+                    (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : 1 == 1))
+                .Select(record => new ExpenseType()
+                {
+                    ExpenseTypeID = record.ExpenseTypeID,
+                    ExpenseTypeName = record.ExpenseTypeName,
+                    ExpenseTypeDescription = record.ExpenseTypeDescription
+                }).ToList();
+                return returnValue;
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         public void GetPaymentTypes(int paymentTypeID = 0)
         {
@@ -702,17 +727,17 @@ namespace FinanceApi.Services
         #region Search_Criteria_Checks
 
         /// <summary>
-        /// Checks to ensure that all the IDs sent in are within the valid range for the PK (identity) column in the database tables. Throws an error if there is any issue.
+        /// Checks to ensure that all the IDs sent in are within the valid range for the search. Throws an error if there is any issue.
+        /// If you are not restricting your search by the param, use the default value of "0"
         /// </summary>
         /// <param name="expenseTypeID">expense type ID</param>
         /// <param name="paymentTypeID">payment type ID</param>
         /// <param name="paymentTypeCategoryID">payment type categoryID</param>
         /// <param name="expenseID">expense ID (0 by default for "new" record)</param>
-        /// <param name="isSearching">true if this is a new record being added to the database (true by default)</param>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private void CheckExpenseSearchCriteria(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, int expenseID = 0)
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the ID</exception>
+        private void CheckExpenseSearchCriteria(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
         {
-            // check for invalid IDs for the insert
+            // check for invalid criteria for the search
             string argumentOutOfRangeMessage = string.Empty;
             if (expenseID < 0)
             {
@@ -732,6 +757,29 @@ namespace FinanceApi.Services
             {
                 argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
                 argumentOutOfRangeMessage += "paymentTypeCategoryID must be a positive integer. Current value : " + paymentTypeCategoryID.ToString();
+            }
+
+            // if any were found, throw an error
+            if (argumentOutOfRangeMessage != string.Empty)
+            {
+                throw new ArgumentOutOfRangeException(argumentOutOfRangeMessage);
+            }
+        }
+
+        /// <summary>
+        /// Checks to ensure that all the IDs sent in are within the valid range for the search. Throws an error if there is any issue.
+        /// If you are not restricting your search by the param, use the default value of "0"
+        /// </summary>
+        /// <param name="expenseTypeID">expense type ID</param>
+        /// <exception cref="ArgumentOutOfRangeException">if the ID is outside of a valid range for the ID</exception>
+        private void CheckExpenseTypeSearchCriteria(int expenseTypeID = 0)
+        {
+            // check for invalid criteria for the search
+            string argumentOutOfRangeMessage = string.Empty;
+            if (expenseTypeID < 0)
+            {
+                argumentOutOfRangeMessage += argumentOutOfRangeMessage != string.Empty ? " :::: " : string.Empty;
+                argumentOutOfRangeMessage += "expenseTypeID must be a positive integer. Current value : " + expenseTypeID.ToString();
             }
 
             // if any were found, throw an error

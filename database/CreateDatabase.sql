@@ -1100,6 +1100,7 @@ SELECT
     ,pt.[PaymentTypeID]             AS [PaymentTypeID]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
 	,e.[ExpenseDate]				AS [ExpenseDate]
+	,e.[ValidFrom]					AS [LastUpdated]
 	,e.[ExpenseAmount]				AS [ExpenseAmount]
 FROM
     [dbo].[Expense] e
@@ -1122,6 +1123,7 @@ SELECT
     ,pt.[PaymentTypeDescription]    AS [PaymentTypeDescription]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
 	,e.[ExpenseDate]				AS [ExpenseDate]
+	,e.[ValidFrom]					AS [LastUpdated]
 	,e.[ExpenseAmount]				AS [ExpenseAmount]
 FROM
     [dbo].[Expense] e

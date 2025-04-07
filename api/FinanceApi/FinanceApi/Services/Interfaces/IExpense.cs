@@ -52,7 +52,14 @@ namespace FinanceApi.Services.Interfaces
         /// <returns>A list of Expense Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0);
-        public void GetPaymentTypes(int paymentTypeID = 0);
+
+        /// <summary>
+        /// Get the list of payment types with the search criteria
+        /// </summary>
+        /// <param name="paymentTypeID">The payment type ID of the records to return</param>
+        /// <returns>A list of Payment Type records based on the search criteria</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public List<PaymentType> GetPaymentTypes(int paymentTypeID = 0);
         public void GetPaymentTypeCategories(int paymentTypeCategoryID = 0);
 
         #endregion Get_Records

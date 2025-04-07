@@ -211,7 +211,13 @@ namespace FinanceApi.Services
             }
             catch (Exception ex)
             {
-
+                // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
+                this._logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    this._logger.LogError(ex.InnerException.Message);
+                }
+                throw;
             }
         }
         public void GetPaymentTypes(int paymentTypeID = 0)

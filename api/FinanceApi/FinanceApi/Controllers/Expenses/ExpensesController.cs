@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using FinanceApi.Models.Testing;
 using FinanceApi.Models.Expenses;
-using FinanceApi.Services.Expenses;
+using FinanceApi.Services.RepositoryServices.Expenses;
 
 namespace FinanceApi.Controllers.Expenses
 {
@@ -15,11 +15,11 @@ namespace FinanceApi.Controllers.Expenses
     {
 
         private readonly ILogger<ExpensesController> _logger;
-        private readonly ExpenseService _expenseService;
-        public ExpensesController(ILogger<ExpensesController> logger, ILogger<ExpenseService> expenseLogger, FinancialAppContext context)
+        private readonly ExpenseRepoService _expenseService;
+        public ExpensesController(ILogger<ExpensesController> logger, ILogger<ExpenseRepoService> expenseLogger, FinancialAppContext context)
         {
             _logger = logger;
-            _expenseService = new ExpenseService(expenseLogger, context);
+            _expenseService = new ExpenseRepoService(expenseLogger, context);
         }
 
 

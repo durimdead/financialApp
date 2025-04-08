@@ -2,9 +2,9 @@
 using FinanceApi.Repositories.EF_Models;
 using Microsoft.Data.SqlClient;
 
-namespace FinanceApi.Services.Expenses.Interfaces
+namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
 {
-    public interface IExpense
+    public interface IExpensesRepository
     {
         #region Get_Records
         /// <summary>
@@ -64,7 +64,6 @@ namespace FinanceApi.Services.Expenses.Interfaces
         public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0);
 
         #endregion Get_Records
-
 
         #region Add_New_Records
         /// <summary>

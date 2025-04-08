@@ -1,10 +1,10 @@
 ﻿using FinanceApi.Models.Expenses;
 using FinanceApi.Repositories;
-using FinanceApi.Services.Expenses;
 using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FinanceApi.Services.RepositoryServices.Expenses;
 
 namespace FinanceApi.Controllers.Expenses
 {
@@ -14,11 +14,11 @@ namespace FinanceApi.Controllers.Expenses
     {
 
         private readonly ILogger<PaymentTypeCategoriesController> _logger;
-        private readonly ExpenseService _expenseService;
-        public PaymentTypeCategoriesController(ILogger<PaymentTypeCategoriesController> logger, ILogger<ExpenseService> expenseLogger, FinancialAppContext context)
+        private readonly ExpenseRepoService _expenseService;
+        public PaymentTypeCategoriesController(ILogger<PaymentTypeCategoriesController> logger, ILogger<ExpenseRepoService> expenseLogger, FinancialAppContext context)
         {
             _logger = logger;
-            _expenseService = new ExpenseService(expenseLogger, context);
+            _expenseService = new ExpenseRepoService(expenseLogger, context);
         }
 
 

@@ -2,15 +2,15 @@
 using FinanceApi.Models.Expenses;
 using FinanceApi.Repositories;
 using FinanceApi.Repositories.EF_Models;
-using FinanceApi.Services.Expenses.Interfaces;
+using FinanceApi.Services.RepositoryServices.Expenses.Interfaces;
 
-namespace FinanceApi.Services.Expenses
+namespace FinanceApi.Services.RepositoryServices.Expenses
 {
-    public class ExpenseService : IExpense
+    public class ExpenseRepoService : IExpensesRepository
     {
-        private readonly ILogger<ExpenseService> _logger;
+        private readonly ILogger<ExpenseRepoService> _logger;
         private readonly FinancialAppContext _context;
-        public ExpenseService(ILogger<ExpenseService> logger, FinancialAppContext context)
+        public ExpenseRepoService(ILogger<ExpenseRepoService> logger, FinancialAppContext context)
         {
             _logger = logger;
             _context = context;

@@ -1,6 +1,6 @@
-﻿namespace FinanceApi.Services.POCs.Interfaces
+﻿namespace FinanceApi.Services.RepositoryServices.POCs.Interfaces
 {
-    public interface IElement
+    public interface IElementRepository
     {
         /// <summary>
         /// update periodic element in database

@@ -1,15 +1,15 @@
 ﻿using FinanceApi.Controllers;
 using FinanceApi.Models.Testing;
 using FinanceApi.Repositories;
-using FinanceApi.Services.POCs.Interfaces;
+using FinanceApi.Services.RepositoryServices.POCs.Interfaces;
 
-namespace FinanceApi.Services.POCs
+namespace FinanceApi.Services.RepositoryServices.POCs
 {
-    public class ElementService : IElement
+    public class ElementRepoService : IElementRepository
     {
-        private readonly ILogger<ElementService> _logger;
+        private readonly ILogger<ElementRepoService> _logger;
         private readonly FinancialAppContext _context;
-        public ElementService(ILogger<ElementService> logger, FinancialAppContext context)
+        public ElementRepoService(ILogger<ElementRepoService> logger, FinancialAppContext context)
         {
             _logger = logger;
             _context = context;

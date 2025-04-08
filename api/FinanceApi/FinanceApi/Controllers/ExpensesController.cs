@@ -24,7 +24,7 @@ namespace FinanceApi.Controllers
 
 
         /// <summary>
-        /// GET: api/<Expenses>
+        /// GET: api/Expenses
         /// get the data for all expenses in the database and return it to the caller 
         /// </summary>
         /// <returns>{httpStatusCode, expenseData, errorMessage} : success will have 200 status code, a list of Expense objects in JSON format, and a blank error message. error will not have "expenseData"</returns>
@@ -70,11 +70,12 @@ namespace FinanceApi.Controllers
         }
 
         /// <summary>
-        /// POST: api/<Expenses>
+        /// POST: api/Expenses
         /// Add expense to the database
         /// </summary>
         /// <param name="expenseToAdd"></param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        [HttpPost]
         public JsonResult Post([FromBody] JsonElement expenseToAdd)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
@@ -95,11 +96,12 @@ namespace FinanceApi.Controllers
         }
 
         /// <summary>
-        /// PUT: api/<Expenses>
+        /// PUT: api/Expenses
         /// Update expense in the database
         /// </summary>
         /// <param name="expenseToUpdate"></param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        [HttpPut]
         public JsonResult Put([FromBody] JsonElement expenseToUpdate)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
@@ -119,9 +121,28 @@ namespace FinanceApi.Controllers
             }
         }
 
+        /// <summary>
+        /// DELETE: api/Expenses/<ID>
+        /// Deletes the expense record for the ID sent in
+        /// </summary>
+        /// <param name="expenseID">ID of the expense to delete</param>
+        /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        [HttpDelete("{elementId}")]
         public JsonResult Delete(int expenseID)
         {
-            throw new NotImplementedException();
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
+
+            try
+            {
+                this._expenseService.DeleteExpense(expenseID);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
         }
     }
 }

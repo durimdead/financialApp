@@ -13,7 +13,6 @@ namespace FinanceApi.Controllers.Expenses
     [ApiController]
     public class ExpenseTypesController : ControllerBase
     {
-
         private readonly ILogger<ExpenseTypesController> _logger;
         private readonly ExpenseService _expenseService;
         public ExpenseTypesController(ILogger<ExpenseTypesController> logger, ILogger<ExpenseService> expenseLogger, FinancialAppContext context)
@@ -27,7 +26,7 @@ namespace FinanceApi.Controllers.Expenses
         /// GET: api/ExpenseTypes
         /// get the data for all expense types in the database and return it to the caller 
         /// </summary>
-        /// <returns>{httpStatusCode, expenseData, errorMessage} : success will have 200 status code, a list of Expense objects in JSON format, and a blank error message. error will not have "expenseData"</returns>
+        /// <returns>{httpStatusCode, expenseTypeData, errorMessage} : success will have 200 status code, a list of ExpenseType objects in JSON format, and a blank error message. error will not have "expenseTypeData"</returns>
         [HttpGet]
         public JsonResult Get()
         {
@@ -51,7 +50,7 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
-        //TODO: figure out how to get this data from the body instead of api/<Expenses>/<ID>
+        //TODO: figure out how to get this data from the body instead of api/<ExpenseTypes>/<ID>
         public JsonResult Get(int expenseTypeID)
         {
             throw new NotImplementedException();

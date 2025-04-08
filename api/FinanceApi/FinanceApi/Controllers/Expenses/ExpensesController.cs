@@ -73,7 +73,7 @@ namespace FinanceApi.Controllers.Expenses
         /// POST: api/Expenses
         /// Add expense to the database
         /// </summary>
-        /// <param name="expenseToAdd">JSON object in the format of Models.Expenses.Expense (ExpenseID will be ignored since this is an "add")</param>
+        /// <param name="expenseToAdd">JSON object in the format of Models.Expenses.Expense (ExpenseID is not used as this is an "add")</param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
         [HttpPost]
         public JsonResult Post([FromBody] JsonElement expenseToAdd)

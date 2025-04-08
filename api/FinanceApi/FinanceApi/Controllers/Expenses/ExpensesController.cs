@@ -1,13 +1,13 @@
 ﻿using FinanceApi.Repositories;
-using FinanceApi.Services;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using FinanceApi.Models.Testing;
 using FinanceApi.Models.Expenses;
+using FinanceApi.Services.Expenses;
 
-namespace FinanceApi.Controllers
+namespace FinanceApi.Controllers.Expenses
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -33,8 +33,8 @@ namespace FinanceApi.Controllers
         {
             try
             {
-                var expenseData = this._expenseService.GetExpenses();
-                var jsonData = new { httpStatusCode = HttpStatusCode.OK, expenseData = expenseData, errorMessage = "" };
+                var expenseData = _expenseService.GetExpenses();
+                var jsonData = new { httpStatusCode = HttpStatusCode.OK, expenseData, errorMessage = "" };
 
                 return new JsonResult(jsonData);
             }
@@ -42,10 +42,10 @@ namespace FinanceApi.Controllers
             {
                 var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = ex.Message };
 
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 return new JsonResult(jsonData);
             }
@@ -82,9 +82,9 @@ namespace FinanceApi.Controllers
 
             try
             {
-                Expense expense = JsonSerializer.Deserialize<Expense>(expenseToAdd) ?? new Expense();
+                Expense expense = expenseToAdd.Deserialize<Expense>() ?? new Expense();
                 DateOnly expenseDate = new DateOnly(expense.ExpenseDate.Year, expense.ExpenseDate.Month, expense.ExpenseDate.Day);
-                this._expenseService.AddExpense(expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
+                _expenseService.AddExpense(expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -108,9 +108,9 @@ namespace FinanceApi.Controllers
 
             try
             {
-                Expense expense = JsonSerializer.Deserialize<Expense>(expenseToUpdate) ?? new Expense();
+                Expense expense = expenseToUpdate.Deserialize<Expense>() ?? new Expense();
                 DateOnly expenseDate = new DateOnly(expense.ExpenseDate.Year, expense.ExpenseDate.Month, expense.ExpenseDate.Day);
-                this._expenseService.UpdateExpense(expense.ExpenseID, expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
+                _expenseService.UpdateExpense(expense.ExpenseID, expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -134,7 +134,7 @@ namespace FinanceApi.Controllers
 
             try
             {
-                this._expenseService.DeleteExpense(expenseID);
+                _expenseService.DeleteExpense(expenseID);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)

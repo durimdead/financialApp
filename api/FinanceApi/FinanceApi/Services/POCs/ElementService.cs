@@ -1,9 +1,9 @@
 ﻿using FinanceApi.Controllers;
 using FinanceApi.Models.Testing;
 using FinanceApi.Repositories;
-using FinanceApi.Services.Interfaces;
+using FinanceApi.Services.POCs.Interfaces;
 
-namespace FinanceApi.Services
+namespace FinanceApi.Services.POCs
 {
     public class ElementService : IElement
     {
@@ -11,8 +11,8 @@ namespace FinanceApi.Services
         private readonly FinancialAppContext _context;
         public ElementService(ILogger<ElementService> logger, FinancialAppContext context)
         {
-            this._logger = logger;
-            this._context = context;
+            _logger = logger;
+            _context = context;
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace FinanceApi.Services
         {
             try
             {
-                var periodicElements = this._context.vPeriodicElement.Select(x => new PeriodicElement()
+                var periodicElements = _context.vPeriodicElement.Select(x => new PeriodicElement()
                 {
                     actions = "",
                     elementId = x.PeriodicElementID,
@@ -59,7 +59,7 @@ namespace FinanceApi.Services
                 }
 
                 // update the element with the parameter
-                this._context.usp_PeriodicElementUpsert(elementName, elementSymbol, elementWeight, elementID);
+                _context.usp_PeriodicElementUpsert(elementName, elementSymbol, elementWeight, elementID);
             }
             catch (Exception e)
             {
@@ -79,7 +79,7 @@ namespace FinanceApi.Services
             try
             {
                 // call the db upsert
-                this._context.usp_PeriodicElementUpsert(elementName, elementSymbol, elementWeight, 0);
+                _context.usp_PeriodicElementUpsert(elementName, elementSymbol, elementWeight, 0);
             }
             catch (Exception e)
             {
@@ -103,7 +103,7 @@ namespace FinanceApi.Services
                     throw new ArgumentOutOfRangeException("Element ID must be larger than 0. ElementId : " + elementID);
                 }
 
-                this._context.usp_PeriodicElementDelete(elementID);
+                _context.usp_PeriodicElementDelete(elementID);
             }
             catch (Exception e)
             {

@@ -1,13 +1,13 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using FinanceApi.Services;
 using System.Text.Json;
 using FinanceApi.Repositories;
 using FinanceApi.Models.Testing;
+using FinanceApi.Services.POCs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace FinanceApi.Controllers
+namespace FinanceApi.Controllers.POCs
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,7 +25,7 @@ namespace FinanceApi.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            var elements = this._elementService.GetElements();
+            var elements = _elementService.GetElements();
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, elementData = elements, errorMessage = "" };
 
             // return error if we could not get the elements
@@ -51,8 +51,8 @@ namespace FinanceApi.Controllers
 
             try
             {
-                PeriodicElement elementToAdd = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToAdd) ?? new PeriodicElement();
-                this._elementService.AddElement(elementToAdd.elementName, elementToAdd.elementSymbol, elementToAdd.elementWeight);
+                PeriodicElement elementToAdd = periodicElementToAdd.Deserialize<PeriodicElement>() ?? new PeriodicElement();
+                _elementService.AddElement(elementToAdd.elementName, elementToAdd.elementSymbol, elementToAdd.elementWeight);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -76,8 +76,8 @@ namespace FinanceApi.Controllers
 
             try
             {
-                PeriodicElement elementToSave = JsonSerializer.Deserialize<PeriodicElement>(periodicElementToUpdate) ?? new PeriodicElement();
-                this._elementService.UpdateElement(elementToSave.elementName, elementToSave.elementSymbol, elementToSave.elementWeight, elementToSave.elementId);
+                PeriodicElement elementToSave = periodicElementToUpdate.Deserialize<PeriodicElement>() ?? new PeriodicElement();
+                _elementService.UpdateElement(elementToSave.elementName, elementToSave.elementSymbol, elementToSave.elementWeight, elementToSave.elementId);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -102,7 +102,7 @@ namespace FinanceApi.Controllers
 
             try
             {
-                this._elementService.DeleteElement(elementId);
+                _elementService.DeleteElement(elementId);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)

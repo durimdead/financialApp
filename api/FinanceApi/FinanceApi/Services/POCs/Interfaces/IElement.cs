@@ -1,4 +1,4 @@
-﻿namespace FinanceApi.Services.Interfaces
+﻿namespace FinanceApi.Services.POCs.Interfaces
 {
     public interface IElement
     {

@@ -2,7 +2,7 @@
 using FinanceApi.Repositories.EF_Models;
 using Microsoft.Data.SqlClient;
 
-namespace FinanceApi.Services.Interfaces
+namespace FinanceApi.Services.Expenses.Interfaces
 {
     public interface IExpense
     {

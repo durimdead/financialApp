@@ -2,9 +2,9 @@
 using FinanceApi.Models.Expenses;
 using FinanceApi.Repositories;
 using FinanceApi.Repositories.EF_Models;
-using FinanceApi.Services.Interfaces;
+using FinanceApi.Services.Expenses.Interfaces;
 
-namespace FinanceApi.Services
+namespace FinanceApi.Services.Expenses
 {
     public class ExpenseService : IExpense
     {
@@ -12,8 +12,8 @@ namespace FinanceApi.Services
         private readonly FinancialAppContext _context;
         public ExpenseService(ILogger<ExpenseService> logger, FinancialAppContext context)
         {
-            this._logger = logger;
-            this._context = context;
+            _logger = logger;
+            _context = context;
         }
 
         #region Get_Records
@@ -28,11 +28,11 @@ namespace FinanceApi.Services
             try
             {
                 // ensure we will be able to attempt to find a valid record
-                this.CheckExpenseSearchCriteria(0, 0, 0, expenseID);
+                CheckExpenseSearchCriteria(0, 0, 0, expenseID);
 
                 // grab "SingleOrDefault" since we should never have more than one record coming back.
                 Expense returnValue = new Expense();
-                var record = this._context.vExpense.SingleOrDefault(x => x.ExpenseID == expenseID);
+                var record = _context.vExpense.SingleOrDefault(x => x.ExpenseID == expenseID);
 
                 if (record != new vExpense() && record != null)
                 {
@@ -51,7 +51,7 @@ namespace FinanceApi.Services
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
@@ -65,7 +65,7 @@ namespace FinanceApi.Services
             try
             {
                 // grab "SingleOrDefault" since we should never have more than one record coming back.
-                List<Expense> returnValue = this._context.vExpense.Select(record => new Expense()
+                List<Expense> returnValue = _context.vExpense.Select(record => new Expense()
                 {
                     ExpenseID = record.ExpenseID,
                     ExpenseDescription = record.ExpenseDescription,
@@ -83,7 +83,7 @@ namespace FinanceApi.Services
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
@@ -102,10 +102,10 @@ namespace FinanceApi.Services
             try
             {
                 // ensure we will be able to attempt to find a valid record
-                this.CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
+                CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = this._context.vExpense.Where(x =>
+                var returnValue = _context.vExpense.Where(x =>
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : 1 == 1)
                     && (expenseID > 0 ? expenseID == x.ExpenseID : 1 == 1)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : 1 == 1)
@@ -127,7 +127,7 @@ namespace FinanceApi.Services
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
@@ -149,7 +149,7 @@ namespace FinanceApi.Services
             try
             {
                 // ensure we will be able to attempt to find a valid record
-                this.CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
+                CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
 
                 // ensure that start date <= end date
                 if (dateStart > dateEnd)
@@ -158,13 +158,13 @@ namespace FinanceApi.Services
                 }
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = this._context.vExpense.Where(x =>
+                var returnValue = _context.vExpense.Where(x =>
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : 1 == 1)
                     && (expenseID > 0 ? expenseID == x.ExpenseID : 1 == 1)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : 1 == 1)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1)
-                    && (dateStart.Date >= x.ExpenseDate.Date)
-                    && (dateEnd.Date <= x.ExpenseDate.Date)
+                    && dateStart.Date >= x.ExpenseDate.Date
+                    && dateEnd.Date <= x.ExpenseDate.Date
                 )
                 .Select(record => new Expense()
                 {
@@ -183,7 +183,7 @@ namespace FinanceApi.Services
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex.Message, ex);
+                _logger.LogError(ex.Message, ex);
                 throw;
             }
         }
@@ -199,11 +199,11 @@ namespace FinanceApi.Services
             try
             {
                 // ensure this is a valid expenseTypeID
-                this.CheckExpenseTypeSearchCriteria(expenseTypeID);
+                CheckExpenseTypeSearchCriteria(expenseTypeID);
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = this._context.vExpenseType.Where(x =>
-                    (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : 1 == 1))
+                var returnValue = _context.vExpenseType.Where(x =>
+                    expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : 1 == 1)
                 .Select(record => new ExpenseType()
                 {
                     ExpenseTypeID = record.ExpenseTypeID,
@@ -215,10 +215,10 @@ namespace FinanceApi.Services
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -235,11 +235,11 @@ namespace FinanceApi.Services
             try
             {
                 // ensure this is a valid paymentTypeID
-                this.CheckPaymentTypeSearchCriteria(paymentTypeID);
+                CheckPaymentTypeSearchCriteria(paymentTypeID);
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = this._context.vPaymentType.Where(x =>
-                    (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : 1 == 1))
+                var returnValue = _context.vPaymentType.Where(x =>
+                    paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : 1 == 1)
                 .Select(record => new PaymentType()
                 {
                     PaymentTypeID = record.PaymentTypeID,
@@ -252,10 +252,10 @@ namespace FinanceApi.Services
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -266,11 +266,11 @@ namespace FinanceApi.Services
             try
             {
                 // ensure this is a valid paymentTypeCategoryID
-                this.CheckPaymentTypeCategorySearchCriteria(paymentTypeCategoryID);
+                CheckPaymentTypeCategorySearchCriteria(paymentTypeCategoryID);
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = this._context.vPaymentTypeCategory.Where(x =>
-                    (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1))
+                var returnValue = _context.vPaymentTypeCategory.Where(x =>
+                    paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1)
                 .Select(record => new PaymentTypeCategory()
                 {
                     PaymentTypeCategoryID = record.PaymentTypeCategoryID,
@@ -281,10 +281,10 @@ namespace FinanceApi.Services
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -311,22 +311,22 @@ namespace FinanceApi.Services
             try
             {
                 // check for valid IDs for the PK and FKs of the Expense record
-                this.CheckExpenseUpsertIDs(expenseTypeID, paymentTypeID, paymentTypeCategoryID);
+                CheckExpenseUpsertIDs(expenseTypeID, paymentTypeID, paymentTypeCategoryID);
 
                 // ensure all strings are trimmed
                 expenseDescription = expenseDescription.Trim();
 
 
                 // attempt to upsert the Expense
-                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseAmount);
+                _context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseAmount);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -346,15 +346,15 @@ namespace FinanceApi.Services
                 expenseTypeName = expenseTypeName.Trim();
                 expenseTypeDescription = expenseTypeDescription.Trim();
                 // attempt to upsert the Expense Type
-                this._context.usp_ExpenseTypeUpsert(expenseTypeName, expenseTypeDescription);
+                _context.usp_ExpenseTypeUpsert(expenseTypeName, expenseTypeDescription);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -372,22 +372,22 @@ namespace FinanceApi.Services
             try
             {
                 // check for valid IDs for the PK and FKs of the Payment Type record
-                this.CheckPaymentTypeUpsertIDs(paymentTypeCategoryID);
+                CheckPaymentTypeUpsertIDs(paymentTypeCategoryID);
 
                 // ensure all strings are trimmed
                 paymentTypeName = paymentTypeName.Trim();
                 paymentTypeDescription = paymentTypeDescription.Trim();
 
                 // attempt to upsert the Payment Type
-                this._context.usp_PaymentTypeUpsert(paymentTypeName, paymentTypeDescription, paymentTypeCategoryID);
+                _context.usp_PaymentTypeUpsert(paymentTypeName, paymentTypeDescription, paymentTypeCategoryID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -406,15 +406,15 @@ namespace FinanceApi.Services
                 paymentTypeCategoryName = paymentTypeCategoryName.Trim();
 
                 // attempt to upsert the Payment Type Category
-                this._context.usp_PaymentTypeCategoryUpsert(paymentTypeCategoryName);
+                _context.usp_PaymentTypeCategoryUpsert(paymentTypeCategoryName);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -437,15 +437,15 @@ namespace FinanceApi.Services
                     throw new ArgumentOutOfRangeException("expenseID must be a positive integer. Current value : " + expenseID.ToString());
                 }
                 // attempt to delete the Expense
-                this._context.usp_ExpenseDelete(expenseID);
+                _context.usp_ExpenseDelete(expenseID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -466,15 +466,15 @@ namespace FinanceApi.Services
                     throw new ArgumentOutOfRangeException("expenseTypeID must be a positive integer. Current value : " + expenseTypeID.ToString());
                 }
                 // attempt to delete the Expense Type
-                this._context.usp_ExpenseTypeDelete(expenseTypeID);
+                _context.usp_ExpenseTypeDelete(expenseTypeID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -495,15 +495,15 @@ namespace FinanceApi.Services
                     throw new ArgumentOutOfRangeException("paymentTypeID must be a positive integer. Current value : " + paymentTypeID.ToString());
                 }
                 // attempt to delete the Payment Type
-                this._context.usp_PaymentTypeDelete(paymentTypeID);
+                _context.usp_PaymentTypeDelete(paymentTypeID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -524,15 +524,15 @@ namespace FinanceApi.Services
                     throw new ArgumentOutOfRangeException("paymentTypeCategoryID must be a positive integer. Current value : " + paymentTypeCategoryID.ToString());
                 }
                 // attempt to delete the Payment Type Category
-                this._context.usp_PaymentTypeCategoryDelete(paymentTypeCategoryID);
+                _context.usp_PaymentTypeCategoryDelete(paymentTypeCategoryID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -558,21 +558,21 @@ namespace FinanceApi.Services
             try
             {
                 // check for valid IDs for the PK and FKs of the Expense record
-                this.CheckExpenseUpsertIDs(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID, false);
+                CheckExpenseUpsertIDs(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID, false);
 
                 // ensure all strings are trimmed
                 expenseDescription = expenseDescription.Trim();
 
                 // attempt to upsert the Expense
-                this._context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseAmount, expenseID);
+                _context.usp_ExpenseUpsert(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseAmount, expenseID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -590,22 +590,22 @@ namespace FinanceApi.Services
             try
             {
                 // check for valid IDs for the PK and FKs of the Expense Type record
-                this.CheckExpenseTypeUpsertIDs(expenseTypeID, false);
+                CheckExpenseTypeUpsertIDs(expenseTypeID, false);
 
                 // ensure all strings are trimmed
                 expenseTypeName = expenseTypeName.Trim();
                 expenseTypeDescription = expenseTypeDescription.Trim();
 
                 // attempt to upsert the Expense Type
-                this._context.usp_ExpenseTypeUpsert(expenseTypeName, expenseTypeDescription, expenseTypeID);
+                _context.usp_ExpenseTypeUpsert(expenseTypeName, expenseTypeDescription, expenseTypeID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -624,22 +624,22 @@ namespace FinanceApi.Services
             try
             {
                 // check for valid IDs for the PK and FKs of the Payment Type record
-                this.CheckPaymentTypeUpsertIDs(paymentTypeCategoryID, paymentTypeID, false);
+                CheckPaymentTypeUpsertIDs(paymentTypeCategoryID, paymentTypeID, false);
 
                 // ensure all strings are trimmed
                 paymentTypeName = paymentTypeName.Trim();
                 paymentTypeDescription = paymentTypeDescription.Trim();
 
                 // attempt to upsert the Payment Type
-                this._context.usp_PaymentTypeUpsert(paymentTypeName, paymentTypeDescription, paymentTypeCategoryID, paymentTypeID);
+                _context.usp_PaymentTypeUpsert(paymentTypeName, paymentTypeDescription, paymentTypeCategoryID, paymentTypeID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }
@@ -656,21 +656,21 @@ namespace FinanceApi.Services
             try
             {
                 // check for valid IDs for the PK of the Payment Type Category record
-                this.CheckPaymentTypeCategoryUpsertIDs(paymentTypeCategoryID, false);
+                CheckPaymentTypeCategoryUpsertIDs(paymentTypeCategoryID, false);
 
                 // ensure all strings are trimmed
                 paymentTypeCategoryName = paymentTypeCategoryName.Trim();
 
                 // attempt to upsert the Payment Type Category
-                this._context.usp_PaymentTypeCategoryUpsert(paymentTypeCategoryName, paymentTypeCategoryID);
+                _context.usp_PaymentTypeCategoryUpsert(paymentTypeCategoryName, paymentTypeCategoryID);
             }
             catch (Exception ex)
             {
                 // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                this._logger.LogError(ex.Message);
+                _logger.LogError(ex.Message);
                 if (ex.InnerException != null)
                 {
-                    this._logger.LogError(ex.InnerException.Message);
+                    _logger.LogError(ex.InnerException.Message);
                 }
                 throw;
             }

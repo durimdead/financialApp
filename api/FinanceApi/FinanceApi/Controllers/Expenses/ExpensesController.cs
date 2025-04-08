@@ -73,7 +73,7 @@ namespace FinanceApi.Controllers.Expenses
         /// POST: api/Expenses
         /// Add expense to the database
         /// </summary>
-        /// <param name="expenseToAdd"></param>
+        /// <param name="expenseToAdd">JSON object in the format of Models.Expenses.Expense (ExpenseID will be ignored since this is an "add")</param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
         [HttpPost]
         public JsonResult Post([FromBody] JsonElement expenseToAdd)
@@ -99,7 +99,7 @@ namespace FinanceApi.Controllers.Expenses
         /// PUT: api/Expenses
         /// Update expense in the database
         /// </summary>
-        /// <param name="expenseToUpdate"></param>
+        /// <param name="expenseToUpdate">JSON object in the format of Models.Expenses.Expense</param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
         [HttpPut]
         public JsonResult Put([FromBody] JsonElement expenseToUpdate)
@@ -127,7 +127,7 @@ namespace FinanceApi.Controllers.Expenses
         /// </summary>
         /// <param name="expenseID">ID of the expense to delete</param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
-        [HttpDelete("{elementId}")]
+        [HttpDelete("{expenseID}")]
         public JsonResult Delete(int expenseID)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };

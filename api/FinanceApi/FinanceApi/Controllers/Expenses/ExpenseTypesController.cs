@@ -1,5 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FinanceApi.Models.Expenses;
+using FinanceApi.Repositories;
+using FinanceApi.Services.Expenses;
+using System.Net;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FinanceApi.Repositories.EF_Models;
 
 namespace FinanceApi.Controllers.Expenses
 {
@@ -7,5 +13,122 @@ namespace FinanceApi.Controllers.Expenses
     [ApiController]
     public class ExpenseTypesController : ControllerBase
     {
+
+        private readonly ILogger<ExpenseTypesController> _logger;
+        private readonly ExpenseService _expenseService;
+        public ExpenseTypesController(ILogger<ExpenseTypesController> logger, ILogger<ExpenseService> expenseLogger, FinancialAppContext context)
+        {
+            _logger = logger;
+            _expenseService = new ExpenseService(expenseLogger, context);
+        }
+
+
+        /// <summary>
+        /// GET: api/ExpenseTypes
+        /// get the data for all expense types in the database and return it to the caller 
+        /// </summary>
+        /// <returns>{httpStatusCode, expenseData, errorMessage} : success will have 200 status code, a list of Expense objects in JSON format, and a blank error message. error will not have "expenseData"</returns>
+        [HttpGet]
+        public JsonResult Get()
+        {
+            try
+            {
+                var expenseTypeData = _expenseService.GetExpenseTypes();
+                var jsonData = new { httpStatusCode = HttpStatusCode.OK, expenseTypeData, errorMessage = "" };
+
+                return new JsonResult(jsonData);
+            }
+            catch (Exception ex)
+            {
+                var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = ex.Message };
+
+                _logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException.Message);
+                }
+                return new JsonResult(jsonData);
+            }
+        }
+
+        //TODO: figure out how to get this data from the body instead of api/<Expenses>/<ID>
+        public JsonResult Get(int expenseTypeID)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// POST: api/ExpenseTypes
+        /// Add expense type to the database
+        /// </summary>
+        /// <param name="expenseTypeToAdd">JSON object with the format of Models.Expenses.ExpenseType (ExpenseTypeID is not used as this is an "add")</param>
+        /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        [HttpPost]
+        public JsonResult Post([FromBody] JsonElement expenseTypeToAdd)
+        {
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
+
+            try
+            {
+                ExpenseType expenseType = expenseTypeToAdd.Deserialize<ExpenseType>() ?? new ExpenseType();
+                _expenseService.AddExpenseType(expenseType.ExpenseTypeName, expenseType.ExpenseTypeDescription);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
+        }
+
+        /// <summary>
+        /// PUT: api/ExpenseTypes
+        /// Update expense type in the database
+        /// </summary>
+        /// <param name="expenseTypeToUpdate">JSON object with the format of Models.Expenses.ExpenseType</param>
+        /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        [HttpPut]
+        public JsonResult Put([FromBody] JsonElement expenseTypeToUpdate)
+        {
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
+
+            try
+            {
+                ExpenseType expenseType = expenseTypeToUpdate.Deserialize<ExpenseType>() ?? new ExpenseType();
+                _expenseService.UpdateExpenseType(expenseType.ExpenseTypeID, expenseType.ExpenseTypeName, expenseType.ExpenseTypeDescription);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
+        }
+
+        /// <summary>
+        /// DELETE: api/ExpenseTypes/<ID>
+        /// Deletes the expense type record for the ID sent in
+        /// </summary>
+        /// <param name="expenseTypeID">ID of the expense type to delete</param>
+        /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
+        [HttpDelete("{expenseTypeID}")]
+        public JsonResult Delete(int expenseTypeID)
+        {
+            var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
+
+            try
+            {
+                _expenseService.DeleteExpenseType(expenseTypeID);
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
+        }
     }
 }

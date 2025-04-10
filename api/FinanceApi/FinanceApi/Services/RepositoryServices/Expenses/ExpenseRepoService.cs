@@ -191,7 +191,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         /// <summary>
         /// Get the list of expense types with the search criteria
         /// </summary>
-        /// <param name="expenseTypeID">the expense type ID of the records to return</param>
+        /// <param name="expenseTypeID">the expense type ID of the record to return</param>
         /// <returns>A list of Expense Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0)
@@ -227,7 +227,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         /// <summary>
         /// Get the list of payment types with the search criteria
         /// </summary>
-        /// <param name="paymentTypeID">The payment type ID of the records to return</param>
+        /// <param name="paymentTypeID">The payment type ID of the record to return</param>
         /// <returns>A list of Payment Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<PaymentType> GetPaymentTypes(int paymentTypeID = 0)
@@ -261,6 +261,12 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
             }
         }
 
+        /// <summary>
+        /// Get the list of payment type categories with the search criteria
+        /// </summary>
+        /// <param name="paymentTypeCategoryID">The payment type category ID of the record to return</param>
+        /// <returns>A list of Payment Type Category records based on the search criteria</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0)
         {
             try

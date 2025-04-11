@@ -1102,6 +1102,7 @@ SELECT
 	,e.[ExpenseDate]				AS [ExpenseDate]
 	,e.[ValidFrom]					AS [LastUpdated]
 	,e.[ExpenseAmount]				AS [ExpenseAmount]
+	,e.[ExpenseDescription]			AS [ExpenseDescription]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
@@ -1125,6 +1126,7 @@ SELECT
 	,e.[ExpenseDate]				AS [ExpenseDate]
 	,e.[ValidFrom]					AS [LastUpdated]
 	,e.[ExpenseAmount]				AS [ExpenseAmount]
+	,e.[ExpenseDescription]			AS [ExpenseDescription]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]

@@ -1,4 +1,5 @@
-﻿using FinanceApi.Models;
+﻿using System.Linq;
+using FinanceApi.Models;
 using FinanceApi.Models.Expenses;
 using FinanceApi.Repositories;
 using FinanceApi.Repositories.EF_Models;
@@ -44,7 +45,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (expenseDescription != "" ? expenseDescription == x.ExpenseDescription : true)
+                    && (expenseDescription != "" ? x.ExpenseDescription.ToLower().Contains(expenseDescription.ToLower()) : true)
                     && (expenseAmount != 0 ? expenseAmount == (double)x.ExpenseAmount : true)
                     && (isInvestment ?? true)
                     && (isIncome ?? true))
@@ -105,7 +106,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (expenseDescription != "" ? expenseDescription == x.ExpenseDescription : true)
+                    && (expenseDescription != "" ? x.ExpenseDescription.ToLower().Contains(expenseDescription.ToLower()) : true)
                     && (expenseAmount != 0 ? expenseAmount == (double)x.ExpenseAmount : true)
                     && (isInvestment ?? true)
                     && (isIncome ?? true)
@@ -151,7 +152,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
                 var returnValue = _context.vExpenseType.Where(x =>
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : true)
-                    && (expenseTypeName != "" ? expenseTypeName == x.ExpenseTypeName : true)
+                    && (expenseTypeName != "" ? x.ExpenseTypeName.ToLower().Contains(expenseTypeName.ToLower()) : true)
                     && (expenseTypeDescription != "" ? expenseTypeDescription == x.ExpenseTypeDescription : true))
                 .Select(record => new ExpenseType()
                 {
@@ -193,8 +194,8 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 var returnValue = _context.vPaymentType.Where(x =>
                     (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (paymentTypeName != "" ? paymentTypeName == x.PaymentTypeName : true)
-                    && (paymentTypeDescription != "" ? paymentTypeDescription == x.PaymentTypeDescription : true))
+                    && (paymentTypeName != "" ? x.PaymentTypeName.ToLower().Contains(paymentTypeName.ToLower()) : true)
+                    && (paymentTypeDescription != "" ? x.PaymentTypeDescription.ToLower().Contains(paymentTypeDescription.ToLower()) : true))
                 .Select(record => new PaymentType()
                 {
                     PaymentTypeID = record.PaymentTypeID,
@@ -233,7 +234,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
                 var returnValue = _context.vPaymentTypeCategory.Where(x =>
                        (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (paymentTypeCategoryName != "" ? paymentTypeCategoryName == x.PaymentTypeCategoryName : true))
+                    && (paymentTypeCategoryName != "" ? x.PaymentTypeCategoryName.ToLower().Contains(paymentTypeCategoryName.ToLower()) : true))
                 .Select(record => new PaymentTypeCategory()
                 {
                     PaymentTypeCategoryID = record.PaymentTypeCategoryID,

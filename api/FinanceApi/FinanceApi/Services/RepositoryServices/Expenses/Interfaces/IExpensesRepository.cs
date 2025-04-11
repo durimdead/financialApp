@@ -61,7 +61,21 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
         /// <returns>A list of Payment Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<PaymentType> GetPaymentTypes(int paymentTypeID = 0);
-        public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0);
+
+        /// <summary>
+        /// Get the payment type categories with the ID sent in
+        /// </summary>
+        /// <param name="paymentTypeCategoryID">The payment type category ID of the record to return</param>
+        /// <returns>A list of Payment Type Category records based on the search criteria</returns>
+        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
+        public PaymentTypeCategory GetPaymentTypeCategory(int paymentTypeCategoryID);
+
+        /// <summary>
+        /// Get the list of payment type categories with the search criteria
+        /// </summary>
+        /// <param name="paymentTypeCategoryName">The search criteria for the name of the records to return (can be a partial match). Sending in an empty string will return ALL records</param>
+        /// <returns>A list of Payment Type Category records based on the search criteria</returns>
+        public List<PaymentTypeCategory> GetPaymentTypeCategories(string paymentTypeCategoryName = "");
 
         #endregion Get_Records
 

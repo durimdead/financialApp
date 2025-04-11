@@ -49,10 +49,12 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
         /// <summary>
         /// Get the list of expense types with the search criteria
         /// </summary>
-        /// <param name="expenseTypeID">the expense type ID of the records to return</param>
+        /// <param name="expenseTypeID">the expense type ID of the record to return ("0" to ignore this search criteria).</param>
+        /// <param name="expenseTypeName">full or partial name of expense type to search on  ("" to ignore this search criteria).</param>
+        /// <param name="expenseTypeDescription">full or partial description of expense type to search on  ("" to ignore this search criteria).</param>
         /// <returns>A list of Expense Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0);
+        public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0, string expenseTypeName = "", string expenseTypeDescription = "");
 
         /// <summary>
         /// Returns a list of payment types based on the search criteria sent in. Use default param values to get ALL Payment Type records.

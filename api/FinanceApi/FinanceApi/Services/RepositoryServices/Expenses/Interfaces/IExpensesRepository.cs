@@ -55,12 +55,15 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
         public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0);
 
         /// <summary>
-        /// Get the list of payment types with the search criteria
+        /// Returns a list of payment types based on the search criteria sent in. Use default param values to get ALL Payment Type records.
         /// </summary>
-        /// <param name="paymentTypeID">The payment type ID of the records to return</param>
+        /// <param name="paymentTypeID">ID of the payment type to get ("0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeCategoryID">ID of the payment type category that this payment type falls within ("0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeName">full or partial name of payment type to search on  ("" to ignore this search criteria).</param>
+        /// <param name="paymentTypeDescription">full or partial description of payment type to search on  ("" to ignore this search criteria).</param>
         /// <returns>A list of Payment Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<PaymentType> GetPaymentTypes(int paymentTypeID = 0);
+        public List<PaymentType> GetPaymentTypes(int paymentTypeID = 0, int paymentTypeCategoryID = 0, string paymentTypeName = "", string paymentTypeDescription = "");
 
         /// <summary>
         /// Get the payment type categories with the ID sent in
@@ -73,7 +76,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
         /// <summary>
         /// Get the list of payment type categories with the search criteria
         /// </summary>
-        /// <param name="paymentTypeCategoryName">The search criteria for the name of the records to return (can be a partial match). Sending in an empty string will return ALL records</param>
+        /// <param name="paymentTypeCategoryName">The search criteria for the name of the records to return (can be a partial match). Sending in an empty string will return ALL records.</param>
         /// <returns>A list of Payment Type Category records based on the search criteria</returns>
         public List<PaymentTypeCategory> GetPaymentTypeCategories(string paymentTypeCategoryName = "");
 

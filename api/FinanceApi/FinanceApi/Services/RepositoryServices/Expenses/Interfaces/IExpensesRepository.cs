@@ -57,28 +57,21 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
         /// <summary>
         /// Returns a list of payment types based on the search criteria sent in. Use default param values to get ALL Payment Type records.
         /// </summary>
-        /// <param name="paymentTypeID">ID of the payment type to get ("0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeID">ID of the payment type to return ("0" to ignore this search criteria).</param>
         /// <param name="paymentTypeCategoryID">ID of the payment type category that this payment type falls within ("0" to ignore this search criteria).</param>
-        /// <param name="paymentTypeName">full or partial name of payment type to search on  ("" to ignore this search criteria).</param>
-        /// <param name="paymentTypeDescription">full or partial description of payment type to search on  ("" to ignore this search criteria).</param>
+        /// <param name="paymentTypeName">full or partial name of payment types to search on ("" to ignore this search criteria).</param>
+        /// <param name="paymentTypeDescription">full or partial description of payment types to search on ("" to ignore this search criteria).</param>
         /// <returns>A list of Payment Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<PaymentType> GetPaymentTypes(int paymentTypeID = 0, int paymentTypeCategoryID = 0, string paymentTypeName = "", string paymentTypeDescription = "");
 
         /// <summary>
-        /// Get the payment type categories with the ID sent in
-        /// </summary>
-        /// <param name="paymentTypeCategoryID">The payment type category ID of the record to return</param>
-        /// <returns>A list of Payment Type Category records based on the search criteria</returns>
-        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public PaymentTypeCategory GetPaymentTypeCategory(int paymentTypeCategoryID);
-
-        /// <summary>
         /// Get the list of payment type categories with the search criteria
         /// </summary>
-        /// <param name="paymentTypeCategoryName">The search criteria for the name of the records to return (can be a partial match). Sending in an empty string will return ALL records.</param>
+        /// <param name="paymentTypeCategoryID">ID of the payment type category to return ("0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeCategoryName">full or partial name of payment type categories to search on ("" to ignore this search criteria).</param>
         /// <returns>A list of Payment Type Category records based on the search criteria</returns>
-        public List<PaymentTypeCategory> GetPaymentTypeCategories(string paymentTypeCategoryName = "");
+        public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0, string paymentTypeCategoryName = "");
 
         #endregion Get_Records
 

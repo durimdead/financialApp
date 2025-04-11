@@ -268,52 +268,23 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         }
 
         /// <summary>
-        /// Get the payment type categories with the ID sent in
+        /// Get the list of payment type categories with the search criteria
         /// </summary>
-        /// <param name="paymentTypeCategoryID">The payment type category ID of the record to return</param>
+        /// <param name="paymentTypeCategoryID">ID of the payment type category to return ("0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeCategoryName">full or partial name of payment type categories to search on ("" to ignore this search criteria).</param>
         /// <returns>A list of Payment Type Category records based on the search criteria</returns>
-        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public PaymentTypeCategory GetPaymentTypeCategory(int paymentTypeCategoryID)
+        /// <exception cref="ArgumentOutOfRangeException">if the paymentTypeCategoryID is outside of the valid range (i.e. < 0)</exception>
+        public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0, string paymentTypeCategoryName = "")
         {
             try
             {
                 // ensure this is a valid paymentTypeCategoryID
                 CheckPaymentTypeCategorySearchCriteria(paymentTypeCategoryID);
 
-                // grab the record to return
-                var record = _context.vPaymentTypeCategory.SingleOrDefault(x => x.PaymentTypeCategoryID == paymentTypeCategoryID);
-                PaymentTypeCategory returnValue = new PaymentTypeCategory();
-                if (record != new vPaymentTypeCategory() && record != null)
-                {
-                    returnValue.PaymentTypeCategoryID = record.PaymentTypeCategoryID;
-                    returnValue.PaymentTypeCategoryName = record.PaymentTypeCategoryName;
-                }
-                return returnValue;
-            }
-            catch (Exception ex)
-            {
-                // log the error and then re-throw it to ensure anywhere else that needs to handle the error can still do so
-                _logger.LogError(ex.Message);
-                if (ex.InnerException != null)
-                {
-                    _logger.LogError(ex.InnerException.Message);
-                }
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Get the list of payment type categories with the search criteria
-        /// </summary>
-        /// <param name="paymentTypeCategoryName">The search criteria for the name of the records to return (can be a partial match). Default value will return ALL records</param>
-        /// <returns>A list of Payment Type Category records based on the search criteria</returns>
-        public List<PaymentTypeCategory> GetPaymentTypeCategories(string paymentTypeCategoryName = "")
-        {
-            try
-            {
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
                 var returnValue = _context.vPaymentTypeCategory.Where(x =>
-                    paymentTypeCategoryName != "" ? paymentTypeCategoryName == x.PaymentTypeCategoryName : 1 == 1)
+                       (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : 1 == 1)
+                    && (paymentTypeCategoryName != "" ? paymentTypeCategoryName == x.PaymentTypeCategoryName : 1 == 1))
                 .Select(record => new PaymentTypeCategory()
                 {
                     PaymentTypeCategoryID = record.PaymentTypeCategoryID,

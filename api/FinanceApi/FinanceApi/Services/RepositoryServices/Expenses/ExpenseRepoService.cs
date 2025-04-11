@@ -22,17 +22,17 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         /// <summary>
         /// Get the list of expenses with the search criteria
         /// </summary>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this search criteria)</param>
-        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="expenseDescription">Full or partial description of expense to search on ("" to ignore this search criteria).</param>
         /// <param name="expenseAmount">Expense amount to search on (pass in "0" to ignore this search criteria)</param>
         /// <param name="isInvestment">If you are searching specifically for or not for investments (pass in "null" to ignore this search criteria)</param>
         /// <param name="isIncome">If you are searching specifically for or not for income (pass in "null" to ignore this search criteria)</param>
         /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
+        public List<Expense> GetExpenses(int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
         {
             try
             {
@@ -76,10 +76,10 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         /// </summary>
         /// <param name="dateStart">start of the date range to search within (must be <= dateEnd)</param>
         /// <param name="dateEnd">end of the date range to search within (must be >= dateStart)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this search criteria)</param>
-        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
         /// <param name="expenseDescription">Full or partial description of expense to search on ("" to ignore this search criteria).</param>
         /// <param name="expenseAmount">Expense amount to search on (pass in "0" to ignore this search criteria)</param>
         /// <param name="isInvestment">If you are searching specifically for or not for investments (pass in "null" to ignore this search criteria)</param>
@@ -87,7 +87,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="InvalidOperationException">if dateStart > dateEnd</exception>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0, string expenseDescription = "", double expenseAmount = 0, bool? isInvestment = null, bool? isIncome = null)
+        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
         {
             try
             {

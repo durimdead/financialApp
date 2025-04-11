@@ -51,20 +51,14 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
-        //TODO: figure out how to get this data from the body instead of api/<Expenses>/<ID>
-        public JsonResult Get(int expenseID)
+        //TODO: figure out how to get this data from the body
+        public JsonResult Get(int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
         {
             throw new NotImplementedException();
         }
 
         //TODO: figure out how to get this data from the body
-        public JsonResult Get(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
-        {
-            throw new NotImplementedException();
-        }
-
-        //TODO: figure out how to get this data from the body
-        public JsonResult Get(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
+        public JsonResult Get(DateTime dateStart, DateTime dateEnd, int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
         {
             throw new NotImplementedException();
         }

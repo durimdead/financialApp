@@ -4,6 +4,23 @@ namespace FinanceApi.Repositories.EF_Models
 {
     public class vExpenseDetails
     {
+        public vExpenseDetails()
+        {
+            ExpenseID = 0;
+            ExpenseTypeID = 0;
+            PaymentTypeID = 0;
+            PaymentTypeCategoryID = 0;
+            ExpenseTypeName = string.Empty;
+            PaymentTypeName = string.Empty;
+            PaymentTypeDescription = string.Empty;
+            PaymentTypeCategoryName = string.Empty;
+            IsIncome = false;
+            IsInvestment = false;
+            ExpenseDescription = string.Empty;
+            ExpenseAmount = 0;
+            ExpenseDate = new DateTime(1, 1, 1);
+            LastUpdated = new DateTime(1, 1, 1);
+        }
         [Key]
         public int ExpenseID { get; set; }
         public required string ExpenseTypeName { get; set; }
@@ -17,6 +34,7 @@ namespace FinanceApi.Repositories.EF_Models
         public int PaymentTypeCategoryID { get; set; }
         public DateTime ExpenseDate { get; set; }
         public DateTime LastUpdated { get; set; }
+        public string ExpenseDescription { get; set; }
         public decimal ExpenseAmount { get; set; }
     }
 }

@@ -6,8 +6,8 @@ namespace FinanceApi.Repositories.EF_Models
     {
         public vPaymentTypeCategory()
         {
-            this.PaymentTypeCategoryID = 0;
-            this.PaymentTypeCategoryName = string.Empty;
+            PaymentTypeCategoryID = 0;
+            PaymentTypeCategoryName = string.Empty;
         }
 
         [Key]

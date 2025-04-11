@@ -6,11 +6,11 @@ namespace FinanceApi.Repositories.EF_Models
     {
         public vPaymentType()
         {
-            this.PaymentTypeID = 0;
-            this.PaymentTypeCategoryID = 0;
-            this.PaymentTypeName = string.Empty;
-            this.PaymentTypeDescription = string.Empty;
-            this.PaymentTypeCategoryDescription = string.Empty;
+            PaymentTypeID = 0;
+            PaymentTypeCategoryID = 0;
+            PaymentTypeName = string.Empty;
+            PaymentTypeDescription = string.Empty;
+            PaymentTypeCategoryDescription = string.Empty;
         }
         [Key]
         public int PaymentTypeID { get; set; }

@@ -56,6 +56,9 @@ namespace FinanceApi.Controllers.Expenses
             throw new NotImplementedException();
         }
 
+        //TODO: add in different versions of the searches so users can specifically ask for things like just the paymentTypeID, just the paymentTypeCategoryID, etc..
+        //      -> could just add more methods into the repo service that end up calling the already existing method and fill in the defaults outside of what is being searched on.
+
         /// <summary>
         /// POST: api/PaymentTypes
         /// Add payment type to the database

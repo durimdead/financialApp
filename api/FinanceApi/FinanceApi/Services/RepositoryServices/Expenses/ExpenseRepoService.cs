@@ -17,87 +17,21 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         }
 
         #region Get_Records
-        /// <summary>
-        /// attempts to grab an individual expense by ID
-        /// </summary>
-        /// <param name="expenseID">the expense ID you would like to get a record for</param>
-        /// <returns>The Expense record for the expenseID - otherwise, returns an empty "Expense" object if expense ID not found</returns>
-        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public Expense GetExpense(int expenseID)
-        {
-            try
-            {
-                // ensure we will be able to attempt to find a valid record
-                CheckExpenseSearchCriteria(0, 0, 0, expenseID);
-
-                // grab "SingleOrDefault" since we should never have more than one record coming back.
-                Expense returnValue = new Expense();
-                var record = _context.vExpense.SingleOrDefault(x => x.ExpenseID == expenseID);
-
-                if (record != new vExpense() && record != null)
-                {
-                    returnValue.ExpenseID = record.ExpenseID;
-                    returnValue.ExpenseDescription = record.ExpenseDescription;
-                    returnValue.ExpenseTypeID = record.ExpenseTypeID;
-                    returnValue.PaymentTypeID = record.PaymentTypeID;
-                    returnValue.PaymentTypeCategoryID = record.PaymentTypeCategoryID;
-                    returnValue.IsIncome = record.IsIncome;
-                    returnValue.IsInvestment = record.IsInvestment;
-                    returnValue.ExpenseDate = record.ExpenseDate;
-                    returnValue.LastUpdated = record.LastUpdated;
-                    returnValue.ExpenseAmount = (double)record.ExpenseAmount;
-                }
-                return returnValue;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex);
-                throw;
-            }
-        }
 
         /// <summary>
-        /// Returns all records from vExpense as a list of Expense objects
+        /// Get the list of expenses with the search criteria
         /// </summary>
-        /// <returns>a list of expense objects</returns>
-        public List<Expense> GetExpenses()
-        {
-            try
-            {
-                // grab "SingleOrDefault" since we should never have more than one record coming back.
-                List<Expense> returnValue = _context.vExpense.Select(record => new Expense()
-                {
-                    ExpenseID = record.ExpenseID,
-                    ExpenseDescription = record.ExpenseDescription,
-                    ExpenseTypeID = record.ExpenseTypeID,
-                    PaymentTypeID = record.PaymentTypeID,
-                    PaymentTypeCategoryID = record.PaymentTypeCategoryID,
-                    IsIncome = record.IsIncome,
-                    IsInvestment = record.IsInvestment,
-                    ExpenseDate = record.ExpenseDate,
-                    LastUpdated = record.LastUpdated,
-                    ExpenseAmount = (double)record.ExpenseAmount
-                }).ToList();
-
-                return returnValue;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message, ex);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Get the list of expenses with the search criteria (can search by date)
-        /// </summary>
-        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseDescription">Full or partial description of expense to search on ("" to ignore this search criteria).</param>
+        /// <param name="expenseAmount">Expense amount to search on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="isInvestment">If you are searching specifically for or not for investments (pass in "null" to ignore this search criteria)</param>
+        /// <param name="isIncome">If you are searching specifically for or not for income (pass in "null" to ignore this search criteria)</param>
         /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
+        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
         {
             try
             {
@@ -109,7 +43,11 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : true)
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
-                    && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true))
+                    && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
+                    && (expenseDescription != "" ? expenseDescription == x.ExpenseDescription : true)
+                    && (expenseAmount != 0 ? expenseAmount == (double)x.ExpenseAmount : true)
+                    && (isInvestment ?? true)
+                    && (isIncome ?? true))
                 .Select(record => new Expense()
                 {
                     ExpenseID = record.ExpenseID,
@@ -137,14 +75,18 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
         /// </summary>
         /// <param name="dateStart">start of the date range to search within (must be <= dateEnd)</param>
         /// <param name="dateEnd">end of the date range to search within (must be >= dateStart)</param>
-        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseDescription">Full or partial description of expense to search on ("" to ignore this search criteria).</param>
+        /// <param name="expenseAmount">Expense amount to search on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="isInvestment">If you are searching specifically for or not for investments (pass in "null" to ignore this search criteria)</param>
+        /// <param name="isIncome">If you are searching specifically for or not for income (pass in "null" to ignore this search criteria)</param>
         /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="InvalidOperationException">if dateStart > dateEnd</exception>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0)
+        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0, string expenseDescription = "", double expenseAmount = 0, bool? isInvestment = null, bool? isIncome = null)
         {
             try
             {
@@ -163,9 +105,12 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && dateStart.Date >= x.ExpenseDate.Date
-                    && dateEnd.Date <= x.ExpenseDate.Date
-                )
+                    && (expenseDescription != "" ? expenseDescription == x.ExpenseDescription : true)
+                    && (expenseAmount != 0 ? expenseAmount == (double)x.ExpenseAmount : true)
+                    && (isInvestment ?? true)
+                    && (isIncome ?? true)
+                    && (dateStart.Date >= x.ExpenseDate.Date)
+                    && (dateEnd.Date <= x.ExpenseDate.Date))
                 .Select(record => new Expense()
                 {
                     ExpenseID = record.ExpenseID,

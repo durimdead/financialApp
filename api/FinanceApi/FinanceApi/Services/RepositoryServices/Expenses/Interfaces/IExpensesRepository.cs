@@ -7,51 +7,46 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
     public interface IExpensesRepository
     {
         #region Get_Records
-        /// <summary>
-        /// attempts to grab an individual expense by ID
-        /// </summary>
-        /// <param name="expenseID">the expense ID you would like to get a record for</param>
-        /// <returns>The Expense record for the expenseID - otherwise, returns an empty "Expense" object if expense ID not found</returns>
-        /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public Expense GetExpense(int expenseID = 0);
 
         /// <summary>
-        /// Returns all records from vExpense as a list of Expense objects
+        /// Get the list of expenses with the search criteria
         /// </summary>
-        /// <returns>a list of expense objects</returns>
-        public List<Expense> GetExpenses();
-
-        /// <summary>
-        /// Get the list of expenses with the search criteria (can search by date)
-        /// </summary>
-        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseDescription">Full or partial description of expense to search on ("" to ignore this search criteria).</param>
+        /// <param name="expenseAmount">Expense amount to search on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="isInvestment">If you are searching specifically for or not for investments (pass in "null" to ignore this search criteria)</param>
+        /// <param name="isIncome">If you are searching specifically for or not for income (pass in "null" to ignore this search criteria)</param>
         /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
+        public List<Expense> GetExpenses(int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null);
 
         /// <summary>
         /// Get the list of expenses with the search criteria (can search by date)
         /// </summary>
         /// <param name="dateStart">start of the date range to search within (must be <= dateEnd)</param>
         /// <param name="dateEnd">end of the date range to search within (must be >= dateStart)</param>
-        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this parameter)</param>
-        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this parameter)</param>
+        /// <param name="expenseTypeID">The expense type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeID">The payment type ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="paymentTypeCategoryID">The payment type category ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseID">The expense ID to filter on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="expenseDescription">Full or partial description of expense to search on ("" to ignore this search criteria).</param>
+        /// <param name="expenseAmount">Expense amount to search on (pass in "0" to ignore this search criteria)</param>
+        /// <param name="isInvestment">If you are searching specifically for or not for investments (pass in "null" to ignore this search criteria)</param>
+        /// <param name="isIncome">If you are searching specifically for or not for income (pass in "null" to ignore this search criteria)</param>
         /// <returns>A list of expenses based on the search criteria passed in.</returns>
         /// <exception cref="InvalidOperationException">if dateStart > dateEnd</exception>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
-        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0);
+        public List<Expense> GetExpenses(DateTime dateStart, DateTime dateEnd, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, int expenseID = 0, string expenseDescription = "", double expenseAmount = 0, bool? isInvestment = null, bool? isIncome = null);
 
         /// <summary>
         /// Get the list of expense types with the search criteria
         /// </summary>
-        /// <param name="expenseTypeID">the expense type ID of the record to return ("0" to ignore this search criteria).</param>
-        /// <param name="expenseTypeName">full or partial name of expense type to search on  ("" to ignore this search criteria).</param>
-        /// <param name="expenseTypeDescription">full or partial description of expense type to search on  ("" to ignore this search criteria).</param>
+        /// <param name="expenseTypeID">the expense type ID of the record to return (pass in "0" to ignore this search criteria).</param>
+        /// <param name="expenseTypeName">full or partial name of expense type to search on ("" to ignore this search criteria).</param>
+        /// <param name="expenseTypeDescription">full or partial description of expense type to search on ("" to ignore this search criteria).</param>
         /// <returns>A list of Expense Type records based on the search criteria</returns>
         /// <exception cref="ArgumentOutOfRangeException">if any of the IDs are outside of a valid range for the search criteria (i.e. < 0)</exception>
         public List<ExpenseType> GetExpenseTypes(int expenseTypeID = 0, string expenseTypeName = "", string expenseTypeDescription = "");
@@ -59,8 +54,8 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
         /// <summary>
         /// Returns a list of payment types based on the search criteria sent in. Use default param values to get ALL Payment Type records.
         /// </summary>
-        /// <param name="paymentTypeID">ID of the payment type to return ("0" to ignore this search criteria).</param>
-        /// <param name="paymentTypeCategoryID">ID of the payment type category that this payment type falls within ("0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeID">ID of the payment type to return (pass in "0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeCategoryID">ID of the payment type category that this payment type falls within (pass in "0" to ignore this search criteria).</param>
         /// <param name="paymentTypeName">full or partial name of payment types to search on ("" to ignore this search criteria).</param>
         /// <param name="paymentTypeDescription">full or partial description of payment types to search on ("" to ignore this search criteria).</param>
         /// <returns>A list of Payment Type records based on the search criteria</returns>
@@ -70,7 +65,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses.Interfaces
         /// <summary>
         /// Get the list of payment type categories with the search criteria
         /// </summary>
-        /// <param name="paymentTypeCategoryID">ID of the payment type category to return ("0" to ignore this search criteria).</param>
+        /// <param name="paymentTypeCategoryID">ID of the payment type category to return (pass in "0" to ignore this search criteria).</param>
         /// <param name="paymentTypeCategoryName">full or partial name of payment type categories to search on ("" to ignore this search criteria).</param>
         /// <returns>A list of Payment Type Category records based on the search criteria</returns>
         public List<PaymentTypeCategory> GetPaymentTypeCategories(int paymentTypeCategoryID = 0, string paymentTypeCategoryName = "");

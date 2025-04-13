@@ -1110,7 +1110,7 @@ FROM
         JOIN [dbo].[PaymentTypeCategory] ptc ON e.[PaymentTypeCategoryID] = ptc.[PaymentTypeCategoryID]
 GO
 
-CREATE VIEW [dbo].[vExpenseDetails]
+CREATE VIEW [dbo].[vExpenseDetail]
 AS
 SELECT
     e.[ExpenseID]                   AS [ExpenseID]
@@ -1195,7 +1195,7 @@ exec [dbo].[usp_ExpenseUpsert] 0, @expenseTypeID_other, @paymentTypeID_cash_app,
 
 /*
 select * from vExpense
-select * from vExpenseDetails
+select * from vExpenseDetail
 select * from vExpenseType
 select * from vpaymenttypecategory
 select * from vpaymenttype

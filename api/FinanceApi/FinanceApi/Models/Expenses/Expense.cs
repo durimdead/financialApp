@@ -20,14 +20,14 @@
             LastUpdated = new DateTime(1, 1, 1);
         }
         public int ExpenseID { get; set; }
-        public required string ExpenseTypeName { get; set; }
-        public required string PaymentTypeName { get; set; }
-        public required string PaymentTypeCategoryName { get; set; }
+        public string ExpenseTypeName { get; set; }
+        public string PaymentTypeName { get; set; }
+        public string PaymentTypeCategoryName { get; set; }
         public bool IsIncome { get; set; }
         public bool IsInvestment { get; set; }
         public int ExpenseTypeID { get; set; }
         public int PaymentTypeID { get; set; }
-        public required string PaymentTypeDescription { get; set; }
+        public string PaymentTypeDescription { get; set; }
         public int PaymentTypeCategoryID { get; set; }
         public DateTime ExpenseDate { get; set; }
         public DateTime LastUpdated { get; set; }

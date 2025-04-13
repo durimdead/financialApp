@@ -15,7 +15,7 @@ namespace FinanceApi.Repositories
         public virtual DbSet<vPaymentTypeCategory> vPaymentTypeCategory { get; set; }
         public virtual DbSet<vPaymentType> vPaymentType { get; set; }
         public virtual DbSet<vExpense> vExpense { get; set; }
-        public virtual DbSet<vExpenseDetails> VExpenseDetails { get; set; }
+        public virtual DbSet<vExpenseDetail> vExpenseDetail { get; set; }
 
         /// <summary>
         /// Update / insert record to the PeriodicElement table

@@ -2,9 +2,9 @@
 
 namespace FinanceApi.Repositories.EF_Models
 {
-    public class vExpenseDetails
+    public class vExpenseDetail
     {
-        public vExpenseDetails()
+        public vExpenseDetail()
         {
             ExpenseID = 0;
             ExpenseTypeID = 0;

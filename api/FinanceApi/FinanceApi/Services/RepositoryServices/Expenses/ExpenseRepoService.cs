@@ -40,7 +40,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 CheckExpenseSearchCriteria(expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseID);
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = _context.vExpense.Where(x =>
+                var returnValue = _context.vExpenseDetail.Where(x =>
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : true)
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
@@ -52,15 +52,19 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 .Select(record => new Expense()
                 {
                     ExpenseID = record.ExpenseID,
-                    ExpenseDescription = record.ExpenseDescription,
                     ExpenseTypeID = record.ExpenseTypeID,
                     PaymentTypeID = record.PaymentTypeID,
                     PaymentTypeCategoryID = record.PaymentTypeCategoryID,
+                    ExpenseTypeName = record.ExpenseTypeName,
+                    PaymentTypeName = record.PaymentTypeName,
+                    PaymentTypeDescription = record.PaymentTypeDescription,
+                    PaymentTypeCategoryName = record.PaymentTypeCategoryName,
                     IsIncome = record.IsIncome,
                     IsInvestment = record.IsInvestment,
+                    ExpenseDescription = record.ExpenseDescription,
+                    ExpenseAmount = (double)record.ExpenseAmount,
                     ExpenseDate = record.ExpenseDate,
-                    LastUpdated = record.LastUpdated,
-                    ExpenseAmount = (double)record.ExpenseAmount
+                    LastUpdated = record.LastUpdated
                 }).ToList();
                 return returnValue;
             }
@@ -101,7 +105,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 }
 
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
-                var returnValue = _context.vExpense.Where(x =>
+                var returnValue = _context.vExpenseDetail.Where(x =>
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : true)
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
@@ -115,15 +119,19 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 .Select(record => new Expense()
                 {
                     ExpenseID = record.ExpenseID,
-                    ExpenseDescription = record.ExpenseDescription,
                     ExpenseTypeID = record.ExpenseTypeID,
                     PaymentTypeID = record.PaymentTypeID,
                     PaymentTypeCategoryID = record.PaymentTypeCategoryID,
+                    ExpenseTypeName = record.ExpenseTypeName,
+                    PaymentTypeName = record.PaymentTypeName,
+                    PaymentTypeDescription = record.PaymentTypeDescription,
+                    PaymentTypeCategoryName = record.PaymentTypeCategoryName,
                     IsIncome = record.IsIncome,
                     IsInvestment = record.IsInvestment,
+                    ExpenseDescription = record.ExpenseDescription,
+                    ExpenseAmount = (double)record.ExpenseAmount,
                     ExpenseDate = record.ExpenseDate,
-                    LastUpdated = record.LastUpdated,
-                    ExpenseAmount = (double)record.ExpenseAmount
+                    LastUpdated = record.LastUpdated
                 }).ToList();
                 return returnValue;
             }

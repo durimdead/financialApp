@@ -25,7 +25,7 @@
     </td>
   </ng-container>
 
-  <!-- expenseId Column -->
+  <!-- Expense Date Column -->
   <ng-container matColumnDef="ExpenseDate">
     <th
       mat-header-cell
@@ -35,10 +35,10 @@
     >
       Date
     </th>
-    <td mat-cell *matCellDef="let expense">{{ expense.ExpenseDate }}</td>
+    <td mat-cell *matCellDef="let expense">{{ expense.expenseDate | date:'yyyy/MM/dd' }}</td>
   </ng-container>
 
-  <!-- Description Column -->
+  <!-- Expense Description Column -->
   <ng-container matColumnDef="ExpenseDescription">
     <th
       mat-header-cell
@@ -49,11 +49,11 @@
       Description
     </th>
     <td mat-cell *matCellDef="let expense">  
-        {{ expense.ExpenseDescription }}
+        {{ expense.expenseDescription }}
     </td>
   </ng-container>
 
-  <!-- Amount Column -->
+  <!-- Expense Amount Column -->
   <ng-container matColumnDef="ExpenseAmount">
     <th
       mat-header-cell
@@ -64,11 +64,11 @@
       Amount
     </th>
     <td mat-cell *matCellDef="let expense">  
-        {{ expense.ExpenseAmount }}
+        {{ expense.expenseAmount }}
     </td>
   </ng-container>
 
-  <!-- Expense Type Column -->
+  <!-- Expense Type Name Column -->
   <ng-container matColumnDef="ExpenseTypeName">
     <th
       mat-header-cell
@@ -79,11 +79,11 @@
       Expense Type
     </th>
     <td mat-cell *matCellDef="let expense">
-        {{ expense.ExpenseTypeName }}
+        {{ expense.expenseTypeName }}
     </td>
   </ng-container>
 
-  <!-- Payment Type Column -->
+  <!-- Payment Type Name Column -->
   <ng-container matColumnDef="PaymentTypeName">
     <th
       mat-header-cell
@@ -94,7 +94,7 @@
       Payment Type
     </th>
     <td mat-cell *matCellDef="let expense">
-        {{ expense.PaymentTypeName }}
+        {{ expense.paymentTypeName }}
     </td>
 </ng-container>
 

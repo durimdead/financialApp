@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { Expense } from '../../app.interfaces';
 import { FinanceService } from '../services/finance/finance.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-finances',
@@ -15,6 +16,7 @@ import { FinanceService } from '../services/finance/finance.service';
     MatButtonModule,
     MatIconModule,
     RouterLink,
+	DatePipe
   ],
   templateUrl: './finances.component.html',
   styleUrl: './finances.component.css',

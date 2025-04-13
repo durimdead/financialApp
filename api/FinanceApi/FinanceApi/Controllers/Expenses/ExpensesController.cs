@@ -65,6 +65,7 @@ namespace FinanceApi.Controllers.Expenses
 
         //TODO: add in different versions of the searches so users can specifically ask for things like just the expenseID, just the paymentTypeID, etc..
         //      -> could just add more methods into the repo service that end up calling the already existing method and fill in the defaults outside of what is being searched on.
+        //      -> need to add specific endpoints for getting the full "ExpenseDetails" (i.e. using the ExpenseDetail class)
 
         /// <summary>
         /// POST: api/Expenses

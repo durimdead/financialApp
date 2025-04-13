@@ -1,8 +1,8 @@
 [
   {
-    "ContainingType": "FinanceApi.Controllers.ExpenseController",
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpensesController",
     "Method": "Get",
-    "RelativePath": "api/Expense",
+    "RelativePath": "api/Expenses",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -10,7 +10,277 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpensesController",
+    "Method": "Post",
+    "RelativePath": "api/Expenses",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseToAdd",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpensesController",
+    "Method": "Put",
+    "RelativePath": "api/Expenses",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseToUpdate",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpensesController",
+    "Method": "Delete",
+    "RelativePath": "api/Expenses/{expenseID}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpenseTypesController",
+    "Method": "Get",
+    "RelativePath": "api/ExpenseTypes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpenseTypesController",
+    "Method": "Get",
+    "RelativePath": "api/ExpenseTypes",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseTypeID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpenseTypesController",
+    "Method": "Post",
+    "RelativePath": "api/ExpenseTypes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseTypeToAdd",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpenseTypesController",
+    "Method": "Put",
+    "RelativePath": "api/ExpenseTypes",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseTypeToUpdate",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpenseTypesController",
+    "Method": "Delete",
+    "RelativePath": "api/ExpenseTypes/{expenseTypeID}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseTypeID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypeCategoriesController",
+    "Method": "Get",
+    "RelativePath": "api/PaymentTypeCategories",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypeCategoriesController",
+    "Method": "Get",
+    "RelativePath": "api/PaymentTypeCategories",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeCategoryID",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypeCategoriesController",
+    "Method": "Post",
+    "RelativePath": "api/PaymentTypeCategories",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeCategoryToAdd",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypeCategoriesController",
+    "Method": "Put",
+    "RelativePath": "api/PaymentTypeCategories",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeCategoryToUpdate",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypeCategoriesController",
+    "Method": "Delete",
+    "RelativePath": "api/PaymentTypeCategories/{paymentTypeCategoryID}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeCategoryID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypesController",
+    "Method": "Get",
+    "RelativePath": "api/PaymentTypes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypesController",
+    "Method": "Post",
+    "RelativePath": "api/PaymentTypes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeID",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypesController",
+    "Method": "Post",
+    "RelativePath": "api/PaymentTypes",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeToAdd",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypesController",
+    "Method": "Put",
+    "RelativePath": "api/PaymentTypes",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeToUpdate",
+        "Type": "System.Text.Json.JsonElement",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypesController",
+    "Method": "Delete",
+    "RelativePath": "api/PaymentTypes/{paymentTypeID}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FinanceApi.Controllers.POCs.PeriodicElementsController",
     "Method": "Get",
     "RelativePath": "api/PeriodicElements",
     "HttpMethod": "GET",
@@ -20,7 +290,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
+    "ContainingType": "FinanceApi.Controllers.POCs.PeriodicElementsController",
     "Method": "Post",
     "RelativePath": "api/PeriodicElements",
     "HttpMethod": "POST",
@@ -36,7 +306,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
+    "ContainingType": "FinanceApi.Controllers.POCs.PeriodicElementsController",
     "Method": "Put",
     "RelativePath": "api/PeriodicElements",
     "HttpMethod": "PUT",
@@ -52,7 +322,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
+    "ContainingType": "FinanceApi.Controllers.POCs.PeriodicElementsController",
     "Method": "Delete",
     "RelativePath": "api/PeriodicElements/{elementId}",
     "HttpMethod": "DELETE",
@@ -68,7 +338,7 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "FinanceApi.Controllers.PeriodicElementsController",
+    "ContainingType": "FinanceApi.Controllers.POCs.PeriodicElementsController",
     "Method": "Get",
     "RelativePath": "api/PeriodicElements/{id}",
     "HttpMethod": "GET",

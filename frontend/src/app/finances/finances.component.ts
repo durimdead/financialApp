@@ -23,7 +23,11 @@ export class FinancesComponent {
   //TODO: start filling in with code for the finance component items.
   private financeService = inject(FinanceService);
   private destroyRef = inject(DestroyRef);
-  private expenseData = signal<Expense[]>([]);
+  private expenseData = this.financeService.EXPENSE_DATA;
+
+  ngAfterViewInit() {
+    this.updateExpensesFromDatasource();
+  }
 
   dataSource = new MatTableDataSource(this.expenseData());
   displayedColumns: string[] = [
@@ -31,8 +35,8 @@ export class FinancesComponent {
     'ExpenseDate',
     'ExpenseDescription',
     'ExpenseAmount',
-    'ExpenseType',
-    'ExpensePaymentType',
+    'ExpenseTypeName',
+    'PaymentTypeName',
   ];
 
   openAddExpenseModal(): void {
@@ -51,19 +55,20 @@ export class FinancesComponent {
   //TODO: update the code in the FinanceService to make this work.
   //TODO: update the displayedColumns / HTML page to match the new model more completely
   updateExpensesFromDatasource() {
-    // const subscription = this.financeService.expensesFetcher().subscribe({
-    //   error: (error: Error) => {
-    //     console.log('error fetching expenses from server: ');
-    //     console.log(error);
-    //   },
-    //   complete: () => {
-    //     this.refreshMatTableDataSource();
-    //   },
-    // });
+    const subscription = this.financeService.expenseFetchAll().subscribe({
+      error: (error: Error) => {
+        console.log('error fetching expenses from server: ');
+        console.log(error);
+      },
+      complete: () => {
+        this.expenseData = this.financeService.EXPENSE_DATA;
+        this.refreshMatTableDataSource();
+      },
+    });
 
-    // this.destroyRef.onDestroy(() => {
-    //   subscription.unsubscribe();
-    // });
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   // a little bit of a hack, but the most effective, simple way to update the datasource for

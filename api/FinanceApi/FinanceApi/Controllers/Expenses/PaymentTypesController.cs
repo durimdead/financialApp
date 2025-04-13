@@ -79,38 +79,38 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
-        /// <summary>
-        /// Gets a list of payment types based on search criteria
-        /// </summary>
-        /// <param name="paymentTypeName">Full or partial payment type name to search on</param>
-        /// <param name="paymentTypeDescription">Full or partial payment type description to search on</param>
-        /// <param name="paymentTypeCategoryID">ID of the payment type category</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        [HttpPost]
-        public JsonResult Post([FromBody] string paymentTypeName, [FromBody] string paymentTypeDescription, [FromBody] string paymentTypeCategoryID)
-        {
-            try
-            {
-                // attempt to parse the ID into an int, and throw an error if it fails.
-                int search_paymentTypeCategoryID;
-                if (!int.TryParse(paymentTypeCategoryID, out search_paymentTypeCategoryID))
-                {
-                    throw new ArgumentException("paymentTypeCategoryID must be an integer. Current value: '" + paymentTypeCategoryID + "'.");
-                }
+        ///// <summary>
+        ///// Gets a list of payment types based on search criteria
+        ///// </summary>
+        ///// <param name="paymentTypeName">Full or partial payment type name to search on</param>
+        ///// <param name="paymentTypeDescription">Full or partial payment type description to search on</param>
+        ///// <param name="paymentTypeCategoryID">ID of the payment type category</param>
+        ///// <returns></returns>
+        ///// <exception cref="ArgumentException"></exception>
+        //[HttpPost]
+        //public JsonResult Post([FromBody] string paymentTypeName, [FromBody] string paymentTypeDescription, [FromBody] string paymentTypeCategoryID)
+        //{
+        //    try
+        //    {
+        //        // attempt to parse the ID into an int, and throw an error if it fails.
+        //        int search_paymentTypeCategoryID;
+        //        if (!int.TryParse(paymentTypeCategoryID, out search_paymentTypeCategoryID))
+        //        {
+        //            throw new ArgumentException("paymentTypeCategoryID must be an integer. Current value: '" + paymentTypeCategoryID + "'.");
+        //        }
 
-                // get the paymentTypeData and return the result set of paymentTypes (first param is "0" since we are not searching directly on the payment type ID
-                var paymentTypeData = _expenseService.GetPaymentTypes(0, search_paymentTypeCategoryID, paymentTypeName.Trim(), paymentTypeDescription.Trim());
-                var jsonData = new { httpStatusCode = HttpStatusCode.OK, paymentTypeData, errorMessage = "" };
-                return new JsonResult(jsonData);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                var jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
-                return new JsonResult(jsonData);
-            }
-        }
+        //        // get the paymentTypeData and return the result set of paymentTypes (first param is "0" since we are not searching directly on the payment type ID
+        //        var paymentTypeData = _expenseService.GetPaymentTypes(0, search_paymentTypeCategoryID, paymentTypeName.Trim(), paymentTypeDescription.Trim());
+        //        var jsonData = new { httpStatusCode = HttpStatusCode.OK, paymentTypeData, errorMessage = "" };
+        //        return new JsonResult(jsonData);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        _logger.LogError(e.Message);
+        //        var jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+        //        return new JsonResult(jsonData);
+        //    }
+        //}
 
         /// <summary>
         /// POST: api/PaymentTypes

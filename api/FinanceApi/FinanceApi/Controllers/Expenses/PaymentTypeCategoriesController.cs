@@ -50,11 +50,11 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
-        //TODO: figure out how to get this data from the body instead of api/<PaymentTypeCategories>/<ID>
-        public JsonResult Get(int paymentTypeCategoryID)
-        {
-            throw new NotImplementedException();
-        }
+        ////TODO: figure out how to get this data from the body instead of api/<PaymentTypeCategories>/<ID>
+        //public JsonResult Get(int paymentTypeCategoryID)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //TODO: add in different versions of the searches so users can specifically ask for things like just the paymentTypeCategoryID, just the paymentTypeCategoryName, etc..
         //      -> could just add more methods into the repo service that end up calling the already existing method and fill in the defaults outside of what is being searched on.

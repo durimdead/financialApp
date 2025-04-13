@@ -126,7 +126,10 @@ export class ElementService {
           'Element name must have a length of at least 3. Element Name = ' +
           elementToAdd.elementName
         );
-      } else if (elementToAdd.elementSymbol === '' && elementToAdd.elementSymbol.length <= 3) {
+      } else if (
+        elementToAdd.elementSymbol === '' &&
+        elementToAdd.elementSymbol.length <= 3
+      ) {
         throw (
           "Element Symbol must have a value and be less than 3 characters long. Element Symbol = '" +
           elementToAdd.elementSymbol +
@@ -179,7 +182,10 @@ export class ElementService {
           'Element name must have a length of at least 3. Element Name = ' +
           elementToUpdate.elementName
         );
-      } else if (elementToUpdate.elementSymbol === '' && elementToUpdate.elementSymbol.length <= 3) {
+      } else if (
+        elementToUpdate.elementSymbol === '' &&
+        elementToUpdate.elementSymbol.length <= 3
+      ) {
         throw (
           "Element Symbol must have a value and be no more then 3 characters long. Element Symbol = '" +
           elementToUpdate.elementSymbol +

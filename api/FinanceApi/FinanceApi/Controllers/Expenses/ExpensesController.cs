@@ -49,17 +49,17 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
-        //TODO: figure out how to get this data from the body
-        public JsonResult Get(int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
-        {
-            throw new NotImplementedException();
-        }
+        ////TODO: figure out how to get this data from the body
+        //public JsonResult Get(int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        //TODO: figure out how to get this data from the body
-        public JsonResult Get(DateTime dateStart, DateTime dateEnd, int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
-        {
-            throw new NotImplementedException();
-        }
+        ////TODO: figure out how to get this data from the body
+        //public JsonResult Get(DateTime dateStart, DateTime dateEnd, int expenseID = 0, int expenseTypeID = 0, int paymentTypeID = 0, int paymentTypeCategoryID = 0, string expenseDescription = "", double expenseAmount = 0.00, bool? isInvestment = null, bool? isIncome = null)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         //TODO: add in different versions of the searches so users can specifically ask for things like just the expenseID, just the paymentTypeID, etc..
         //      -> could just add more methods into the repo service that end up calling the already existing method and fill in the defaults outside of what is being searched on.

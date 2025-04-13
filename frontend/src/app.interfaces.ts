@@ -1,14 +1,36 @@
+//#region "Expenses"
+export interface ExpenseData {
+  //TODO: see if we can remove this item
+  actions: string;
+  ExpenseID: number;
+  ExpenseTypeID: number;
+  PaymentTypeID: number;
+  PaymentTypeCategoryID: number;
+  ExpenseTypeName: string;
+  PaymentTypeName: string;
+  PaymentTypeDescription: string;
+  PaymentTypeCategoryName: string;
+  IsIncome: boolean;
+  IsInvestment: boolean;
+  ExpenseDescription: string;
+  ExpenseAmount: 0;
+  ExpenseDate: Date;
+  LastUpdated: Date;
+}
+//#endRegion "Expenses"
+
+//#region "POC_Test"
 export interface PeriodicElement {
-    actions: string;
-    elementName: string;
-    elementId: number;
-    elementWeight: number;
-    elementSymbol: string;
+  actions: string;
+  elementName: string;
+  elementId: number;
+  elementWeight: number;
+  elementSymbol: string;
 }
 
-export interface PeriodicElementCrudData{
-	elementState: string;
-	elementData: PeriodicElement;
+export interface PeriodicElementCrudData {
+  elementState: string;
+  elementData: PeriodicElement;
 }
 
 export interface ElementApiGet {
@@ -16,19 +38,4 @@ export interface ElementApiGet {
   elementData: PeriodicElement[];
   errorMessage: string;
 }
-
-export interface ExpenseData {
-	//TODO: see if we can remove this item
-	actions: string;
-	expenseId: number;
-	expenseDate: Date;
-	expenseDescription: string;
-	expenseAmount: number;
-	//TODO: update to be an actual enum-ish type
-	expenseType: string;
-	//TODO: update to be an actual enum-ish type
-	expensePaymentType: string;
-	//TODO: also an enum-ish type??
-	expensePaymentDescription: string;
-}
-
+//#endRegion "POC_Test"

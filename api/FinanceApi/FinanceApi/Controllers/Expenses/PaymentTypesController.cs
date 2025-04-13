@@ -50,14 +50,67 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
-        //TODO: figure out how to get this data from the body instead of api/<PaymentTypes>/<ID>
-        public JsonResult Get(int paymentTypeID)
+        /// <summary>
+        /// Gets a single paymentType by ID
+        /// </summary>
+        /// <param name="paymentTypeID">ID of the payment type to return</param>
+        /// <returns>{httpStatusCode, paymentTypeData, errorMessage} : success will have 200 status code, a PaymentType object in JSON format, and a blank error message. error will not have "paymentTypeData"</returns>
+        /// <exception cref="ArgumentException">thrown if the paymentTypeID passed in is not an integer</exception>
+        [HttpPost]
+        public JsonResult Post([FromBody] string paymentTypeID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                // attempt to parse the ID into an int, and throw an error if it fails.
+                int search_paymentTypeID;
+                if (!int.TryParse(paymentTypeID, out search_paymentTypeID))
+                {
+                    throw new ArgumentException("paymentTypeID must be an integer. Current value: '" + paymentTypeID + "'.");
+                }
+                var paymentTypeData = _expenseService.GetPaymentTypes(search_paymentTypeID).SingleOrDefault();
+                var jsonData = new { httpStatusCode = HttpStatusCode.OK, paymentTypeData, errorMessage = "" };
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                var jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
         }
 
-        //TODO: add in different versions of the searches so users can specifically ask for things like just the paymentTypeID, just the paymentTypeCategoryID, etc..
-        //      -> could just add more methods into the repo service that end up calling the already existing method and fill in the defaults outside of what is being searched on.
+        /// <summary>
+        /// Gets a list of payment types based on search criteria
+        /// </summary>
+        /// <param name="paymentTypeName">Full or partial payment type name to search on</param>
+        /// <param name="paymentTypeDescription">Full or partial payment type description to search on</param>
+        /// <param name="paymentTypeCategoryID">ID of the payment type category</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        [HttpPost]
+        public JsonResult Post([FromBody] string paymentTypeName, [FromBody] string paymentTypeDescription, [FromBody] string paymentTypeCategoryID)
+        {
+            try
+            {
+                // attempt to parse the ID into an int, and throw an error if it fails.
+                int search_paymentTypeCategoryID;
+                if (!int.TryParse(paymentTypeCategoryID, out search_paymentTypeCategoryID))
+                {
+                    throw new ArgumentException("paymentTypeCategoryID must be an integer. Current value: '" + paymentTypeCategoryID + "'.");
+                }
+
+                // get the paymentTypeData and return the result set of paymentTypes (first param is "0" since we are not searching directly on the payment type ID
+                var paymentTypeData = _expenseService.GetPaymentTypes(0, search_paymentTypeCategoryID, paymentTypeName.Trim(), paymentTypeDescription.Trim());
+                var jsonData = new { httpStatusCode = HttpStatusCode.OK, paymentTypeData, errorMessage = "" };
+                return new JsonResult(jsonData);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                var jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = e.Message };
+                return new JsonResult(jsonData);
+            }
+        }
 
         /// <summary>
         /// POST: api/PaymentTypes

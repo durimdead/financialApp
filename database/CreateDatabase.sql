@@ -1118,7 +1118,7 @@ SELECT
     ,pt.[PaymentTypeName]           AS [PaymentTypeName]
     ,ptc.[PaymentTypeCategoryName]  AS [PaymentTypeCategoryName]
     ,e.[IsIncome]                   AS [IsIncome]
-    ,e.[IsInvestment]               AS [IsInvenstment]
+    ,e.[IsInvestment]               AS [IsInvestment]
     ,et.[ExpenseTypeID]             AS [ExpenseTypeID]
     ,pt.[PaymentTypeID]             AS [PaymentTypeID]
     ,pt.[PaymentTypeDescription]    AS [PaymentTypeDescription]

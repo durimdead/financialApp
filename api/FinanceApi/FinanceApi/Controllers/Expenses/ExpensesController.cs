@@ -13,7 +13,6 @@ namespace FinanceApi.Controllers.Expenses
     [ApiController]
     public class ExpensesController : ControllerBase
     {
-
         private readonly ILogger<ExpensesController> _logger;
         private readonly ExpenseRepoService _expenseService;
         public ExpensesController(ILogger<ExpensesController> logger, ILogger<ExpenseRepoService> expenseLogger, FinancialAppContext context)
@@ -21,7 +20,6 @@ namespace FinanceApi.Controllers.Expenses
             _logger = logger;
             _expenseService = new ExpenseRepoService(expenseLogger, context);
         }
-
 
         /// <summary>
         /// GET: api/Expenses

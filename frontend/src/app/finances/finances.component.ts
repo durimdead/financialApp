@@ -4,7 +4,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
-import { ExpenseDetail } from '../../app.interfaces';
+import { Expense } from '../../app.interfaces';
 import { FinanceService } from '../services/finance/finance.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class FinancesComponent {
   //TODO: start filling in with code for the finance component items.
   private financeService = inject(FinanceService);
   private destroyRef = inject(DestroyRef);
-  private expenseData = signal<ExpenseDetail[]>([]);
+  private expenseData = signal<Expense[]>([]);
 
   dataSource = new MatTableDataSource(this.expenseData());
   displayedColumns: string[] = [

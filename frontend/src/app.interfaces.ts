@@ -1,5 +1,5 @@
 //#region "Expenses"
-export interface ExpenseData {
+export interface ExpenseDetail {
   //TODO: see if we can remove this item
   actions: string;
   ExpenseID: number;

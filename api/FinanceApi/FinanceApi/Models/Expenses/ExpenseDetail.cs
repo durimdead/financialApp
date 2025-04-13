@@ -2,9 +2,9 @@
 
 namespace FinanceApi.Models.Expenses
 {
-    public class ExpenseDetails
+    public class ExpenseDetail
     {
-        public ExpenseDetails()
+        public ExpenseDetail()
         {
             ExpenseID = 0;
             ExpenseTypeID = 0;

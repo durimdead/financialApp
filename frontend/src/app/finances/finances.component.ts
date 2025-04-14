@@ -4,9 +4,11 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
-import { Expense } from '../../app.interfaces';
+import { CRUD_STATES, CrudState, Expense } from '../../app.interfaces';
 import { FinanceService } from '../services/finance/finance.service';
 import { DatePipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ExpenseDialogAddComponent } from '../dialogs/finances/expense-dialog-routing/expense-dialog-add/expense-dialog-add.component';
 
 @Component({
   selector: 'app-finances',
@@ -16,7 +18,7 @@ import { DatePipe } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     RouterLink,
-	DatePipe
+    DatePipe,
   ],
   templateUrl: './finances.component.html',
   styleUrl: './finances.component.css',
@@ -25,7 +27,9 @@ export class FinancesComponent {
   //TODO: start filling in with code for the finance component items.
   private financeService = inject(FinanceService);
   private destroyRef = inject(DestroyRef);
+  readonly dialog = inject(MatDialog);
   private expenseData = this.financeService.EXPENSE_DATA;
+  private CRUD_STATES = CRUD_STATES;
 
   ngAfterViewInit() {
     this.updateExpensesFromDatasource();
@@ -42,7 +46,33 @@ export class FinancesComponent {
   ];
 
   openAddExpenseModal(): void {
-    console.log('adding expense');
+    // brings up modal to add another expense
+    const modalData = this.financeService.getExpenseCrudModel(
+      0,
+      this.CRUD_STATES.create as CrudState
+    );
+    let dialogRef = this.dialog.open(ExpenseDialogAddComponent, {
+      data: modalData,
+    });
+
+    console.log(
+      'finances.component:::openAddExpenseModal - got past open'
+    );
+
+    // if the user submits a new element, we will get back an element to add to the table, else ''
+    const subscription = dialogRef
+      .afterClosed()
+      .subscribe((result: Expense | '') => {
+        // if (result !== '') {
+        //   this.addExpense(result);
+        // }
+        console.log(
+          'finances.component:::openAddExpenseModal - completed modal close'
+        );
+      });
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   editExpense(expenseId: number): void {

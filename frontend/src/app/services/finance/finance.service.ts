@@ -1,5 +1,10 @@
 import { DestroyRef, inject, Injectable, signal } from '@angular/core';
-import { Expense } from '../../../app.interfaces';
+import {
+  CRUD_STATES,
+  CrudState,
+  Expense,
+  ExpenseCrudData,
+} from '../../../app.interfaces';
 import { tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -13,6 +18,7 @@ export class FinanceService {
   private httpClient = inject(HttpClient);
   private ApiUrlBase: string = 'https://localhost:7107/';
   private urlExpenses: string = this.ApiUrlBase + 'api/Expenses/';
+  private CRUD_STATES = CRUD_STATES;
 
   // grab all expenses and store the result in the private expenseData set
   expenseFetchAll() {
@@ -34,5 +40,51 @@ export class FinanceService {
       expenseData: Expense[];
       errorMessage: string;
     }>(urlExpenses);
+  }
+
+  // get the data for opening any of the crud modals for a given expense.
+  getExpenseCrudModel(
+    expenseID: number,
+    actionToTake: CrudState
+  ): ExpenseCrudData {
+    let expenseData: Expense = {
+      actions: '',
+      ExpenseID: expenseID,
+      ExpenseTypeID: 0,
+      PaymentTypeID: 0,
+      PaymentTypeCategoryID: 0,
+      ExpenseTypeName: '',
+      PaymentTypeName: '',
+      PaymentTypeDescription: '',
+      PaymentTypeCategoryName: '',
+      IsIncome: false,
+      IsInvestment: false,
+      ExpenseDescription: '',
+      ExpenseAmount: 0,
+      ExpenseDate: new Date(1, 1, 1),
+      LastUpdated: new Date(1, 1, 1),
+    };
+
+    let returnValue: ExpenseCrudData = {
+      expenseState: actionToTake,
+      expenseData: expenseData,
+    };
+
+    // if this is not a brand new item, get the data for the expense object.
+    if (actionToTake !== this.CRUD_STATES.create) {
+      returnValue.expenseData = this.getExpenseByID(expenseID);
+    }
+
+    return returnValue;
+  }
+
+  // gets expense object from current information in memory
+  //TODO: should PROBABLY get this from the server and update the item in memory before allowing an update.
+  //	- alternatively, could update the sproc to throw an error if we are updating something out of date by using an
+  //		identifier of (expenseID / lastUpdated).
+  getExpenseByID(expenseID: number): Expense {
+    return this.expenseData().find(
+      (item) => item.ExpenseID === expenseID
+    ) as Expense;
   }
 }

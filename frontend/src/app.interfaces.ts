@@ -1,4 +1,21 @@
-//#region "Expenses"
+// #region Common
+//------------------------
+//------------------------
+export const CRUD_STATES = {
+  create: 'add',
+  read: 'read',
+  update: 'edit',
+  delete: 'delete',
+};
+
+export type CrudState = 'add' | 'read' | 'edit' | 'delete';
+//------------------------
+//------------------------
+// #endregion Common
+
+// #region Expenses
+//------------------------
+//------------------------
 export interface Expense {
   //TODO: see if we can remove this item
   actions: string;
@@ -17,9 +34,18 @@ export interface Expense {
   ExpenseDate: Date;
   LastUpdated: Date;
 }
-//#endRegion "Expenses"
 
-//#region "POC_Test"
+export interface ExpenseCrudData {
+	expenseState: CrudState;
+	expenseData: Expense;
+}
+//------------------------
+//------------------------
+// #endregion Expenses
+
+// #region POC_Test
+//------------------------
+//------------------------
 export interface PeriodicElement {
   actions: string;
   elementName: string;
@@ -38,4 +64,6 @@ export interface ElementApiGet {
   elementData: PeriodicElement[];
   errorMessage: string;
 }
-//#endRegion "POC_Test"
+//------------------------
+//------------------------
+// #endregion POC_Test

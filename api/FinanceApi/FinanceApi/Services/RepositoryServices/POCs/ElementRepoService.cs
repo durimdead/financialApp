@@ -25,11 +25,10 @@ namespace FinanceApi.Services.RepositoryServices.POCs
             {
                 var periodicElements = _context.vPeriodicElement.Select(x => new PeriodicElement()
                 {
-                    actions = "",
-                    elementId = x.PeriodicElementID,
-                    elementName = x.PeriodicElementName,
-                    elementWeight = x.PeriodicElementWeight,
-                    elementSymbol = x.PeriodicElementSymbol
+                    ElementID = x.PeriodicElementID,
+                    ElementName = x.PeriodicElementName,
+                    ElementWeight = x.PeriodicElementWeight,
+                    ElementSymbol = x.PeriodicElementSymbol
                 }).ToArray();
                 return periodicElements;
             }

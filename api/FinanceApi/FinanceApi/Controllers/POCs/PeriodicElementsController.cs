@@ -4,6 +4,7 @@ using System.Text.Json;
 using FinanceApi.Repositories;
 using FinanceApi.Models.Testing;
 using FinanceApi.Services.RepositoryServices.POCs;
+using FinanceApi.Models.JsonDeserialization.POCs;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -51,8 +52,8 @@ namespace FinanceApi.Controllers.POCs
 
             try
             {
-                PeriodicElement elementToAdd = periodicElementToAdd.Deserialize<PeriodicElement>() ?? new PeriodicElement();
-                _elementService.AddElement(elementToAdd.elementName, elementToAdd.elementSymbol, elementToAdd.elementWeight);
+                PeriodicElement elementToAdd = new PeriodicElement(periodicElementToAdd.Deserialize<PeriodicElementJson>() ?? new PeriodicElementJson());
+                _elementService.AddElement(elementToAdd.ElementName, elementToAdd.ElementSymbol, elementToAdd.ElementWeight);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)
@@ -76,8 +77,8 @@ namespace FinanceApi.Controllers.POCs
 
             try
             {
-                PeriodicElement elementToSave = periodicElementToUpdate.Deserialize<PeriodicElement>() ?? new PeriodicElement();
-                _elementService.UpdateElement(elementToSave.elementName, elementToSave.elementSymbol, elementToSave.elementWeight, elementToSave.elementId);
+                PeriodicElement elementToSave = new PeriodicElement(periodicElementToUpdate.Deserialize<PeriodicElementJson>() ?? new PeriodicElementJson());
+                _elementService.UpdateElement(elementToSave.ElementName, elementToSave.ElementSymbol, elementToSave.ElementWeight, elementToSave.ElementID);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)

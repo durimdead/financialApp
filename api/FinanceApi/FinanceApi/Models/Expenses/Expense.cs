@@ -1,4 +1,6 @@
-﻿namespace FinanceApi.Models.Expenses
+﻿using FinanceApi.Models.JsonDeserialization.Expenses;
+
+namespace FinanceApi.Models.Expenses
 {
     public class Expense
     {
@@ -19,6 +21,25 @@
             ExpenseDate = new DateTime(1, 1, 1);
             LastUpdated = new DateTime(1, 1, 1);
         }
+
+        public Expense(ExpenseJson expenseJson)
+        {
+            ExpenseID = expenseJson.expenseID;
+            ExpenseTypeID = expenseJson.expenseTypeID;
+            PaymentTypeID = expenseJson.paymentTypeID;
+            PaymentTypeCategoryID = expenseJson.paymentTypeCategoryID;
+            ExpenseTypeName = expenseJson.expenseTypeName;
+            PaymentTypeName = expenseJson.paymentTypeName;
+            PaymentTypeDescription = expenseJson.paymentTypeDescription;
+            PaymentTypeCategoryName = expenseJson.paymentTypeCategoryName;
+            IsIncome = expenseJson.isIncome;
+            IsInvestment = expenseJson.isInvestment;
+            ExpenseDescription = expenseJson.expenseDescription;
+            ExpenseAmount = expenseJson.expenseAmount;
+            ExpenseDate = expenseJson.expenseDate;
+            LastUpdated = expenseJson.lastUpdated;
+        }
+
         public int ExpenseID { get; set; }
         public string ExpenseTypeName { get; set; }
         public string PaymentTypeName { get; set; }

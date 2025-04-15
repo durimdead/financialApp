@@ -6,6 +6,7 @@ using System.Text.Json;
 using FinanceApi.Models.Testing;
 using FinanceApi.Models.Expenses;
 using FinanceApi.Services.RepositoryServices.Expenses;
+using FinanceApi.Models.JsonDeserialization.Expenses;
 
 namespace FinanceApi.Controllers.Expenses
 {
@@ -78,7 +79,8 @@ namespace FinanceApi.Controllers.Expenses
 
             try
             {
-                Expense expense = expenseToAdd.Deserialize<Expense>() ?? new Expense();
+                //ExpenseJson expenseJson = expenseToAdd.Deserialize<ExpenseJson>() ?? new ExpenseJson();
+                Expense expense = new Expense(expenseToAdd.Deserialize<ExpenseJson>() ?? new ExpenseJson());
                 DateOnly expenseDate = new DateOnly(expense.ExpenseDate.Year, expense.ExpenseDate.Month, expense.ExpenseDate.Day);
                 _expenseService.AddExpense(expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
                 return new JsonResult(jsonData);

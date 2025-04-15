@@ -17,8 +17,6 @@ export type CrudState = 'add' | 'read' | 'edit' | 'delete';
 //------------------------
 //------------------------
 export interface Expense {
-  //TODO: see if we can remove this item
-  actions: string;
   ExpenseID: number;
   ExpenseTypeID: number;
   PaymentTypeID: number;

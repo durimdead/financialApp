@@ -48,7 +48,6 @@ export class FinanceService {
     actionToTake: CrudState
   ): ExpenseCrudData {
     let expenseData: Expense = {
-      actions: '',
       ExpenseID: expenseID,
       ExpenseTypeID: 0,
       PaymentTypeID: 0,

@@ -17,20 +17,20 @@ export type CrudState = 'add' | 'read' | 'edit' | 'delete';
 //------------------------
 //------------------------
 export interface Expense {
-  ExpenseID: number;
-  ExpenseTypeID: number;
-  PaymentTypeID: number;
-  PaymentTypeCategoryID: number;
-  ExpenseTypeName: string;
-  PaymentTypeName: string;
-  PaymentTypeDescription: string;
-  PaymentTypeCategoryName: string;
-  IsIncome: boolean;
-  IsInvestment: boolean;
-  ExpenseDescription: string;
-  ExpenseAmount: 0;
-  ExpenseDate: Date;
-  LastUpdated: Date;
+  expenseID: number;
+  expenseTypeID: number;
+  paymentTypeID: number;
+  paymentTypeCategoryID: number;
+  expenseTypeName: string;
+  paymentTypeName: string;
+  paymentTypeDescription: string;
+  paymentTypeCategoryName: string;
+  isIncome: boolean;
+  isInvestment: boolean;
+  expenseDescription: string;
+  expenseAmount: 0;
+  expenseDate: Date;
+  lastUpdated: Date;
 }
 
 export interface ExpenseCrudData {

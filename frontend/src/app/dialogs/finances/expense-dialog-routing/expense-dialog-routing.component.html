@@ -1,3 +1,6 @@
 @if(inputData.expenseState === getCrudStates().create){
 	<app-expense-dialog-add/>
 }
+@else if (inputData.expenseState === getCrudStates().delete) {
+	<app-expense-dialog-delete [expenseData]="inputData.expenseData"/>
+}

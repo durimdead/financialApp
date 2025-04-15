@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Delete {{expenseData().expenseDescription}}?</h2>
+<mat-dialog-content class="mat-typography">
+	<p>Expense:</p>
+    <ul>
+        <li>Expense date: {{expenseData().expenseDate | date:'yyyy/MM/dd'}}</li>
+        <li>Expense description: {{expenseData().expenseDescription}}</li>
+        <li>Expense amount: {{expenseData().expenseAmount}}</li>
+        <li>Expense type: {{expenseData().expenseTypeName}}</li>
+        <li>Payment type: {{expenseData().paymentTypeName}}</li>
+    </ul>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Delete</button>
+</mat-dialog-actions>

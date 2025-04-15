@@ -28,6 +28,13 @@ export class FinanceService {
           if (results.httpStatusCode === 200) {
             this.expenseData.set(results.expenseData);
           }
+          console.log('finance.service:::expenseFetchAll');
+          console.log('results:');
+          console.log(results);
+          console.log('results.expenseData:');
+          console.log(results.expenseData);
+          console.log('this.expenseData:');
+          console.log(this.expenseData());
         },
       })
     );
@@ -43,26 +50,30 @@ export class FinanceService {
   }
 
   // get the data for opening any of the crud modals for a given expense.
-  getExpenseCrudModel(
+
+  // get the data for opening any of the crud modals for a given expense.
+  async getExpenseCrudModel(
     expenseID: number,
     actionToTake: CrudState
-  ): ExpenseCrudData {
+  ): Promise<ExpenseCrudData> {
+    console.log('finance.service:::getExpenseCrudModel');
     let expenseData: Expense = {
-      ExpenseID: expenseID,
-      ExpenseTypeID: 0,
-      PaymentTypeID: 0,
-      PaymentTypeCategoryID: 0,
-      ExpenseTypeName: '',
-      PaymentTypeName: '',
-      PaymentTypeDescription: '',
-      PaymentTypeCategoryName: '',
-      IsIncome: false,
-      IsInvestment: false,
-      ExpenseDescription: '',
-      ExpenseAmount: 0,
-      ExpenseDate: new Date(1, 1, 1),
-      LastUpdated: new Date(1, 1, 1),
+      expenseID: expenseID,
+      expenseTypeID: 0,
+      paymentTypeID: 0,
+      paymentTypeCategoryID: 0,
+      expenseTypeName: '',
+      paymentTypeName: '',
+      paymentTypeDescription: '',
+      paymentTypeCategoryName: '',
+      isIncome: false,
+      isInvestment: false,
+      expenseDescription: '',
+      expenseAmount: 0,
+      expenseDate: new Date(1, 1, 1),
+      lastUpdated: new Date(1, 1, 1),
     };
+    console.log(expenseData);
 
     let returnValue: ExpenseCrudData = {
       expenseState: actionToTake,
@@ -71,19 +82,29 @@ export class FinanceService {
 
     // if this is not a brand new item, get the data for the expense object.
     if (actionToTake !== this.CRUD_STATES.create) {
-      returnValue.expenseData = this.getExpenseByID(expenseID);
+      console.log(
+        'finance.service:::getExpenseCrudModel - not creating new expense'
+      );
+      returnValue.expenseData = await this.getExpenseByID(expenseID);
     }
-
+    console.log(
+      'finance.service:::getExpenseCrudModel - data gotten back from "getExpenseByID"'
+    );
+    console.log('data to return: ' + JSON.stringify(returnValue));
     return returnValue;
-  }
+}
 
-  // gets expense object from current information in memory
-  //TODO: should PROBABLY get this from the server and update the item in memory before allowing an update.
-  //	- alternatively, could update the sproc to throw an error if we are updating something out of date by using an
-  //		identifier of (expenseID / lastUpdated).
-  getExpenseByID(expenseID: number): Expense {
-    return this.expenseData().find(
-      (item) => item.ExpenseID === expenseID
+// gets expense object from current information in memory
+//TODO: should PROBABLY get this from the server and update the item in memory before allowing an update.
+//	- alternatively, could update the sproc to throw an error if we are updating something out of date by using an
+//		identifier of (expenseID / lastUpdated).
+async getExpenseByID(expenseID: number): Promise<Expense> {
+	console.log('finance.service:::getExpenseByID');
+    let returnValue = this.expenseData().find(
+		(item) => item.expenseID === expenseID
     ) as Expense;
+    console.log(this.expenseData());
+	console.log('getExpenseByID data about to return: ' + JSON.stringify(returnValue));
+    return returnValue;
   }
 }

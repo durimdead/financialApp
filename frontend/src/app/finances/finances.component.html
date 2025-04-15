@@ -15,10 +15,10 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let expense">
       <div class="table-icon-column">
-        <button mat-icon-button (click)="editExpense(expense.expenseId)">
+        <button mat-icon-button (click)="editExpense(expense.expenseID)">
           <mat-icon class="blue-text">edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="confirmDeleteExpense(expense.expenseId)">
+        <button mat-icon-button (click)="confirmDeleteExpense(expense.expenseID)">
           <mat-icon class="red-text">delete</mat-icon>
         </button>
       </div>
@@ -26,7 +26,7 @@
   </ng-container>
 
   <!-- Expense Date Column -->
-  <ng-container matColumnDef="ExpenseDate">
+  <ng-container matColumnDef="expenseDate">
     <th
       mat-header-cell
       *matHeaderCellDef
@@ -39,7 +39,7 @@
   </ng-container>
 
   <!-- Expense Description Column -->
-  <ng-container matColumnDef="ExpenseDescription">
+  <ng-container matColumnDef="expenseDescription">
     <th
       mat-header-cell
       *matHeaderCellDef
@@ -54,7 +54,7 @@
   </ng-container>
 
   <!-- Expense Amount Column -->
-  <ng-container matColumnDef="ExpenseAmount">
+  <ng-container matColumnDef="expenseAmount">
     <th
       mat-header-cell
       *matHeaderCellDef
@@ -69,7 +69,7 @@
   </ng-container>
 
   <!-- Expense Type Name Column -->
-  <ng-container matColumnDef="ExpenseTypeName">
+  <ng-container matColumnDef="expenseTypeName">
     <th
       mat-header-cell
       *matHeaderCellDef
@@ -84,7 +84,7 @@
   </ng-container>
 
   <!-- Payment Type Name Column -->
-  <ng-container matColumnDef="PaymentTypeName">
+  <ng-container matColumnDef="paymentTypeName">
     <th
       mat-header-cell
       *matHeaderCellDef

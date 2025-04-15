@@ -65,8 +65,7 @@ export class DialogAddElementComponent {
     // form is valid - bubble up element to Add
     if (!this.form.invalid) {
       let newElement: PeriodicElement = {
-        elementId: this.elementService.getNextElementId(),
-        actions: '',
+        elementID: this.elementService.getNextElementId(),
         elementName: this.form.controls.elementName.value as string,
         elementWeight: Number(this.form.controls.elementWeight.value),
         elementSymbol: this.form.controls.elementSymbol.value as string,

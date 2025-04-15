@@ -83,9 +83,8 @@ export class ElementService {
 
   getElementDataForCrudModal(elementId: number, actionToTake: string) {
     let elementData: PeriodicElement = {
-      actions: '',
       elementName: '',
-      elementId: elementId,
+      elementID: elementId,
       elementWeight: 0,
       elementSymbol: '',
     };
@@ -107,7 +106,7 @@ export class ElementService {
 
   getElementById(elementId: number) {
     return this.elementData().find(
-      (item) => item.elementId === elementId
+      (item) => item.elementID === elementId
     ) as PeriodicElement;
   }
 
@@ -147,7 +146,7 @@ export class ElementService {
 
   // ensures we get a unique Id for adding another element
   getNextElementId() {
-    const elementIds = this.elementData().map((element) => element.elementId);
+    const elementIds = this.elementData().map((element) => element.elementID);
     return Math.max(...elementIds) + 1;
   }
 
@@ -158,7 +157,7 @@ export class ElementService {
 
   // determines if any data for this elementId exists in the elementData array
   elementDataExists(elementId: number) {
-    return this.elementData().find((element) => element.elementId === elementId)
+    return this.elementData().find((element) => element.elementID === elementId)
       ? true
       : false;
   }
@@ -168,7 +167,7 @@ export class ElementService {
     try {
       //get current data for element we are trying to update
       let currentElementDataIndex = this.elementData().findIndex(
-        (item) => item.elementId === elementToUpdate.elementId
+        (item) => item.elementID === elementToUpdate.elementID
       );
 
       if (Number.isNaN(Number(elementToUpdate.elementWeight))) {
@@ -191,10 +190,10 @@ export class ElementService {
           elementToUpdate.elementSymbol +
           "'."
         );
-      } else if (!this.elementDataExists(elementToUpdate.elementId)) {
+      } else if (!this.elementDataExists(elementToUpdate.elementID)) {
         throw (
           "ElementId does not exist, but must to edit a periodic element: ElementId = '" +
-          elementToUpdate.elementId +
+          elementToUpdate.elementID +
           "'."
         );
       }
@@ -204,7 +203,7 @@ export class ElementService {
         Number.isNaN(Number(elementToUpdate.elementWeight)) ||
         elementToUpdate.elementName.length < 3 ||
         elementToUpdate.elementSymbol === '' ||
-        !this.elementDataExists(elementToUpdate.elementId)
+        !this.elementDataExists(elementToUpdate.elementID)
       ) {
         throw (
           "Element weight must be a number. Current value: '" +

@@ -45,9 +45,8 @@ export interface ExpenseCrudData {
 //------------------------
 //------------------------
 export interface PeriodicElement {
-  actions: string;
   elementName: string;
-  elementId: number;
+  elementID: number;
   elementWeight: number;
   elementSymbol: string;
 }

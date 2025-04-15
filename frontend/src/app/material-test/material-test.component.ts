@@ -43,7 +43,7 @@ export class MaterialTestComponent implements AfterViewInit {
 
   displayedColumns: string[] = [
     'actions',
-    'elementId',
+    'elementID',
     'elementName',
     'elementWeight',
     'elementSymbol',
@@ -107,7 +107,7 @@ export class MaterialTestComponent implements AfterViewInit {
     // if the user confirms deletion
     const subscription = dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        this.deleteElement(modalData.elementData.elementId);
+        this.deleteElement(modalData.elementData.elementID);
       }
     });
     this.destroyRef.onDestroy(() => {
@@ -155,7 +155,7 @@ export class MaterialTestComponent implements AfterViewInit {
         } else {
           console.log(
             'server error updating elementId ' +
-              element.elementId +
+              element.elementID +
               '. Error: ' +
               results.errorMessage
           );
@@ -163,7 +163,7 @@ export class MaterialTestComponent implements AfterViewInit {
       },
       error: (error: Error) => {
         console.log(
-          'error updating elementId ' + element.elementId + '. Error: '
+          'error updating elementId ' + element.elementID + '. Error: '
         );
         console.log(error);
       },

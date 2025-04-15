@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, inject, input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input} from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule} from '@angular/material/dialog';
 import { PeriodicElement } from '../../../../../app.interfaces';
 
 @Component({

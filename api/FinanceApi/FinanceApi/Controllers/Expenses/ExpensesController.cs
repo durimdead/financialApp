@@ -125,7 +125,7 @@ namespace FinanceApi.Controllers.Expenses
         /// <param name="expenseID">ID of the expense to delete</param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
         [HttpDelete("{expenseID}")]
-        public JsonResult Delete([FromBody] int expenseID)
+        public JsonResult Delete(int expenseID)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 

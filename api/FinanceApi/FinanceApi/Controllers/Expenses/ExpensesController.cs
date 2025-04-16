@@ -79,7 +79,6 @@ namespace FinanceApi.Controllers.Expenses
 
             try
             {
-                //ExpenseJson expenseJson = expenseToAdd.Deserialize<ExpenseJson>() ?? new ExpenseJson();
                 Expense expense = new Expense(expenseToAdd.Deserialize<ExpenseJson>() ?? new ExpenseJson());
                 DateOnly expenseDate = new DateOnly(expense.ExpenseDate.Year, expense.ExpenseDate.Month, expense.ExpenseDate.Day);
                 _expenseService.AddExpense(expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);

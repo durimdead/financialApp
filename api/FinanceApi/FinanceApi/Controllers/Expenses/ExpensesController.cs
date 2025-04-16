@@ -119,19 +119,25 @@ namespace FinanceApi.Controllers.Expenses
         }
 
         /// <summary>
-        /// DELETE: api/Expenses/<ID>
+        /// DELETE: api/Expenses
         /// Deletes the expense record for the ID sent in
         /// </summary>
         /// <param name="expenseID">ID of the expense to delete</param>
         /// <returns>{httpStatusCode, errorMessage} : success will have a blank error message and 200 return</returns>
-        [HttpDelete("{expenseID}")]
-        public JsonResult Delete(int expenseID)
+        [HttpDelete]
+        public JsonResult Delete([FromBody] string expenseID)
         {
             var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = "" };
 
             try
             {
-                _expenseService.DeleteExpense(expenseID);
+                // attempt to parse the ID into an int, and throw an error if it fails.
+                int input_expenseID;
+                if (!int.TryParse(expenseID, out input_expenseID))
+                {
+                    throw new ArgumentException("paymentTypeID must be an integer. Current value: '" + expenseID + "'.");
+                }
+                _expenseService.DeleteExpense(input_expenseID);
                 return new JsonResult(jsonData);
             }
             catch (Exception e)

@@ -118,7 +118,31 @@ export class FinancesComponent {
   }
 
   deleteExpense(expenseID: number) {
-    console.log('trigger expense deleted - expenseID: ' + expenseID);
+    // console.log('trigger expense deleted - expenseID: ' + expenseID);
+    const subscription = this.financeService
+      .deleteExpense(expenseID)
+      .subscribe({
+        next: (results) => {
+          if (results.httpStatusCode === 200) {
+            this.updateExpensesFromDatasource();
+          } else {
+            console.log(
+              'server error deleting expenseID ' +
+                expenseID +
+                '. Error: ' +
+                results.errorMessage
+            );
+          }
+        },
+        error: (error: Error) => {
+          console.log('error deleting expenseID ' + expenseID + '. Error: ');
+          console.log(error);
+        },
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   // gets the data from the "source" (i.e. the API) and then refreshes the table appropriately

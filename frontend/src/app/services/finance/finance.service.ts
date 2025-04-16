@@ -41,12 +41,20 @@ export class FinanceService {
   }
 
   // fetches all expenses with no search criteria
-  httpFetchAllExpenses(urlExpenses: string) {
+  private httpFetchAllExpenses(urlExpenses: string) {
     return this.httpClient.get<{
       httpStatusCode: number;
       expenseData: Expense[];
       errorMessage: string;
     }>(urlExpenses);
+  }
+
+  // deletes the expense with the expenseID sent in
+  private httpDeleteExpense(expenseID: number) {
+    return this.httpClient.delete<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlExpenses + expenseID);
   }
 
   // get the data for opening any of the crud modals for a given expense.
@@ -92,19 +100,27 @@ export class FinanceService {
     );
     console.log('data to return: ' + JSON.stringify(returnValue));
     return returnValue;
-}
+  }
 
-// gets expense object from current information in memory
-//TODO: should PROBABLY get this from the server and update the item in memory before allowing an update.
-//	- alternatively, could update the sproc to throw an error if we are updating something out of date by using an
-//		identifier of (expenseID / lastUpdated).
-async getExpenseByID(expenseID: number): Promise<Expense> {
-	console.log('finance.service:::getExpenseByID');
+  // gets expense object from current information in memory
+  //TODO: should PROBABLY get this from the server and update the item in memory before allowing an update.
+  //	- alternatively, could update the sproc to throw an error if we are updating something out of date by using an
+  //		identifier of (expenseID / lastUpdated).
+  async getExpenseByID(expenseID: number): Promise<Expense> {
+    console.log('finance.service:::getExpenseByID');
     let returnValue = this.expenseData().find(
-		(item) => item.expenseID === expenseID
+      (item) => item.expenseID === expenseID
     ) as Expense;
     console.log(this.expenseData());
-	console.log('getExpenseByID data about to return: ' + JSON.stringify(returnValue));
+    console.log(
+      'getExpenseByID data about to return: ' + JSON.stringify(returnValue)
+    );
     return returnValue;
   }
+
+  deleteExpense(expenseID: number) {
+    return this.httpDeleteExpense(expenseID);
+  }
 }
+
+

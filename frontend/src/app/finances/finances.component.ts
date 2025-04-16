@@ -8,8 +8,6 @@ import { CRUD_STATES, CrudState, Expense } from '../../app.interfaces';
 import { FinanceService } from '../services/finance/finance.service';
 import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { ExpenseDialogAddComponent } from '../dialogs/finances/expense-dialog-routing/expense-dialog-add/expense-dialog-add.component';
-import { ExpenseDialogDeleteComponent } from '../dialogs/finances/expense-dialog-routing/expense-dialog-delete/expense-dialog-delete.component';
 import { ExpenseDialogRoutingComponent } from '../dialogs/finances/expense-dialog-routing/expense-dialog-routing.component';
 
 @Component({
@@ -57,8 +55,6 @@ export class FinancesComponent {
       data: modalData,
     });
 
-    console.log('finances.component:::openAddExpenseModal - got past open');
-
     // if the user submits a new element, we will get back an element to add to the table, else ''
     const subscription = dialogRef
       .afterClosed()
@@ -66,9 +62,6 @@ export class FinancesComponent {
         // if (result !== '') {
         //   this.addExpense(result);
         // }
-        console.log(
-          'finances.component:::openAddExpenseModal - completed modal close'
-        );
       });
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
@@ -81,15 +74,10 @@ export class FinancesComponent {
 
   async confirmDeleteExpense(expenseID: number): Promise<void> {
     try {
-      console.log(
-        'finances.component:::confirmDeleteExpense - entered with expenseID: ' +
-          expenseID
-      );
       const modalData = await this.financeService.getExpenseCrudModel(
         expenseID,
         this.CRUD_STATES.delete as CrudState
       );
-      console.log(modalData);
       // open the dialog and send data to display
       let dialogRef = this.dialog.open(ExpenseDialogRoutingComponent, {
         data: modalData,
@@ -97,13 +85,7 @@ export class FinancesComponent {
 
       // if the user confirms deletion
       const subscription = dialogRef.afterClosed().subscribe((result) => {
-        console.log(
-          'finances.component:::confirmDeleteExpense - got to return'
-        );
         if (result === true) {
-          console.log(
-            'finances.component:::confirmDeleteExpense - confirmed would like to delete'
-          );
           this.deleteExpense(modalData.expenseData.expenseID);
         }
       });
@@ -111,7 +93,6 @@ export class FinancesComponent {
         subscription.unsubscribe();
       });
     } catch (e) {
-      console.log('finances.component:::confirmDeleteExpense');
       console.log('Error occurred:');
       console.log(e);
     }

@@ -62,9 +62,9 @@ export class FinancesComponent {
     const subscription = dialogRef
       .afterClosed()
       .subscribe((result: Expense | '') => {
-        // if (result !== '') {
-        //   this.addExpense(result);
-        // }
+        if (result !== '') {
+          this.addExpense(result);
+        }
       });
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
@@ -101,7 +101,7 @@ export class FinancesComponent {
     }
   }
 
-  deleteExpense(expenseID: number) {
+  private deleteExpense(expenseID: number) {
     // console.log('trigger expense deleted - expenseID: ' + expenseID);
     const subscription = this.financeService
       .deleteExpense(expenseID)
@@ -127,6 +127,36 @@ export class FinancesComponent {
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
+  }
+
+  private addExpense(expenseToAdd: Expense) {
+	const subscription = this.financeService
+    .sample_addExpense(expenseToAdd)
+    .subscribe({
+      next: (results) => {
+        if (results.httpStatusCode === 200) {
+          this.updateExpensesFromDatasource();
+        } else {
+          console.log(
+            'server error adding expense ::: ' +
+              '". Error message : ' +
+              results.errorMessage
+          );
+		  console.log(expenseToAdd);
+        }
+      },
+      error: (error: Error) => {
+        console.log(
+          'server error adding expense ::: ' +
+            '". Full Error: '
+        );
+        console.log(error);
+      },
+    });
+
+  this.destroyRef.onDestroy(() => {
+    subscription.unsubscribe();
+  });
   }
 
   // gets the data from the "source" (i.e. the API) and then refreshes the table appropriately

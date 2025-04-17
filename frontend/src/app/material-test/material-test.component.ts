@@ -175,7 +175,6 @@ export class MaterialTestComponent implements AfterViewInit {
   }
   // will take the periodic element sent in, update Id to valid one, add to the table
   private addElement(elementToAdd: PeriodicElement) {
-    this.elementService.addElement(elementToAdd);
     const subscription = this.elementService
       .addElement(elementToAdd)
       .subscribe({

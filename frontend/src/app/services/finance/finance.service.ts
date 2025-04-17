@@ -6,7 +6,7 @@ import {
   ExpenseCrudData,
 } from '../../../app.interfaces';
 import { tap } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +30,25 @@ export class FinanceService {
         },
       })
     );
+  }
+
+  addExpense(expenseToAdd: Expense) {
+    //TODO: do we add additional validation here? Is there a decently easy way to do so?
+    return this.httpAddExpense(expenseToAdd);
+  }
+
+  // calls the API method to add a new expense to the database.
+  private httpAddExpense(expenseToAdd: Expense) {
+    const expenseParam = JSON.stringify(expenseToAdd);
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+      }),
+    };
+    return this.httpClient.post<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlExpenses, expenseParam, headers);
   }
 
   // fetches all expenses with no search criteria
@@ -80,7 +99,7 @@ export class FinanceService {
     if (actionToTake !== this.CRUD_STATES.create) {
       returnValue.expenseData = await this.getExpenseByID(expenseID);
     }
-	
+
     return returnValue;
   }
 
@@ -99,6 +118,25 @@ export class FinanceService {
   deleteExpense(expenseID: number) {
     return this.httpDeleteExpense(expenseID);
   }
+
+  sample_addExpense(expenseToAdd: Expense) {
+    let expenseData: Expense = {
+      expenseID: 0,
+      expenseTypeID: 1,
+      paymentTypeID: 1,
+      paymentTypeCategoryID: 1,
+      expenseTypeName: 'does not matter',
+      paymentTypeName: 'does not matter',
+      paymentTypeDescription: 'does not matter',
+      paymentTypeCategoryName: 'does not matter',
+      isIncome: false,
+      isInvestment: false,
+      expenseDescription: expenseToAdd.expenseDescription,
+      expenseAmount: expenseToAdd.expenseAmount,
+      expenseDate: expenseToAdd.expenseDate,
+      lastUpdated: new Date(1, 1, 1),
+    };
+
+    return this.addExpense(expenseData);
+  }
 }
-
-

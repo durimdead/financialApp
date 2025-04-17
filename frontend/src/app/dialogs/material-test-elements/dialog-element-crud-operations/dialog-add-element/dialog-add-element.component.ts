@@ -49,7 +49,7 @@ export class DialogAddElementComponent {
     }),
     elementWeight: new FormControl('', [
       Validators.required,
-      this.formValidator.mustBeNumber,
+      this.formValidator.mustBeANumber,
     ]),
     elementSymbol: new FormControl('', {
 		validators: [Validators.required, Validators.maxLength(3)]

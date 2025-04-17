@@ -10,11 +10,19 @@ import {
   providedIn: 'root',
 })
 export class FormValidators {
-  mustBeNumber(control: AbstractControl) {
+  mustBeANumber(control: AbstractControl) {
     if (Number.isNaN(Number(control.value))) {
       return { isNotANumber: true };
     }
     return null;
+  }
+
+  mustBeADate(control: AbstractControl){
+	let dateFromControl = new Date(control.value);
+	if (!isNaN(dateFromControl.getTime())){
+		return { isNotADate: true };
+	}
+	return null;
   }
 
   compileValidationErrorMessage(formGroup: FormGroup) {}

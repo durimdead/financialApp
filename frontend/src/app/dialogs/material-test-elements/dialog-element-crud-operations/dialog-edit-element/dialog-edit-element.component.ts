@@ -59,7 +59,7 @@ export class DialogEditElementComponent {
       this.inputData.elementData.elementID > 0
         ? this.inputData.elementData.elementWeight
         : '',
-      [Validators.required, this.formValidator.mustBeNumber]
+      [Validators.required, this.formValidator.mustBeANumber]
     ),
     elementSymbol: new FormControl(
       this.inputData.elementData.elementID > 0

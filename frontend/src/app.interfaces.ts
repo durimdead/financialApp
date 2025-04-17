@@ -28,7 +28,7 @@ export interface Expense {
   isIncome: boolean;
   isInvestment: boolean;
   expenseDescription: string;
-  expenseAmount: 0;
+  expenseAmount: number;
   expenseDate: Date;
   lastUpdated: Date;
 }

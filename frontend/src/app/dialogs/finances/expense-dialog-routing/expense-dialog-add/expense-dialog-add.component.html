@@ -1,8 +1,56 @@
 <h2 mat-dialog-title>Add New Expense</h2>
 <mat-dialog-content class="mat-typography">
-    <p>dialog opened successfully!</p>
+  <div class="example-container">
+    <form [formGroup]="form" class="form-flex-column">
+      <div class="control form-group-div">
+        <label for="expenseDate" class="input-label-modal"
+          >Expense Date :</label
+        >
+        <input
+          id="expenseDate"
+          class="input-date input-date-modal"
+          type="date"
+          name="expenseDate"
+          formControlName="expenseDate"
+        />
+        <!-- @if(hasError(form.controls.expenseDate)){
+			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseDate)}}</label>
+		} -->
+      </div>
+      <div class="control form-group-div">
+        <label for="expenseDescription" class="input-label-modal"
+          >Expense Description :</label
+        >
+        <input
+          id="expenseDescription"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="expenseDescription"
+          formControlName="expenseDescription"
+        />
+        <!-- @if(hasError(form.controls.expenseDescription)){
+			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseDescription)}}</label>
+		} -->
+      </div>
+      <div class="control form-group-div">
+        <label for="expenseAmount" class="input-label-modal"
+          >Expense Amount :</label
+        >
+        <input
+          id="expenseAmount"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="expenseAmount"
+          formControlName="expenseAmount"
+        />
+        <!-- @if(hasError(form.controls.expenseAmount)){
+			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseAmount)}}</label>
+		} -->
+      </div>
+    </form>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-<button mat-button mat-dialog-close>Cancel</button>
-<!-- <button mat-button (click)="submitNewExpense()" cdkFocusInitial>Add</button> -->
+  <button mat-button mat-dialog-close>Cancel</button>
+  <!-- <button mat-button (click)="submitNewExpense()" cdkFocusInitial>Add</button> -->
 </mat-dialog-actions>

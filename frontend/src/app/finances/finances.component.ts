@@ -45,15 +45,18 @@ export class FinancesComponent {
     'paymentTypeName',
   ];
 
-  openAddExpenseModal(): void {
+  async openAddExpenseModal(): Promise<void> {
     // brings up modal to add another expense
-    const modalData = this.financeService.getExpenseCrudModel(
+    const modalData = await this.financeService.getExpenseCrudModel(
       0,
       this.CRUD_STATES.create as CrudState
     );
     let dialogRef = this.dialog.open(ExpenseDialogRoutingComponent, {
       data: modalData,
     });
+
+    console.log('openAdd:::modalData:');
+    console.log(modalData);
 
     // if the user submits a new element, we will get back an element to add to the table, else ''
     const subscription = dialogRef

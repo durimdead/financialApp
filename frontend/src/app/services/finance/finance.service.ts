@@ -50,8 +50,6 @@ export class FinanceService {
   }
 
   // get the data for opening any of the crud modals for a given expense.
-
-  // get the data for opening any of the crud modals for a given expense.
   async getExpenseCrudModel(
     expenseID: number,
     actionToTake: CrudState

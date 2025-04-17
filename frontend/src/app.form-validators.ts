@@ -17,6 +17,13 @@ export class FormValidators {
     return null;
   }
 
+  mustNotBeZero(control: AbstractControl){
+	if (Number.isNaN(Number(control.value)) && control.value === 0){
+		return { valueIsZero: true };
+	}
+	return null;
+  }
+
   mustBeADate(control: AbstractControl){
 	let dateFromControl = new Date(control.value);
 	if (!isNaN(dateFromControl.getTime())){

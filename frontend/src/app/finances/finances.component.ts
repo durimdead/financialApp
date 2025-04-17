@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { CRUD_STATES, CrudState, Expense } from '../../app.interfaces';
 import { FinanceService } from '../services/finance/finance.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ExpenseDialogRoutingComponent } from '../dialogs/finances/expense-dialog-routing/expense-dialog-routing.component';
 
@@ -19,6 +19,7 @@ import { ExpenseDialogRoutingComponent } from '../dialogs/finances/expense-dialo
     MatIconModule,
     RouterLink,
     DatePipe,
+	DecimalPipe
   ],
   templateUrl: './finances.component.html',
   styleUrl: './finances.component.css',

@@ -26,7 +26,7 @@ export class FormValidators {
 
   mustBeADate(control: AbstractControl){
 	let dateFromControl = new Date(control.value);
-	if (!isNaN(dateFromControl.getTime())){
+	if (isNaN(dateFromControl.getTime())){
 		return { isNotADate: true };
 	}
 	return null;

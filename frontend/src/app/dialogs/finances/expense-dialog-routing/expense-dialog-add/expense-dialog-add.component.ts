@@ -41,8 +41,8 @@ export class ExpenseDialogAddComponent {
   form = new FormGroup({
     //TODO: add in validator to make sure it's a valid date
     expenseDate: new FormControl(new Date(), {
-      validators: [Validators.required],
-      //   validators: [Validators.required, this.formValidator.mustBeADate],
+      //validators: [Validators.required],
+      validators: [Validators.required, this.formValidator.mustBeADate],
     }),
     expenseDescription: new FormControl('', {
       validators: [Validators.required, Validators.minLength(3)],
@@ -56,6 +56,7 @@ export class ExpenseDialogAddComponent {
     }),
   });
 
+  //TODO: continue filling in the appropriate fields into the rest of the data.
   submitNewExpense() {
     if (!this.form.invalid) {
       let newExpense: Expense = {
@@ -73,7 +74,10 @@ export class ExpenseDialogAddComponent {
         paymentTypeCategoryName: 'does not matter',
         isIncome: false,
         isInvestment: false,
-        lastUpdated: new Date(1, 1, 1),
+        //TODO: possibly update this to make this no longer needed here?
+		// This is never utilized outside of displaying the last
+		// updated date, which is driven by the database's temporal tables.
+        lastUpdated: new Date(),
       };
       this.dialogRef.close(newExpense);
     }

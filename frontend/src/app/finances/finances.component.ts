@@ -55,9 +55,6 @@ export class FinancesComponent {
       data: modalData,
     });
 
-    console.log('openAdd:::modalData:');
-    console.log(modalData);
-
     // if the user submits a new element, we will get back an element to add to the table, else ''
     const subscription = dialogRef
       .afterClosed()
@@ -131,7 +128,7 @@ export class FinancesComponent {
 
   private addExpense(expenseToAdd: Expense) {
 	const subscription = this.financeService
-    .sample_addExpense(expenseToAdd)
+    .addExpense(expenseToAdd)
     .subscribe({
       next: (results) => {
         if (results.httpStatusCode === 200) {

@@ -118,25 +118,4 @@ export class FinanceService {
   deleteExpense(expenseID: number) {
     return this.httpDeleteExpense(expenseID);
   }
-
-  sample_addExpense(expenseToAdd: Expense) {
-    let expenseData: Expense = {
-      expenseID: 0,
-      expenseTypeID: 1,
-      paymentTypeID: 1,
-      paymentTypeCategoryID: 1,
-      expenseTypeName: 'does not matter',
-      paymentTypeName: 'does not matter',
-      paymentTypeDescription: 'does not matter',
-      paymentTypeCategoryName: 'does not matter',
-      isIncome: false,
-      isInvestment: false,
-      expenseDescription: expenseToAdd.expenseDescription,
-      expenseAmount: expenseToAdd.expenseAmount,
-      expenseDate: expenseToAdd.expenseDate,
-      lastUpdated: new Date(1, 1, 1),
-    };
-
-    return this.addExpense(expenseData);
-  }
 }

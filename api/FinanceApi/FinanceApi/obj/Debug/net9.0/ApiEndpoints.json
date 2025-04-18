@@ -116,6 +116,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "FinanceApi.Controllers.Expenses.ExpenseTypesController",
+    "Method": "SearchByExpenseTypeName",
+    "RelativePath": "api/ExpenseTypes/SearchByExpenseTypeName",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "expenseTypeName",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypeCategoriesController",
     "Method": "Get",
     "RelativePath": "api/PaymentTypeCategories",

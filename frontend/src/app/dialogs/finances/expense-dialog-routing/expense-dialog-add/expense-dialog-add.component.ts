@@ -1,5 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogModule,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import {
   FormControl,
@@ -13,6 +17,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FinanceService } from '../../../../services/finance/finance.service';
 import { Expense } from '../../../../../app.interfaces';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-expense-dialog-add',
@@ -23,6 +29,7 @@ import { Expense } from '../../../../../app.interfaces';
     ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
+    MatCheckboxModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './expense-dialog-add.component.html',
@@ -54,10 +61,31 @@ export class ExpenseDialogAddComponent {
         this.formValidator.mustNotBeZero,
       ],
     }),
+    // expenseTypeName: new FormControl('', {
+    //   validators: [Validators.required, Validators.minLength(3)],
+    // }),
+    // paymentTypeName: new FormControl('', {
+    //   validators: [Validators.required, Validators.minLength(3)],
+    // }),
+
+    checkboxes: new FormGroup(
+      {
+        isInvestment: new FormControl(false, {}),
+        isIncome: new FormControl(false, {}),
+      },
+      {
+        validators: [
+          this.formValidator.cannotSelectBoth('isInvestment', 'isIncome'),
+        ],
+      }
+    ),
   });
 
   //TODO: continue filling in the appropriate fields into the rest of the data.
   submitNewExpense() {
+	console.log('hello');
+	console.log(this.form);
+
     if (!this.form.invalid) {
       let newExpense: Expense = {
         expenseDescription: this.form.controls.expenseDescription
@@ -72,11 +100,13 @@ export class ExpenseDialogAddComponent {
         paymentTypeName: 'does not matter',
         paymentTypeDescription: 'does not matter',
         paymentTypeCategoryName: 'does not matter',
-        isIncome: false,
-        isInvestment: false,
+        isIncome: this.form.controls.checkboxes.controls.isIncome
+          .value as boolean,
+        isInvestment: this.form.controls.checkboxes.controls.isInvestment
+          .value as boolean,
         //TODO: possibly update this to make this no longer needed here?
-		// This is never utilized outside of displaying the last
-		// updated date, which is driven by the database's temporal tables.
+        // This is never utilized outside of displaying the last
+        // updated date, which is driven by the database's temporal tables.
         lastUpdated: new Date(),
       };
       this.dialogRef.close(newExpense);

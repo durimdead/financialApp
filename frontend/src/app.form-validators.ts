@@ -10,6 +10,21 @@ import {
   providedIn: 'root',
 })
 export class FormValidators {
+  cannotSelectBoth(
+    checkboxName1: string,
+    checkboxName2: string
+  ): import('@angular/forms').ValidatorFn {
+    return (control: AbstractControl) => {
+      const compareValue1 = control.get(checkboxName1)?.value;
+      const compareValue2 = control.get(checkboxName2)?.value;
+
+      if (compareValue1 === true && compareValue2 === true) {
+        return { valuesBothSelected: true };
+      }
+      return null;
+    };
+  }
+
   mustBeANumber(control: AbstractControl) {
     if (Number.isNaN(Number(control.value))) {
       return { isNotANumber: true };
@@ -17,19 +32,19 @@ export class FormValidators {
     return null;
   }
 
-  mustNotBeZero(control: AbstractControl){
-	if (Number.isNaN(Number(control.value)) && control.value === 0){
-		return { valueIsZero: true };
-	}
-	return null;
+  mustNotBeZero(control: AbstractControl) {
+    if (Number.isNaN(Number(control.value)) && control.value === 0) {
+      return { valueIsZero: true };
+    }
+    return null;
   }
 
-  mustBeADate(control: AbstractControl){
-	let dateFromControl = new Date(control.value);
-	if (isNaN(dateFromControl.getTime())){
-		return { isNotADate: true };
-	}
-	return null;
+  mustBeADate(control: AbstractControl) {
+    let dateFromControl = new Date(control.value);
+    if (isNaN(dateFromControl.getTime())) {
+      return { isNotADate: true };
+    }
+    return null;
   }
 
   compileValidationErrorMessage(formGroup: FormGroup) {}

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Add New Expense</h2>
 <mat-dialog-content class="mat-typography">
-  <div class="example-container">
+  <div>
     <form [formGroup]="form" class="form-flex-column">
       <div class="control form-group-div">
         <label for="expenseDate" class="input-label-modal"
@@ -46,6 +46,29 @@
         <!-- @if(hasError(form.controls.expenseAmount)){
 			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseAmount)}}</label>
 		} -->
+      </div>
+
+      <div class="control-row" formGroupName="checkboxes">
+        <div class="control">
+          <section>
+            <mat-checkbox
+              id="isInvestment"
+              name="isInvestment"
+              formControlName="isInvestment"
+              >Investment?</mat-checkbox
+            >
+          </section>
+        </div>
+        <div class="control">
+          <section>
+            <mat-checkbox
+              id="isIncome"
+              name="isIncome"
+              formControlName="isIncome"
+              >Income?</mat-checkbox
+            >
+          </section>
+        </div>
       </div>
     </form>
   </div>

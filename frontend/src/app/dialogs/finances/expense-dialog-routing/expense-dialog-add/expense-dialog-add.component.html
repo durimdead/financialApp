@@ -48,26 +48,28 @@
 		} -->
       </div>
 
-      <div class="control-row" formGroupName="checkboxes">
-        <div class="control">
-          <section>
-            <mat-checkbox
-              id="isInvestment"
-              name="isInvestment"
-              formControlName="isInvestment"
-              >Investment?</mat-checkbox
-            >
-          </section>
+      <div formGroupName="checkboxes">
+        <div>
+          <input
+            id="isInvestment"
+            name="isInvestment"
+            formControlName="isInvestment"
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            aria-label="Checkbox for following text input"
+          /><label for="isInvestment" class="input-label-modal">Investment?</label>
         </div>
-        <div class="control">
-          <section>
-            <mat-checkbox
-              id="isIncome"
-              name="isIncome"
-              formControlName="isIncome"
-              >Income?</mat-checkbox
-            >
-          </section>
+        <div>
+          <input
+            id="isIncome"
+            name="isIncome"
+            formControlName="isIncome"
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            aria-label="Checkbox for following text input"
+          /><label for="isIncome" class="input-label-modal">Income?</label>
         </div>
       </div>
     </form>

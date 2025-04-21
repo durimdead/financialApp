@@ -13,9 +13,9 @@
           name="expenseDate"
           formControlName="expenseDate"
         />
-        <!-- @if(hasError(form.controls.expenseDate)){
+        @if(formControlHasError(form.controls.expenseDate)){
 			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseDate)}}</label>
-		} -->
+		}
       </div>
       <div class="control form-group-div">
         <label for="expenseDescription" class="input-label-modal"
@@ -28,9 +28,9 @@
           name="expenseDescription"
           formControlName="expenseDescription"
         />
-        <!-- @if(hasError(form.controls.expenseDescription)){
+        @if(formControlHasError(form.controls.expenseDescription)){
 			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseDescription)}}</label>
-		} -->
+		}
       </div>
       <div class="control form-group-div">
         <label for="expenseAmount" class="input-label-modal"
@@ -43,7 +43,7 @@
           name="expenseAmount"
           formControlName="expenseAmount"
         />
-        <!-- @if(hasError(form.controls.expenseAmount)){
+        <!-- @if(formControlHasError(form.controls.expenseAmount)){
 			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseAmount)}}</label>
 		} -->
       </div>

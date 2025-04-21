@@ -2,8 +2,8 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   margin: 8px !important;
 }
-.navBar{
-    margin: 0px;
+.navBar {
+  margin: 0px;
 }
 .body-content {
   margin: 0px 50px;
@@ -13,20 +13,35 @@ body {
   flex-wrap: wrap;
   max-width: 100px;
 }
-.red-text{
+.red-text {
   color: rgb(223, 57, 57);
 }
-.blue-text{
+.blue-text {
   color: rgb(0, 109, 139);
 }
-.green-text{
+.green-text {
   color: rgb(1, 127, 1);
 }
-.input-textbox{
+.input-date {
   border-radius: 8px;
   border-color: rgb(199, 199, 199);
   background-color: rgb(247, 247, 233);
-  padding: .25em;
+  padding: 0.25em;
+}
+.input-date::-webkit-calendar-picker-indicator{
+	cursor: pointer;
+}
+.input-date-modal {
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.input-textbox {
+  border-radius: 8px;
+  border-color: rgb(199, 199, 199);
+  background-color: rgb(247, 247, 233);
+  padding: 0.25em;
 }
 .input-label-modal {
   font-size: 12pt;
@@ -34,7 +49,7 @@ body {
 }
 .input-textbox-modal {
   width: 100%;
-  padding: .5em;
+  padding: 0.5em;
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
@@ -42,8 +57,8 @@ body {
   display: flex;
   flex-direction: column;
 }
-.form-group-div{
-	margin-bottom: 10px;
+.form-group-div {
+  margin-bottom: 10px;
 }
 
 [formgroupname].ng-invalid.ng-touched.ng-dirty label,
@@ -55,13 +70,13 @@ input.ng-invalid.ng-touched.ng-dirty {
   background-color: #fbdcd6;
   border-color: #f84e2c;
 }
-.error-label{
-	font-size: 10pt;
-	color: #f98b75;
-	font-weight: bold;
-	display: block;
+.error-label {
+  font-size: 10pt;
+  color: #f98b75;
+  font-weight: bold;
+  display: block;
 }
-.form-check-input{
-	margin-right: 8px;
-	border-color: #7c7c7c;
+.form-check-input {
+  margin-right: 8px;
+  border-color: #7c7c7c;
 }

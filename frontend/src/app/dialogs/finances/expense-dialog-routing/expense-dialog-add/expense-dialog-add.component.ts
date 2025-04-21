@@ -10,6 +10,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { FormValidators } from '../../../../../app.form-validators';
@@ -83,8 +84,8 @@ export class ExpenseDialogAddComponent {
 
   //TODO: continue filling in the appropriate fields into the rest of the data.
   submitNewExpense() {
-	console.log('hello');
-	console.log(this.form);
+    console.log('hello');
+    console.log(this.form);
 
     if (!this.form.invalid) {
       let newExpense: Expense = {
@@ -113,5 +114,26 @@ export class ExpenseDialogAddComponent {
     }
     // the form is invalid, ensure we show which have issues
     this.formValidator.markFormGroupAsDirtyTouched(this.form);
+  }
+
+  formControlHasError(formControl: FormControl) {
+    if (formControl.touched && formControl.dirty && formControl.invalid) {
+      return true;
+    }
+    return false;
+  }
+
+  formGroupHasError(formGroup: FormGroup) {
+    if (formGroup.touched && formGroup.dirty && formGroup.invalid) {
+      return true;
+    }
+    return false;
+  }
+
+  getFormControlErrorDetails(formControl: FormControl) {
+    return this.formValidator.getFormControlErrorDetails(formControl);
+  }
+  getFormGroupErrorDetails(formGroup: FormGroup<any>) {
+    return this.formValidator.getFormGroupErrorDetails(formGroup);
   }
 }

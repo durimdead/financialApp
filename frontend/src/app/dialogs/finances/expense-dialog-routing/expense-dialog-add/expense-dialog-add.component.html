@@ -58,7 +58,9 @@
             type="checkbox"
             value=""
             aria-label="Checkbox for following text input"
-          /><label for="isInvestment" class="input-label-modal">Investment?</label>
+          /><label for="isInvestment" class="input-label-modal"
+            >Investment?</label
+          >
         </div>
         <div>
           <input
@@ -72,6 +74,11 @@
           /><label for="isIncome" class="input-label-modal">Income?</label>
         </div>
       </div>
+      @if(formGroupHasError(form.controls.checkboxes)){
+      <label class="error-label">{{
+        getFormGroupErrorDetails(form.controls.checkboxes)
+      }}</label>
+      }
     </form>
   </div>
 </mat-dialog-content>

@@ -4,6 +4,7 @@ import {
   FormArray,
   FormControl,
   FormGroup,
+  ValidationErrors,
 } from '@angular/forms';
 
 @Injectable({
@@ -93,6 +94,57 @@ export class FormValidators {
   private markControlDirty(formControl: FormControl) {
     formControl.markAsDirty();
     formControl.markAsTouched();
+  }
+
+  getFormControlErrorDetails(formControl: FormControl) {
+    let messageToShow = '';
+    const controlErrors: ValidationErrors =
+      formControl.errors as ValidationErrors;
+    Object.keys(controlErrors).forEach((currentError) => {
+      let currentErrorMessage = '';
+      if (currentError === 'required') {
+        currentErrorMessage = 'Field is required.';
+      } else if (currentError === 'minlength') {
+        currentErrorMessage =
+          'Minimum Length : ' + controlErrors[currentError].requiredLength;
+      } else if (currentError === 'maxlength') {
+        currentErrorMessage =
+          'Maximum Length : ' + controlErrors[currentError].requiredLength;
+      } else if (currentError === 'isNotANumber') {
+        currentErrorMessage = 'This must be Numeric.';
+      } else if (currentError === 'isNotADate') {
+        currentErrorMessage = 'This value must be a valid date.';
+      } else if (currentError === 'valueIsZero') {
+        currentErrorMessage = 'This value must not be zero.';
+      } else {
+        currentErrorMessage = 'Unknown validation error.';
+      }
+
+      //TODO: still need to fix this part
+      if (messageToShow.length > 0) {
+        messageToShow += ' :::: ';
+      }
+      messageToShow += currentErrorMessage;
+    });
+    return messageToShow;
+  }
+
+  getFormGroupErrorDetails(formGroup: FormGroup<any>) {
+    let messageToShow = '';
+    const groupErrors: ValidationErrors = formGroup.errors as ValidationErrors;
+    Object.keys(groupErrors).forEach((currentError) => {
+      let currentErrorMessage = '';
+      if (currentError === 'valuesBothSelected') {
+        currentErrorMessage = 'Cannot have both checkboxes selected.';
+      }
+
+      //TODO: still need to fix this part
+      if (messageToShow.length > 0) {
+        messageToShow += ' :::: ';
+      }
+      messageToShow += currentErrorMessage;
+    });
+	return messageToShow;
   }
 
   //********************************************

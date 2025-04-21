@@ -34,7 +34,7 @@ export class FormValidators {
   }
 
   mustNotBeZero(control: AbstractControl) {
-    if (Number.isNaN(Number(control.value)) && control.value === 0) {
+    if (!Number.isNaN(Number(control.value)) && Number(control.value) === 0) {
       return { valueIsZero: true };
     }
     return null;
@@ -120,7 +120,7 @@ export class FormValidators {
         currentErrorMessage = 'Unknown validation error.';
       }
 
-      //TODO: still need to fix this part
+      //TODO: still need to fix this part to show multiple lines rather than a "::::" separator
       if (messageToShow.length > 0) {
         messageToShow += ' :::: ';
       }
@@ -136,6 +136,8 @@ export class FormValidators {
       let currentErrorMessage = '';
       if (currentError === 'valuesBothSelected') {
         currentErrorMessage = 'Cannot have both checkboxes selected.';
+      } else {
+        currentErrorMessage = 'Unknown validation error.';
       }
 
       //TODO: still need to fix this part

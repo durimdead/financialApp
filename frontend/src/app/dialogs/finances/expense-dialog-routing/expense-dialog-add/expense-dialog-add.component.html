@@ -62,12 +62,14 @@
           id="expenseTypeName"
           class="input-textbox input-textbox-modal"
           type="text"
-          name="expenseAmount"
-          formControlName="expenseAmount"
+          name="expenseTypeName"
+          formControlName="expenseTypeName"
+		  (keyup)="search_expenseTypes()"
         />
-		<div class="autocomplete-results autocomplete-results-modal hidden-element" finance-app-autocomplete-search-element="expenseTypeName">
+		<input type="hidden" id="expenseTypeID" name="expenseTypeID" value="0"/>
+		<div class="autocomplete-results autocomplete-results-modal hidden-element" id="searchResults_ExpenseType" finance-app-autocomplete-search-element="expenseTypeName">
 			@for(currentExpenseType of search_expenseTypeResults(); track currentExpenseType){
-				<div class="autocomplete-result-item" id="{{currentExpenseType.expenseTypeID}}">{{currentExpenseType.expenseTypeName}}</div>
+				<div class="autocomplete-result-item" id="expenseTypeSearchResult_{{currentExpenseType.expenseTypeID}}" (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)">{{currentExpenseType.expenseTypeName}}</div>
 			}
 		</div>
       </div>

@@ -47,26 +47,23 @@ export class ExpenseDialogAddComponent {
   private financeService = inject(FinanceService);
   public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
+  private sampleExpenseTypes = signal<ExpenseType[]>([
+    {
+      expenseTypeID: 1,
+      expenseTypeName: 'car maintenance',
+      expenseTypeDescription: '',
+      lastUpdated: new Date(),
+    },
+    {
+      expenseTypeID: 2,
+      expenseTypeName: 'other',
+      expenseTypeDescription: '',
+      lastUpdated: new Date(),
+    },
+  ]);
 
   ngOnInit() {
     // console.log('inside the add dialog');
-  }
-
-  constructor() {
-    let expenseType1: ExpenseType = {
-      expenseTypeID: 1,
-      expenseTypeName: 'expense type 1',
-      expenseTypeDescription: '',
-      lastUpdated: new Date(),
-    };
-    let expenseType2: ExpenseType = {
-      expenseTypeID: 2,
-      expenseTypeName: 'expense type 2',
-      expenseTypeDescription: '',
-      lastUpdated: new Date(),
-    };
-    this.search_expenseTypeResults.set([expenseType1, expenseType2]);
-	console.log(this.search_expenseTypeResults());
   }
 
   form = new FormGroup({
@@ -85,9 +82,9 @@ export class ExpenseDialogAddComponent {
         this.formValidator.mustNotBeZero,
       ],
     }),
-    // expenseTypeName: new FormControl('', {
-    //   validators: [Validators.required, Validators.minLength(3)],
-    // }),
+    expenseTypeName: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
     // paymentTypeName: new FormControl('', {
     //   validators: [Validators.required, Validators.minLength(3)],
     // }),
@@ -164,5 +161,41 @@ export class ExpenseDialogAddComponent {
   }
   getFormGroupErrorDetails(formGroup: FormGroup<any>) {
     return this.formValidator.getFormGroupErrorDetails(formGroup);
+  }
+
+  search_expenseTypes() {
+    let currentSearchCriteria = this.form.controls.expenseTypeName.value;
+    this.search_expenseTypeResults.set(
+      this.sampleExpenseTypes().filter((x) =>
+        x.expenseTypeName
+          .toLowerCase()
+          .includes(currentSearchCriteria!.toLowerCase())
+      )
+    );
+    document
+      .getElementById('searchResults_ExpenseType')
+      ?.classList.remove('hidden-element');
+  }
+
+  click_expenseTypeResult(expenseTypeID: number) {
+    let selectedExpenseTypeElement = document.getElementById(
+      'expenseTypeSearchResult_' + expenseTypeID.toString()
+    );
+    let searchResults_ExpenseType = document.getElementById(
+      'searchResults_ExpenseType'
+    );
+
+    // update the hidden input form value for expenseTypeID
+    // expenseTypeIDElement.value = expenseTypeID.toString();
+	this.form.controls.expenseTypeID.setValue(expenseTypeID);
+
+    // hide the results since one of them has been chosen.
+    searchResults_ExpenseType?.classList.add('hidden-element');
+
+    // update the expenseTypeName form value to utilize the selected result
+    // expenseTypeNameElement.value = selectedExpenseTypeElement!.innerHTML;
+    this.form.controls.expenseTypeName.setValue(
+      selectedExpenseTypeElement!.innerHTML
+    );
   }
 }

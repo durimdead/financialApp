@@ -33,6 +33,13 @@ export interface Expense {
   lastUpdated: Date;
 }
 
+export interface ExpenseType {
+	expenseTypeID: number;
+	expenseTypeName: string;
+	expenseTypeDescription: string;
+	lastUpdated: Date;
+}
+
 export interface ExpenseCrudData {
 	expenseState: CrudState;
 	expenseData: Expense;

@@ -66,10 +66,9 @@
           formControlName="expenseAmount"
         />
 		<div class="autocomplete-results autocomplete-results-modal hidden-element" finance-app-autocomplete-search-element="expenseTypeName">
-			<div class="autocomplete-result-item" id="1">item 1</div>
-			<div class="autocomplete-result-item" id="2">item 2</div>
-			<div class="autocomplete-result-item" id="3">item 3</div>
-			<div class="autocomplete-result-item" id="4">item 4</div>
+			@for(currentExpenseType of search_expenseTypeResults(); track currentExpenseType){
+				<div class="autocomplete-result-item" id="{{currentExpenseType.expenseTypeID}}">{{currentExpenseType.expenseTypeName}}</div>
+			}
 		</div>
       </div>
 

@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -17,7 +22,7 @@ import { FormValidators } from '../../../../../app.form-validators';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FinanceService } from '../../../../services/finance/finance.service';
-import { Expense } from '../../../../../app.interfaces';
+import { Expense, ExpenseType } from '../../../../../app.interfaces';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
@@ -41,9 +46,27 @@ export class ExpenseDialogAddComponent {
   private formValidator = inject(FormValidators);
   private financeService = inject(FinanceService);
   public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
+  search_expenseTypeResults = signal<ExpenseType[]>([]);
 
   ngOnInit() {
     // console.log('inside the add dialog');
+  }
+
+  constructor() {
+    let expenseType1: ExpenseType = {
+      expenseTypeID: 1,
+      expenseTypeName: 'expense type 1',
+      expenseTypeDescription: '',
+      lastUpdated: new Date(),
+    };
+    let expenseType2: ExpenseType = {
+      expenseTypeID: 2,
+      expenseTypeName: 'expense type 2',
+      expenseTypeDescription: '',
+      lastUpdated: new Date(),
+    };
+    this.search_expenseTypeResults.set([expenseType1, expenseType2]);
+	console.log(this.search_expenseTypeResults());
   }
 
   form = new FormGroup({
@@ -68,12 +91,12 @@ export class ExpenseDialogAddComponent {
     // paymentTypeName: new FormControl('', {
     //   validators: [Validators.required, Validators.minLength(3)],
     // }),
-	expenseTypeID: new FormControl(0,{
-		validators: [Validators.required] //TODO: Add in "mustSelectValidExpenseType" validator
-	}),
-	paymentTypeID: new FormControl(0,{
-		validators: [Validators.required] //TODO: Add in "mustSelectValidPaymentType" validator
-	}),
+    expenseTypeID: new FormControl(0, {
+      validators: [Validators.required], //TODO: Add in "mustSelectValidExpenseType" validator
+    }),
+    paymentTypeID: new FormControl(0, {
+      validators: [Validators.required], //TODO: Add in "mustSelectValidPaymentType" validator
+    }),
 
     checkboxes: new FormGroup(
       {

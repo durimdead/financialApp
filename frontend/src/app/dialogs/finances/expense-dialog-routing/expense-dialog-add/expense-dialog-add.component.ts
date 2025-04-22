@@ -68,6 +68,12 @@ export class ExpenseDialogAddComponent {
     // paymentTypeName: new FormControl('', {
     //   validators: [Validators.required, Validators.minLength(3)],
     // }),
+	expenseTypeID: new FormControl(0,{
+		validators: [Validators.required] //TODO: Add in "mustSelectValidExpenseType" validator
+	}),
+	paymentTypeID: new FormControl(0,{
+		validators: [Validators.required] //TODO: Add in "mustSelectValidPaymentType" validator
+	}),
 
     checkboxes: new FormGroup(
       {
@@ -97,10 +103,10 @@ export class ExpenseDialogAddComponent {
         expenseTypeID: 1,
         paymentTypeID: 1,
         paymentTypeCategoryID: 1,
-        expenseTypeName: 'does not matter',
-        paymentTypeName: 'does not matter',
-        paymentTypeDescription: 'does not matter',
-        paymentTypeCategoryName: 'does not matter',
+        expenseTypeName: 'NOT USED FOR ADD',
+        paymentTypeName: 'NOT USED FOR ADD',
+        paymentTypeDescription: 'NOT USED FOR ADD',
+        paymentTypeCategoryName: 'NOT USED FOR ADD',
         isIncome: this.form.controls.checkboxes.controls.isIncome
           .value as boolean,
         isInvestment: this.form.controls.checkboxes.controls.isInvestment

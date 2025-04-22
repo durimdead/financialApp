@@ -28,8 +28,8 @@ body {
   background-color: rgb(247, 247, 233);
   padding: 0.25em;
 }
-.input-date::-webkit-calendar-picker-indicator{
-	cursor: pointer;
+.input-date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 .input-date-modal {
   width: 100%;
@@ -79,4 +79,32 @@ input.ng-invalid.ng-touched.ng-dirty {
 .form-check-input {
   margin-right: 8px;
   border-color: #7c7c7c;
+}
+.autocomplete-results {
+  border-radius: 8px;
+  border-color: rgb(199, 199, 199);
+  background-color: rgb(247, 247, 233);
+  padding: 0.25em;
+  max-height: 70px;
+  overflow-y: scroll;
+  position: absolute;
+}
+.autocomplete-results-modal {
+  width: 80%;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+.autocomplete-result-item{
+	border-radius: 5px;
+}
+.autocomplete-result-item:hover{
+	cursor: pointer;
+	background-color: lightblue;
+}
+.hidden-element {
+  display: none;
+}
+.top-margin-spacing{
+	margin-top: 0.5em;
 }

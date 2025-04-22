@@ -8,14 +8,16 @@
         >
         <input
           id="expenseDate"
-          class="input-date input-date-modal"
+          class="input-textbox input-textbox-modal"
           type="date"
           name="expenseDate"
           formControlName="expenseDate"
         />
         @if(formControlHasError(form.controls.expenseDate)){
-			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseDate)}}</label>
-		}
+        <label class="error-label">{{
+          getFormControlErrorDetails(form.controls.expenseDate)
+        }}</label>
+        }
       </div>
       <div class="control form-group-div">
         <label for="expenseDescription" class="input-label-modal"
@@ -29,8 +31,10 @@
           formControlName="expenseDescription"
         />
         @if(formControlHasError(form.controls.expenseDescription)){
-			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseDescription)}}</label>
-		}
+        <label class="error-label">{{
+          getFormControlErrorDetails(form.controls.expenseDescription)
+        }}</label>
+        }
       </div>
       <div class="control form-group-div">
         <label for="expenseAmount" class="input-label-modal"
@@ -44,11 +48,32 @@
           formControlName="expenseAmount"
         />
         @if(formControlHasError(form.controls.expenseAmount)){
-			<label class="error-label">{{getFormControlErrorDetails(form.controls.expenseAmount)}}</label>
-		}
+        <label class="error-label">{{
+          getFormControlErrorDetails(form.controls.expenseAmount)
+        }}</label>
+        }
       </div>
 
-      <div formGroupName="checkboxes">
+      <div>
+        <label for="expenseTypeName" class="input-label-modal">
+          Expense Type :
+        </label>
+        <input
+          id="expenseTypeName"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="expenseAmount"
+          formControlName="expenseAmount"
+        />
+		<div class="autocomplete-results autocomplete-results-modal hidden-element" finance-app-autocomplete-search-element="expenseTypeName">
+			<div class="autocomplete-result-item" id="1">item 1</div>
+			<div class="autocomplete-result-item" id="2">item 2</div>
+			<div class="autocomplete-result-item" id="3">item 3</div>
+			<div class="autocomplete-result-item" id="4">item 4</div>
+		</div>
+      </div>
+
+      <div formGroupName="checkboxes" class="top-margin-spacing">
         <div>
           <input
             id="isInvestment"

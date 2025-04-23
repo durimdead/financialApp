@@ -218,16 +218,15 @@ export class ExpenseDialogAddComponent {
     );
 
     // update the hidden input form value for expenseTypeID
-    // expenseTypeIDElement.value = expenseTypeID.toString();
     this.form.controls.expenseTypeID.setValue(expenseTypeID);
 
     // hide the results since one of them has been chosen.
     searchResults_ExpenseType?.classList.add('hidden-element');
 
     // update the expenseTypeName form value to utilize the selected result
-    // expenseTypeNameElement.value = selectedExpenseTypeElement!.innerHTML;
+    //TODO: possibly make this a different value other than "innerHTML" - an attribute?
     this.form.controls.expenseTypeName.setValue(
-      selectedExpenseTypeElement!.innerHTML
+      selectedExpenseTypeElement!.innerHTML.trim()
     );
   }
 
@@ -246,8 +245,9 @@ export class ExpenseDialogAddComponent {
     searchResults_PaymentType?.classList.add('hidden-element');
 
     // update the paymentTypeName form value to utilize the selected result
+	//TODO: possibly make this a different value other than "innerHTML" - an attribute?
     this.form.controls.paymentTypeName.setValue(
-      selectedPaymentTypeElement!.innerHTML
+      selectedPaymentTypeElement!.innerHTML.trim()
     );
   }
 }

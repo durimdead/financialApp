@@ -22,7 +22,11 @@ import { FormValidators } from '../../../../../app.form-validators';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FinanceService } from '../../../../services/finance/finance.service';
-import { Expense, ExpenseType } from '../../../../../app.interfaces';
+import {
+  Expense,
+  ExpenseType,
+  PaymentType,
+} from '../../../../../app.interfaces';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
@@ -47,18 +51,31 @@ export class ExpenseDialogAddComponent {
   private financeService = inject(FinanceService);
   public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
+  search_paymentTypeResults = signal<PaymentType[]>([]);
   private sampleExpenseTypes = signal<ExpenseType[]>([
     {
       expenseTypeID: 1,
       expenseTypeName: 'car maintenance',
-      expenseTypeDescription: '',
-      lastUpdated: new Date(),
+      expenseTypeDescription: 'NOT NEEDED',
     },
     {
       expenseTypeID: 2,
       expenseTypeName: 'other',
-      expenseTypeDescription: '',
-      lastUpdated: new Date(),
+      expenseTypeDescription: 'NOT NEEDED',
+    },
+  ]);
+  private samplePaymentTypes = signal<PaymentType[]>([
+    {
+      paymentTypeID: 1,
+      paymentTypeCategoryID: 1,
+      paymentTypeName: 'cash',
+      paymentTypeDescription: 'NOT NEEDED',
+    },
+    {
+      paymentTypeID: 2,
+      paymentTypeCategoryID: 1,
+      paymentTypeName: 'venmo',
+      paymentTypeDescription: 'NOT NEEDED',
     },
   ]);
 
@@ -85,9 +102,9 @@ export class ExpenseDialogAddComponent {
     expenseTypeName: new FormControl('', {
       validators: [Validators.required, Validators.minLength(3)],
     }),
-    // paymentTypeName: new FormControl('', {
-    //   validators: [Validators.required, Validators.minLength(3)],
-    // }),
+    paymentTypeName: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
     expenseTypeID: new FormControl(0, {
       validators: [Validators.required], //TODO: Add in "mustSelectValidExpenseType" validator
     }),
@@ -187,7 +204,7 @@ export class ExpenseDialogAddComponent {
 
     // update the hidden input form value for expenseTypeID
     // expenseTypeIDElement.value = expenseTypeID.toString();
-	this.form.controls.expenseTypeID.setValue(expenseTypeID);
+    this.form.controls.expenseTypeID.setValue(expenseTypeID);
 
     // hide the results since one of them has been chosen.
     searchResults_ExpenseType?.classList.add('hidden-element');

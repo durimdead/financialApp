@@ -37,7 +37,6 @@ export interface ExpenseType {
 	expenseTypeID: number;
 	expenseTypeName: string;
 	expenseTypeDescription: string;
-	lastUpdated: Date;
 }
 
 export interface PaymentType{

@@ -29,6 +29,7 @@ import {
 } from '../../../../../app.interfaces';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-expense-dialog-add',
@@ -40,6 +41,7 @@ import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/sign
     MatDialogModule,
     MatButtonModule,
     MatCheckboxModule,
+	DatePipe
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './expense-dialog-add.component.html',
@@ -85,8 +87,8 @@ export class ExpenseDialogAddComponent {
   }
 
   form = new FormGroup({
-    //TODO: add in validator to make sure it's a valid date
-    expenseDate: new FormControl(new Date(), {
+    //TODO: add in validator to make sure a date is actually selected - might need to look up how to put a "blank" default value for a date.
+    expenseDate: new FormControl(new Date().toISOString().substring(0,10), {
       //validators: [Validators.required],
       validators: [Validators.required, this.formValidator.mustBeADate],
     }),
@@ -135,7 +137,7 @@ export class ExpenseDialogAddComponent {
       let newExpense: Expense = {
         expenseDescription: this.form.controls.expenseDescription
           .value as string,
-        expenseDate: this.form.controls.expenseDate.value as Date,
+        expenseDate: new Date(this.form.controls.expenseDate.value!.toString()),
         expenseAmount: Number(this.form.controls.expenseAmount.value),
         expenseID: 0,
         expenseTypeID: 1,

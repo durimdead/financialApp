@@ -40,6 +40,13 @@ export interface ExpenseType {
 	lastUpdated: Date;
 }
 
+export interface PaymentType{
+	paymentTypeID: number,
+    paymentTypeCategoryID: number,
+    paymentTypeName: string,
+    paymentTypeDescription: string
+}
+
 export interface ExpenseCrudData {
 	expenseState: CrudState;
 	expenseData: Expense;

@@ -2,6 +2,7 @@
 <mat-dialog-content class="mat-typography">
   <div>
     <form [formGroup]="form" class="form-flex-column">
+      <!-- Expense Date -->
       <div class="control form-group-div">
         <label for="expenseDate" class="input-label-modal"
           >Expense Date :</label
@@ -19,6 +20,8 @@
         }}</label>
         }
       </div>
+
+      <!-- Expense Description -->
       <div class="control form-group-div">
         <label for="expenseDescription" class="input-label-modal"
           >Expense Description :</label
@@ -36,6 +39,8 @@
         }}</label>
         }
       </div>
+
+      <!-- Expense Amount -->
       <div class="control form-group-div">
         <label for="expenseAmount" class="input-label-modal"
           >Expense Amount :</label
@@ -54,6 +59,7 @@
         }
       </div>
 
+      <!-- Expense Type Name -->
       <div>
         <label for="expenseTypeName" class="input-label-modal">
           Expense Type :
@@ -64,16 +70,72 @@
           type="text"
           name="expenseTypeName"
           formControlName="expenseTypeName"
-		  (keyup)="search_expenseTypes()"
+          (keyup)="search_expenseTypes()"
         />
-		<input type="hidden" id="expenseTypeID" name="expenseTypeID" value="0"/>
-		<div class="autocomplete-results autocomplete-results-modal hidden-element" id="searchResults_ExpenseType" finance-app-autocomplete-search-element="expenseTypeName">
-			@for(currentExpenseType of search_expenseTypeResults(); track currentExpenseType){
-				<div class="autocomplete-result-item" id="expenseTypeSearchResult_{{currentExpenseType.expenseTypeID}}" (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)">{{currentExpenseType.expenseTypeName}}</div>
-			}
-		</div>
+        <input
+          type="hidden"
+          id="expenseTypeID"
+          name="expenseTypeID"
+          value="{{form.controls.expenseTypeID}}"
+        />
+        <div
+          class="autocomplete-results autocomplete-results-modal hidden-element"
+          id="searchResults_ExpenseType"
+          finance-app-autocomplete-search-element="expenseTypeName"
+        >
+          @for(currentExpenseType of search_expenseTypeResults(); track
+          currentExpenseType){
+          <div
+            class="autocomplete-result-item"
+            id="expenseTypeSearchResult_{{ currentExpenseType.expenseTypeID }}"
+            (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)"
+          >
+            {{ currentExpenseType.expenseTypeName }}
+          </div>
+          }
+        </div>
       </div>
 
+	  
+
+      <!-- Payment Type Name -->
+      <div>
+        <label for="paymentTypeName" class="input-label-modal top-margin-spacing">
+          Payment Type :
+        </label>
+        <input
+          id="paymentTypeName"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="paymentTypeName"
+          formControlName="paymentTypeName"
+          (keyup)="search_paymentTypes()"
+        />
+        <input
+          type="hidden"
+          id="paymentTypeID"
+          name="paymentTypeID"
+          value="{{form.controls.paymentTypeID}}"
+        />
+        <div
+          class="autocomplete-results autocomplete-results-modal hidden-element"
+          id="searchResults_PaymentType"
+          finance-app-autocomplete-search-element="paymentTypeName"
+        >
+          @for(currentPaymentType of search_paymentTypeResults(); track
+          currentPaymentType){
+          <div
+            class="autocomplete-result-item"
+            id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
+            (click)="click_expenseTypeResult(currentPaymentType.paymentTypeID)"
+          >
+            {{ currentPaymentType.paymentTypeName }}
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Investment / Income checkboxes -->
       <div formGroupName="checkboxes" class="top-margin-spacing">
         <div>
           <input

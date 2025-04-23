@@ -64,6 +64,7 @@ export class ExpenseDialogAddComponent {
       expenseTypeDescription: 'NOT NEEDED',
     },
   ]);
+  
   private samplePaymentTypes = signal<PaymentType[]>([
     {
       paymentTypeID: 1,
@@ -191,6 +192,20 @@ export class ExpenseDialogAddComponent {
     );
     document
       .getElementById('searchResults_ExpenseType')
+      ?.classList.remove('hidden-element');
+  }
+
+  search_paymentTypes() {
+    let currentSearchCriteria = this.form.controls.paymentTypeName.value;
+    this.search_paymentTypeResults.set(
+      this.samplePaymentTypes().filter((x) =>
+        x.paymentTypeName
+          .toLowerCase()
+          .includes(currentSearchCriteria!.toLowerCase())
+      )
+    );
+    document
+      .getElementById('searchResults_PaymentType')
       ?.classList.remove('hidden-element');
   }
 

@@ -64,7 +64,7 @@ export class ExpenseDialogAddComponent {
       expenseTypeDescription: 'NOT NEEDED',
     },
   ]);
-  
+
   private samplePaymentTypes = signal<PaymentType[]>([
     {
       paymentTypeID: 1,
@@ -228,6 +228,26 @@ export class ExpenseDialogAddComponent {
     // expenseTypeNameElement.value = selectedExpenseTypeElement!.innerHTML;
     this.form.controls.expenseTypeName.setValue(
       selectedExpenseTypeElement!.innerHTML
+    );
+  }
+
+  click_paymentTypeResult(paymentTypeID: number) {
+    let selectedPaymentTypeElement = document.getElementById(
+      'paymentTypeSearchResult_' + paymentTypeID.toString()
+    );
+    let searchResults_PaymentType = document.getElementById(
+      'searchResults_PaymentType'
+    );
+
+    // update the hidden input form value for paymentTypeID
+    this.form.controls.paymentTypeID.setValue(paymentTypeID);
+
+    // hide the results since one of them has been chosen.
+    searchResults_PaymentType?.classList.add('hidden-element');
+
+    // update the paymentTypeName form value to utilize the selected result
+    this.form.controls.paymentTypeName.setValue(
+      selectedPaymentTypeElement!.innerHTML
     );
   }
 }

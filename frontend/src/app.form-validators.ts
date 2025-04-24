@@ -55,6 +55,13 @@ export class FormValidators {
     return null;
   }
 
+  isValidPaymentType(control: AbstractControl) {
+    if (Number(control.value) === 0) {
+      return { mustSelectValidPaymentType: true };
+    }
+    return null;
+  }
+
   compileValidationErrorMessage(formGroup: FormGroup) {}
 
   //#region mark-form-group-dirty-touched
@@ -125,13 +132,15 @@ export class FormValidators {
         currentErrorMessage = 'This value must not be zero.';
       } else if (currentError === 'mustSelectValidExpenseType') {
         currentErrorMessage = 'A valid Expense Type must be selected.';
+      } else if (currentError === 'mustSelectValidPaymentType') {
+        currentErrorMessage = 'A valid Payment Type must be selected.';
       } else {
         currentErrorMessage = 'Unknown validation error.';
       }
 
       //TODO: still need to fix this part to show multiple lines rather than a "::::" separator
       if (messageToShow.length > 0) {
-        messageToShow += ' :::: ';
+        messageToShow += ' :::: ';	
       }
       messageToShow += currentErrorMessage;
     });

@@ -106,7 +106,7 @@ export class ExpenseDialogAddComponent {
       validators: [Validators.required, this.formValidator.isValidExpenseType],
     }),
     paymentTypeID: new FormControl(0, {
-      validators: [Validators.required], //TODO: Add in "mustSelectValidPaymentType" validator
+      validators: [Validators.required, this.formValidator.isValidPaymentType],
     }),
 
     checkboxes: new FormGroup(

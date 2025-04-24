@@ -94,16 +94,15 @@
           </div>
           }
         </div>
-		@if(formControlHasError(form.controls.expenseTypeName)){
-          <label class="error-label">{{
-            getFormControlErrorDetails(form.controls.expenseTypeName)
-          }}</label>
-          }
-		  @if(formControlHasError(form.controls.expenseTypeID)){
-          <label class="error-label">{{
-            getFormControlErrorDetails(form.controls.expenseTypeID)
-          }}</label>
-          }
+        @if(formControlHasError(form.controls.expenseTypeName)){
+        <label class="error-label">{{
+          getFormControlErrorDetails(form.controls.expenseTypeName)
+        }}</label>
+        } @if(formControlHasError(form.controls.expenseTypeID)){
+        <label class="error-label">{{
+          getFormControlErrorDetails(form.controls.expenseTypeID)
+        }}</label>
+        }
       </div>
 
       <!-- Payment Type Name -->
@@ -144,6 +143,15 @@
           </div>
           }
         </div>
+        @if(formControlHasError(form.controls.paymentTypeName)){
+        <label class="error-label">{{
+          getFormControlErrorDetails(form.controls.paymentTypeName)
+        }}</label>
+        } @if(formControlHasError(form.controls.paymentTypeID)){
+        <label class="error-label">{{
+          getFormControlErrorDetails(form.controls.paymentTypeID)
+        }}</label>
+        }
       </div>
 
       <!-- Investment / Income checkboxes -->

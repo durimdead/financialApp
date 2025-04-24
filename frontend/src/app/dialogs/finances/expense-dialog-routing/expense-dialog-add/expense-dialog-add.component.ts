@@ -103,8 +103,7 @@ export class ExpenseDialogAddComponent {
       validators: [Validators.required, Validators.minLength(3)],
     }),
     expenseTypeID: new FormControl(0, {
-      //   validators: [Validators.required, this.formValidator.isValidExpenseType], //TODO: Add in "mustSelectValidExpenseType" validator
-      validators: [Validators.required], //TODO: Add in "mustSelectValidExpenseType" validator
+      validators: [Validators.required, this.formValidator.isValidExpenseType],
     }),
     paymentTypeID: new FormControl(0, {
       validators: [Validators.required], //TODO: Add in "mustSelectValidPaymentType" validator

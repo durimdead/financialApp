@@ -48,6 +48,13 @@ export class FormValidators {
     return null;
   }
 
+  isValidExpenseType(control: AbstractControl) {
+    if (Number(control.value) === 0) {
+      return { mustSelectValidExpenseType: true };
+    }
+    return null;
+  }
+
   compileValidationErrorMessage(formGroup: FormGroup) {}
 
   //#region mark-form-group-dirty-touched
@@ -116,6 +123,8 @@ export class FormValidators {
         currentErrorMessage = 'This value must be a valid date.';
       } else if (currentError === 'valueIsZero') {
         currentErrorMessage = 'This value must not be zero.';
+      } else if (currentError === 'mustSelectValidExpenseType') {
+        currentErrorMessage = 'A valid Expense Type must be selected.';
       } else {
         currentErrorMessage = 'Unknown validation error.';
       }
@@ -146,7 +155,7 @@ export class FormValidators {
       }
       messageToShow += currentErrorMessage;
     });
-	return messageToShow;
+    return messageToShow;
   }
 
   //********************************************

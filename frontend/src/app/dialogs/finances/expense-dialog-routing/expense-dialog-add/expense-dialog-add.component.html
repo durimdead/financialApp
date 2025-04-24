@@ -76,7 +76,7 @@
           type="hidden"
           id="expenseTypeID"
           name="expenseTypeID"
-          value="{{form.controls.expenseTypeID}}"
+          value="{{ form.controls.expenseTypeID }}"
         />
         <div
           class="autocomplete-results autocomplete-results-modal hidden-element"
@@ -94,13 +94,24 @@
           </div>
           }
         </div>
+		@if(formControlHasError(form.controls.expenseTypeName)){
+          <label class="error-label">{{
+            getFormControlErrorDetails(form.controls.expenseTypeName)
+          }}</label>
+          }
+		  @if(formControlHasError(form.controls.expenseTypeID)){
+          <label class="error-label">{{
+            getFormControlErrorDetails(form.controls.expenseTypeID)
+          }}</label>
+          }
       </div>
-
-	  
 
       <!-- Payment Type Name -->
       <div>
-        <label for="paymentTypeName" class="input-label-modal top-margin-spacing">
+        <label
+          for="paymentTypeName"
+          class="input-label-modal top-margin-spacing"
+        >
           Payment Type :
         </label>
         <input
@@ -115,7 +126,7 @@
           type="hidden"
           id="paymentTypeID"
           name="paymentTypeID"
-          value="{{form.controls.paymentTypeID}}"
+          value="{{ form.controls.paymentTypeID }}"
         />
         <div
           class="autocomplete-results autocomplete-results-modal hidden-element"

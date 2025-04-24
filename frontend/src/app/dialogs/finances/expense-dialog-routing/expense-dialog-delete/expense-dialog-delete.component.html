@@ -2,11 +2,11 @@
 <mat-dialog-content class="mat-typography">
 	<p>Expense:</p>
     <ul>
-        <li>Expense date: {{expenseData().expenseDate | date:'yyyy/MM/dd'}}</li>
-        <li>Expense description: {{expenseData().expenseDescription}}</li>
-        <li>Expense amount: {{expenseData().expenseAmount}}</li>
-        <li>Expense type: {{expenseData().expenseTypeName}}</li>
-        <li>Payment type: {{expenseData().paymentTypeName}}</li>
+        <li><span class="fw-bold">Expense date:</span> {{expenseData().expenseDate | date:'yyyy/MM/dd'}}</li>
+        <li><span class="fw-bold">Expense description:</span> {{expenseData().expenseDescription}}</li>
+        <li><span class="fw-bold">Expense amount:</span> {{expenseData().expenseAmount}}</li>
+        <li><span class="fw-bold">Expense type:</span> {{expenseData().expenseTypeName}}</li>
+        <li><span class="fw-bold">Payment type:</span> {{expenseData().paymentTypeName}}</li>
     </ul>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

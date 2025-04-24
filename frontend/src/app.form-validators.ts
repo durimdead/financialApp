@@ -138,9 +138,48 @@ export class FormValidators {
         currentErrorMessage = 'Unknown validation error.';
       }
 
+      console.log(formControl);
+      console.log(currentErrorMessage);
+
       //TODO: still need to fix this part to show multiple lines rather than a "::::" separator
       if (messageToShow.length > 0) {
-        messageToShow += ' :::: ';	
+        messageToShow += ' :::: ';
+      }
+      messageToShow += currentErrorMessage;
+    });
+    return messageToShow;
+  }
+
+  getFormControlErrorDetailsHTML(formControl: FormControl) {
+    let messageToShow = '';
+    const controlErrors: ValidationErrors =
+      formControl.errors as ValidationErrors;
+    Object.keys(controlErrors).forEach((currentError) => {
+      let currentErrorMessage = '';
+      if (currentError === 'required') {
+        currentErrorMessage = 'Field is required.';
+      } else if (currentError === 'minlength') {
+        currentErrorMessage =
+          'Minimum Length : ' + controlErrors[currentError].requiredLength;
+      } else if (currentError === 'maxlength') {
+        currentErrorMessage =
+          'Maximum Length : ' + controlErrors[currentError].requiredLength;
+      } else if (currentError === 'isNotANumber') {
+        currentErrorMessage = 'This must be Numeric.';
+      } else if (currentError === 'isNotADate') {
+        currentErrorMessage = 'This value must be a valid date.';
+      } else if (currentError === 'valueIsZero') {
+        currentErrorMessage = 'This value must not be zero.';
+      } else if (currentError === 'mustSelectValidExpenseType') {
+        currentErrorMessage = 'A valid Expense Type must be selected.';
+      } else if (currentError === 'mustSelectValidPaymentType') {
+        currentErrorMessage = 'A valid Payment Type must be selected.';
+      } else {
+        currentErrorMessage = 'Unknown validation error.';
+      }
+
+      if (messageToShow.length > 0) {
+        messageToShow += '<br/>';
       }
       messageToShow += currentErrorMessage;
     });

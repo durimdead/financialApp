@@ -15,9 +15,8 @@
           formControlName="expenseDate"
         />
         @if(formControlHasError(form.controls.expenseDate)){
-        <label class="error-label">{{
-          getFormControlErrorDetails(form.controls.expenseDate)
-        }}</label>
+			{{updateFormControlErrorLabelHTML(form.controls.expenseDescription)}}
+        <label class="error-label" id="errorLabel_expenseDate"></label>
         }
       </div>
 
@@ -34,9 +33,8 @@
           formControlName="expenseDescription"
         />
         @if(formControlHasError(form.controls.expenseDescription)){
-        <label class="error-label">{{
-          getFormControlErrorDetails(form.controls.expenseDescription)
-        }}</label>
+        {{updateFormControlErrorLabelHTML(form.controls.expenseDescription)}}
+        <label class="error-label" id="errorLabel_expenseDescription"></label>
         }
       </div>
 
@@ -53,9 +51,8 @@
           formControlName="expenseAmount"
         />
         @if(formControlHasError(form.controls.expenseAmount)){
-        <label class="error-label">{{
-          getFormControlErrorDetails(form.controls.expenseAmount)
-        }}</label>
+        {{updateFormControlErrorLabelHTML(form.controls.expenseAmount)}}
+        <label class="error-label" id="errorLabel_expenseAmount"></label>
         }
       </div>
 
@@ -95,13 +92,12 @@
           }
         </div>
         @if(formControlHasError(form.controls.expenseTypeName)){
-        <label class="error-label">{{
-          getFormControlErrorDetails(form.controls.expenseTypeName)
-        }}</label>
-        } @if(formControlHasError(form.controls.expenseTypeID)){
-        <label class="error-label">{{
-          getFormControlErrorDetails(form.controls.expenseTypeID)
-        }}</label>
+        {{updateFormControlErrorLabelHTML(form.controls.expenseTypeName)}}
+        <label class="error-label" id="errorLabel_expenseTypeName"></label>
+        }
+		@if(formControlHasError(form.controls.expenseTypeID)){
+        {{updateFormControlErrorLabelHTML(form.controls.expenseTypeID)}}
+        <label class="error-label" id="errorLabel_expenseTypeID"></label>
         }
       </div>
 
@@ -144,13 +140,12 @@
           }
         </div>
         @if(formControlHasError(form.controls.paymentTypeName)){
-        <label class="error-label">{{
-          getFormControlErrorDetails(form.controls.paymentTypeName)
-        }}</label>
-        } @if(formControlHasError(form.controls.paymentTypeID)){
-        <label class="error-label">{{
-          getFormControlErrorDetails(form.controls.paymentTypeID)
-        }}</label>
+        {{updateFormControlErrorLabelHTML(form.controls.paymentTypeName)}}
+        <label class="error-label" id="errorLabel_paymentTypeName"></label>
+        }
+		@if(formControlHasError(form.controls.paymentTypeID)){
+        {{updateFormControlErrorLabelHTML(form.controls.paymentTypeID)}}
+        <label class="error-label" id="errorLabel_paymentTypeID"></label>
         }
       </div>
 

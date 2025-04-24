@@ -173,6 +173,41 @@ export class ExpenseDialogAddComponent {
   getFormControlErrorDetails(formControl: FormControl) {
     return this.formValidator.getFormControlErrorDetails(formControl);
   }
+
+  updateFormControlErrorLabelHTML(formControl: FormControl) {
+    let formControlID = this.getFormControlID(formControl);
+    if (formControlID === null) throw 'form control does not exist';
+    let errorMessage =
+      this.formValidator.getFormControlErrorDetailsHTML(formControl);
+    if (errorMessage !== '') {
+      document.getElementById(
+        'errorLabel_' + formControlID.toString()
+      )!.innerHTML = errorMessage;
+    }
+  }
+
+  private getFormControlID(control: FormControl): string | null {
+    let group = <FormGroup>control.parent;
+
+    if (!group) {
+      return null;
+    }
+
+    let name: string;
+
+    Object.keys(group.controls).forEach((key) => {
+      let childControl = group.get(key);
+
+      if (childControl !== control) {
+        return;
+      }
+
+      name = key;
+    });
+
+    return name!;
+  }
+
   getFormGroupErrorDetails(formGroup: FormGroup<any>) {
     return this.formValidator.getFormGroupErrorDetails(formGroup);
   }
@@ -189,6 +224,8 @@ export class ExpenseDialogAddComponent {
     document
       .getElementById('searchResults_ExpenseType')
       ?.classList.remove('hidden-element');
+    // if we have updated the search criteria, a valid type MUST be chosen from the list
+    this.form.controls.expenseTypeID.setValue(0);
   }
 
   search_paymentTypes() {
@@ -203,6 +240,8 @@ export class ExpenseDialogAddComponent {
     document
       .getElementById('searchResults_PaymentType')
       ?.classList.remove('hidden-element');
+    // if we have updated the search criteria, a valid type MUST be chosen from the list
+    this.form.controls.paymentTypeID.setValue(0);
   }
 
   click_expenseTypeResult(expenseTypeID: number) {

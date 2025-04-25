@@ -108,3 +108,11 @@ input.ng-invalid.ng-touched.ng-dirty {
 .top-margin-spacing{
 	margin-top: 0.5em;
 }
+.fieldset-rounded{
+	padding: 8px;
+	border-radius: 8px;
+}
+.fieldset-legend{
+	font-size: 12pt;
+	margin: 0;
+}

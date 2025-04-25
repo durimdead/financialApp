@@ -4,27 +4,28 @@
     <form [formGroup]="form" class="form-flex-column">
       <!-- Expense Date -->
       <div class="control form-group-div">
-        <label for="expenseDate" class="input-label-modal"
-          >Expense Date :</label
-        >
-        <input
-          id="expenseDate"
-          class="input-date input-date-modal"
-          type="date"
-          name="expenseDate"
-          formControlName="expenseDate"
-        />
-        @if(formControlHasError(form.controls.expenseDate)){
-			{{updateFormControlErrorLabelHTML(form.controls.expenseDescription)}}
-        <label class="error-label" id="errorLabel_expenseDate"></label>
-        }
+		<fieldset class="border fieldset-rounded p-2">
+            <legend class="float-none w-auto px-3 fieldset-legend" >Test</legend>
+          <input
+            id="expenseDate"
+            class="input-date input-date-modal"
+            type="date"
+            name="expenseDate"
+            formControlName="expenseDate"
+          />
+          @if(formControlHasError(form.controls.expenseDate)){
+          {{
+            updateFormControlErrorLabelHTML(form.controls.expenseDescription)
+          }}
+          <label class="error-label" id="errorLabel_expenseDate"></label>
+          }
+        </fieldset>
       </div>
 
       <!-- Expense Description -->
       <div class="control form-group-div">
-        <label for="expenseDescription" class="input-label-modal"
-          >Expense Description :</label
-        >
+        <fieldset class="border fieldset-rounded p-2">
+            <legend class="float-none w-auto px-3 fieldset-legend" >Expense Description</legend>
         <input
           id="expenseDescription"
           class="input-textbox input-textbox-modal"
@@ -33,9 +34,10 @@
           formControlName="expenseDescription"
         />
         @if(formControlHasError(form.controls.expenseDescription)){
-        {{updateFormControlErrorLabelHTML(form.controls.expenseDescription)}}
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseDescription) }}
         <label class="error-label" id="errorLabel_expenseDescription"></label>
         }
+		</fieldset>
       </div>
 
       <!-- Expense Amount -->
@@ -51,7 +53,7 @@
           formControlName="expenseAmount"
         />
         @if(formControlHasError(form.controls.expenseAmount)){
-        {{updateFormControlErrorLabelHTML(form.controls.expenseAmount)}}
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseAmount) }}
         <label class="error-label" id="errorLabel_expenseAmount"></label>
         }
       </div>
@@ -92,11 +94,10 @@
           }
         </div>
         @if(formControlHasError(form.controls.expenseTypeName)){
-        {{updateFormControlErrorLabelHTML(form.controls.expenseTypeName)}}
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeName) }}
         <label class="error-label" id="errorLabel_expenseTypeName"></label>
-        }
-		@if(formControlHasError(form.controls.expenseTypeID)){
-        {{updateFormControlErrorLabelHTML(form.controls.expenseTypeID)}}
+        } @if(formControlHasError(form.controls.expenseTypeID)){
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeID) }}
         <label class="error-label" id="errorLabel_expenseTypeID"></label>
         }
       </div>
@@ -140,11 +141,10 @@
           }
         </div>
         @if(formControlHasError(form.controls.paymentTypeName)){
-        {{updateFormControlErrorLabelHTML(form.controls.paymentTypeName)}}
+        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeName) }}
         <label class="error-label" id="errorLabel_paymentTypeName"></label>
-        }
-		@if(formControlHasError(form.controls.paymentTypeID)){
-        {{updateFormControlErrorLabelHTML(form.controls.paymentTypeID)}}
+        } @if(formControlHasError(form.controls.paymentTypeID)){
+        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeID) }}
         <label class="error-label" id="errorLabel_paymentTypeID"></label>
         }
       </div>

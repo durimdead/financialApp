@@ -94,6 +94,7 @@ input.ng-invalid.ng-touched.ng-dirty {
   padding: 0.5em;
   border: 1px solid #ccc;
   box-sizing: border-box;
+  z-index: 2000;
 }
 .autocomplete-result-item{
 	border-radius: 5px;

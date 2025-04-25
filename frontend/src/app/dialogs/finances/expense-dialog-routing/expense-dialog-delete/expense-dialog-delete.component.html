@@ -1,13 +1,78 @@
-<h2 mat-dialog-title>Delete {{expenseData().expenseDescription}}?</h2>
+<h2 mat-dialog-title>Delete {{ expenseData().expenseDescription }}?</h2>
 <mat-dialog-content class="mat-typography">
-	<p>Expense:</p>
-    <ul>
-        <li><span class="fw-bold">Expense date:</span> {{expenseData().expenseDate | date:'yyyy/MM/dd'}}</li>
-        <li><span class="fw-bold">Expense description:</span> {{expenseData().expenseDescription}}</li>
-        <li><span class="fw-bold">Expense amount:</span> {{expenseData().expenseAmount}}</li>
-        <li><span class="fw-bold">Expense type:</span> {{expenseData().expenseTypeName}}</li>
-        <li><span class="fw-bold">Payment type:</span> {{expenseData().paymentTypeName}}</li>
-    </ul>
+  <p>Expense Details:</p>
+  <div class="container">
+    <div class="row">
+      <fieldset class="border fieldset-rounded p-2">
+        <legend class="float-none w-auto px-3 fieldset-legend">
+          Expense Date
+        </legend>
+        {{ expenseData().expenseDate | date : "yyyy/MM/dd" }}
+      </fieldset>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <fieldset class="border fieldset-rounded p-2">
+        <legend class="float-none w-auto px-3 fieldset-legend">
+          Expense Description
+        </legend>
+        {{ expenseData().expenseDescription }}
+      </fieldset>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <fieldset class="border fieldset-rounded p-2">
+        <legend class="float-none w-auto px-3 fieldset-legend">
+          Expense Amount
+        </legend>
+        {{ expenseData().expenseAmount }}
+      </fieldset>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <fieldset class="border fieldset-rounded p-2">
+        <legend class="float-none w-auto px-3 fieldset-legend">
+          Expense Type
+        </legend>
+        {{ expenseData().expenseTypeName }}
+      </fieldset>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <fieldset class="border fieldset-rounded p-2">
+        <legend class="float-none w-auto px-3 fieldset-legend">
+          Payment Type
+        </legend>
+        {{ expenseData().paymentTypeName }}
+      </fieldset>
+    </div>
+  </div>
+  <!-- <ul>
+    <li>
+      <span class="fw-bold">Expense date:</span>
+      {{ expenseData().expenseDate | date : "yyyy/MM/dd" }}
+    </li>
+    <li>
+      <span class="fw-bold">Expense description:</span>
+      {{ expenseData().expenseDescription }}
+    </li>
+    <li>
+      <span class="fw-bold">Expense amount:</span>
+      {{ expenseData().expenseAmount }}
+    </li>
+    <li>
+      <span class="fw-bold">Expense type:</span>
+      {{ expenseData().expenseTypeName }}
+    </li>
+    <li>
+      <span class="fw-bold">Payment type:</span>
+      {{ expenseData().paymentTypeName }}
+    </li>
+  </ul> -->
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>

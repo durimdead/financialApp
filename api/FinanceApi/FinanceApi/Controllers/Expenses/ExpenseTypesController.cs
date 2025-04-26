@@ -68,7 +68,7 @@ namespace FinanceApi.Controllers.Expenses
             }
             catch (Exception ex)
             {
-                var jsonData = new { httpStatusCode = HttpStatusCode.OK, errorMessage = ex.Message };
+                var jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = ex.Message };
 
                 _logger.LogError(ex.Message);
                 if (ex.InnerException != null)

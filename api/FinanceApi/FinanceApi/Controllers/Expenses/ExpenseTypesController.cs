@@ -56,8 +56,8 @@ namespace FinanceApi.Controllers.Expenses
         //    throw new NotImplementedException();
         //}
         [Route("SearchByExpenseTypeName")]
-        [HttpGet]
-        public JsonResult SearchByExpenseTypeName([FromBody] string expenseTypeName)
+        [HttpPost]
+        public JsonResult SearchByExpenseTypeName(string expenseTypeName)
         {
             try
             {

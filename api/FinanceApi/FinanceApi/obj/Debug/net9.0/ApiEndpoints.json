@@ -119,14 +119,14 @@
     "ContainingType": "FinanceApi.Controllers.Expenses.ExpenseTypesController",
     "Method": "SearchByExpenseTypeName",
     "RelativePath": "api/ExpenseTypes/SearchByExpenseTypeName",
-    "HttpMethod": "GET",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "expenseTypeName",
         "Type": "System.String",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

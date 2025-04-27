@@ -161,7 +161,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 var returnValue = _context.vExpenseType.Where(x =>
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : true)
                     && (expenseTypeName != "" ? x.ExpenseTypeName.ToLower().Contains(expenseTypeName.ToLower()) : true)
-                    && (expenseTypeDescription != "" ? expenseTypeDescription == x.ExpenseTypeDescription : true))
+                    && (expenseTypeDescription != "" ? x.ExpenseTypeDescription.ToLower().Contains(expenseTypeDescription.ToLower()): true))
                 .Select(record => new ExpenseType()
                 {
                     ExpenseTypeID = record.ExpenseTypeID,

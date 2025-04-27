@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   signal,
 } from '@angular/core';
@@ -26,6 +27,7 @@ import {
   ExpenseType,
   PaymentType,
 } from '../../../../../app.interfaces';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-expense-dialog-add',
@@ -46,6 +48,7 @@ export class ExpenseDialogAddComponent {
   private formValidator = inject(FormValidators);
   private financeService = inject(FinanceService);
   public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
+  private destroyRef = inject(DestroyRef);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
   search_paymentTypeResults = signal<PaymentType[]>([]);
   private sampleExpenseTypes = signal<ExpenseType[]>([
@@ -214,13 +217,30 @@ export class ExpenseDialogAddComponent {
 
   search_expenseTypes() {
     let currentSearchCriteria = this.form.controls.expenseTypeName.value;
-    this.search_expenseTypeResults.set(
-      this.sampleExpenseTypes().filter((x) =>
-        x.expenseTypeName
-          .toLowerCase()
-          .includes(currentSearchCriteria!.toLowerCase())
-      )
-    );
+
+	if (currentSearchCriteria === null) return;
+    // call back to server to search the expense types
+    const subscription = this.financeService.searchExpenseTypes(currentSearchCriteria).pipe(debounceTime(200)).subscribe({
+		next: (results) => {
+			console.log(results);
+		},
+      error: (error: Error) => {
+        console.log('error fetching expenses from server: ');
+        console.log(error);
+      },
+    });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+
+    // this.search_expenseTypeResults.set(
+    //   this.sampleExpenseTypes().filter((x) =>
+    //     x.expenseTypeName
+    //       .toLowerCase()
+    //       .includes(currentSearchCriteria!.toLowerCase())
+    //   )
+    // );
     document
       .getElementById('searchResults_ExpenseType')
       ?.classList.remove('hidden-element');

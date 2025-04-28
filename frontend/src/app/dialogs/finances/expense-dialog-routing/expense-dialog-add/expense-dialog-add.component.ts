@@ -217,15 +217,11 @@ export class ExpenseDialogAddComponent {
 
   search_expenseTypes() {
     let currentSearchCriteria = this.form.controls.expenseTypeName.value;
-	console.log('currentSearchCriteria: ');
-	console.log(currentSearchCriteria);
-	console.log(currentSearchCriteria === null);
 
 	if (currentSearchCriteria === null) return;
     // call back to server to search the expense types
     const subscription = this.financeService.searchExpenseTypes(currentSearchCriteria).pipe(debounceTime(200)).subscribe({
 		next: (results) => {
-			console.log(results);
 			this.search_expenseTypeResults.set(results.expenseTypeData)
 		},
       error: (error: Error) => {
@@ -237,14 +233,7 @@ export class ExpenseDialogAddComponent {
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
-
-    // this.search_expenseTypeResults.set(
-    //   this.sampleExpenseTypes().filter((x) =>
-    //     x.expenseTypeName
-    //       .toLowerCase()
-    //       .includes(currentSearchCriteria!.toLowerCase())
-    //   )
-    // );
+	
     document
       .getElementById('searchResults_ExpenseType')
       ?.classList.remove('hidden-element');

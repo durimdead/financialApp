@@ -127,9 +127,6 @@ export class ExpenseDialogAddComponent {
 
   //TODO: continue filling in the appropriate fields into the rest of the data.
   submitNewExpense() {
-    console.log('hello');
-    console.log(this.form);
-
     if (!this.form.invalid) {
       let newExpense: Expense = {
         expenseDescription: this.form.controls.expenseDescription
@@ -225,8 +222,8 @@ export class ExpenseDialogAddComponent {
 			this.search_expenseTypeResults.set(results.expenseTypeData)
 		},
       error: (error: Error) => {
-        console.log('error fetching expenses from server: ');
-        console.log(error);
+        console.error('error fetching expenses from server: ');
+        console.error(error);
       },
     });
 

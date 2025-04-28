@@ -45,7 +45,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (expenseDescription != "" ? x.ExpenseDescription.ToLower().Contains(expenseDescription.ToLower()) : true)
+                    && (expenseDescription != "" ? x.ExpenseDescription.ToLower().Trim().Contains(expenseDescription.ToLower().Trim()) : true)
                     && (expenseAmount != 0 ? expenseAmount == (double)x.ExpenseAmount : true)
                     && (isInvestment ?? true)
                     && (isIncome ?? true))
@@ -110,7 +110,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                     && (expenseID > 0 ? expenseID == x.ExpenseID : true)
                     && (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (expenseDescription != "" ? x.ExpenseDescription.ToLower().Contains(expenseDescription.ToLower()) : true)
+                    && (expenseDescription != "" ? x.ExpenseDescription.ToLower().Trim().Contains(expenseDescription.ToLower().Trim()) : true)
                     && (expenseAmount != 0 ? expenseAmount == (double)x.ExpenseAmount : true)
                     && (isInvestment ?? true)
                     && (isIncome ?? true)
@@ -160,8 +160,8 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
                 var returnValue = _context.vExpenseType.Where(x =>
                     (expenseTypeID > 0 ? expenseTypeID == x.ExpenseTypeID : true)
-                    && (expenseTypeName != "" ? x.ExpenseTypeName.ToLower().Contains(expenseTypeName.ToLower()) : true)
-                    && (expenseTypeDescription != "" ? x.ExpenseTypeDescription.ToLower().Contains(expenseTypeDescription.ToLower()): true))
+                    && (expenseTypeName != "" ? x.ExpenseTypeName.ToLower().Trim().Contains(expenseTypeName.ToLower().Trim()) : true)
+                    && (expenseTypeDescription != "" ? x.ExpenseTypeDescription.ToLower().Trim().Contains(expenseTypeDescription.ToLower().Trim()) : true))
                 .Select(record => new ExpenseType()
                 {
                     ExpenseTypeID = record.ExpenseTypeID,
@@ -202,8 +202,8 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 var returnValue = _context.vPaymentType.Where(x =>
                     (paymentTypeID > 0 ? paymentTypeID == x.PaymentTypeID : true)
                     && (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (paymentTypeName != "" ? x.PaymentTypeName.ToLower().Contains(paymentTypeName.ToLower()) : true)
-                    && (paymentTypeDescription != "" ? x.PaymentTypeDescription.ToLower().Contains(paymentTypeDescription.ToLower()) : true))
+                    && (paymentTypeName != "" ? x.PaymentTypeName.ToLower().Trim().Contains(paymentTypeName.ToLower().Trim()) : true)
+                    && (paymentTypeDescription != "" ? x.PaymentTypeDescription.ToLower().Trim().Contains(paymentTypeDescription.ToLower().Trim()) : true))
                 .Select(record => new PaymentType()
                 {
                     PaymentTypeID = record.PaymentTypeID,
@@ -242,7 +242,7 @@ namespace FinanceApi.Services.RepositoryServices.Expenses
                 // grab the records to return, but only use the search criteria where the value is not the default value for the parameter
                 var returnValue = _context.vPaymentTypeCategory.Where(x =>
                        (paymentTypeCategoryID > 0 ? paymentTypeCategoryID == x.PaymentTypeCategoryID : true)
-                    && (paymentTypeCategoryName != "" ? x.PaymentTypeCategoryName.ToLower().Contains(paymentTypeCategoryName.ToLower()) : true))
+                    && (paymentTypeCategoryName != "" ? x.PaymentTypeCategoryName.ToLower().Trim().Contains(paymentTypeCategoryName.ToLower().Trim()) : true))
                 .Select(record => new PaymentTypeCategory()
                 {
                     PaymentTypeCategoryID = record.PaymentTypeCategoryID,

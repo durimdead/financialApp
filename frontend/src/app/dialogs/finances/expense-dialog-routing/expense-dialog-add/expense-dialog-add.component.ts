@@ -223,6 +223,7 @@ export class ExpenseDialogAddComponent {
     const subscription = this.financeService.searchExpenseTypes(currentSearchCriteria).pipe(debounceTime(200)).subscribe({
 		next: (results) => {
 			console.log(results);
+			this.search_expenseTypeResults.set(results.expenseTypeData)
 		},
       error: (error: Error) => {
         console.log('error fetching expenses from server: ');

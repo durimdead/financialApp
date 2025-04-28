@@ -54,7 +54,11 @@ export class FinanceService {
       }),
 	  params: params
     };
-    return this.httpClient.post(this.urlSearchExpenseTypes, paramData, headers);
+    return this.httpClient.post<{
+      httpStatusCode: number;
+      expenseTypeData: ExpenseType[];
+      errorMessage: string;
+    }>(this.urlSearchExpenseTypes, paramData, headers);
   }
 
   // calls the API method to add a new expense to the database.

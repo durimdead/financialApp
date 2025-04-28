@@ -217,6 +217,9 @@ export class ExpenseDialogAddComponent {
 
   search_expenseTypes() {
     let currentSearchCriteria = this.form.controls.expenseTypeName.value;
+	console.log('currentSearchCriteria: ');
+	console.log(currentSearchCriteria);
+	console.log(currentSearchCriteria === null);
 
 	if (currentSearchCriteria === null) return;
     // call back to server to search the expense types

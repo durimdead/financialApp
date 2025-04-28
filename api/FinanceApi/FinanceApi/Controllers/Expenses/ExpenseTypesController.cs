@@ -57,7 +57,7 @@ namespace FinanceApi.Controllers.Expenses
         //}
         [Route("SearchByExpenseTypeName")]
         [HttpPost]
-        public JsonResult SearchByExpenseTypeName(string expenseTypeSearchString)
+        public JsonResult SearchByExpenseTypeName(string expenseTypeSearchString = "")
         {
             //string expenseTypeSearchString = "T";
             try

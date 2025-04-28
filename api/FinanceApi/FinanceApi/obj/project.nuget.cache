@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bmTFxdOYMDw=",
+  "dgSpecHash": "IYdPoT2Kv1s=",
   "success": true,
-  "projectFilePath": "C:\\Development\\_personal\\financialApp\\api\\FinanceApi\\FinanceApi\\FinanceApi.csproj",
+  "projectFilePath": "C:\\Development\\_personalProjects\\financialApp\\api\\FinanceApi\\FinanceApi\\FinanceApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\david\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\david\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

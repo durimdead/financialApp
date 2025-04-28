@@ -124,7 +124,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "expenseTypeName",
+        "Name": "expenseTypeSearchString",
         "Type": "System.String",
         "IsRequired": false
       }

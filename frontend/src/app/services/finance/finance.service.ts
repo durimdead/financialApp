@@ -7,7 +7,7 @@ import {
   ExpenseType,
 } from '../../../app.interfaces';
 import { tap } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -36,8 +36,8 @@ export class FinanceService {
     );
   }
 
-  searchExpenseTypes(searchString: string) {
-    return this.httpSearchExpenseTypes(searchString);
+  searchExpenseTypes(expenseTypeSearchString: string) {
+    return this.httpSearchExpenseTypes(expenseTypeSearchString);
   }
 
   addExpense(expenseToAdd: Expense) {
@@ -45,17 +45,16 @@ export class FinanceService {
     return this.httpAddExpense(expenseToAdd);
   }
 
-  private httpSearchExpenseTypes(searchString: string) {
+  private httpSearchExpenseTypes(expenseTypeSearchString: string) {
+    const paramData = { expenseTypeSearchString: expenseTypeSearchString };
+	const params = new HttpParams().append('expenseTypeSearchString', expenseTypeSearchString.toString());
     const headers = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
       }),
+	  params: params
     };
-    return this.httpClient.post<{
-      httpStatusCode: number;
-      expenseTypeData: ExpenseType[];
-      errorMessage: string;
-    }>(this.urlSearchExpenseTypes, searchString, headers);
+    return this.httpClient.post(this.urlSearchExpenseTypes, paramData, headers);
   }
 
   // calls the API method to add a new expense to the database.

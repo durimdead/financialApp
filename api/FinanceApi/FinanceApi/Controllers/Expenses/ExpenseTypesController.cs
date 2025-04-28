@@ -57,11 +57,12 @@ namespace FinanceApi.Controllers.Expenses
         //}
         [Route("SearchByExpenseTypeName")]
         [HttpPost]
-        public JsonResult SearchByExpenseTypeName(string expenseTypeName)
+        public JsonResult SearchByExpenseTypeName(string expenseTypeSearchString)
         {
+            //string expenseTypeSearchString = "T";
             try
             {
-                var expenseTypeData = _expenseService.GetExpenseTypes(0, expenseTypeName);
+                var expenseTypeData = _expenseService.GetExpenseTypes(0, expenseTypeSearchString);
                 var jsonData = new { httpStatusCode = HttpStatusCode.OK, expenseTypeData, errorMessage = "" };
 
                 return new JsonResult(jsonData);

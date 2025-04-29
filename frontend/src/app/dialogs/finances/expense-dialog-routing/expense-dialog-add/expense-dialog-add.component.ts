@@ -44,6 +44,8 @@ import { debounceTime } from 'rxjs';
   styleUrl: './expense-dialog-add.component.css',
 })
 export class ExpenseDialogAddComponent {
+  // This is never utilized outside of displaying the last
+  // updated date, which is driven by the database's temporal tables.
   readonly inputData = inject(MAT_DIALOG_DATA);
   private formValidator = inject(FormValidators);
   private financeService = inject(FinanceService);
@@ -245,8 +247,8 @@ export class ExpenseDialogAddComponent {
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.form.controls.expenseTypeID.setValue(0);
-	this.form.controls.expenseTypeID.markAsTouched();
-	this.form.controls.expenseTypeID.markAsDirty();
+    this.form.controls.expenseTypeID.markAsTouched();
+    this.form.controls.expenseTypeID.markAsDirty();
   }
 
   search_paymentTypes() {
@@ -272,7 +274,7 @@ export class ExpenseDialogAddComponent {
     this.form.controls.expenseTypeID.setValue(expenseTypeID);
 
     // hide the results since one of them has been chosen.
-	this.hideHTMLElement('searchResults_ExpenseType');
+    this.hideHTMLElement('searchResults_ExpenseType');
 
     // update the expenseTypeName form value to utilize the selected result
     //TODO: possibly make this a different value other than "innerHTML" - an attribute?
@@ -290,7 +292,7 @@ export class ExpenseDialogAddComponent {
     this.form.controls.paymentTypeID.setValue(paymentTypeID);
 
     // hide the results since one of them has been chosen.
-	this.hideHTMLElement('searchResults_PaymentType');
+    this.hideHTMLElement('searchResults_PaymentType');
 
     // update the paymentTypeName form value to utilize the selected result
     //TODO: possibly make this a different value other than "innerHTML" - an attribute?
@@ -299,6 +301,11 @@ export class ExpenseDialogAddComponent {
     );
   }
 
+  hideElementOnBlur(elementIdToHide: string) {
+	setTimeout(() => {
+		this.hideHTMLElement('elementIdToHide');
+	}, 500);
+  }
   hideElement(HTMLElementId: string) {
     this.hideHTMLElement(HTMLElementId);
   }
@@ -307,9 +314,9 @@ export class ExpenseDialogAddComponent {
       .getElementById(HTMLElementId.toString())
       ?.classList.add('hidden-element');
   }
-  private showHTMLElement(HTMLElementId: string){
-	document
-    .getElementById(HTMLElementId.toString())
-    ?.classList.remove('hidden-element');
+  private showHTMLElement(HTMLElementId: string) {
+    document
+      .getElementById(HTMLElementId.toString())
+      ?.classList.remove('hidden-element');
   }
 }

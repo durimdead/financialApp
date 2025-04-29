@@ -68,6 +68,7 @@
           name="expenseTypeName"
           formControlName="expenseTypeName"
           (keyup)="search_expenseTypes()"
+		  (blur)="hideElementOnBlur('searchResults_ExpenseType')"
         />
         <input
           type="hidden"

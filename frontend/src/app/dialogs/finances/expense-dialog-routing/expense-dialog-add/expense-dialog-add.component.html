@@ -90,7 +90,11 @@
             {{ currentExpenseType.expenseTypeName }}
           </div>
           } @else {
-          <div class="search-result-empty" disabled="disabled" (click)="hideElement('searchResults_ExpenseType')">
+          <div
+            class="search-result-empty"
+            disabled="disabled"
+            (click)="hideElement('searchResults_ExpenseType')"
+          >
             --- No Search Results ---
           </div>
           } }

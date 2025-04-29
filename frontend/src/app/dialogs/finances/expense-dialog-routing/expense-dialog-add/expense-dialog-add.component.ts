@@ -231,9 +231,7 @@ export class ExpenseDialogAddComponent {
             });
           }
           this.search_expenseTypeResults.set(dataToDisplay);
-          document
-            .getElementById('searchResults_ExpenseType')
-            ?.classList.remove('hidden-element');
+          this.showHTMLElement('searchResults_ExpenseType');
         },
         error: (error: Error) => {
           console.error('error fetching expenses from server: ');
@@ -245,9 +243,6 @@ export class ExpenseDialogAddComponent {
       subscription.unsubscribe();
     });
 
-    document
-      .getElementById('searchResults_ExpenseType')
-      ?.classList.remove('hidden-element');
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.form.controls.expenseTypeID.setValue(0);
   }
@@ -261,9 +256,7 @@ export class ExpenseDialogAddComponent {
           .includes(currentSearchCriteria!.toLowerCase())
       )
     );
-    document
-      .getElementById('searchResults_PaymentType')
-      ?.classList.remove('hidden-element');
+    this.showHTMLElement('searchResults_PaymentType');
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.form.controls.paymentTypeID.setValue(0);
   }
@@ -272,15 +265,12 @@ export class ExpenseDialogAddComponent {
     let selectedExpenseTypeElement = document.getElementById(
       'expenseTypeSearchResult_' + expenseTypeID.toString()
     );
-    let searchResults_ExpenseType = document.getElementById(
-      'searchResults_ExpenseType'
-    );
 
     // update the hidden input form value for expenseTypeID
     this.form.controls.expenseTypeID.setValue(expenseTypeID);
 
     // hide the results since one of them has been chosen.
-    searchResults_ExpenseType?.classList.add('hidden-element');
+	this.showHTMLElement('searchResults_ExpenseType');
 
     // update the expenseTypeName form value to utilize the selected result
     //TODO: possibly make this a different value other than "innerHTML" - an attribute?
@@ -293,15 +283,12 @@ export class ExpenseDialogAddComponent {
     let selectedPaymentTypeElement = document.getElementById(
       'paymentTypeSearchResult_' + paymentTypeID.toString()
     );
-    let searchResults_PaymentType = document.getElementById(
-      'searchResults_PaymentType'
-    );
 
     // update the hidden input form value for paymentTypeID
     this.form.controls.paymentTypeID.setValue(paymentTypeID);
 
     // hide the results since one of them has been chosen.
-    searchResults_PaymentType?.classList.add('hidden-element');
+	this.hideHTMLElement('searchResults_PaymentType');
 
     // update the paymentTypeName form value to utilize the selected result
     //TODO: possibly make this a different value other than "innerHTML" - an attribute?
@@ -313,8 +300,14 @@ export class ExpenseDialogAddComponent {
   hideElement(HTMLElementId: string) {
     this.hideHTMLElement(HTMLElementId);
   }
-	private hideHTMLElement(HTMLElementId: string) {
-		console.log('hiding element: ' + HTMLElementId);
-		document.getElementById(HTMLElementId.toString())?.classList.add('hidden-element');
-	}
+  private hideHTMLElement(HTMLElementId: string) {
+    document
+      .getElementById(HTMLElementId.toString())
+      ?.classList.add('hidden-element');
+  }
+  private showHTMLElement(HTMLElementId: string){
+	document
+    .getElementById(HTMLElementId.toString())
+    ?.classList.remove('hidden-element');
+  }
 }

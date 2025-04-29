@@ -25,7 +25,7 @@ body {
 .input-date {
   border-radius: 8px;
   border-color: rgb(199, 199, 199);
-  background-color: rgb(247, 247, 233);
+  background-color: rgb(255, 255, 253);
   padding: 0.25em;
 }
 .input-date::-webkit-calendar-picker-indicator {
@@ -40,7 +40,7 @@ body {
 .input-textbox {
   border-radius: 8px;
   border-color: rgb(199, 199, 199);
-  background-color: rgb(247, 247, 233);
+  background-color: rgb(255, 255, 253);
   padding: 0.25em;
 }
 .input-label-modal {
@@ -83,7 +83,7 @@ input.ng-invalid.ng-touched.ng-dirty {
 .autocomplete-results {
   border-radius: 8px;
   border-color: rgb(199, 199, 199);
-  background-color: rgb(247, 247, 233);
+  background-color: rgb(255, 255, 243);
   padding: 0.25em;
   max-height: 70px;
   overflow-y: scroll;

@@ -100,10 +100,10 @@ export class ExpenseDialogAddComponent {
       ],
     }),
     expenseTypeName: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
+      validators: [Validators.required],
     }),
     paymentTypeName: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
+      validators: [Validators.required],
     }),
     expenseTypeID: new FormControl(0, {
       validators: [Validators.required, this.formValidator.isValidExpenseType],
@@ -245,6 +245,8 @@ export class ExpenseDialogAddComponent {
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.form.controls.expenseTypeID.setValue(0);
+	this.form.controls.expenseTypeID.markAsTouched();
+	this.form.controls.expenseTypeID.markAsDirty();
   }
 
   search_paymentTypes() {
@@ -270,7 +272,7 @@ export class ExpenseDialogAddComponent {
     this.form.controls.expenseTypeID.setValue(expenseTypeID);
 
     // hide the results since one of them has been chosen.
-	this.showHTMLElement('searchResults_ExpenseType');
+	this.hideHTMLElement('searchResults_ExpenseType');
 
     // update the expenseTypeName form value to utilize the selected result
     //TODO: possibly make this a different value other than "innerHTML" - an attribute?

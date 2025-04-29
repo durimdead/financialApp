@@ -215,29 +215,36 @@ export class ExpenseDialogAddComponent {
   search_expenseTypes() {
     let currentSearchCriteria = this.form.controls.expenseTypeName.value;
 
-	if (currentSearchCriteria === null) return;
+    if (currentSearchCriteria === null) return;
     // call back to server to search the expense types
-    const subscription = this.financeService.searchExpenseTypes(currentSearchCriteria).pipe(debounceTime(200)).subscribe({
-		next: (results) => {
-			this.search_expenseTypeResults.set(results.expenseTypeData);
-			if (results.expenseTypeData.length === 0){
-				document.getElementById('searchResults_ExpenseType')?.classList.add('hidden-element');
-				this.updateFormControlErrorLabelHTML(this.form.controls.expenseTypeName);
-			}
-			else{
-				document.getElementById('searchResults_ExpenseType')?.classList.remove('hidden-element');
-			}
-		},
-      error: (error: Error) => {
-        console.error('error fetching expenses from server: ');
-        console.error(error);
-      },
-    });
+    const subscription = this.financeService
+      .searchExpenseTypes(currentSearchCriteria)
+      .pipe(debounceTime(200))
+      .subscribe({
+        next: (results) => {
+          let dataToDisplay = results.expenseTypeData;
+          if (dataToDisplay.length === 0) {
+            dataToDisplay.push({
+              expenseTypeDescription: '',
+              expenseTypeName: 'No Search Results',
+              expenseTypeID: 0,
+            });
+          }
+          this.search_expenseTypeResults.set(dataToDisplay);
+          document
+            .getElementById('searchResults_ExpenseType')
+            ?.classList.remove('hidden-element');
+        },
+        error: (error: Error) => {
+          console.error('error fetching expenses from server: ');
+          console.error(error);
+        },
+      });
 
     this.destroyRef.onDestroy(() => {
       subscription.unsubscribe();
     });
-	
+
     document
       .getElementById('searchResults_ExpenseType')
       ?.classList.remove('hidden-element');
@@ -302,4 +309,12 @@ export class ExpenseDialogAddComponent {
       selectedPaymentTypeElement!.innerHTML.trim()
     );
   }
+
+  hideElement(HTMLElementId: string) {
+    this.hideHTMLElement(HTMLElementId);
+  }
+	private hideHTMLElement(HTMLElementId: string) {
+		console.log('hiding element: ' + HTMLElementId);
+		document.getElementById(HTMLElementId.toString())?.classList.add('hidden-element');
+	}
 }

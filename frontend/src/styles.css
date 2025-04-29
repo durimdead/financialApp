@@ -103,6 +103,11 @@ input.ng-invalid.ng-touched.ng-dirty {
 	cursor: pointer;
 	background-color: lightblue;
 }
+.search-result-empty{
+	background-color: #c7c7c7;
+	color: #7c7c7c;
+	cursor: default;
+}
 .hidden-element {
   display: none;
 }

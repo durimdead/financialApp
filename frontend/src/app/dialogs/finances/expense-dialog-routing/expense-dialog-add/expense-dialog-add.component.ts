@@ -277,9 +277,8 @@ export class ExpenseDialogAddComponent {
     this.hideHTMLElement('searchResults_ExpenseType');
 
     // update the expenseTypeName form value to utilize the selected result
-    //TODO: possibly make this a different value other than "innerHTML" - an attribute?
     this.form.controls.expenseTypeName.setValue(
-      selectedExpenseTypeElement!.innerHTML.trim()
+      selectedExpenseTypeElement!.title.trim()
     );
   }
 

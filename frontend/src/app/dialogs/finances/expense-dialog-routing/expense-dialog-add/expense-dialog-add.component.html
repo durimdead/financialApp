@@ -86,6 +86,7 @@
           <div
             class="autocomplete-result-item"
             id="expenseTypeSearchResult_{{ currentExpenseType.expenseTypeID }}"
+			title="{{currentExpenseType.expenseTypeName}}"
             (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)"
           >
             {{ currentExpenseType.expenseTypeName }}

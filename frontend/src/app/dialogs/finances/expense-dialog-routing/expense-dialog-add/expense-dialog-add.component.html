@@ -68,7 +68,7 @@
           name="expenseTypeName"
           formControlName="expenseTypeName"
           (keyup)="search_expenseTypes()"
-		  (blur)="hideElementOnBlur('searchResults_ExpenseType')"
+          (blur)="hideElementOnBlur('searchResults_ExpenseType')"
         />
         <input
           type="hidden"
@@ -86,7 +86,7 @@
           <div
             class="autocomplete-result-item"
             id="expenseTypeSearchResult_{{ currentExpenseType.expenseTypeID }}"
-			title="{{currentExpenseType.expenseTypeName}}"
+            title="{{ currentExpenseType.expenseTypeName }}"
             (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)"
           >
             {{ currentExpenseType.expenseTypeName }}
@@ -142,6 +142,7 @@
           <div
             class="autocomplete-result-item"
             id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
+            title="{{ currentPaymentType.paymentTypeName }}"
             (click)="click_paymentTypeResult(currentPaymentType.paymentTypeID)"
           >
             {{ currentPaymentType.paymentTypeName }}

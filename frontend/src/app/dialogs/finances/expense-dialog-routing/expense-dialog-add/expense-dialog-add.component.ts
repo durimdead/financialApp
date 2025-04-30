@@ -294,9 +294,8 @@ export class ExpenseDialogAddComponent {
     this.hideHTMLElement('searchResults_PaymentType');
 
     // update the paymentTypeName form value to utilize the selected result
-    //TODO: possibly make this a different value other than "innerHTML" - an attribute?
     this.form.controls.paymentTypeName.setValue(
-      selectedPaymentTypeElement!.innerHTML.trim()
+      selectedPaymentTypeElement!.title.trim()
     );
   }
 

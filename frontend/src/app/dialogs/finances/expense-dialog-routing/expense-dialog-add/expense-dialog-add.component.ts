@@ -267,18 +267,6 @@ export class ExpenseDialogAddComponent {
     this.form.controls.paymentTypeID.setValue(0);
     this.form.controls.paymentTypeID.markAsTouched();
     this.form.controls.paymentTypeID.markAsDirty();
-
-    // let currentSearchCriteria = this.form.controls.paymentTypeName.value;
-    // this.search_paymentTypeResults.set(
-    //   this.samplePaymentTypes().filter((x) =>
-    //     x.paymentTypeName
-    //       .toLowerCase()
-    //       .includes(currentSearchCriteria!.toLowerCase())
-    //   )
-    // );
-    // this.showHTMLElement('searchResults_PaymentType');
-    // // if we have updated the search criteria, a valid type MUST be chosen from the list
-    // this.form.controls.paymentTypeID.setValue(0);
   }
 
   // updates information for expense type based on selected option from search results
@@ -317,6 +305,7 @@ export class ExpenseDialogAddComponent {
     );
   }
 
+  //TODO: fix this - it isn't working properly
   hideElementOnBlur(elementIdToHide: string) {
     setTimeout(() => {
       this.hideHTMLElement('elementIdToHide');

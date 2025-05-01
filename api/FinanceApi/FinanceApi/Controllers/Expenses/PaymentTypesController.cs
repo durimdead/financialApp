@@ -79,6 +79,35 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
+        /// <summary>
+        /// Gets a list of payment types based on payment type name
+        /// </summary>
+        /// <param name="paymentTypeSearchString">payment type name (partial included) to search on</param>
+        /// <returns>{httpStatusCode, paymentTypeData, errorMessage} : success will have a blank error message and 200 return. Failure will not have the "paymentTypeData"</returns>
+        [Route("SearchByPaymentTypeName")]
+        [HttpPost]
+        public JsonResult SearchByPaymentTypeName(string paymentTypeSearchString = "")
+        {
+            //string expenseTypeSearchString = "T";
+            try
+            {
+                var paymentTypeData = _expenseService.GetPaymentTypes(0, 0, paymentTypeSearchString);
+                var jsonData = new { httpStatusCode = HttpStatusCode.OK, paymentTypeData, errorMessage = "" };
+
+                return new JsonResult(jsonData);
+            }
+            catch (Exception ex)
+            {
+                var jsonData = new { httpStatusCode = HttpStatusCode.InternalServerError, errorMessage = ex.Message };
+
+                _logger.LogError(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError(ex.InnerException.Message);
+                }
+                return new JsonResult(jsonData);
+            }
+        }
         ///// <summary>
         ///// Gets a list of payment types based on search criteria
         ///// </summary>

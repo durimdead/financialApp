@@ -264,6 +264,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "FinanceApi.Controllers.Expenses.PaymentTypesController",
+    "Method": "SearchByPaymentTypeName",
+    "RelativePath": "api/PaymentTypes/SearchByPaymentTypeName",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "paymentTypeSearchString",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "FinanceApi.Controllers.POCs.PeriodicElementsController",
     "Method": "Get",
     "RelativePath": "api/PeriodicElements",

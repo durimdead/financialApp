@@ -188,32 +188,11 @@ export class ExpenseDialogAddComponent {
     }
   }
 
-  private getFormControlID(control: FormControl): string | null {
-    let group = <FormGroup>control.parent;
-
-    if (!group) {
-      return null;
-    }
-
-    let name: string;
-
-    Object.keys(group.controls).forEach((key) => {
-      let childControl = group.get(key);
-
-      if (childControl !== control) {
-        return;
-      }
-
-      name = key;
-    });
-
-    return name!;
-  }
-
   getFormGroupErrorDetails(formGroup: FormGroup<any>) {
     return this.formValidator.getFormGroupErrorDetails(formGroup);
   }
 
+  // populates dropdown with set of selectable, valid expense types to choose from
   search_expenseTypes() {
     let currentSearchCriteria = this.form.controls.expenseTypeName.value;
 
@@ -251,6 +230,7 @@ export class ExpenseDialogAddComponent {
     this.form.controls.expenseTypeID.markAsDirty();
   }
 
+  // populates dropdown with set of selectable, valid payment types to choose from
   search_paymentTypes() {
     let currentSearchCriteria = this.form.controls.paymentTypeName.value;
     this.search_paymentTypeResults.set(
@@ -265,6 +245,7 @@ export class ExpenseDialogAddComponent {
     this.form.controls.paymentTypeID.setValue(0);
   }
 
+  // updates information for expense type based on selected option from search results
   click_expenseTypeResult(expenseTypeID: number) {
     let selectedExpenseTypeElement = document.getElementById(
       'expenseTypeSearchResult_' + expenseTypeID.toString()
@@ -282,6 +263,7 @@ export class ExpenseDialogAddComponent {
     );
   }
 
+  // updates information for payment type based on selected option from search results
   click_paymentTypeResult(paymentTypeID: number) {
     let selectedPaymentTypeElement = document.getElementById(
       'paymentTypeSearchResult_' + paymentTypeID.toString()
@@ -300,21 +282,47 @@ export class ExpenseDialogAddComponent {
   }
 
   hideElementOnBlur(elementIdToHide: string) {
-	setTimeout(() => {
-		this.hideHTMLElement('elementIdToHide');
-	}, 500);
+    setTimeout(() => {
+      this.hideHTMLElement('elementIdToHide');
+    }, 500);
   }
+
   hideElement(HTMLElementId: string) {
     this.hideHTMLElement(HTMLElementId);
   }
+
   private hideHTMLElement(HTMLElementId: string) {
     document
       .getElementById(HTMLElementId.toString())
       ?.classList.add('hidden-element');
   }
+
   private showHTMLElement(HTMLElementId: string) {
     document
       .getElementById(HTMLElementId.toString())
       ?.classList.remove('hidden-element');
+  }
+
+  // extracts the ID of a given FormControl given the control
+  private getFormControlID(control: FormControl): string | null {
+    let group = <FormGroup>control.parent;
+
+    if (!group) {
+      return null;
+    }
+
+    let name: string;
+
+    Object.keys(group.controls).forEach((key) => {
+      let childControl = group.get(key);
+
+      if (childControl !== control) {
+        return;
+      }
+
+      name = key;
+    });
+
+    return name!;
   }
 }

@@ -215,7 +215,7 @@ export class ExpenseDialogAddComponent {
           this.showHTMLElement('searchResults_ExpenseType');
         },
         error: (error: Error) => {
-          console.error('error fetching expenses from server: ');
+          console.error('error fetching expense types from server: ');
           console.error(error);
         },
       });
@@ -233,16 +233,52 @@ export class ExpenseDialogAddComponent {
   // populates dropdown with set of selectable, valid payment types to choose from
   search_paymentTypes() {
     let currentSearchCriteria = this.form.controls.paymentTypeName.value;
-    this.search_paymentTypeResults.set(
-      this.samplePaymentTypes().filter((x) =>
-        x.paymentTypeName
-          .toLowerCase()
-          .includes(currentSearchCriteria!.toLowerCase())
-      )
-    );
-    this.showHTMLElement('searchResults_PaymentType');
+
+    if (currentSearchCriteria === null) return;
+    // call back to server to search the payment types
+    const subscription = this.financeService
+      .searchPaymentTypes(currentSearchCriteria)
+      .pipe(debounceTime(200))
+      .subscribe({
+        next: (results) => {
+          let dataToDisplay = results.paymentTypeData;
+          if (dataToDisplay.length === 0) {
+            dataToDisplay.push({
+              paymentTypeDescription : '',
+              paymentTypeName: 'No Search Results',
+              paymentTypeID: 0,
+			  paymentTypeCategoryID: 0
+            });
+          }
+          this.search_paymentTypeResults.set(dataToDisplay);
+          this.showHTMLElement('searchResults_PaymentType');
+        },
+        error: (error: Error) => {
+          console.error('error fetching payment types from server: ');
+          console.error(error);
+        },
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.form.controls.paymentTypeID.setValue(0);
+    this.form.controls.paymentTypeID.markAsTouched();
+    this.form.controls.paymentTypeID.markAsDirty();
+
+    // let currentSearchCriteria = this.form.controls.paymentTypeName.value;
+    // this.search_paymentTypeResults.set(
+    //   this.samplePaymentTypes().filter((x) =>
+    //     x.paymentTypeName
+    //       .toLowerCase()
+    //       .includes(currentSearchCriteria!.toLowerCase())
+    //   )
+    // );
+    // this.showHTMLElement('searchResults_PaymentType');
+    // // if we have updated the search criteria, a valid type MUST be chosen from the list
+    // this.form.controls.paymentTypeID.setValue(0);
   }
 
   // updates information for expense type based on selected option from search results

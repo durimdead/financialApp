@@ -5,6 +5,7 @@ import {
   Expense,
   ExpenseCrudData,
   ExpenseType,
+  PaymentType,
 } from '../../../app.interfaces';
 import { tap } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -19,8 +20,11 @@ export class FinanceService {
   private ApiUrlBase: string = 'https://localhost:7107/';
   private urlExpenses: string = this.ApiUrlBase + 'api/Expenses/';
   private urlExpenseTypes: string = this.ApiUrlBase + 'api/ExpenseTypes/';
+  private urlPaymentTypes: string = this.ApiUrlBase + 'api/PaymentTypes/';
   private urlSearchExpenseTypes: string =
     this.urlExpenseTypes + 'SearchByExpenseTypeName';
+  private urlSearchPaymentTypes: string =
+    this.urlPaymentTypes + 'SearchByPaymentTypeName';
   private CRUD_STATES = CRUD_STATES;
 
   // grab all expenses and store the result in the private expenseData set
@@ -40,6 +44,10 @@ export class FinanceService {
     return this.httpSearchExpenseTypes(expenseTypeSearchString);
   }
 
+  searchPaymentTypes(paymentTypeSearchString: string) {
+    return this.httpSearchPaymentTypes(paymentTypeSearchString);
+  }
+
   addExpense(expenseToAdd: Expense) {
     //TODO: do we add additional validation here? Is there a decently easy way to do so?
     return this.httpAddExpense(expenseToAdd);
@@ -47,18 +55,40 @@ export class FinanceService {
 
   private httpSearchExpenseTypes(expenseTypeSearchString: string) {
     const paramData = { expenseTypeSearchString: expenseTypeSearchString };
-	const params = new HttpParams().append('expenseTypeSearchString', expenseTypeSearchString.toString());
+    const params = new HttpParams().append(
+      'expenseTypeSearchString',
+      expenseTypeSearchString.toString()
+    );
     const headers = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
       }),
-	  params: params
+      params: params,
     };
     return this.httpClient.post<{
       httpStatusCode: number;
       expenseTypeData: ExpenseType[];
       errorMessage: string;
     }>(this.urlSearchExpenseTypes, paramData, headers);
+  }
+
+  private httpSearchPaymentTypes(paymentTypeSearchString: string) {
+    const paramData = { paymentTypeSearchString: paymentTypeSearchString };
+    const params = new HttpParams().append(
+      'paymentTypeSearchString',
+      paymentTypeSearchString.toString()
+    );
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+      }),
+      params: params,
+    };
+    return this.httpClient.post<{
+      httpStatusCode: number;
+      paymentTypeData: PaymentType[];
+      errorMessage: string;
+    }>(this.urlSearchPaymentTypes, paramData, headers);
   }
 
   // calls the API method to add a new expense to the database.

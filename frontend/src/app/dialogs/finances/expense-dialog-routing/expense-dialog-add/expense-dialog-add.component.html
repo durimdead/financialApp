@@ -138,7 +138,7 @@
           finance-app-autocomplete-search-element="paymentTypeName"
         >
           @for(currentPaymentType of search_paymentTypeResults(); track
-          currentPaymentType){
+          currentPaymentType){ @if(currentPaymentType.paymentTypeID !== 0){
           <div
             class="autocomplete-result-item"
             id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
@@ -147,6 +147,16 @@
           >
             {{ currentPaymentType.paymentTypeName }}
           </div>
+		}@else {
+			
+          <div
+            class="search-result-empty"
+            disabled="disabled"
+            (click)="hideElement('searchResults_PaymentType')"
+          >
+            --- No Search Results ---
+          </div>
+		}
           }
         </div>
         @if(formControlHasError(form.controls.paymentTypeName)){

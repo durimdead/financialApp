@@ -88,7 +88,6 @@ namespace FinanceApi.Controllers.Expenses
         [HttpPost]
         public JsonResult SearchByPaymentTypeName(string paymentTypeSearchString = "")
         {
-            //string expenseTypeSearchString = "T";
             try
             {
                 var paymentTypeData = _expenseService.GetPaymentTypes(0, 0, paymentTypeSearchString);

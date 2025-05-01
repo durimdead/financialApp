@@ -50,16 +50,15 @@ namespace FinanceApi.Controllers.Expenses
             }
         }
 
-        ////TODO: figure out how to get this data from the body instead of api/<ExpenseTypes>/<ID>
-        //public JsonResult Get(int expenseTypeID)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        /// <summary>
+        /// Gets a list of expense types based on expense type name
+        /// </summary>
+        /// <param name="expenseTypeSearchString">expense type name (partial included) to search on</param>
+        /// <returns>{httpStatusCode, expenseTypeData, errorMessage} : success will have a blank error message and 200 return. Failure will not have the "expenseTypeData"</returns>
         [Route("SearchByExpenseTypeName")]
         [HttpPost]
         public JsonResult SearchByExpenseTypeName(string expenseTypeSearchString = "")
         {
-            //string expenseTypeSearchString = "T";
             try
             {
                 var expenseTypeData = _expenseService.GetExpenseTypes(0, expenseTypeSearchString);

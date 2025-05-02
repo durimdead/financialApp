@@ -305,10 +305,10 @@ export class ExpenseDialogAddComponent {
     );
   }
 
-  //TODO: fix this - it isn't working properly
+  // specifically for hiding an element on blur with .5s timeout.
   hideElementOnBlur(elementIdToHide: string) {
     setTimeout(() => {
-      this.hideHTMLElement('elementIdToHide');
+      this.hideHTMLElement(elementIdToHide);
     }, 500);
   }
 

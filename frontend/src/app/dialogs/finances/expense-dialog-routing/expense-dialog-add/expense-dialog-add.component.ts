@@ -113,7 +113,7 @@ export class ExpenseDialogAddComponent {
     paymentTypeID: new FormControl(0, {
       validators: [Validators.required, this.formValidator.isValidPaymentType],
     }),
-
+	//TODO: Add in PaymentTypeCategoryID
     checkboxes: new FormGroup(
       {
         isInvestment: new FormControl(false, {}),
@@ -136,8 +136,8 @@ export class ExpenseDialogAddComponent {
         expenseDate: new Date(this.form.controls.expenseDate.value!.toString()),
         expenseAmount: Number(this.form.controls.expenseAmount.value),
         expenseID: 0,
-        expenseTypeID: 1,
-        paymentTypeID: 1,
+        expenseTypeID: Number(this.form.controls.expenseTypeID),
+        paymentTypeID: Number(this.form.controls.paymentTypeID),
         paymentTypeCategoryID: 1,
         expenseTypeName: 'NOT USED FOR ADD',
         paymentTypeName: 'NOT USED FOR ADD',

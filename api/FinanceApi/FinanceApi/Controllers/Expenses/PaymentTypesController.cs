@@ -51,6 +51,7 @@ namespace FinanceApi.Controllers.Expenses
         }
 
         /// <summary>
+        /// POST: api/PaymentTypes/
         /// Gets a single paymentType by ID
         /// </summary>
         /// <param name="paymentTypeID">ID of the payment type to return</param>
@@ -80,6 +81,7 @@ namespace FinanceApi.Controllers.Expenses
         }
 
         /// <summary>
+        /// POST: api/PaymentTypes/SearchByPaymentTypeName
         /// Gets a list of payment types based on payment type name
         /// </summary>
         /// <param name="paymentTypeSearchString">payment type name (partial included) to search on</param>

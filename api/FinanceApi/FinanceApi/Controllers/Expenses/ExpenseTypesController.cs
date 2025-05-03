@@ -51,6 +51,7 @@ namespace FinanceApi.Controllers.Expenses
         }
 
         /// <summary>
+        /// POST: api/ExpenseTypes/SearchByExpenseTypeName
         /// Gets a list of expense types based on expense type name
         /// </summary>
         /// <param name="expenseTypeSearchString">expense type name (partial included) to search on</param>

@@ -9,6 +9,7 @@ import {
 } from '../../../app.interfaces';
 import { tap } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,10 +18,10 @@ export class FinanceService {
   private expenseData = signal<Expense[]>([]);
   EXPENSE_DATA = this.expenseData.asReadonly();
   private httpClient = inject(HttpClient);
-  private ApiUrlBase: string = 'https://localhost:7107/';
-  private urlExpenses: string = this.ApiUrlBase + 'api/Expenses/';
-  private urlExpenseTypes: string = this.ApiUrlBase + 'api/ExpenseTypes/';
-  private urlPaymentTypes: string = this.ApiUrlBase + 'api/PaymentTypes/';
+  private ApiUrlBase: string = environment.apiUrl;
+  private urlExpenses: string = this.ApiUrlBase + environment.expensesController;
+  private urlExpenseTypes: string = this.ApiUrlBase + environment.expenseTypesController;
+  private urlPaymentTypes: string = this.ApiUrlBase + environment.paymentTypesController;
   private urlSearchExpenseTypes: string =
     this.urlExpenseTypes + 'SearchByExpenseTypeName';
   private urlSearchPaymentTypes: string =

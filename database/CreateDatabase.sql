@@ -1094,15 +1094,15 @@ CREATE VIEW [dbo].[vExpense]
 AS
 SELECT
     e.[ExpenseID]                   AS [ExpenseID]
+	,e.[ExpenseDate]				AS [ExpenseDate]
+	,e.[ExpenseDescription]			AS [ExpenseDescription]
+	,e.[ExpenseAmount]				AS [ExpenseAmount]
     ,e.[IsIncome]                   AS [IsIncome]
     ,e.[IsInvestment]               AS [IsInvenstment]
     ,et.[ExpenseTypeID]             AS [ExpenseTypeID]
     ,pt.[PaymentTypeID]             AS [PaymentTypeID]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
-	,e.[ExpenseDate]				AS [ExpenseDate]
 	,e.[ValidFrom]					AS [LastUpdated]
-	,e.[ExpenseAmount]				AS [ExpenseAmount]
-	,e.[ExpenseDescription]			AS [ExpenseDescription]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]
@@ -1114,6 +1114,9 @@ CREATE VIEW [dbo].[vExpenseDetail]
 AS
 SELECT
     e.[ExpenseID]                   AS [ExpenseID]
+	,e.[ExpenseDate]				AS [ExpenseDate]
+	,e.[ExpenseDescription]			AS [ExpenseDescription]
+	,e.[ExpenseAmount]				AS [ExpenseAmount]
     ,et.[ExpenseTypeName]           AS [ExpenseTypeName]
     ,pt.[PaymentTypeName]           AS [PaymentTypeName]
     ,ptc.[PaymentTypeCategoryName]  AS [PaymentTypeCategoryName]
@@ -1123,10 +1126,7 @@ SELECT
     ,pt.[PaymentTypeID]             AS [PaymentTypeID]
     ,pt.[PaymentTypeDescription]    AS [PaymentTypeDescription]
     ,ptc.[PaymentTypeCategoryID]    AS [PaymentTypeCategoryID]
-	,e.[ExpenseDate]				AS [ExpenseDate]
 	,e.[ValidFrom]					AS [LastUpdated]
-	,e.[ExpenseAmount]				AS [ExpenseAmount]
-	,e.[ExpenseDescription]			AS [ExpenseDescription]
 FROM
     [dbo].[Expense] e
         JOIN [dbo].[ExpenseType] et ON e.[ExpenseTypeID] = et.[ExpenseTypeID]

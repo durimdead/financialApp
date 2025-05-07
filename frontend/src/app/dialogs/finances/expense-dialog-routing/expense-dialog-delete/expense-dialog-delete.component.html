@@ -1,53 +1,52 @@
-<h2 mat-dialog-title>Delete {{ expenseData().expenseDescription }}?</h2>
+<h2 mat-dialog-title>Delete "{{ expenseData().expenseDescription }}"?</h2>
 <mat-dialog-content class="mat-typography">
-  <p>Expense Details:</p>
   <div class="container">
     <div class="row">
       <fieldset class="border fieldset-rounded p-2">
         <legend class="float-none w-auto px-3 fieldset-legend">
           Expense Date
         </legend>
-        {{ expenseData().expenseDate | date : "yyyy/MM/dd" }}
+        <span class="fieldset-content">{{ expenseData().expenseDate | date : "yyyy/MM/dd" }}</span>
       </fieldset>
     </div>
   </div>
   <div class="container">
     <div class="row">
-      <fieldset class="border fieldset-rounded p-2">
+      <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
         <legend class="float-none w-auto px-3 fieldset-legend">
           Expense Description
         </legend>
-        {{ expenseData().expenseDescription }}
+        <span class="fieldset-content">{{ expenseData().expenseDescription }}</span>
       </fieldset>
     </div>
   </div>
   <div class="container">
     <div class="row">
-      <fieldset class="border fieldset-rounded p-2">
+      <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
         <legend class="float-none w-auto px-3 fieldset-legend">
           Expense Amount
         </legend>
-        {{ expenseData().expenseAmount }}
+        <span class="fieldset-content">{{ expenseData().expenseAmount }}</span>
       </fieldset>
     </div>
   </div>
   <div class="container">
     <div class="row">
-      <fieldset class="border fieldset-rounded p-2">
+      <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
         <legend class="float-none w-auto px-3 fieldset-legend">
           Expense Type
         </legend>
-        {{ expenseData().expenseTypeName }}
+        <span class="fieldset-content">{{ expenseData().expenseTypeName }}</span>
       </fieldset>
     </div>
   </div>
   <div class="container">
     <div class="row">
-      <fieldset class="border fieldset-rounded p-2">
+      <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
         <legend class="float-none w-auto px-3 fieldset-legend">
           Payment Type
         </legend>
-        {{ expenseData().paymentTypeName }}
+        <span class="fieldset-content">{{ expenseData().paymentTypeName }}</span>
       </fieldset>
     </div>
   </div>

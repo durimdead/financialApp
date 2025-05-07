@@ -62,6 +62,13 @@ export class FormValidators {
     return null;
   }
 
+  isValidPaymentCategoryType(control: AbstractControl) {
+    if (Number(control.value) === 0) {
+      return { mustSelectValidPaymentCategoryType: true };
+    }
+    return null;
+  }
+
   compileValidationErrorMessage(formGroup: FormGroup) {}
 
   //#region mark-form-group-dirty-touched

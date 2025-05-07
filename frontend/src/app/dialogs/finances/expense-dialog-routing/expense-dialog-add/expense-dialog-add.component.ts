@@ -53,33 +53,6 @@ export class ExpenseDialogAddComponent {
   private destroyRef = inject(DestroyRef);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
   search_paymentTypeResults = signal<PaymentType[]>([]);
-  private sampleExpenseTypes = signal<ExpenseType[]>([
-    {
-      expenseTypeID: 1,
-      expenseTypeName: 'car maintenance',
-      expenseTypeDescription: 'NOT NEEDED',
-    },
-    {
-      expenseTypeID: 2,
-      expenseTypeName: 'other',
-      expenseTypeDescription: 'NOT NEEDED',
-    },
-  ]);
-
-  private samplePaymentTypes = signal<PaymentType[]>([
-    {
-      paymentTypeID: 1,
-      paymentTypeCategoryID: 1,
-      paymentTypeName: 'cash',
-      paymentTypeDescription: 'NOT NEEDED',
-    },
-    {
-      paymentTypeID: 2,
-      paymentTypeCategoryID: 1,
-      paymentTypeName: 'venmo',
-      paymentTypeDescription: 'NOT NEEDED',
-    },
-  ]);
 
   ngOnInit() {
     // console.log('inside the add dialog');
@@ -113,7 +86,9 @@ export class ExpenseDialogAddComponent {
     paymentTypeID: new FormControl(0, {
       validators: [Validators.required, this.formValidator.isValidPaymentType],
     }),
-	//TODO: Add in PaymentTypeCategoryID
+	paymentTypeCategoryID: new FormControl(0, {
+		validators: [Validators.required, this.formValidator.isValidPaymentCategoryType]
+	}),
     checkboxes: new FormGroup(
       {
         isInvestment: new FormControl(false, {}),
@@ -127,7 +102,7 @@ export class ExpenseDialogAddComponent {
     ),
   });
 
-  //TODO: continue filling in the appropriate fields into the rest of the data.
+  // Submits the new expense that has been filled out in the form
   submitNewExpense() {
     if (!this.form.invalid) {
       let newExpense: Expense = {
@@ -138,7 +113,7 @@ export class ExpenseDialogAddComponent {
         expenseID: 0,
         expenseTypeID: Number(this.form.controls.expenseTypeID.value),
         paymentTypeID: Number(this.form.controls.paymentTypeID.value),
-        paymentTypeCategoryID: 1,
+        paymentTypeCategoryID: Number(this.form.controls.paymentTypeCategoryID.value),
         expenseTypeName: 'NOT USED FOR ADD',
         paymentTypeName: 'NOT USED FOR ADD',
         paymentTypeDescription: 'NOT USED FOR ADD',
@@ -265,6 +240,7 @@ export class ExpenseDialogAddComponent {
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.form.controls.paymentTypeID.setValue(0);
+    this.form.controls.paymentTypeCategoryID.setValue(0);
     this.form.controls.paymentTypeID.markAsTouched();
     this.form.controls.paymentTypeID.markAsDirty();
   }
@@ -288,13 +264,15 @@ export class ExpenseDialogAddComponent {
   }
 
   // updates information for payment type based on selected option from search results
-  click_paymentTypeResult(paymentTypeID: number) {
+  click_paymentTypeResult(paymentTypeID: number, paymentTypeCategoryID: number) {
     let selectedPaymentTypeElement = document.getElementById(
       'paymentTypeSearchResult_' + paymentTypeID.toString()
     );
 
-    // update the hidden input form value for paymentTypeID
+    // update the hidden input form values for paymentTypeID and paymentTypeCategoryID
     this.form.controls.paymentTypeID.setValue(paymentTypeID);
+    this.form.controls.paymentTypeCategoryID.setValue(paymentTypeCategoryID);
+
 
     // hide the results since one of them has been chosen.
     this.hideHTMLElement('searchResults_PaymentType');

@@ -132,6 +132,12 @@
           name="paymentTypeID"
           value="{{ form.controls.paymentTypeID }}"
         />
+        <input
+          type="hidden"
+          id="paymentTypeCategoryID"
+          name="paymentTypeCategoryID"
+          value="{{ form.controls.paymentTypeCategoryID }}"
+        />
         <div
           class="autocomplete-results autocomplete-results-modal hidden-element"
           id="searchResults_PaymentType"
@@ -143,7 +149,7 @@
             class="autocomplete-result-item"
             id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
             title="{{ currentPaymentType.paymentTypeName }}"
-            (click)="click_paymentTypeResult(currentPaymentType.paymentTypeID)"
+            (click)="click_paymentTypeResult(currentPaymentType.paymentTypeID, currentPaymentType.paymentTypeCategoryID)"
           >
             {{ currentPaymentType.paymentTypeName }}
           </div>

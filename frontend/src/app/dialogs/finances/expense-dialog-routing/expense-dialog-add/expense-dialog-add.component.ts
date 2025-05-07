@@ -53,33 +53,6 @@ export class ExpenseDialogAddComponent {
   private destroyRef = inject(DestroyRef);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
   search_paymentTypeResults = signal<PaymentType[]>([]);
-  private sampleExpenseTypes = signal<ExpenseType[]>([
-    {
-      expenseTypeID: 1,
-      expenseTypeName: 'car maintenance',
-      expenseTypeDescription: 'NOT NEEDED',
-    },
-    {
-      expenseTypeID: 2,
-      expenseTypeName: 'other',
-      expenseTypeDescription: 'NOT NEEDED',
-    },
-  ]);
-
-  private samplePaymentTypes = signal<PaymentType[]>([
-    {
-      paymentTypeID: 1,
-      paymentTypeCategoryID: 1,
-      paymentTypeName: 'cash',
-      paymentTypeDescription: 'NOT NEEDED',
-    },
-    {
-      paymentTypeID: 2,
-      paymentTypeCategoryID: 1,
-      paymentTypeName: 'venmo',
-      paymentTypeDescription: 'NOT NEEDED',
-    },
-  ]);
 
   ngOnInit() {
     // console.log('inside the add dialog');

@@ -12,10 +12,10 @@
     <th mat-header-cell *matHeaderCellDef>Actions</th>
     <td mat-cell *matCellDef="let expense">
       <div class="table-icon-column">
-        <button mat-icon-button (click)="editExpense(expense.expenseID)">
+        <button mat-icon-button (click)="openEditExpenseModal(expense.expenseID)">
           <mat-icon class="blue-text">edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="confirmDeleteExpense(expense.expenseID)">
+        <button mat-icon-button (click)="openDeleteExpenseModal(expense.expenseID)">
           <mat-icon class="red-text">delete</mat-icon>
         </button>
       </div>

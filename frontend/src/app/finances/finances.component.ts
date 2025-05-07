@@ -19,7 +19,7 @@ import { ExpenseDialogRoutingComponent } from '../dialogs/finances/expense-dialo
     MatIconModule,
     RouterLink,
     DatePipe,
-	DecimalPipe
+    DecimalPipe,
   ],
   templateUrl: './finances.component.html',
   styleUrl: './finances.component.css',
@@ -69,11 +69,30 @@ export class FinancesComponent {
     });
   }
 
-  editExpense(expenseId: number): void {
-    console.log('editing expense');
+  async openEditExpenseModal(expenseID: number): Promise<void> {
+    // brings up modal to edit an expense
+    const modalData = await this.financeService.getExpenseCrudModel(
+      expenseID,
+      this.CRUD_STATES.update as CrudState
+    );
+    let dialogRef = this.dialog.open(ExpenseDialogRoutingComponent, {
+      data: modalData,
+    });
+
+    // if the user submits a new element, we will get back an element to add to the table, else ''
+    const subscription = dialogRef
+      .afterClosed()
+      .subscribe((result: Expense | '') => {
+        if (result !== '') {
+          this.editExpense(result, expenseID);
+        }
+      });
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
-  async confirmDeleteExpense(expenseID: number): Promise<void> {
+  async openDeleteExpenseModal(expenseID: number): Promise<void> {
     try {
       const modalData = await this.financeService.getExpenseCrudModel(
         expenseID,
@@ -128,33 +147,35 @@ export class FinancesComponent {
   }
 
   private addExpense(expenseToAdd: Expense) {
-	const subscription = this.financeService
-    .addExpense(expenseToAdd)
-    .subscribe({
-      next: (results) => {
-        if (results.httpStatusCode === 200) {
-          this.updateExpensesFromDatasource();
-        } else {
-          console.log(
-            'server error adding expense ::: ' +
-              '". Error message : ' +
-              results.errorMessage
-          );
-		  console.log(expenseToAdd);
-        }
-      },
-      error: (error: Error) => {
-        console.log(
-          'server error adding expense ::: ' +
-            '". Full Error: '
-        );
-        console.log(error);
-      },
-    });
+    const subscription = this.financeService
+      .addExpense(expenseToAdd)
+      .subscribe({
+        next: (results) => {
+          if (results.httpStatusCode === 200) {
+            this.updateExpensesFromDatasource();
+          } else {
+            console.log(
+              'server error adding expense ::: ' +
+                '". Error message : ' +
+                results.errorMessage
+            );
+            console.log(expenseToAdd);
+          }
+        },
+        error: (error: Error) => {
+          console.log('server error adding expense ::: ' + '". Full Error: ');
+          console.log(error);
+        },
+      });
 
-  this.destroyRef.onDestroy(() => {
-    subscription.unsubscribe();
-  });
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+  }
+
+  private editExpense(expenseToEdit: Expense, expenseID: number) {
+    console.log(expenseToEdit);
+    console.log(expenseID);
   }
 
   // gets the data from the "source" (i.e. the API) and then refreshes the table appropriately

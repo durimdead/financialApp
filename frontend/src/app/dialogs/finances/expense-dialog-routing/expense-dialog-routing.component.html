@@ -4,3 +4,6 @@
 @else if (inputData.expenseState === getCrudStates().delete) {
 	<app-expense-dialog-delete [expenseData]="inputData.expenseData"/>
 }
+@else if (inputData.expenseState === getCrudStates().update){
+	<app-expense-dialog-edit [expenseData]="inputData.expenseData"/>
+}

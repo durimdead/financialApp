@@ -128,3 +128,9 @@ input.ng-invalid.ng-touched.ng-dirty {
 .fieldset-content{
 	padding-left: 16px !important;
 }
+.text-strikethrough{
+	text-decoration: line-through;
+}
+.text-strikethrough:hover{
+	text-decoration: none;
+}

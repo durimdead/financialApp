@@ -4,6 +4,7 @@ import {
   DestroyRef,
   inject,
   input,
+  OnInit,
 } from '@angular/core';
 import {
   FormControl,
@@ -39,7 +40,41 @@ import { ExpenseDialogAddComponent } from '../expense-dialog-add/expense-dialog-
   templateUrl: './expense-dialog-edit.component.html',
   styleUrl: './expense-dialog-edit.component.css',
 })
-export class ExpenseDialogEditComponent {
+export class ExpenseDialogEditComponent implements OnInit {
+  ngOnInit(): void {
+    this.form.controls.expenseDate.setValue(
+      new Date(this.expenseData().expenseDate.toString())
+        .toISOString()
+        .substring(0, 10)
+    );
+    this.form.controls.expenseDescription.setValue(
+      this.expenseData().expenseDescription
+    );
+    this.form.controls.expenseAmount.setValue(
+      this.expenseData().expenseAmount.toString()
+    );
+    this.form.controls.expenseTypeName.setValue(
+      this.expenseData().expenseTypeName.toString()
+    );
+    this.form.controls.paymentTypeName.setValue(
+      this.expenseData().paymentTypeName.toString()
+    );
+    this.form.controls.expenseTypeID.setValue(
+      this.expenseData().expenseTypeID
+    );
+    this.form.controls.paymentTypeID.setValue(
+      this.expenseData().paymentTypeID
+    );
+    this.form.controls.paymentTypeCategoryID.setValue(
+      this.expenseData().paymentTypeCategoryID
+    );
+    this.form.controls.checkboxes.controls.isInvestment.setValue(
+      this.expenseData().isInvestment
+    );
+    this.form.controls.checkboxes.controls.isIncome.setValue(
+      this.expenseData().isIncome
+    );
+  }
   private formValidator = inject(FormValidators);
   private financeService = inject(FinanceService);
   public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);

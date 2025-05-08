@@ -1,7 +1,214 @@
 <h2 mat-dialog-title>Edit {{this.expenseData().expenseDescription}}</h2>
 <mat-dialog-content class="mat-typography">
   <div>
-    Testing Edit Dialog Display
+    <form [formGroup]="form" class="form-flex-column">
+      <!-- Expense Date -->
+      <div class="control form-group-div">
+        <label for="expenseDate" class="input-label-modal"
+          >Expense Date :</label
+        >
+        <input
+          id="expenseDate"
+          class="input-date input-date-modal"
+          type="date"
+          name="expenseDate"
+          formControlName="expenseDate"
+        />
+        <!-- @if(formControlHasError(form.controls.expenseDate)){
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseDescription) }}
+        <label class="error-label" id="errorLabel_expenseDate"></label>
+        } -->
+      </div>
+
+      <!-- Expense Description -->
+      <div class="control form-group-div">
+        <label for="expenseDescription" class="input-label-modal"
+          >Expense Description :</label
+        >
+        <input
+          id="expenseDescription"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="expenseDescription"
+          formControlName="expenseDescription"
+        />
+        <!-- @if(formControlHasError(form.controls.expenseDescription)){
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseDescription) }}
+        <label class="error-label" id="errorLabel_expenseDescription"></label>
+        } -->
+      </div>
+
+      <!-- Expense Amount -->
+      <div class="control form-group-div">
+        <label for="expenseAmount" class="input-label-modal"
+          >Expense Amount :</label
+        >
+        <input
+          id="expenseAmount"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="expenseAmount"
+          formControlName="expenseAmount"
+        />
+        <!-- @if(formControlHasError(form.controls.expenseAmount)){
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseAmount) }}
+        <label class="error-label" id="errorLabel_expenseAmount"></label>
+        } -->
+      </div>
+
+      <!-- Expense Type Name -->
+      <div class="control form-group-div">
+        <label for="expenseTypeName" class="input-label-modal">
+          Expense Type :
+        </label>
+        <input
+          id="expenseTypeName"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="expenseTypeName"
+          formControlName="expenseTypeName"
+        />
+<!-- 		
+          (keyup)="search_expenseTypes()"
+          (blur)="hideElementOnBlur('searchResults_ExpenseType')" -->
+        <input
+          type="hidden"
+          id="expenseTypeID"
+          name="expenseTypeID"
+          value="{{ form.controls.expenseTypeID }}"
+        />
+        <!-- <div
+          class="autocomplete-results autocomplete-results-modal hidden-element"
+          id="searchResults_ExpenseType"
+          finance-app-autocomplete-search-element="expenseTypeName"
+        >
+          @for(currentExpenseType of search_expenseTypeResults(); track
+          currentExpenseType){ @if(currentExpenseType.expenseTypeID !== 0){
+          <div
+            class="autocomplete-result-item"
+            id="expenseTypeSearchResult_{{ currentExpenseType.expenseTypeID }}"
+            title="{{ currentExpenseType.expenseTypeName }}"
+            (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)"
+          >
+            {{ currentExpenseType.expenseTypeName }}
+          </div>
+          } @else {
+          <div
+            class="search-result-empty"
+            disabled="disabled"
+            (click)="hideElement('searchResults_ExpenseType')"
+          >
+            --- No Search Results ---
+          </div>
+          } }
+        </div> 
+        @if(formControlHasError(form.controls.expenseTypeName)){
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeName) }}
+        <label class="error-label" id="errorLabel_expenseTypeName"></label>
+        } @if(formControlHasError(form.controls.expenseTypeID)){
+        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeID) }}
+        <label class="error-label" id="errorLabel_expenseTypeID"></label>
+        }-->
+      </div>
+
+      <!-- Payment Type Name -->
+      <div class="control form-group-div">
+        <label
+          for="paymentTypeName"
+          class="input-label-modal top-margin-spacing"
+        >
+          Payment Type :
+        </label>
+        <input
+          id="paymentTypeName"
+          class="input-textbox input-textbox-modal"
+          type="text"
+          name="paymentTypeName"
+          formControlName="paymentTypeName"
+        />
+		
+          <!-- (keyup)="search_paymentTypes()" -->
+        <input
+          type="hidden"
+          id="paymentTypeID"
+          name="paymentTypeID"
+          value="{{ form.controls.paymentTypeID }}"
+        />
+        <input
+          type="hidden"
+          id="paymentTypeCategoryID"
+          name="paymentTypeCategoryID"
+          value="{{ form.controls.paymentTypeCategoryID }}"
+        />
+       <!--  <div
+          class="autocomplete-results autocomplete-results-modal hidden-element"
+          id="searchResults_PaymentType"
+          finance-app-autocomplete-search-element="paymentTypeName"
+        >
+          @for(currentPaymentType of search_paymentTypeResults(); track
+          currentPaymentType){ @if(currentPaymentType.paymentTypeID !== 0){
+          <div
+            class="autocomplete-result-item"
+            id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
+            title="{{ currentPaymentType.paymentTypeName }}"
+            (click)="click_paymentTypeResult(currentPaymentType.paymentTypeID, currentPaymentType.paymentTypeCategoryID)"
+          >
+            {{ currentPaymentType.paymentTypeName }}
+          </div>
+		}@else {
+			
+          <div
+            class="search-result-empty"
+            disabled="disabled"
+            (click)="hideElement('searchResults_PaymentType')"
+          >
+            --- No Search Results ---
+          </div>
+		}
+          }
+        </div>
+        @if(formControlHasError(form.controls.paymentTypeName)){
+        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeName) }}
+        <label class="error-label" id="errorLabel_paymentTypeName"></label>
+        } @if(formControlHasError(form.controls.paymentTypeID)){
+        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeID) }}
+        <label class="error-label" id="errorLabel_paymentTypeID"></label>
+        } -->
+      </div>
+
+      <!-- Investment / Income checkboxes -->
+      <div formGroupName="checkboxes" class="top-margin-spacing">
+        <div>
+          <input
+            id="isInvestment"
+            name="isInvestment"
+            formControlName="isInvestment"
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            aria-label="Checkbox for following text input"
+          /><label for="isInvestment" class="input-label-modal"
+            >Investment?</label
+          >
+        </div>
+        <div>
+          <input
+            id="isIncome"
+            name="isIncome"
+            formControlName="isIncome"
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            aria-label="Checkbox for following text input"
+          /><label for="isIncome" class="input-label-modal">Income?</label>
+        </div>
+      </div>
+      <!-- @if(formGroupHasError(form.controls.checkboxes)){
+      <label class="error-label">{{
+        getFormGroupErrorDetails(form.controls.checkboxes)
+      }}</label>
+      } -->
+    </form>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

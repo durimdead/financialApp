@@ -17,7 +17,6 @@ import { ExpenseDialogRoutingComponent } from '../dialogs/finances/expense-dialo
     MatSortModule,
     MatButtonModule,
     MatIconModule,
-    RouterLink,
     DatePipe,
     DecimalPipe,
   ],

@@ -1,5 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  input,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
@@ -9,6 +21,9 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Expense } from '../../../../../app.interfaces';
+import { FormValidators } from '../../../../../app.form-validators';
+import { FinanceService } from '../../../../services/finance/finance.service';
+import { ExpenseDialogAddComponent } from '../expense-dialog-add/expense-dialog-add.component';
 
 @Component({
   selector: 'app-expense-dialog-edit',
@@ -25,6 +40,55 @@ import { Expense } from '../../../../../app.interfaces';
   styleUrl: './expense-dialog-edit.component.css',
 })
 export class ExpenseDialogEditComponent {
+  private formValidator = inject(FormValidators);
+  private financeService = inject(FinanceService);
+  public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
+  private destroyRef = inject(DestroyRef);
   readonly inputData = inject(MAT_DIALOG_DATA);
   expenseData = input.required<Expense>();
+
+  form = new FormGroup({
+    expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {
+      validators: [Validators.required, this.formValidator.mustBeADate],
+    }),
+    expenseDescription: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
+    expenseAmount: new FormControl('', {
+      validators: [
+        Validators.required,
+        this.formValidator.mustBeANumber,
+        this.formValidator.mustNotBeZero,
+      ],
+    }),
+    expenseTypeName: new FormControl('', {
+      validators: [Validators.required],
+    }),
+    paymentTypeName: new FormControl('', {
+      validators: [Validators.required],
+    }),
+    expenseTypeID: new FormControl(0, {
+      validators: [Validators.required, this.formValidator.isValidExpenseType],
+    }),
+    paymentTypeID: new FormControl(0, {
+      validators: [Validators.required, this.formValidator.isValidPaymentType],
+    }),
+    paymentTypeCategoryID: new FormControl(0, {
+      validators: [
+        Validators.required,
+        this.formValidator.isValidPaymentCategoryType,
+      ],
+    }),
+    checkboxes: new FormGroup(
+      {
+        isInvestment: new FormControl(false, {}),
+        isIncome: new FormControl(false, {}),
+      },
+      {
+        validators: [
+          this.formValidator.cannotSelectBoth('isInvestment', 'isIncome'),
+        ],
+      }
+    ),
+  });
 }

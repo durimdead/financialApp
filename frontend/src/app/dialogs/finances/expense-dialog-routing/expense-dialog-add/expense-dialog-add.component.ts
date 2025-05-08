@@ -59,9 +59,7 @@ export class ExpenseDialogAddComponent {
   }
 
   form = new FormGroup({
-    //TODO: add in validator to make sure a date is actually selected - might need to look up how to put a "blank" default value for a date.
     expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {
-      //validators: [Validators.required],
       validators: [Validators.required, this.formValidator.mustBeADate],
     }),
     expenseDescription: new FormControl('', {

@@ -256,7 +256,7 @@ export class ExpenseDialogAddComponent {
             });
           }
           this.search_paymentTypeResults.set(dataToDisplay);
-          this.showHTMLElement('searchResults_PaymentType');
+          this.showHTMLElement('searchResults_paymentType');
         },
         error: (error: Error) => {
           console.error('error fetching payment types from server: ');
@@ -320,7 +320,7 @@ export class ExpenseDialogAddComponent {
     );
 
     // hide the results since one of them has been chosen.
-    this.hideHTMLElement('searchResults_PaymentType');
+    this.hideHTMLElement('searchResults_paymentType');
 
     // update the paymentTypeName form value to utilize the selected result
     this.form.controls.paymentType.controls.paymentTypeName.setValue(
@@ -356,7 +356,7 @@ export class ExpenseDialogAddComponent {
         console.log(currentElement);
         if (
           currentElement.innerHTML.trim().toLowerCase() ===
-          currentSearchValue.toLowerCase()
+          currentSearchValue.trim().toLowerCase()
         ) {
           console.log('found match');
           currentElement.click();

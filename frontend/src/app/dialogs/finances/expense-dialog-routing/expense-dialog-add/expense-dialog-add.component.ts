@@ -3,6 +3,7 @@ import {
   Component,
   DestroyRef,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import {
@@ -53,10 +54,6 @@ export class ExpenseDialogAddComponent {
   private destroyRef = inject(DestroyRef);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
   search_paymentTypeResults = signal<PaymentType[]>([]);
-
-  ngOnInit() {
-    // console.log('inside the add dialog');
-  }
 
   form = new FormGroup({
     expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {

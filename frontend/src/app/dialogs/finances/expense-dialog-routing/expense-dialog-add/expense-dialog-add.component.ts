@@ -86,17 +86,26 @@ export class ExpenseDialogAddComponent {
         validators: [Validators.required],
       }
     ),
-
-    paymentTypeName: new FormControl('', {}),
-    paymentTypeID: new FormControl(0, {
-      validators: [Validators.required, this.formValidator.isValidPaymentType],
-    }),
-    paymentTypeCategoryID: new FormControl(0, {
-      validators: [
-        Validators.required,
-        this.formValidator.isValidPaymentCategoryType,
-      ],
-    }),
+    paymentType: new FormGroup(
+      {
+        paymentTypeName: new FormControl('', {}),
+        paymentTypeID: new FormControl(0, {
+          validators: [
+            Validators.required,
+            this.formValidator.isValidPaymentType,
+          ],
+        }),
+        paymentTypeCategoryID: new FormControl(0, {
+          validators: [
+            Validators.required,
+            this.formValidator.isValidPaymentCategoryType,
+          ],
+        }),
+      },
+      {
+        validators: [Validators.required],
+      }
+    ),
     checkboxes: new FormGroup(
       {
         isInvestment: new FormControl(false, {}),
@@ -119,10 +128,14 @@ export class ExpenseDialogAddComponent {
         expenseDate: new Date(this.form.controls.expenseDate.value!.toString()),
         expenseAmount: Number(this.form.controls.expenseAmount.value),
         expenseID: 0,
-        expenseTypeID: Number(this.form.controls.expenseType.controls.expenseTypeID.value),
-        paymentTypeID: Number(this.form.controls.paymentTypeID.value),
+        expenseTypeID: Number(
+          this.form.controls.expenseType.controls.expenseTypeID.value
+        ),
+        paymentTypeID: Number(
+          this.form.controls.paymentType.controls.paymentTypeID.value
+        ),
         paymentTypeCategoryID: Number(
-          this.form.controls.paymentTypeCategoryID.value
+          this.form.controls.paymentType.controls.paymentTypeCategoryID.value
         ),
         expenseTypeName: 'NOT USED FOR ADD',
         paymentTypeName: 'NOT USED FOR ADD',
@@ -184,7 +197,8 @@ export class ExpenseDialogAddComponent {
 
   // populates dropdown with set of selectable, valid expense types to choose from
   search_expenseTypes() {
-    let currentSearchCriteria = this.form.controls.expenseType.controls.expenseTypeName.value;
+    let currentSearchCriteria =
+      this.form.controls.expenseType.controls.expenseTypeName.value;
 
     if (currentSearchCriteria === null) return;
     // call back to server to search the expense types
@@ -225,7 +239,8 @@ export class ExpenseDialogAddComponent {
 
   // populates dropdown with set of selectable, valid payment types to choose from
   search_paymentTypes() {
-    let currentSearchCriteria = this.form.controls.paymentTypeName.value;
+    let currentSearchCriteria =
+      this.form.controls.paymentType.controls.paymentTypeName.value;
 
     if (currentSearchCriteria === null) return;
     // call back to server to search the payment types
@@ -257,10 +272,10 @@ export class ExpenseDialogAddComponent {
     });
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
-    this.form.controls.paymentTypeID.setValue(0);
-    this.form.controls.paymentTypeCategoryID.setValue(0);
-    this.form.controls.paymentTypeID.markAsTouched();
-    this.form.controls.paymentTypeID.markAsDirty();
+    this.form.controls.paymentType.controls.paymentTypeID.setValue(0);
+    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(0);
+    this.form.controls.paymentType.controls.paymentTypeID.markAsTouched();
+    this.form.controls.paymentType.controls.paymentTypeID.markAsDirty();
     document
       .getElementById('paymentTypeName')
       ?.classList.remove('validated-input');
@@ -300,14 +315,14 @@ export class ExpenseDialogAddComponent {
     );
 
     // update the hidden input form values for paymentTypeID and paymentTypeCategoryID
-    this.form.controls.paymentTypeID.setValue(paymentTypeID);
-    this.form.controls.paymentTypeCategoryID.setValue(paymentTypeCategoryID);
+    this.form.controls.paymentType.controls.paymentTypeID.setValue(paymentTypeID);
+    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(paymentTypeCategoryID);
 
     // hide the results since one of them has been chosen.
     this.hideHTMLElement('searchResults_PaymentType');
 
     // update the paymentTypeName form value to utilize the selected result
-    this.form.controls.paymentTypeName.setValue(
+    this.form.controls.paymentType.controls.paymentTypeName.setValue(
       selectedPaymentTypeElement!.title.trim()
     );
 

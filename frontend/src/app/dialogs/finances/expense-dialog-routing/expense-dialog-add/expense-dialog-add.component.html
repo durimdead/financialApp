@@ -125,71 +125,86 @@
         </div>
       </div>
       <!-- Payment Type Name -->
-      <div class="control form-group-div">
-        <label
-          for="paymentTypeName"
-          class="input-label-modal top-margin-spacing"
-        >
-          Payment Type :
-        </label>
-        <input
-          id="paymentTypeName"
-          class="input-textbox input-textbox-modal"
-          type="text"
-          name="paymentTypeName"
-          formControlName="paymentTypeName"
-          (keyup)="search_paymentTypes()"
-        />
-        <input
-          type="hidden"
-          id="paymentTypeID"
-          name="paymentTypeID"
-          value="{{ form.controls.paymentTypeID }}"
-        />
-        <input
-          type="hidden"
-          id="paymentTypeCategoryID"
-          name="paymentTypeCategoryID"
-          value="{{ form.controls.paymentTypeCategoryID }}"
-        />
-        <div
-          class="autocomplete-results autocomplete-results-modal hidden-element"
-          id="searchResults_PaymentType"
-          finance-app-autocomplete-search-element="paymentTypeName"
-        >
-          @for(currentPaymentType of search_paymentTypeResults(); track
-          currentPaymentType){ @if(currentPaymentType.paymentTypeID !== 0){
-          <div
-            class="autocomplete-result-item"
-            id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
-            title="{{ currentPaymentType.paymentTypeName }}"
-            (click)="
-              click_paymentTypeResult(
-                currentPaymentType.paymentTypeID,
-                currentPaymentType.paymentTypeCategoryID
-              )
-            "
+      <div formGroupName="paymentType" class="top-margin-spacing">
+        <div class="control form-group-div">
+          <label
+            for="paymentTypeName"
+            class="input-label-modal top-margin-spacing"
           >
-            {{ currentPaymentType.paymentTypeName }}
-          </div>
-          }@else {
+            Payment Type :
+          </label>
+          <input
+            id="paymentTypeName"
+            class="input-textbox input-textbox-modal"
+            type="text"
+            name="paymentTypeName"
+            formControlName="paymentTypeName"
+            (keyup)="search_paymentTypes()"
+          />
+          <input
+            type="hidden"
+            id="paymentTypeID"
+            name="paymentTypeID"
+            value="{{ form.controls.paymentType.controls.paymentTypeID }}"
+          />
+          <input
+            type="hidden"
+            id="paymentTypeCategoryID"
+            name="paymentTypeCategoryID"
+            value="{{
+              form.controls.paymentType.controls.paymentTypeCategoryID
+            }}"
+          />
+          <div
+            class="autocomplete-results autocomplete-results-modal hidden-element"
+            id="searchResults_PaymentType"
+            finance-app-autocomplete-search-element="paymentTypeName"
+          >
+            @for(currentPaymentType of search_paymentTypeResults(); track
+            currentPaymentType){ @if(currentPaymentType.paymentTypeID !== 0){
+            <div
+              class="autocomplete-result-item"
+              id="paymentTypeSearchResult_{{
+                currentPaymentType.paymentTypeID
+              }}"
+              title="{{ currentPaymentType.paymentTypeName }}"
+              (click)="
+                click_paymentTypeResult(
+                  currentPaymentType.paymentTypeID,
+                  currentPaymentType.paymentTypeCategoryID
+                )
+              "
+            >
+              {{ currentPaymentType.paymentTypeName }}
+            </div>
+            }@else {
 
-          <div
-            class="search-result-empty"
-            disabled="disabled"
-            (click)="hideElement('searchResults_PaymentType')"
-          >
-            --- No Search Results ---
+            <div
+              class="search-result-empty"
+              disabled="disabled"
+              (click)="hideElement('searchResults_PaymentType')"
+            >
+              --- No Search Results ---
+            </div>
+            } }
           </div>
-          } }
+          @if(formControlHasError(form.controls.paymentType.controls.paymentTypeName)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.paymentType.controls.paymentTypeName
+            )
+          }}
+          <label class="error-label" id="errorLabel_paymentTypeName"></label>
+          }
+          @if(formControlHasError(form.controls.paymentType.controls.paymentTypeID)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.paymentType.controls.paymentTypeID
+            )
+          }}
+          <label class="error-label" id="errorLabel_paymentTypeID"></label>
+          }
         </div>
-        @if(formControlHasError(form.controls.paymentTypeName)){
-        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeName) }}
-        <label class="error-label" id="errorLabel_paymentTypeName"></label>
-        } @if(formControlHasError(form.controls.paymentTypeID)){
-        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeID) }}
-        <label class="error-label" id="errorLabel_paymentTypeID"></label>
-        }
       </div>
 
       <!-- Investment / Income checkboxes -->

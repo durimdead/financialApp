@@ -134,3 +134,6 @@ input.ng-invalid.ng-touched.ng-dirty {
 .text-strikethrough:hover{
 	text-decoration: none;
 }
+.validated-input{
+	background-color: rgb(216, 255, 216);
+}

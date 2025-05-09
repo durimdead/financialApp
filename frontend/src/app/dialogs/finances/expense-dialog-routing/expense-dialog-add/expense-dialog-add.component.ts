@@ -84,9 +84,12 @@ export class ExpenseDialogAddComponent {
     paymentTypeID: new FormControl(0, {
       validators: [Validators.required, this.formValidator.isValidPaymentType],
     }),
-	paymentTypeCategoryID: new FormControl(0, {
-		validators: [Validators.required, this.formValidator.isValidPaymentCategoryType]
-	}),
+    paymentTypeCategoryID: new FormControl(0, {
+      validators: [
+        Validators.required,
+        this.formValidator.isValidPaymentCategoryType,
+      ],
+    }),
     checkboxes: new FormGroup(
       {
         isInvestment: new FormControl(false, {}),
@@ -111,7 +114,9 @@ export class ExpenseDialogAddComponent {
         expenseID: 0,
         expenseTypeID: Number(this.form.controls.expenseTypeID.value),
         paymentTypeID: Number(this.form.controls.paymentTypeID.value),
-        paymentTypeCategoryID: Number(this.form.controls.paymentTypeCategoryID.value),
+        paymentTypeCategoryID: Number(
+          this.form.controls.paymentTypeCategoryID.value
+        ),
         expenseTypeName: 'NOT USED FOR ADD',
         paymentTypeName: 'NOT USED FOR ADD',
         paymentTypeDescription: 'NOT USED FOR ADD',
@@ -134,6 +139,11 @@ export class ExpenseDialogAddComponent {
   formControlHasError(formControl: FormControl) {
     if (formControl.touched && formControl.dirty && formControl.invalid) {
       return true;
+    }
+    if (formControl.touched && formControl.dirty) {
+      let formControlID = this.getFormControlID(formControl);
+      formControlID = formControlID === undefined ? '' : formControlID!;
+      document.getElementById(formControlID)?.classList.add('validated-input');
     }
     return false;
   }
@@ -201,6 +211,9 @@ export class ExpenseDialogAddComponent {
     this.form.controls.expenseTypeID.setValue(0);
     this.form.controls.expenseTypeID.markAsTouched();
     this.form.controls.expenseTypeID.markAsDirty();
+    document
+      .getElementById('expenseTypeName')
+      ?.classList.remove('validated-input');
   }
 
   // populates dropdown with set of selectable, valid payment types to choose from
@@ -217,10 +230,10 @@ export class ExpenseDialogAddComponent {
           let dataToDisplay = results.paymentTypeData;
           if (dataToDisplay.length === 0) {
             dataToDisplay.push({
-              paymentTypeDescription : '',
+              paymentTypeDescription: '',
               paymentTypeName: 'No Search Results',
               paymentTypeID: 0,
-			  paymentTypeCategoryID: 0
+              paymentTypeCategoryID: 0,
             });
           }
           this.search_paymentTypeResults.set(dataToDisplay);
@@ -241,6 +254,9 @@ export class ExpenseDialogAddComponent {
     this.form.controls.paymentTypeCategoryID.setValue(0);
     this.form.controls.paymentTypeID.markAsTouched();
     this.form.controls.paymentTypeID.markAsDirty();
+    document
+      .getElementById('paymentTypeName')
+      ?.classList.remove('validated-input');
   }
 
   // updates information for expense type based on selected option from search results
@@ -259,10 +275,17 @@ export class ExpenseDialogAddComponent {
     this.form.controls.expenseTypeName.setValue(
       selectedExpenseTypeElement!.title.trim()
     );
+
+    document
+      .getElementById('expenseTypeName')
+      ?.classList.add('validated-input');
   }
 
   // updates information for payment type based on selected option from search results
-  click_paymentTypeResult(paymentTypeID: number, paymentTypeCategoryID: number) {
+  click_paymentTypeResult(
+    paymentTypeID: number,
+    paymentTypeCategoryID: number
+  ) {
     let selectedPaymentTypeElement = document.getElementById(
       'paymentTypeSearchResult_' + paymentTypeID.toString()
     );
@@ -271,7 +294,6 @@ export class ExpenseDialogAddComponent {
     this.form.controls.paymentTypeID.setValue(paymentTypeID);
     this.form.controls.paymentTypeCategoryID.setValue(paymentTypeCategoryID);
 
-
     // hide the results since one of them has been chosen.
     this.hideHTMLElement('searchResults_PaymentType');
 
@@ -279,6 +301,10 @@ export class ExpenseDialogAddComponent {
     this.form.controls.paymentTypeName.setValue(
       selectedPaymentTypeElement!.title.trim()
     );
+
+    document
+      .getElementById('paymentTypeName')
+      ?.classList.add('validated-input');
   }
 
   // specifically for hiding an element on blur with .5s timeout.

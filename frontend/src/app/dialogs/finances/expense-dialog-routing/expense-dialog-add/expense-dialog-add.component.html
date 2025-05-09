@@ -57,59 +57,73 @@
       </div>
 
       <!-- Expense Type Name -->
-      <div class="control form-group-div">
-        <label for="expenseTypeName" class="input-label-modal">
-          Expense Type :
-        </label>
-        <input
-          id="expenseTypeName"
-          class="input-textbox input-textbox-modal"
-          type="text"
-          name="expenseTypeName"
-          formControlName="expenseTypeName"
-          (keyup)="search_expenseTypes()"
-          (blur)="hideElementOnBlur('searchResults_ExpenseType')"
-        />
-        <input
-          type="hidden"
-          id="expenseTypeID"
-          name="expenseTypeID"
-          value="{{ form.controls.expenseTypeID }}"
-        />
-        <div
-          class="autocomplete-results autocomplete-results-modal hidden-element"
-          id="searchResults_ExpenseType"
-          finance-app-autocomplete-search-element="expenseTypeName"
-        >
-          @for(currentExpenseType of search_expenseTypeResults(); track
-          currentExpenseType){ @if(currentExpenseType.expenseTypeID !== 0){
+      <div formGroupName="expenseType" class="top-margin-spacing">
+        <div class="control form-group-div">
+          <label for="expenseTypeName" class="input-label-modal">
+            Expense Type :
+          </label>
+          <input
+            id="expenseTypeName"
+            class="input-textbox input-textbox-modal"
+            type="text"
+            name="expenseTypeName"
+            formControlName="expenseTypeName"
+            (keyup)="search_expenseTypes()"
+            (blur)="hideElementOnBlur('searchResults_ExpenseType')"
+          />
+          <input
+            type="hidden"
+            id="expenseTypeID"
+            name="expenseTypeID"
+            value="{{ form.controls.expenseType.controls.expenseTypeID }}"
+          />
           <div
-            class="autocomplete-result-item"
-            id="expenseTypeSearchResult_{{ currentExpenseType.expenseTypeID }}"
-            title="{{ currentExpenseType.expenseTypeName }}"
-            (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)"
+            class="autocomplete-results autocomplete-results-modal hidden-element"
+            id="searchResults_ExpenseType"
+            finance-app-autocomplete-search-element="expenseTypeName"
           >
-            {{ currentExpenseType.expenseTypeName }}
+            @for(currentExpenseType of search_expenseTypeResults(); track
+            currentExpenseType){ @if(currentExpenseType.expenseTypeID !== 0){
+            <div
+              class="autocomplete-result-item"
+              id="expenseTypeSearchResult_{{
+                currentExpenseType.expenseTypeID
+              }}"
+              title="{{ currentExpenseType.expenseTypeName }}"
+              (click)="
+                click_expenseTypeResult(currentExpenseType.expenseTypeID)
+              "
+            >
+              {{ currentExpenseType.expenseTypeName }}
+            </div>
+            } @else {
+            <div
+              class="search-result-empty"
+              disabled="disabled"
+              (click)="hideElement('searchResults_ExpenseType')"
+            >
+              --- No Search Results ---
+            </div>
+            } }
           </div>
-          } @else {
-          <div
-            class="search-result-empty"
-            disabled="disabled"
-            (click)="hideElement('searchResults_ExpenseType')"
-          >
-            --- No Search Results ---
-          </div>
-          } }
+          @if(formControlHasError(form.controls.expenseType.controls.expenseTypeName)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.expenseType.controls.expenseTypeName
+            )
+          }}
+          <label class="error-label" id="errorLabel_expenseTypeName"></label>
+          }
+          @if(formControlHasError(form.controls.expenseType.controls.expenseTypeID)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.expenseType.controls.expenseTypeID
+            )
+          }}
+          <label class="error-label" id="errorLabel_expenseTypeID"></label>
+          }
         </div>
-        @if(formControlHasError(form.controls.expenseTypeName)){
-        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeName) }}
-        <label class="error-label" id="errorLabel_expenseTypeName"></label>
-        } @if(formControlHasError(form.controls.expenseTypeID)){
-        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeID) }}
-        <label class="error-label" id="errorLabel_expenseTypeID"></label>
-        }
       </div>
-
       <!-- Payment Type Name -->
       <div class="control form-group-div">
         <label
@@ -149,12 +163,17 @@
             class="autocomplete-result-item"
             id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
             title="{{ currentPaymentType.paymentTypeName }}"
-            (click)="click_paymentTypeResult(currentPaymentType.paymentTypeID, currentPaymentType.paymentTypeCategoryID)"
+            (click)="
+              click_paymentTypeResult(
+                currentPaymentType.paymentTypeID,
+                currentPaymentType.paymentTypeCategoryID
+              )
+            "
           >
             {{ currentPaymentType.paymentTypeName }}
           </div>
-		}@else {
-			
+          }@else {
+
           <div
             class="search-result-empty"
             disabled="disabled"
@@ -162,8 +181,7 @@
           >
             --- No Search Results ---
           </div>
-		}
-          }
+          } }
         </div>
         @if(formControlHasError(form.controls.paymentTypeName)){
         {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeName) }}

@@ -72,15 +72,22 @@ export class ExpenseDialogAddComponent {
         this.formValidator.mustNotBeZero,
       ],
     }),
-    expenseTypeName: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    paymentTypeName: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    expenseTypeID: new FormControl(0, {
-      validators: [Validators.required, this.formValidator.isValidExpenseType],
-    }),
+    expenseType: new FormGroup(
+      {
+        expenseTypeName: new FormControl('', {}),
+        expenseTypeID: new FormControl(0, {
+          validators: [
+            Validators.required,
+            this.formValidator.isValidExpenseType,
+          ],
+        }),
+      },
+      {
+        validators: [Validators.required],
+      }
+    ),
+
+    paymentTypeName: new FormControl('', {}),
     paymentTypeID: new FormControl(0, {
       validators: [Validators.required, this.formValidator.isValidPaymentType],
     }),
@@ -112,7 +119,7 @@ export class ExpenseDialogAddComponent {
         expenseDate: new Date(this.form.controls.expenseDate.value!.toString()),
         expenseAmount: Number(this.form.controls.expenseAmount.value),
         expenseID: 0,
-        expenseTypeID: Number(this.form.controls.expenseTypeID.value),
+        expenseTypeID: Number(this.form.controls.expenseType.controls.expenseTypeID.value),
         paymentTypeID: Number(this.form.controls.paymentTypeID.value),
         paymentTypeCategoryID: Number(
           this.form.controls.paymentTypeCategoryID.value
@@ -177,7 +184,7 @@ export class ExpenseDialogAddComponent {
 
   // populates dropdown with set of selectable, valid expense types to choose from
   search_expenseTypes() {
-    let currentSearchCriteria = this.form.controls.expenseTypeName.value;
+    let currentSearchCriteria = this.form.controls.expenseType.controls.expenseTypeName.value;
 
     if (currentSearchCriteria === null) return;
     // call back to server to search the expense types
@@ -208,9 +215,9 @@ export class ExpenseDialogAddComponent {
     });
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
-    this.form.controls.expenseTypeID.setValue(0);
-    this.form.controls.expenseTypeID.markAsTouched();
-    this.form.controls.expenseTypeID.markAsDirty();
+    this.form.controls.expenseType.controls.expenseTypeID.setValue(0);
+    this.form.controls.expenseType.controls.expenseTypeID.markAsTouched();
+    this.form.controls.expenseType.controls.expenseTypeID.markAsDirty();
     document
       .getElementById('expenseTypeName')
       ?.classList.remove('validated-input');
@@ -266,13 +273,15 @@ export class ExpenseDialogAddComponent {
     );
 
     // update the hidden input form value for expenseTypeID
-    this.form.controls.expenseTypeID.setValue(expenseTypeID);
+    this.form.controls.expenseType.controls.expenseTypeID.setValue(
+      expenseTypeID
+    );
 
     // hide the results since one of them has been chosen.
     this.hideHTMLElement('searchResults_ExpenseType');
 
     // update the expenseTypeName form value to utilize the selected result
-    this.form.controls.expenseTypeName.setValue(
+    this.form.controls.expenseType.controls.expenseTypeName.setValue(
       selectedExpenseTypeElement!.title.trim()
     );
 

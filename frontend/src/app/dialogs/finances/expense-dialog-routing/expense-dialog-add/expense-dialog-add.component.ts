@@ -213,7 +213,7 @@ export class ExpenseDialogAddComponent {
             });
           }
           this.search_expenseTypeResults.set(dataToDisplay);
-          this.showHTMLElement('searchResults_ExpenseType');
+          this.showHTMLElement('searchResults_expenseType');
         },
         error: (error: Error) => {
           console.error('error fetching expense types from server: ');
@@ -290,7 +290,7 @@ export class ExpenseDialogAddComponent {
     );
 
     // hide the results since one of them has been chosen.
-    this.hideHTMLElement('searchResults_ExpenseType');
+    this.hideHTMLElement('searchResults_expenseType');
 
     // update the expenseTypeName form value to utilize the selected result
     this.form.controls.expenseType.controls.expenseTypeName.setValue(
@@ -312,8 +312,12 @@ export class ExpenseDialogAddComponent {
     );
 
     // update the hidden input form values for paymentTypeID and paymentTypeCategoryID
-    this.form.controls.paymentType.controls.paymentTypeID.setValue(paymentTypeID);
-    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(paymentTypeCategoryID);
+    this.form.controls.paymentType.controls.paymentTypeID.setValue(
+      paymentTypeID
+    );
+    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(
+      paymentTypeCategoryID
+    );
 
     // hide the results since one of them has been chosen.
     this.hideHTMLElement('searchResults_PaymentType');
@@ -328,11 +332,48 @@ export class ExpenseDialogAddComponent {
       ?.classList.add('validated-input');
   }
 
-  // specifically for hiding an element on blur with .5s timeout.
-  hideElementOnBlur(elementIdToHide: string) {
-    setTimeout(() => {
-      this.hideHTMLElement(elementIdToHide);
-    }, 500);
+  // on blur of search section, attempt to match it to an existing search result and select it.
+  selectFromListIfMatched(searchType: string, searchboxInputID: string) {
+    console.log('blurred: ' + searchType);
+    let currentSearchboxElement = document.getElementById(
+      searchboxInputID
+    ) as HTMLInputElement;
+    let currentSearchValue = currentSearchboxElement!.value;
+    let resultsToCheck: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '[data-searchResultItemType="' + searchType + '"]'
+    );
+    let matchFound: boolean = false;
+
+	// if there's only one item to check, select it. Otherwise, cycle through to try to find
+	// an exact match (case insensitive).
+    if (resultsToCheck.length === 1) {
+      resultsToCheck[0].click();
+	  matchFound = true;
+    }
+    else {
+      resultsToCheck.forEach((currentElement: HTMLElement) => {
+        console.log('checking new element');
+        console.log(currentElement);
+        if (
+          currentElement.innerHTML.trim().toLowerCase() ===
+          currentSearchValue.toLowerCase()
+        ) {
+          console.log('found match');
+          currentElement.click();
+          matchFound = true;
+          return;
+        }
+      });
+    }
+
+    // no match found, but section "blur" event happened: hide the search results.
+    if (!matchFound) {
+      console.log('no match found');
+      setTimeout(() => {
+        console.log('hiding search results');
+        this.hideElement('searchResults_' + searchType);
+      }, 1500);
+    }
   }
 
   hideElement(HTMLElementId: string) {

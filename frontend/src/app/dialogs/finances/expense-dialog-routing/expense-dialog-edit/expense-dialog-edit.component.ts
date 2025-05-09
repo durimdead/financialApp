@@ -41,6 +41,14 @@ import { ExpenseDialogAddComponent } from '../expense-dialog-add/expense-dialog-
   styleUrl: './expense-dialog-edit.component.css',
 })
 export class ExpenseDialogEditComponent implements OnInit {
+  private formValidator = inject(FormValidators);
+  private financeService = inject(FinanceService);
+  public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
+  private destroyRef = inject(DestroyRef);
+  readonly inputData = inject(MAT_DIALOG_DATA);
+  readonly expenseData = input.required<Expense>();
+
+  // set all the values for the form from the expense input
   ngOnInit(): void {
     this.form.controls.expenseDate.setValue(
       new Date(this.expenseData().expenseDate.toString())
@@ -59,12 +67,8 @@ export class ExpenseDialogEditComponent implements OnInit {
     this.form.controls.paymentTypeName.setValue(
       this.expenseData().paymentTypeName.toString()
     );
-    this.form.controls.expenseTypeID.setValue(
-      this.expenseData().expenseTypeID
-    );
-    this.form.controls.paymentTypeID.setValue(
-      this.expenseData().paymentTypeID
-    );
+    this.form.controls.expenseTypeID.setValue(this.expenseData().expenseTypeID);
+    this.form.controls.paymentTypeID.setValue(this.expenseData().paymentTypeID);
     this.form.controls.paymentTypeCategoryID.setValue(
       this.expenseData().paymentTypeCategoryID
     );
@@ -75,12 +79,6 @@ export class ExpenseDialogEditComponent implements OnInit {
       this.expenseData().isIncome
     );
   }
-  private formValidator = inject(FormValidators);
-  private financeService = inject(FinanceService);
-  public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
-  private destroyRef = inject(DestroyRef);
-  readonly inputData = inject(MAT_DIALOG_DATA);
-  expenseData = input.required<Expense>();
 
   form = new FormGroup({
     expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {

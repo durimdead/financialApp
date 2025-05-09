@@ -135,5 +135,5 @@ input.ng-invalid.ng-touched.ng-dirty {
 	text-decoration: none;
 }
 .validated-input{
-	background-color: rgb(216, 255, 216);
+	border-color: rgb(16, 213, 16);
 }

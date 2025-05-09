@@ -57,123 +57,179 @@
       </div>
 
       <!-- Expense Type Name -->
-      <div class="control form-group-div">
-        <label for="expenseTypeName" class="input-label-modal">
-          Expense Type :
-        </label>
-        <input
-          id="expenseTypeName"
-          class="input-textbox input-textbox-modal"
-          type="text"
-          name="expenseTypeName"
-          formControlName="expenseTypeName"
-        />
-<!-- 		
-          (keyup)="search_expenseTypes()"
-          (blur)="hideElementOnBlur('searchResults_ExpenseType')" -->
-        <input
-          type="hidden"
-          id="expenseTypeID"
-          name="expenseTypeID"
-          value="{{ form.controls.expenseTypeID }}"
-        />
-        <!-- <div
-          class="autocomplete-results autocomplete-results-modal hidden-element"
-          id="searchResults_ExpenseType"
-          finance-app-autocomplete-search-element="expenseTypeName"
-        >
-          @for(currentExpenseType of search_expenseTypeResults(); track
-          currentExpenseType){ @if(currentExpenseType.expenseTypeID !== 0){
-          <div
-            class="autocomplete-result-item"
-            id="expenseTypeSearchResult_{{ currentExpenseType.expenseTypeID }}"
-            title="{{ currentExpenseType.expenseTypeName }}"
-            (click)="click_expenseTypeResult(currentExpenseType.expenseTypeID)"
+      <div formGroupName="expenseType">
+        <div>
+          <label for="expenseTypeName" class="input-label-modal">
+            Expense Type :
+          </label>
+          <!-- 
+		  
+		  			USE THIS INPUT WHEN DOING FINAL EDIT
+		 
+		  <input
+            id="expenseTypeName"
+            class="input-textbox input-textbox-modal"
+            type="text"
+            name="expenseTypeName"
+            formControlName="expenseTypeName"
+            (keyup)="search_expenseTypes()"
+			(blur)="selectFromListIfMatched('expenseType', 'expenseTypeName')"
+          /> -->
+		  <input
+            id="expenseTypeName"
+            class="input-textbox input-textbox-modal"
+            type="text"
+            name="expenseTypeName"
+            formControlName="expenseTypeName"
+          />
+          <input
+            type="hidden"
+            id="expenseTypeID"
+            name="expenseTypeID"
+            value="{{ form.controls.expenseType.controls.expenseTypeID }}"
+          />
+          <!-- <div
+            class="autocomplete-results autocomplete-results-modal hidden-element"
+            id="searchResults_expenseType"
+            finance-app-autocomplete-search-element="expenseTypeName"
           >
-            {{ currentExpenseType.expenseTypeName }}
+            @for(currentExpenseType of search_expenseTypeResults(); track
+            currentExpenseType){ @if(currentExpenseType.expenseTypeID !== 0){
+            <div
+              class="autocomplete-result-item"
+              id="expenseTypeSearchResult_{{
+                currentExpenseType.expenseTypeID
+              }}"
+			  data-searchResultItemType="expenseType"
+              title="{{ currentExpenseType.expenseTypeName }}"
+              (click)="
+                click_expenseTypeResult(currentExpenseType.expenseTypeID)
+              "
+            >
+              {{ currentExpenseType.expenseTypeName }}
+            </div>
+            } @else {
+            <div
+              class="search-result-empty"
+              disabled="disabled"
+              (click)="hideElement('searchResults_expenseType')"
+            >
+              --- No Search Results ---
+            </div>
+            } }
           </div>
-          } @else {
-          <div
-            class="search-result-empty"
-            disabled="disabled"
-            (click)="hideElement('searchResults_ExpenseType')"
-          >
-            --- No Search Results ---
-          </div>
-          } }
-        </div> 
-        @if(formControlHasError(form.controls.expenseTypeName)){
-        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeName) }}
-        <label class="error-label" id="errorLabel_expenseTypeName"></label>
-        } @if(formControlHasError(form.controls.expenseTypeID)){
-        {{ updateFormControlErrorLabelHTML(form.controls.expenseTypeID) }}
-        <label class="error-label" id="errorLabel_expenseTypeID"></label>
-        }-->
-      </div>
-
-      <!-- Payment Type Name -->
-      <div class="control form-group-div">
-        <label
-          for="paymentTypeName"
-          class="input-label-modal top-margin-spacing"
-        >
-          Payment Type :
-        </label>
-        <input
-          id="paymentTypeName"
-          class="input-textbox input-textbox-modal"
-          type="text"
-          name="paymentTypeName"
-          formControlName="paymentTypeName"
-        />
-		
-          <!-- (keyup)="search_paymentTypes()" -->
-        <input
-          type="hidden"
-          id="paymentTypeID"
-          name="paymentTypeID"
-          value="{{ form.controls.paymentTypeID }}"
-        />
-        <input
-          type="hidden"
-          id="paymentTypeCategoryID"
-          name="paymentTypeCategoryID"
-          value="{{ form.controls.paymentTypeCategoryID }}"
-        />
-       <!--  <div
-          class="autocomplete-results autocomplete-results-modal hidden-element"
-          id="searchResults_PaymentType"
-          finance-app-autocomplete-search-element="paymentTypeName"
-        >
-          @for(currentPaymentType of search_paymentTypeResults(); track
-          currentPaymentType){ @if(currentPaymentType.paymentTypeID !== 0){
-          <div
-            class="autocomplete-result-item"
-            id="paymentTypeSearchResult_{{ currentPaymentType.paymentTypeID }}"
-            title="{{ currentPaymentType.paymentTypeName }}"
-            (click)="click_paymentTypeResult(currentPaymentType.paymentTypeID, currentPaymentType.paymentTypeCategoryID)"
-          >
-            {{ currentPaymentType.paymentTypeName }}
-          </div>
-		}@else {
-			
-          <div
-            class="search-result-empty"
-            disabled="disabled"
-            (click)="hideElement('searchResults_PaymentType')"
-          >
-            --- No Search Results ---
-          </div>
-		}
+          @if(formControlHasError(form.controls.expenseType.controls.expenseTypeName)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.expenseType.controls.expenseTypeName
+            )
+          }}
+          <label class="error-label" id="errorLabel_expenseTypeName"></label>
           }
+          @if(formControlHasError(form.controls.expenseType.controls.expenseTypeID)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.expenseType.controls.expenseTypeID
+            )
+          }}
+          <label class="error-label" id="errorLabel_expenseTypeID"></label>
+          } -->
         </div>
-        @if(formControlHasError(form.controls.paymentTypeName)){
-        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeName) }}
-        <label class="error-label" id="errorLabel_paymentTypeName"></label>
-        } @if(formControlHasError(form.controls.paymentTypeID)){
-        {{ updateFormControlErrorLabelHTML(form.controls.paymentTypeID) }}
-        <label class="error-label" id="errorLabel_paymentTypeID"></label>
-        } -->
+      </div>
+      <!-- Payment Type Name -->
+      <div formGroupName="paymentType">
+        <div>
+          <label
+            for="paymentTypeName"
+            class="input-label-modal top-margin-spacing"
+          >
+            Payment Type :
+          </label>
+          <!-- 
+		  
+		  			USE THIS INPUT WHEN DOING FINAL EDIT
+		 
+		  <input
+            id="paymentTypeName"
+            class="input-textbox input-textbox-modal"
+            type="text"
+            name="paymentTypeName"
+            formControlName="paymentTypeName"
+            (keyup)="search_paymentTypes()"
+			(blur)="selectFromListIfMatched('paymentType', 'paymentTypeName')"
+          /> -->		  
+          <input
+            id="paymentTypeName"
+            class="input-textbox input-textbox-modal"
+            type="text"
+            name="paymentTypeName"
+            formControlName="paymentTypeName"
+          />
+          <input
+            type="hidden"
+            id="paymentTypeID"
+            name="paymentTypeID"
+            value="{{ form.controls.paymentType.controls.paymentTypeID }}"
+          />
+          <input
+            type="hidden"
+            id="paymentTypeCategoryID"
+            name="paymentTypeCategoryID"
+            value="{{
+              form.controls.paymentType.controls.paymentTypeCategoryID
+            }}"
+          />
+          <!-- <div
+            class="autocomplete-results autocomplete-results-modal hidden-element"
+            id="searchResults_paymentType"
+            finance-app-autocomplete-search-element="paymentTypeName"
+          >
+            @for(currentPaymentType of search_paymentTypeResults(); track
+            currentPaymentType){ @if(currentPaymentType.paymentTypeID !== 0){
+            <div
+              class="autocomplete-result-item"
+              id="paymentTypeSearchResult_{{
+                currentPaymentType.paymentTypeID
+              }}"
+              title="{{ currentPaymentType.paymentTypeName }}"
+			  data-searchResultItemType="paymentType"
+              (click)="
+                click_paymentTypeResult(
+                  currentPaymentType.paymentTypeID,
+                  currentPaymentType.paymentTypeCategoryID
+                )
+              "
+            >
+              {{ currentPaymentType.paymentTypeName }}
+            </div>
+            }@else {
+
+            <div
+              class="search-result-empty"
+              disabled="disabled"
+              (click)="hideElement('searchResults_paymentType')"
+            >
+              --- No Search Results ---
+            </div>
+            } }
+          </div>
+          @if(formControlHasError(form.controls.paymentType.controls.paymentTypeName)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.paymentType.controls.paymentTypeName
+            )
+          }}
+          <label class="error-label" id="errorLabel_paymentTypeName"></label>
+          }
+          @if(formControlHasError(form.controls.paymentType.controls.paymentTypeID)){
+          {{
+            updateFormControlErrorLabelHTML(
+              form.controls.paymentType.controls.paymentTypeID
+            )
+          }}
+          <label class="error-label" id="errorLabel_paymentTypeID"></label>
+          } -->
+        </div>
       </div>
 
       <!-- Investment / Income checkboxes -->

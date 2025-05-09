@@ -61,15 +61,19 @@ export class ExpenseDialogEditComponent implements OnInit {
     this.form.controls.expenseAmount.setValue(
       this.expenseData().expenseAmount.toString()
     );
-    this.form.controls.expenseTypeName.setValue(
+    this.form.controls.expenseType.controls.expenseTypeName.setValue(
       this.expenseData().expenseTypeName.toString()
     );
-    this.form.controls.paymentTypeName.setValue(
+    this.form.controls.paymentType.controls.paymentTypeName.setValue(
       this.expenseData().paymentTypeName.toString()
     );
-    this.form.controls.expenseTypeID.setValue(this.expenseData().expenseTypeID);
-    this.form.controls.paymentTypeID.setValue(this.expenseData().paymentTypeID);
-    this.form.controls.paymentTypeCategoryID.setValue(
+    this.form.controls.expenseType.controls.expenseTypeID.setValue(
+      this.expenseData().expenseTypeID
+    );
+    this.form.controls.paymentType.controls.paymentTypeID.setValue(
+      this.expenseData().paymentTypeID
+    );
+    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(
       this.expenseData().paymentTypeCategoryID
     );
     this.form.controls.checkboxes.controls.isInvestment.setValue(
@@ -94,24 +98,40 @@ export class ExpenseDialogEditComponent implements OnInit {
         this.formValidator.mustNotBeZero,
       ],
     }),
-    expenseTypeName: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    paymentTypeName: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    expenseTypeID: new FormControl(0, {
-      validators: [Validators.required, this.formValidator.isValidExpenseType],
-    }),
-    paymentTypeID: new FormControl(0, {
-      validators: [Validators.required, this.formValidator.isValidPaymentType],
-    }),
-    paymentTypeCategoryID: new FormControl(0, {
-      validators: [
-        Validators.required,
-        this.formValidator.isValidPaymentCategoryType,
-      ],
-    }),
+    expenseType: new FormGroup(
+      {
+        expenseTypeName: new FormControl('', {}),
+        expenseTypeID: new FormControl(0, {
+          validators: [
+            Validators.required,
+            this.formValidator.isValidExpenseType,
+          ],
+        }),
+      },
+      {
+        validators: [Validators.required],
+      }
+    ),
+    paymentType: new FormGroup(
+      {
+        paymentTypeName: new FormControl('', {}),
+        paymentTypeID: new FormControl(0, {
+          validators: [
+            Validators.required,
+            this.formValidator.isValidPaymentType,
+          ],
+        }),
+        paymentTypeCategoryID: new FormControl(0, {
+          validators: [
+            Validators.required,
+            this.formValidator.isValidPaymentCategoryType,
+          ],
+        }),
+      },
+      {
+        validators: [Validators.required],
+      }
+    ),
     checkboxes: new FormGroup(
       {
         isInvestment: new FormControl(false, {}),

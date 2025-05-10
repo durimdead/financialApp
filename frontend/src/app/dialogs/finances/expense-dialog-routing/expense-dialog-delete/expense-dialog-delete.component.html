@@ -1,20 +1,10 @@
-<h2 mat-dialog-title>Delete "{{ expenseData().expenseDescription }}"?</h2>
+<h2 mat-dialog-title>Delete Expense?</h2>
 <mat-dialog-content class="mat-typography">
-  <div class="container">
+	<div class="container">
     <div class="row">
       <fieldset class="border fieldset-rounded p-2">
         <legend class="float-none w-auto px-3 fieldset-legend">
-          Expense Date
-        </legend>
-        <span class="fieldset-content">{{ expenseData().expenseDate | date : "yyyy/MM/dd" }}</span>
-      </fieldset>
-    </div>
-  </div>
-  <div class="container">
-    <div class="row">
-      <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
-        <legend class="float-none w-auto px-3 fieldset-legend">
-          Expense Description
+          EXPENSE DESCRIPTION
         </legend>
         <span class="fieldset-content">{{ expenseData().expenseDescription }}</span>
       </fieldset>
@@ -24,7 +14,18 @@
     <div class="row">
       <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
         <legend class="float-none w-auto px-3 fieldset-legend">
-          Expense Amount
+          EXPENSE DATE
+        </legend>
+        <span class="fieldset-content">{{ expenseData().expenseDate | date : "yyyy/MM/dd" }}</span>
+      </fieldset>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="row">
+      <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
+        <legend class="float-none w-auto px-3 fieldset-legend">
+          EXPENSE AMOUNT
         </legend>
         <span class="fieldset-content">{{ expenseData().expenseAmount }}</span>
       </fieldset>
@@ -34,7 +35,7 @@
     <div class="row">
       <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
         <legend class="float-none w-auto px-3 fieldset-legend">
-          Expense Type
+          EXPENSE TYPE
         </legend>
         <span class="fieldset-content">{{ expenseData().expenseTypeName }}</span>
       </fieldset>
@@ -44,7 +45,7 @@
     <div class="row">
       <fieldset class="border fieldset-rounded p-2 top-margin-spacing">
         <legend class="float-none w-auto px-3 fieldset-legend">
-          Payment Type
+          PAYMENT TYPE
         </legend>
         <span class="fieldset-content">{{ expenseData().paymentTypeName }}</span>
       </fieldset>

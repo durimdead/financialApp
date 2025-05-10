@@ -115,13 +115,14 @@ input.ng-invalid.ng-touched.ng-dirty {
 	margin-top: 0.5em;
 }
 .fieldset-rounded{
-	padding: 8px;
+	padding: 0px 8px 8px 8px !important;
 	border-radius: 8px;
-	border: 1px solid gray !important;
+	border: 1px solid rgb(154, 154, 154) !important;
 }
 .fieldset-legend{
-	font-size: 12pt;
-	color: gray;
+	font-size: 9pt;
+	font-weight: 500;
+	color: rgb(154, 154, 154);
 	padding: 0px 2px !important;
 	margin: 0px;
 }

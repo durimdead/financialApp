@@ -18,20 +18,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<FinancialAppContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAppDatabase")));
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-
 var app = builder.Build();
 
 // CORS
 app.UseCors(allowLocalhostOrigins);
 
 // Configure the HTTP request pipeline.
-
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

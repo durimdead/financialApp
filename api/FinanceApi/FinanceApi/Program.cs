@@ -1,8 +1,25 @@
 using FinanceApi.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 var allowLocalhostOrigins = "localhost";
 var builder = WebApplication.CreateBuilder(args);
+
+// add in API mapping
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Info.Contact = new OpenApiContact
+        {
+            Name = "David Lancellotti (CODUR LLC)",
+            Email = "[Redacted]"
+        };
+        return Task.CompletedTask;
+    });
+});
+
 
 builder.Services.AddCors(options =>
 {
@@ -20,6 +37,9 @@ builder.Services.AddDbContext<FinancialAppContext>(options => options.UseSqlServ
 // Add services to the container.
 builder.Services.AddControllers();
 var app = builder.Build();
+
+// maps the API
+app.MapOpenApi("OpenApi/v1/OpenApiDoc.json");
 
 // CORS
 app.UseCors(allowLocalhostOrigins);

@@ -216,4 +216,50 @@ export class FormValidators {
   //********************************************
   //********************************************
   //#endregion mark-form-group-dirty-touched
+
+  formControlHasError(formControl: FormControl) {
+    if (formControl.touched && formControl.dirty && formControl.invalid) {
+      return true;
+    }
+    if (formControl.touched && formControl.dirty) {
+      let formControlID = this.getFormControlID(formControl);
+      formControlID = formControlID === undefined ? '' : formControlID!;
+      document.getElementById(formControlID)?.classList.add('validated-input');
+    }
+    return false;
+  }
+
+  updateFormControlErrorLabelHTML(formControl: FormControl) {
+    let formControlID = this.getFormControlID(formControl);
+    if (formControlID === null) throw 'form control does not exist';
+    let errorMessage =
+      this.getFormControlErrorDetailsHTML(formControl);
+    if (errorMessage !== '') {
+      document.getElementById(
+        'errorLabel_' + formControlID.toString()
+      )!.innerHTML = errorMessage;
+    }
+  }
+
+  // extracts the ID of a given FormControl given the control
+  private getFormControlID(control: FormControl): string | null {
+    let group = <FormGroup>control.parent;
+
+    // if we can't find the group, it is the actual group and doesn't have an ID
+    if (!group) {
+      return null;
+    }
+
+    let name: string;
+
+    // go through the objects and find the ID for the control that matches.
+    Object.keys(group.controls).forEach((key) => {
+      let childControl = group.get(key);
+      if (childControl === control) {
+        name = key;
+      }
+    });
+
+    return name!;
+  }
 }

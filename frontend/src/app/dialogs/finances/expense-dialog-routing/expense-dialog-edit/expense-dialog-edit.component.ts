@@ -144,4 +144,13 @@ export class ExpenseDialogEditComponent implements OnInit {
       }
     ),
   });
+
+  // true if error, otherwise false
+  formControlHasError(formControl: FormControl) {
+    return this.formValidator.formControlHasError(formControl);
+  }
+
+  updateFormControlErrorLabelHTML(formControl: FormControl) {
+    this.formValidator.updateFormControlErrorLabelHTML(formControl);
+  }
 }

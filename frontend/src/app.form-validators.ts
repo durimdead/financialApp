@@ -229,11 +229,17 @@ export class FormValidators {
     return false;
   }
 
+  formGroupHasError(formGroup: FormGroup) {
+    if (formGroup.touched && formGroup.dirty && formGroup.invalid) {
+      return true;
+    }
+    return false;
+  }
+
   updateFormControlErrorLabelHTML(formControl: FormControl) {
     let formControlID = this.getFormControlID(formControl);
     if (formControlID === null) throw 'form control does not exist';
-    let errorMessage =
-      this.getFormControlErrorDetailsHTML(formControl);
+    let errorMessage = this.getFormControlErrorDetailsHTML(formControl);
     if (errorMessage !== '') {
       document.getElementById(
         'errorLabel_' + formControlID.toString()

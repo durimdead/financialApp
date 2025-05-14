@@ -150,7 +150,18 @@ export class ExpenseDialogEditComponent implements OnInit {
     return this.formValidator.formControlHasError(formControl);
   }
 
+  // true if error, otherwise false
+  formGroupHasError(formGroup: FormGroup) {
+    return this.formValidator.formGroupHasError(formGroup);
+  }
+
+  // updates error information for form control
   updateFormControlErrorLabelHTML(formControl: FormControl) {
     this.formValidator.updateFormControlErrorLabelHTML(formControl);
+  }
+
+  // updates error information for form group
+  getFormGroupErrorDetails(formGroup: FormGroup<any>) {
+    return this.formValidator.getFormGroupErrorDetails(formGroup);
   }
 }

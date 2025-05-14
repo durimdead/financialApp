@@ -19,9 +19,12 @@ export class FinanceService {
   EXPENSE_DATA = this.expenseData.asReadonly();
   private httpClient = inject(HttpClient);
   private ApiUrlBase: string = environment.apiUrl;
-  private urlExpenses: string = this.ApiUrlBase + environment.expensesController;
-  private urlExpenseTypes: string = this.ApiUrlBase + environment.expenseTypesController;
-  private urlPaymentTypes: string = this.ApiUrlBase + environment.paymentTypesController;
+  private urlExpenses: string =
+    this.ApiUrlBase + environment.expensesController;
+  private urlExpenseTypes: string =
+    this.ApiUrlBase + environment.expenseTypesController;
+  private urlPaymentTypes: string =
+    this.ApiUrlBase + environment.paymentTypesController;
   private urlSearchExpenseTypes: string =
     this.urlExpenseTypes + 'SearchByExpenseTypeName';
   private urlSearchPaymentTypes: string =
@@ -172,5 +175,60 @@ export class FinanceService {
 
   deleteExpense(expenseID: number) {
     return this.httpDeleteExpense(expenseID);
+  }
+
+  // on blur of search section, attempt to match it to an existing search result and select it.
+  selectFromListIfMatched(searchType: string, searchboxInputID: string) {
+    console.log('blurred: ' + searchType);
+    let currentSearchboxElement = document.getElementById(
+      searchboxInputID
+    ) as HTMLInputElement;
+    let currentSearchValue = currentSearchboxElement!.value;
+    let resultsToCheck: NodeListOf<HTMLElement> = document.querySelectorAll(
+      '[data-searchResultItemType="' + searchType + '"]'
+    );
+    let matchFound: boolean = false;
+
+    // if there's only one item to check, select it. Otherwise, cycle through to try to find
+    // an exact match (case insensitive).
+    if (resultsToCheck.length === 1) {
+      resultsToCheck[0].click();
+      matchFound = true;
+    } else {
+      resultsToCheck.forEach((currentElement: HTMLElement) => {
+        console.log('checking new element');
+        console.log(currentElement);
+        if (
+          currentElement.innerHTML.trim().toLowerCase() ===
+          currentSearchValue.trim().toLowerCase()
+        ) {
+          console.log('found match');
+          currentElement.click();
+          matchFound = true;
+          return;
+        }
+      });
+    }
+
+    // no match found, but section "blur" event happened: hide the search results.
+    if (!matchFound) {
+      //   this.hideElement('searchResults_' + searchType);
+    }
+  }
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  //TODO: move this section to an HTML helper later //
+  ////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////
+  hideHTMLElement(HTMLElementId: string) {
+    document
+      .getElementById(HTMLElementId.toString())
+      ?.classList.add('hidden-element');
+  }
+
+  showHTMLElement(HTMLElementId: string) {
+    document
+      .getElementById(HTMLElementId.toString())
+      ?.classList.remove('hidden-element');
   }
 }

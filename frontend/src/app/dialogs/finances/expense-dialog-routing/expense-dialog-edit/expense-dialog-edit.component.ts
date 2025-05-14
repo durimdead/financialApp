@@ -194,7 +194,7 @@ export class ExpenseDialogEditComponent implements OnInit {
             });
           }
           this.search_expenseTypeResults.set(dataToDisplay);
-          this.showHTMLElement('searchResults_expenseType');
+          this.financeService.showHTMLElement('searchResults_expenseType');
         },
         error: (error: Error) => {
           console.error('error fetching expense types from server: ');
@@ -237,7 +237,7 @@ export class ExpenseDialogEditComponent implements OnInit {
             });
           }
           this.search_paymentTypeResults.set(dataToDisplay);
-          this.showHTMLElement('searchResults_paymentType');
+          this.financeService.showHTMLElement('searchResults_paymentType');
         },
         error: (error: Error) => {
           console.error('error fetching payment types from server: ');
@@ -271,7 +271,7 @@ export class ExpenseDialogEditComponent implements OnInit {
     );
 
     // hide the results since one of them has been chosen.
-    this.hideHTMLElement('searchResults_expenseType');
+    this.financeService.hideHTMLElement('searchResults_expenseType');
 
     // update the expenseTypeName form value to utilize the selected result
     this.form.controls.expenseType.controls.expenseTypeName.setValue(
@@ -301,7 +301,7 @@ export class ExpenseDialogEditComponent implements OnInit {
     );
 
     // hide the results since one of them has been chosen.
-    this.hideHTMLElement('searchResults_paymentType');
+    this.financeService.hideHTMLElement('searchResults_paymentType');
 
     // update the paymentTypeName form value to utilize the selected result
     this.form.controls.paymentType.controls.paymentTypeName.setValue(
@@ -313,6 +313,7 @@ export class ExpenseDialogEditComponent implements OnInit {
       ?.classList.add('validated-input');
   }
 
+  // give some time for user selection to register (up to one second). If no selection was made, try to auto-fill the selection.
   onSearchBlur(searchType: string, searchboxInputID: string) {
     setTimeout(() => {
       let userCompletedSelection: boolean = false;
@@ -326,68 +327,16 @@ export class ExpenseDialogEditComponent implements OnInit {
             this.form.controls.paymentType.controls.paymentTypeID.value !== 0;
           break;
       }
-	  if (!userCompletedSelection){
-		this.selectFromListIfMatched(searchType, searchboxInputID);
-	  }
+      if (!userCompletedSelection) {
+        this.financeService.selectFromListIfMatched(
+          searchType,
+          searchboxInputID
+        );
+      }
     }, 1000);
   }
 
-  // on blur of search section, attempt to match it to an existing search result and select it.
-  selectFromListIfMatched(searchType: string, searchboxInputID: string) {
-    console.log('blurred: ' + searchType);
-    let currentSearchboxElement = document.getElementById(
-      searchboxInputID
-    ) as HTMLInputElement;
-    let currentSearchValue = currentSearchboxElement!.value;
-    let resultsToCheck: NodeListOf<HTMLElement> = document.querySelectorAll(
-      '[data-searchResultItemType="' + searchType + '"]'
-    );
-    let matchFound: boolean = false;
-
-    // if there's only one item to check, select it. Otherwise, cycle through to try to find
-    // an exact match (case insensitive).
-    if (resultsToCheck.length === 1) {
-      resultsToCheck[0].click();
-      matchFound = true;
-    } else {
-      resultsToCheck.forEach((currentElement: HTMLElement) => {
-        console.log('checking new element');
-        console.log(currentElement);
-        if (
-          currentElement.innerHTML.trim().toLowerCase() ===
-          currentSearchValue.trim().toLowerCase()
-        ) {
-          console.log('found match');
-          currentElement.click();
-          matchFound = true;
-          return;
-        }
-      });
-    }
-
-    // no match found, but section "blur" event happened: hide the search results.
-    if (!matchFound) {
-      console.log('no match found');
-      setTimeout(() => {
-        console.log('hiding search results');
-        this.hideElement('searchResults_' + searchType);
-      }, 1500);
-    }
-  }
-
   hideElement(HTMLElementId: string) {
-    this.hideHTMLElement(HTMLElementId);
-  }
-
-  private hideHTMLElement(HTMLElementId: string) {
-    document
-      .getElementById(HTMLElementId.toString())
-      ?.classList.add('hidden-element');
-  }
-
-  private showHTMLElement(HTMLElementId: string) {
-    document
-      .getElementById(HTMLElementId.toString())
-      ?.classList.remove('hidden-element');
+    this.financeService.hideHTMLElement(HTMLElementId);
   }
 }

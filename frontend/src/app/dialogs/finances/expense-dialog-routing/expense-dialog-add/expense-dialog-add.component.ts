@@ -368,11 +368,7 @@ export class ExpenseDialogAddComponent {
 
     // no match found, but section "blur" event happened: hide the search results.
     if (!matchFound) {
-      console.log('no match found');
-      setTimeout(() => {
-        console.log('hiding search results');
-        this.hideElement('searchResults_' + searchType);
-      }, 1500);
+    	this.hideElement('searchResults_' + searchType);
     }
   }
 

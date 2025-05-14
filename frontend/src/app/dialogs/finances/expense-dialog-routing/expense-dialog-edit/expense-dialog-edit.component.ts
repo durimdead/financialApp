@@ -313,6 +313,25 @@ export class ExpenseDialogEditComponent implements OnInit {
       ?.classList.add('validated-input');
   }
 
+  onSearchBlur(searchType: string, searchboxInputID: string) {
+    setTimeout(() => {
+      let userCompletedSelection: boolean = false;
+      switch (searchType.toLowerCase()) {
+        case 'expensetype':
+          userCompletedSelection =
+            this.form.controls.expenseType.controls.expenseTypeID.value !== 0;
+          break;
+        case 'paymenttype':
+          userCompletedSelection =
+            this.form.controls.paymentType.controls.paymentTypeID.value !== 0;
+          break;
+      }
+	  if (!userCompletedSelection){
+		this.selectFromListIfMatched(searchType, searchboxInputID);
+	  }
+    }, 1000);
+  }
+
   // on blur of search section, attempt to match it to an existing search result and select it.
   selectFromListIfMatched(searchType: string, searchboxInputID: string) {
     console.log('blurred: ' + searchType);

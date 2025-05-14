@@ -69,7 +69,7 @@
             name="expenseTypeName"
             formControlName="expenseTypeName"
             (keyup)="search_expenseTypes()"
-			(blur)="selectFromListIfMatched('expenseType', 'expenseTypeName')"
+			(blur)="onSearchBlur('expenseType', 'expenseTypeName')"
           />
           <input
             type="hidden"
@@ -141,7 +141,7 @@
             name="paymentTypeName"
             formControlName="paymentTypeName"
             (keyup)="search_paymentTypes()"
-			(blur)="selectFromListIfMatched('paymentType', 'paymentTypeName')"
+			(blur)="onSearchBlur('paymentType', 'paymentTypeName')"
           />
           <input
             type="hidden"

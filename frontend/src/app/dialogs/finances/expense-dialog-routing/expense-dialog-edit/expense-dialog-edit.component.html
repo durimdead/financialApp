@@ -144,11 +144,7 @@
             class="input-label-modal top-margin-spacing"
           >
             Payment Type :
-          </label>
-          <!-- 
-		  
-		  			USE THIS INPUT WHEN DOING FINAL EDIT
-		 
+          </label>		 
 		  <input
             id="paymentTypeName"
             class="input-textbox input-textbox-modal"
@@ -157,13 +153,6 @@
             formControlName="paymentTypeName"
             (keyup)="search_paymentTypes()"
 			(blur)="selectFromListIfMatched('paymentType', 'paymentTypeName')"
-          /> -->		  
-          <input
-            id="paymentTypeName"
-            class="input-textbox input-textbox-modal"
-            type="text"
-            name="paymentTypeName"
-            formControlName="paymentTypeName"
           />
           <input
             type="hidden"
@@ -179,7 +168,7 @@
               form.controls.paymentType.controls.paymentTypeCategoryID
             }}"
           />
-          <!-- <div
+          <div
             class="autocomplete-results autocomplete-results-modal hidden-element"
             id="searchResults_paymentType"
             finance-app-autocomplete-search-element="paymentTypeName"
@@ -228,7 +217,7 @@
             )
           }}
           <label class="error-label" id="errorLabel_paymentTypeID"></label>
-          } -->
+          }
         </div>
       </div>
 

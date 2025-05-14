@@ -62,10 +62,6 @@
           <label for="expenseTypeName" class="input-label-modal">
             Expense Type :
           </label>
-          <!-- 
-		  
-		  			USE THIS INPUT WHEN DOING FINAL EDIT
-		 
 		  <input
             id="expenseTypeName"
             class="input-textbox input-textbox-modal"
@@ -74,13 +70,6 @@
             formControlName="expenseTypeName"
             (keyup)="search_expenseTypes()"
 			(blur)="selectFromListIfMatched('expenseType', 'expenseTypeName')"
-          /> -->
-		  <input
-            id="expenseTypeName"
-            class="input-textbox input-textbox-modal"
-            type="text"
-            name="expenseTypeName"
-            formControlName="expenseTypeName"
           />
           <input
             type="hidden"
@@ -88,7 +77,7 @@
             name="expenseTypeID"
             value="{{ form.controls.expenseType.controls.expenseTypeID }}"
           />
-          <!-- <div
+          <div
             class="autocomplete-results autocomplete-results-modal hidden-element"
             id="searchResults_expenseType"
             finance-app-autocomplete-search-element="expenseTypeName"
@@ -133,7 +122,7 @@
             )
           }}
           <label class="error-label" id="errorLabel_expenseTypeID"></label>
-          } -->
+          }
         </div>
       </div>
       <!-- Payment Type Name -->

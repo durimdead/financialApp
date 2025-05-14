@@ -173,6 +173,48 @@ export class ExpenseDialogEditComponent implements OnInit {
     return this.formValidator.getFormGroupErrorDetails(formGroup);
   }
 
+  // populates dropdown with set of selectable, valid expense types to choose from
+  search_expenseTypes() {
+    let currentSearchCriteria =
+      this.form.controls.expenseType.controls.expenseTypeName.value;
+
+    if (currentSearchCriteria === null) return;
+    // call back to server to search the expense types
+    const subscription = this.financeService
+      .searchExpenseTypes(currentSearchCriteria)
+      .pipe(debounceTime(200))
+      .subscribe({
+        next: (results) => {
+          let dataToDisplay = results.expenseTypeData;
+          if (dataToDisplay.length === 0) {
+            dataToDisplay.push({
+              expenseTypeDescription: '',
+              expenseTypeName: 'No Search Results',
+              expenseTypeID: 0,
+            });
+          }
+          this.search_expenseTypeResults.set(dataToDisplay);
+          this.showHTMLElement('searchResults_expenseType');
+        },
+        error: (error: Error) => {
+          console.error('error fetching expense types from server: ');
+          console.error(error);
+        },
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
+
+    // if we have updated the search criteria, a valid type MUST be chosen from the list
+    this.form.controls.expenseType.controls.expenseTypeID.setValue(0);
+    this.form.controls.expenseType.controls.expenseTypeID.markAsTouched();
+    this.form.controls.expenseType.controls.expenseTypeID.markAsDirty();
+    document
+      .getElementById('expenseTypeName')
+      ?.classList.remove('validated-input');
+  }
+
   // populates dropdown with set of selectable, valid payment types to choose from
   search_paymentTypes() {
     let currentSearchCriteria =

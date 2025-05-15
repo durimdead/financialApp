@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
   FormControl,
   FormGroup,
   ValidationErrors,
+  Validators,
 } from '@angular/forms';
 
 @Injectable({
@@ -268,4 +269,71 @@ export class FormValidators {
 
     return name!;
   }
+
+
+
+
+
+
+
+  expenseForm = new FormGroup({
+	  expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {
+		validators: [Validators.required, this.mustBeADate],
+	  }),
+	  expenseDescription: new FormControl('', {
+		validators: [Validators.required, Validators.minLength(3)],
+	  }),
+	  expenseAmount: new FormControl('', {
+		validators: [
+		  Validators.required,
+		  this.mustBeANumber,
+		  this.mustNotBeZero,
+		],
+	  }),
+	  expenseType: new FormGroup(
+		{
+		  expenseTypeName: new FormControl('', {}),
+		  expenseTypeID: new FormControl(0, {
+			validators: [
+			  Validators.required,
+			  this.isValidExpenseType,
+			],
+		  }),
+		},
+		{
+		  validators: [Validators.required],
+		}
+	  ),
+	  paymentType: new FormGroup(
+		{
+		  paymentTypeName: new FormControl('', {}),
+		  paymentTypeID: new FormControl(0, {
+			validators: [
+			  Validators.required,
+			  this.isValidPaymentType,
+			],
+		  }),
+		  paymentTypeCategoryID: new FormControl(0, {
+			validators: [
+			  Validators.required,
+			  this.isValidPaymentCategoryType,
+			],
+		  }),
+		},
+		{
+		  validators: [Validators.required],
+		}
+	  ),
+	  checkboxes: new FormGroup(
+		{
+		  isInvestment: new FormControl(false, {}),
+		  isIncome: new FormControl(false, {}),
+		},
+		{
+		  validators: [
+			this.cannotSelectBoth('isInvestment', 'isIncome'),
+		  ],
+		}
+	  ),
+	});
 }

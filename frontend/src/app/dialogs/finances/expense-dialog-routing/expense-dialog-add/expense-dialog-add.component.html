@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Add New Expense</h2>
 <mat-dialog-content class="mat-typography">
   <div>
-    <form [formGroup]="form" class="form-flex-column">
+    <form [formGroup]="getForm()" class="form-flex-column">
       <!-- Expense Date -->
       <div class="control form-group-div">
         <label for="expenseDate" class="input-label-modal"
@@ -14,8 +14,8 @@
           name="expenseDate"
           formControlName="expenseDate"
         />
-        @if(formControlHasError(form.controls.expenseDate)){
-        {{ updateFormControlErrorLabelHTML(form.controls.expenseDescription) }}
+        @if(formControlHasError(getForm().controls.expenseDate)){
+        {{ updateFormControlErrorLabelHTML(getForm().controls.expenseDescription) }}
         <label class="error-label" id="errorLabel_expenseDate"></label>
         }
       </div>
@@ -32,8 +32,8 @@
           name="expenseDescription"
           formControlName="expenseDescription"
         />
-        @if(formControlHasError(form.controls.expenseDescription)){
-        {{ updateFormControlErrorLabelHTML(form.controls.expenseDescription) }}
+        @if(formControlHasError(getForm().controls.expenseDescription)){
+        {{ updateFormControlErrorLabelHTML(getForm().controls.expenseDescription) }}
         <label class="error-label" id="errorLabel_expenseDescription"></label>
         }
       </div>
@@ -50,8 +50,8 @@
           name="expenseAmount"
           formControlName="expenseAmount"
         />
-        @if(formControlHasError(form.controls.expenseAmount)){
-        {{ updateFormControlErrorLabelHTML(form.controls.expenseAmount) }}
+        @if(formControlHasError(getForm().controls.expenseAmount)){
+        {{ updateFormControlErrorLabelHTML(getForm().controls.expenseAmount) }}
         <label class="error-label" id="errorLabel_expenseAmount"></label>
         }
       </div>
@@ -75,7 +75,7 @@
             type="hidden"
             id="expenseTypeID"
             name="expenseTypeID"
-            value="{{ form.controls.expenseType.controls.expenseTypeID }}"
+            value="{{ getForm().controls.expenseType.controls.expenseTypeID }}"
           />
           <div
             class="autocomplete-results autocomplete-results-modal hidden-element"
@@ -107,18 +107,18 @@
             </div>
             } }
           </div>
-          @if(formControlHasError(form.controls.expenseType.controls.expenseTypeName)){
+          @if(formControlHasError(getForm().controls.expenseType.controls.expenseTypeName)){
           {{
             updateFormControlErrorLabelHTML(
-              form.controls.expenseType.controls.expenseTypeName
+              getForm().controls.expenseType.controls.expenseTypeName
             )
           }}
           <label class="error-label" id="errorLabel_expenseTypeName"></label>
           }
-          @if(formControlHasError(form.controls.expenseType.controls.expenseTypeID)){
+          @if(formControlHasError(getForm().controls.expenseType.controls.expenseTypeID)){
           {{
             updateFormControlErrorLabelHTML(
-              form.controls.expenseType.controls.expenseTypeID
+              getForm().controls.expenseType.controls.expenseTypeID
             )
           }}
           <label class="error-label" id="errorLabel_expenseTypeID"></label>
@@ -147,14 +147,14 @@
             type="hidden"
             id="paymentTypeID"
             name="paymentTypeID"
-            value="{{ form.controls.paymentType.controls.paymentTypeID }}"
+            value="{{ getForm().controls.paymentType.controls.paymentTypeID }}"
           />
           <input
             type="hidden"
             id="paymentTypeCategoryID"
             name="paymentTypeCategoryID"
             value="{{
-              form.controls.paymentType.controls.paymentTypeCategoryID
+              getForm().controls.paymentType.controls.paymentTypeCategoryID
             }}"
           />
           <div
@@ -191,18 +191,18 @@
             </div>
             } }
           </div>
-          @if(formControlHasError(form.controls.paymentType.controls.paymentTypeName)){
+          @if(formControlHasError(getForm().controls.paymentType.controls.paymentTypeName)){
           {{
             updateFormControlErrorLabelHTML(
-              form.controls.paymentType.controls.paymentTypeName
+              getForm().controls.paymentType.controls.paymentTypeName
             )
           }}
           <label class="error-label" id="errorLabel_paymentTypeName"></label>
           }
-          @if(formControlHasError(form.controls.paymentType.controls.paymentTypeID)){
+          @if(formControlHasError(getForm().controls.paymentType.controls.paymentTypeID)){
           {{
             updateFormControlErrorLabelHTML(
-              form.controls.paymentType.controls.paymentTypeID
+              getForm().controls.paymentType.controls.paymentTypeID
             )
           }}
           <label class="error-label" id="errorLabel_paymentTypeID"></label>
@@ -237,9 +237,9 @@
           /><label for="isIncome" class="input-label-modal">Income?</label>
         </div>
       </div>
-      @if(formGroupHasError(form.controls.checkboxes)){
+      @if(formGroupHasError(getForm().controls.checkboxes)){
       <label class="error-label">{{
-        getFormGroupErrorDetails(form.controls.checkboxes)
+        getFormGroupErrorDetails(getForm().controls.checkboxes)
       }}</label>
       }
     </form>

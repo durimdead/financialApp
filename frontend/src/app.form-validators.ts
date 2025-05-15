@@ -7,6 +7,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { Expense } from './app.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -270,71 +271,91 @@ export class FormValidators {
     return name!;
   }
 
+  extractExpenseToSubmit() {
+    if (!this.expenseForm.invalid) {
+		let newExpense:Expense = {
+        expenseDescription: this.expenseForm.controls.expenseDescription
+          .value as string,
+        expenseDate: new Date(
+          this.expenseForm.controls.expenseDate.value!.toString()
+        ),
+        expenseAmount: Number(this.expenseForm.controls.expenseAmount.value),
+        expenseID: 0,
+        expenseTypeID: Number(
+          this.expenseForm.controls.expenseType.controls.expenseTypeID.value
+        ),
+        paymentTypeID: Number(
+          this.expenseForm.controls.paymentType.controls.paymentTypeID.value
+        ),
+        paymentTypeCategoryID: Number(
+          this.expenseForm.controls.paymentType.controls.paymentTypeCategoryID
+            .value
+        ),
+        expenseTypeName: 'NOT USED FOR ADD',
+        paymentTypeName: 'NOT USED FOR ADD',
+        paymentTypeDescription: 'NOT USED FOR ADD',
+        paymentTypeCategoryName: 'NOT USED FOR ADD',
+        isIncome: this.expenseForm.controls.checkboxes.controls.isIncome
+          .value as boolean,
+        isInvestment: this.expenseForm.controls.checkboxes.controls.isInvestment
+          .value as boolean,
+        //TODO: possibly update this to make this no longer needed here?
+        // This is never utilized outside of displaying the last
+        // updated date, which is driven by the database's temporal tables.
+        lastUpdated: new Date(),
+      };
+	  return newExpense;
+    }
+    // the form is invalid, ensure we show which have issues
+    this.markFormGroupAsDirtyTouched(this.expenseForm);
+	return undefined;
+  }
 
-
-
-
-
-  //TODO: probably move this to a "Forms" class to store all of the form structures for 
+  //TODO: probably move this to a "Forms" class to store all of the form structures for
   // the different CRUD operations
   expenseForm = new FormGroup({
-	  expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {
-		validators: [Validators.required, this.mustBeADate],
-	  }),
-	  expenseDescription: new FormControl('', {
-		validators: [Validators.required, Validators.minLength(3)],
-	  }),
-	  expenseAmount: new FormControl('', {
-		validators: [
-		  Validators.required,
-		  this.mustBeANumber,
-		  this.mustNotBeZero,
-		],
-	  }),
-	  expenseType: new FormGroup(
-		{
-		  expenseTypeName: new FormControl('', {}),
-		  expenseTypeID: new FormControl(0, {
-			validators: [
-			  Validators.required,
-			  this.isValidExpenseType,
-			],
-		  }),
-		},
-		{
-		  validators: [Validators.required],
-		}
-	  ),
-	  paymentType: new FormGroup(
-		{
-		  paymentTypeName: new FormControl('', {}),
-		  paymentTypeID: new FormControl(0, {
-			validators: [
-			  Validators.required,
-			  this.isValidPaymentType,
-			],
-		  }),
-		  paymentTypeCategoryID: new FormControl(0, {
-			validators: [
-			  Validators.required,
-			  this.isValidPaymentCategoryType,
-			],
-		  }),
-		},
-		{
-		  validators: [Validators.required],
-		}
-	  ),
-	  checkboxes: new FormGroup(
-		{
-		  isInvestment: new FormControl(false, {}),
-		  isIncome: new FormControl(false, {}),
-		},
-		{
-		  validators: [
-			this.cannotSelectBoth('isInvestment', 'isIncome'),
-		  ],
-		}
-	  ),
-	});
+    expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {
+      validators: [Validators.required, this.mustBeADate],
+    }),
+    expenseDescription: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3)],
+    }),
+    expenseAmount: new FormControl('', {
+      validators: [Validators.required, this.mustBeANumber, this.mustNotBeZero],
+    }),
+    expenseType: new FormGroup(
+      {
+        expenseTypeName: new FormControl('', {}),
+        expenseTypeID: new FormControl(0, {
+          validators: [Validators.required, this.isValidExpenseType],
+        }),
+      },
+      {
+        validators: [Validators.required],
+      }
+    ),
+    paymentType: new FormGroup(
+      {
+        paymentTypeName: new FormControl('', {}),
+        paymentTypeID: new FormControl(0, {
+          validators: [Validators.required, this.isValidPaymentType],
+        }),
+        paymentTypeCategoryID: new FormControl(0, {
+          validators: [Validators.required, this.isValidPaymentCategoryType],
+        }),
+      },
+      {
+        validators: [Validators.required],
+      }
+    ),
+    checkboxes: new FormGroup(
+      {
+        isInvestment: new FormControl(false, {}),
+        isIncome: new FormControl(false, {}),
+      },
+      {
+        validators: [this.cannotSelectBoth('isInvestment', 'isIncome')],
+      }
+    ),
+  });
 }

@@ -54,46 +54,20 @@ export class ExpenseDialogAddComponent {
   private destroyRef = inject(DestroyRef);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
   search_paymentTypeResults = signal<PaymentType[]>([]);
-  
-  getForm(){
-	return this.formValidator.expenseForm;
+
+  getForm() {
+    return this.formValidator.expenseForm;
   }
 
   // Submits the new expense that has been filled out in the form
-  submitNewExpense() {
+  submitExpense() {
     if (!this.getForm().invalid) {
-      let newExpense: Expense = {
-        expenseDescription: this.getForm().controls.expenseDescription
-          .value as string,
-        expenseDate: new Date(this.getForm().controls.expenseDate.value!.toString()),
-        expenseAmount: Number(this.getForm().controls.expenseAmount.value),
-        expenseID: 0,
-        expenseTypeID: Number(
-          this.getForm().controls.expenseType.controls.expenseTypeID.value
-        ),
-        paymentTypeID: Number(
-          this.getForm().controls.paymentType.controls.paymentTypeID.value
-        ),
-        paymentTypeCategoryID: Number(
-          this.getForm().controls.paymentType.controls.paymentTypeCategoryID.value
-        ),
-        expenseTypeName: 'NOT USED FOR ADD',
-        paymentTypeName: 'NOT USED FOR ADD',
-        paymentTypeDescription: 'NOT USED FOR ADD',
-        paymentTypeCategoryName: 'NOT USED FOR ADD',
-        isIncome: this.getForm().controls.checkboxes.controls.isIncome
-          .value as boolean,
-        isInvestment: this.getForm().controls.checkboxes.controls.isInvestment
-          .value as boolean,
-        //TODO: possibly update this to make this no longer needed here?
-        // This is never utilized outside of displaying the last
-        // updated date, which is driven by the database's temporal tables.
-        lastUpdated: new Date(),
-      };
-      this.dialogRef.close(newExpense);
+      this.dialogRef.close(this.formValidator.extractExpenseToSubmit());
     }
     // the form is invalid, ensure we show which have issues
-    this.formValidator.markFormGroupAsDirtyTouched(this.formValidator.expenseForm);
+    this.formValidator.markFormGroupAsDirtyTouched(
+      this.formValidator.expenseForm
+    );
   }
 
   formControlHasError(formControl: FormControl) {
@@ -190,7 +164,9 @@ export class ExpenseDialogAddComponent {
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.getForm().controls.paymentType.controls.paymentTypeID.setValue(0);
-    this.getForm().controls.paymentType.controls.paymentTypeCategoryID.setValue(0);
+    this.getForm().controls.paymentType.controls.paymentTypeCategoryID.setValue(
+      0
+    );
     this.getForm().controls.paymentType.controls.paymentTypeID.markAsTouched();
     this.getForm().controls.paymentType.controls.paymentTypeID.markAsDirty();
     document
@@ -259,11 +235,13 @@ export class ExpenseDialogAddComponent {
       switch (searchType.toLowerCase()) {
         case 'expensetype':
           userCompletedSelection =
-            this.getForm().controls.expenseType.controls.expenseTypeID.value !== 0;
+            this.getForm().controls.expenseType.controls.expenseTypeID.value !==
+            0;
           break;
         case 'paymenttype':
           userCompletedSelection =
-            this.getForm().controls.paymentType.controls.paymentTypeID.value !== 0;
+            this.getForm().controls.paymentType.controls.paymentTypeID.value !==
+            0;
           break;
       }
       if (!userCompletedSelection) {

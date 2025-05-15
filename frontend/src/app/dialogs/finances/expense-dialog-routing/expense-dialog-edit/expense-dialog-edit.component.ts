@@ -58,6 +58,7 @@ export class ExpenseDialogEditComponent implements OnInit {
 
   // set all the values for the form from the expense input
   ngOnInit(): void {
+	this.getForm().reset();
     this.getForm().controls.expenseDate.setValue(
       new Date(this.expenseData().expenseDate.toString())
         .toISOString()

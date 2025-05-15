@@ -44,7 +44,7 @@ import { debounceTime } from 'rxjs';
   templateUrl: './expense-dialog-add.component.html',
   styleUrl: './expense-dialog-add.component.css',
 })
-export class ExpenseDialogAddComponent {
+export class ExpenseDialogAddComponent implements OnInit {
   // This is never utilized outside of displaying the last
   // updated date, which is driven by the database's temporal tables.
   readonly inputData = inject(MAT_DIALOG_DATA);
@@ -54,6 +54,13 @@ export class ExpenseDialogAddComponent {
   private destroyRef = inject(DestroyRef);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
   search_paymentTypeResults = signal<PaymentType[]>([]);
+
+  ngOnInit(): void {
+	this.getForm().reset();
+	this.getForm().controls.expenseDate.setValue(new Date()
+    .toISOString()
+    .substring(0, 10))
+  }
 
   getForm() {
     return this.formValidator.expenseForm;

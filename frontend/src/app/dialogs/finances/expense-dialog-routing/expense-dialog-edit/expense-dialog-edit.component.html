@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Edit Expense "{{this.expenseData().expenseDescription}}"</h2>
+<h2 mat-dialog-title>Edit Expense</h2>
 <mat-dialog-content class="mat-typography">
   <div>
     <form [formGroup]="getForm()" class="form-flex-column">
@@ -247,5 +247,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <!-- <button mat-button (click)="submitNewExpense()" cdkFocusInitial>Add</button> -->
+  <button mat-button (click)="submitExpense()" cdkFocusInitial>Update</button>
 </mat-dialog-actions>

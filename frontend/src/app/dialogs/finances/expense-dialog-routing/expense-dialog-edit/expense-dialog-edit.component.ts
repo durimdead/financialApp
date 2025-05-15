@@ -92,8 +92,18 @@ export class ExpenseDialogEditComponent implements OnInit {
     );
   }
 
-  getForm(){
-	return this.formValidator.expenseForm;
+  getForm() {
+    return this.formValidator.expenseForm;
+  }
+
+  submitExpense() {
+    if (!this.getForm().invalid) {
+      this.dialogRef.close(this.formValidator.extractExpenseToSubmit());
+    }
+    // the form is invalid, ensure we show which have issues
+    this.formValidator.markFormGroupAsDirtyTouched(
+      this.formValidator.expenseForm
+    );
   }
 
   // true if error, otherwise false
@@ -194,7 +204,9 @@ export class ExpenseDialogEditComponent implements OnInit {
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
     this.getForm().controls.paymentType.controls.paymentTypeID.setValue(0);
-    this.getForm().controls.paymentType.controls.paymentTypeCategoryID.setValue(0);
+    this.getForm().controls.paymentType.controls.paymentTypeCategoryID.setValue(
+      0
+    );
     this.getForm().controls.paymentType.controls.paymentTypeID.markAsTouched();
     this.getForm().controls.paymentType.controls.paymentTypeID.markAsDirty();
     document
@@ -263,11 +275,13 @@ export class ExpenseDialogEditComponent implements OnInit {
       switch (searchType.toLowerCase()) {
         case 'expensetype':
           userCompletedSelection =
-            this.getForm().controls.expenseType.controls.expenseTypeID.value !== 0;
+            this.getForm().controls.expenseType.controls.expenseTypeID.value !==
+            0;
           break;
         case 'paymenttype':
           userCompletedSelection =
-            this.getForm().controls.paymentType.controls.paymentTypeID.value !== 0;
+            this.getForm().controls.paymentType.controls.paymentTypeID.value !==
+            0;
           break;
       }
       if (!userCompletedSelection) {

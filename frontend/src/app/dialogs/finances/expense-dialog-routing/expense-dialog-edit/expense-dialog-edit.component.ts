@@ -58,100 +58,43 @@ export class ExpenseDialogEditComponent implements OnInit {
 
   // set all the values for the form from the expense input
   ngOnInit(): void {
-    this.form.controls.expenseDate.setValue(
+    this.getForm().controls.expenseDate.setValue(
       new Date(this.expenseData().expenseDate.toString())
         .toISOString()
         .substring(0, 10)
     );
-    this.form.controls.expenseDescription.setValue(
+    this.getForm().controls.expenseDescription.setValue(
       this.expenseData().expenseDescription
     );
-    this.form.controls.expenseAmount.setValue(
+    this.getForm().controls.expenseAmount.setValue(
       this.expenseData().expenseAmount.toString()
     );
-    this.form.controls.expenseType.controls.expenseTypeName.setValue(
+    this.getForm().controls.expenseType.controls.expenseTypeName.setValue(
       this.expenseData().expenseTypeName.toString()
     );
-    this.form.controls.paymentType.controls.paymentTypeName.setValue(
+    this.getForm().controls.paymentType.controls.paymentTypeName.setValue(
       this.expenseData().paymentTypeName.toString()
     );
-    this.form.controls.expenseType.controls.expenseTypeID.setValue(
+    this.getForm().controls.expenseType.controls.expenseTypeID.setValue(
       this.expenseData().expenseTypeID
     );
-    this.form.controls.paymentType.controls.paymentTypeID.setValue(
+    this.getForm().controls.paymentType.controls.paymentTypeID.setValue(
       this.expenseData().paymentTypeID
     );
-    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(
+    this.getForm().controls.paymentType.controls.paymentTypeCategoryID.setValue(
       this.expenseData().paymentTypeCategoryID
     );
-    this.form.controls.checkboxes.controls.isInvestment.setValue(
+    this.getForm().controls.checkboxes.controls.isInvestment.setValue(
       this.expenseData().isInvestment
     );
-    this.form.controls.checkboxes.controls.isIncome.setValue(
+    this.getForm().controls.checkboxes.controls.isIncome.setValue(
       this.expenseData().isIncome
     );
   }
 
-  form = new FormGroup({
-    expenseDate: new FormControl(new Date().toISOString().substring(0, 10), {
-      validators: [Validators.required, this.formValidator.mustBeADate],
-    }),
-    expenseDescription: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(3)],
-    }),
-    expenseAmount: new FormControl('', {
-      validators: [
-        Validators.required,
-        this.formValidator.mustBeANumber,
-        this.formValidator.mustNotBeZero,
-      ],
-    }),
-    expenseType: new FormGroup(
-      {
-        expenseTypeName: new FormControl('', {}),
-        expenseTypeID: new FormControl(0, {
-          validators: [
-            Validators.required,
-            this.formValidator.isValidExpenseType,
-          ],
-        }),
-      },
-      {
-        validators: [Validators.required],
-      }
-    ),
-    paymentType: new FormGroup(
-      {
-        paymentTypeName: new FormControl('', {}),
-        paymentTypeID: new FormControl(0, {
-          validators: [
-            Validators.required,
-            this.formValidator.isValidPaymentType,
-          ],
-        }),
-        paymentTypeCategoryID: new FormControl(0, {
-          validators: [
-            Validators.required,
-            this.formValidator.isValidPaymentCategoryType,
-          ],
-        }),
-      },
-      {
-        validators: [Validators.required],
-      }
-    ),
-    checkboxes: new FormGroup(
-      {
-        isInvestment: new FormControl(false, {}),
-        isIncome: new FormControl(false, {}),
-      },
-      {
-        validators: [
-          this.formValidator.cannotSelectBoth('isInvestment', 'isIncome'),
-        ],
-      }
-    ),
-  });
+  getForm(){
+	return this.formValidator.expenseForm;
+  }
 
   // true if error, otherwise false
   formControlHasError(formControl: FormControl) {
@@ -176,7 +119,7 @@ export class ExpenseDialogEditComponent implements OnInit {
   // populates dropdown with set of selectable, valid expense types to choose from
   search_expenseTypes() {
     let currentSearchCriteria =
-      this.form.controls.expenseType.controls.expenseTypeName.value;
+      this.getForm().controls.expenseType.controls.expenseTypeName.value;
 
     if (currentSearchCriteria === null) return;
     // call back to server to search the expense types
@@ -207,9 +150,9 @@ export class ExpenseDialogEditComponent implements OnInit {
     });
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
-    this.form.controls.expenseType.controls.expenseTypeID.setValue(0);
-    this.form.controls.expenseType.controls.expenseTypeID.markAsTouched();
-    this.form.controls.expenseType.controls.expenseTypeID.markAsDirty();
+    this.getForm().controls.expenseType.controls.expenseTypeID.setValue(0);
+    this.getForm().controls.expenseType.controls.expenseTypeID.markAsTouched();
+    this.getForm().controls.expenseType.controls.expenseTypeID.markAsDirty();
     document
       .getElementById('expenseTypeName')
       ?.classList.remove('validated-input');
@@ -218,7 +161,7 @@ export class ExpenseDialogEditComponent implements OnInit {
   // populates dropdown with set of selectable, valid payment types to choose from
   search_paymentTypes() {
     let currentSearchCriteria =
-      this.form.controls.paymentType.controls.paymentTypeName.value;
+      this.getForm().controls.paymentType.controls.paymentTypeName.value;
 
     if (currentSearchCriteria === null) return;
     // call back to server to search the payment types
@@ -250,10 +193,10 @@ export class ExpenseDialogEditComponent implements OnInit {
     });
 
     // if we have updated the search criteria, a valid type MUST be chosen from the list
-    this.form.controls.paymentType.controls.paymentTypeID.setValue(0);
-    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(0);
-    this.form.controls.paymentType.controls.paymentTypeID.markAsTouched();
-    this.form.controls.paymentType.controls.paymentTypeID.markAsDirty();
+    this.getForm().controls.paymentType.controls.paymentTypeID.setValue(0);
+    this.getForm().controls.paymentType.controls.paymentTypeCategoryID.setValue(0);
+    this.getForm().controls.paymentType.controls.paymentTypeID.markAsTouched();
+    this.getForm().controls.paymentType.controls.paymentTypeID.markAsDirty();
     document
       .getElementById('paymentTypeName')
       ?.classList.remove('validated-input');
@@ -266,7 +209,7 @@ export class ExpenseDialogEditComponent implements OnInit {
     );
 
     // update the hidden input form value for expenseTypeID
-    this.form.controls.expenseType.controls.expenseTypeID.setValue(
+    this.getForm().controls.expenseType.controls.expenseTypeID.setValue(
       expenseTypeID
     );
 
@@ -274,7 +217,7 @@ export class ExpenseDialogEditComponent implements OnInit {
     this.financeService.hideHTMLElement('searchResults_expenseType');
 
     // update the expenseTypeName form value to utilize the selected result
-    this.form.controls.expenseType.controls.expenseTypeName.setValue(
+    this.getForm().controls.expenseType.controls.expenseTypeName.setValue(
       selectedExpenseTypeElement!.title.trim()
     );
 
@@ -293,10 +236,10 @@ export class ExpenseDialogEditComponent implements OnInit {
     );
 
     // update the hidden input form values for paymentTypeID and paymentTypeCategoryID
-    this.form.controls.paymentType.controls.paymentTypeID.setValue(
+    this.getForm().controls.paymentType.controls.paymentTypeID.setValue(
       paymentTypeID
     );
-    this.form.controls.paymentType.controls.paymentTypeCategoryID.setValue(
+    this.getForm().controls.paymentType.controls.paymentTypeCategoryID.setValue(
       paymentTypeCategoryID
     );
 
@@ -304,7 +247,7 @@ export class ExpenseDialogEditComponent implements OnInit {
     this.financeService.hideHTMLElement('searchResults_paymentType');
 
     // update the paymentTypeName form value to utilize the selected result
-    this.form.controls.paymentType.controls.paymentTypeName.setValue(
+    this.getForm().controls.paymentType.controls.paymentTypeName.setValue(
       selectedPaymentTypeElement!.title.trim()
     );
 
@@ -320,11 +263,11 @@ export class ExpenseDialogEditComponent implements OnInit {
       switch (searchType.toLowerCase()) {
         case 'expensetype':
           userCompletedSelection =
-            this.form.controls.expenseType.controls.expenseTypeID.value !== 0;
+            this.getForm().controls.expenseType.controls.expenseTypeID.value !== 0;
           break;
         case 'paymenttype':
           userCompletedSelection =
-            this.form.controls.paymentType.controls.paymentTypeID.value !== 0;
+            this.getForm().controls.paymentType.controls.paymentTypeID.value !== 0;
           break;
       }
       if (!userCompletedSelection) {

@@ -154,38 +154,15 @@ export class ExpenseDialogAddComponent {
   }
 
   formControlHasError(formControl: FormControl) {
-    if (formControl.touched && formControl.dirty && formControl.invalid) {
-      return true;
-    }
-    if (formControl.touched && formControl.dirty) {
-      let formControlID = this.getFormControlID(formControl);
-      formControlID = formControlID === undefined ? '' : formControlID!;
-      document.getElementById(formControlID)?.classList.add('validated-input');
-    }
-    return false;
+    return this.formValidator.formControlHasError(formControl);
   }
 
   formGroupHasError(formGroup: FormGroup) {
-    if (formGroup.touched && formGroup.dirty && formGroup.invalid) {
-      return true;
-    }
-    return false;
-  }
-
-  getFormControlErrorDetails(formControl: FormControl) {
-    return this.formValidator.getFormControlErrorDetails(formControl);
+    return this.formValidator.formGroupHasError(formGroup);
   }
 
   updateFormControlErrorLabelHTML(formControl: FormControl) {
-    let formControlID = this.getFormControlID(formControl);
-    if (formControlID === null) throw 'form control does not exist';
-    let errorMessage =
-      this.formValidator.getFormControlErrorDetailsHTML(formControl);
-    if (errorMessage !== '') {
-      document.getElementById(
-        'errorLabel_' + formControlID.toString()
-      )!.innerHTML = errorMessage;
-    }
+    this.formValidator.updateFormControlErrorLabelHTML(formControl);
   }
 
   getFormGroupErrorDetails(formGroup: FormGroup<any>) {

@@ -275,29 +275,6 @@ export class ExpenseDialogAddComponent {
     }, 1000);
   }
 
-  // extracts the ID of a given FormControl given the control
-  private getFormControlID(control: FormControl): string | null {
-    let group = <FormGroup>control.parent;
-
-    if (!group) {
-      return null;
-    }
-
-    let name: string;
-
-    Object.keys(group.controls).forEach((key) => {
-      let childControl = group.get(key);
-
-      if (childControl !== control) {
-        return;
-      }
-
-      name = key;
-    });
-
-    return name!;
-  }
-
   hideElement(HTMLElementId: string) {
     this.financeService.hideHTMLElement(HTMLElementId);
   }

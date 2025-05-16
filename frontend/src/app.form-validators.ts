@@ -296,18 +296,21 @@ export class FormValidators {
         paymentTypeDescription: 'NOT USED FOR ADD',
         paymentTypeCategoryName: 'NOT USED FOR ADD',
         isIncome: this.expenseForm.controls.checkboxes.controls.isIncome
-          .value as boolean,
+          .value ?? false as boolean,
         isInvestment: this.expenseForm.controls.checkboxes.controls.isInvestment
-          .value as boolean,
+          .value ?? false as boolean,
         //TODO: possibly update this to make this no longer needed here?
         // This is never utilized outside of displaying the last
         // updated date, which is driven by the database's temporal tables.
         lastUpdated: new Date(),
       };
+	  console.log('extractExpenseToSubmit::: returning object:');
+	  console.log(newExpense);
 	  return newExpense;
     }
     // the form is invalid, ensure we show which have issues
     this.markFormGroupAsDirtyTouched(this.expenseForm);
+	console.log('extractExpenseToSubmit::: returning "undefined":');
 	return undefined;
   }
 

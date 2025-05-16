@@ -83,6 +83,8 @@ export class FinancesComponent {
       .afterClosed()
       .subscribe((result: Expense | '') => {
         if (result !== '') {
+          console.log('finances.component.openEditExpenseModal()::::');
+          console.log(result);
           this.editExpense(result, expenseID);
         }
       });
@@ -153,17 +155,17 @@ export class FinancesComponent {
           if (results.httpStatusCode === 200) {
             this.updateExpensesFromDatasource();
           } else {
-            console.log(
+            console.error(
               'server error adding expense ::: ' +
                 '". Error message : ' +
                 results.errorMessage
             );
-            console.log(expenseToAdd);
+            console.error(expenseToAdd);
           }
         },
         error: (error: Error) => {
-          console.log('server error adding expense ::: ' + '". Full Error: ');
-          console.log(error);
+          console.error('server error adding expense ::: ' + '". Full Error: ');
+          console.error(error);
         },
       });
 
@@ -173,8 +175,32 @@ export class FinancesComponent {
   }
 
   private editExpense(expenseToEdit: Expense, expenseID: number) {
+    console.log('finances.component.editExpense()::::');
     console.log(expenseToEdit);
-    console.log(expenseID);
+    const subscription = this.financeService
+      .editExpense(expenseToEdit, expenseID)
+      .subscribe({
+        next: (results) => {
+          if (results.httpStatusCode === 200) {
+            this.updateExpensesFromDatasource();
+          } else {
+            console.error(
+              'server error adding expense ::: ' +
+                '". Error message : ' +
+                results.errorMessage
+            );
+            console.error(expenseToEdit);
+          }
+        },
+        error: (error: Error) => {
+          console.error('server error adding expense ::: ' + '". Full Error: ');
+          console.error(error);
+        },
+      });
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 
   // gets the data from the "source" (i.e. the API) and then refreshes the table appropriately

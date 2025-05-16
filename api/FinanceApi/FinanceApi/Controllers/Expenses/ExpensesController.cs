@@ -105,7 +105,7 @@ namespace FinanceApi.Controllers.Expenses
 
             try
             {
-                Expense expense = expenseToUpdate.Deserialize<Expense>() ?? new Expense();
+                Expense expense = new Expense(expenseToUpdate.Deserialize<ExpenseJson>() ?? new ExpenseJson());
                 DateOnly expenseDate = new DateOnly(expense.ExpenseDate.Year, expense.ExpenseDate.Month, expense.ExpenseDate.Day);
                 _expenseService.UpdateExpense(expense.ExpenseID, expense.ExpenseTypeID, expense.PaymentTypeID, expense.PaymentTypeCategoryID, expense.ExpenseDescription, expense.IsIncome, expense.IsInvestment, expenseDate, expense.ExpenseAmount);
                 return new JsonResult(jsonData);

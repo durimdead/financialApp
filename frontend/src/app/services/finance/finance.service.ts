@@ -57,6 +57,10 @@ export class FinanceService {
     return this.httpAddExpense(expenseToAdd);
   }
 
+  editExpense(expenseToEdit: Expense, expenseID: number) {
+    return this.httpEditExpense(expenseToEdit, expenseID);
+  }
+
   private httpSearchExpenseTypes(expenseTypeSearchString: string) {
     const paramData = { expenseTypeSearchString: expenseTypeSearchString };
     const params = new HttpParams().append(
@@ -104,6 +108,19 @@ export class FinanceService {
       }),
     };
     return this.httpClient.post<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlExpenses, expenseParam, headers);
+  }
+
+  private httpEditExpense(expenseToEdit: Expense, expenseID: number) {
+    const expenseParam = JSON.stringify(expenseToEdit);
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+      }),
+    };
+    return this.httpClient.put<{
       httpStatusCode: number;
       errorMessage: string;
     }>(this.urlExpenses, expenseParam, headers);
@@ -169,7 +186,8 @@ export class FinanceService {
     let returnValue = this.expenseData().find(
       (item) => item.expenseID === expenseID
     ) as Expense;
-
+	console.log('finance.service.getExpenseByID:::: expenseID = ' + expenseID);
+	console.log(returnValue);
     return returnValue;
   }
 

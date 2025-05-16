@@ -168,7 +168,7 @@ export class ExpenseModalFormComponent implements OnInit {
           this.expenseForm.controls.expenseDate.value!.toString()
         ),
         expenseAmount: Number(this.expenseForm.controls.expenseAmount.value),
-        expenseID: 0,
+        expenseID: this.expenseData().expenseID,
         expenseTypeID: Number(
           this.expenseForm.controls.expenseType.controls.expenseTypeID.value
         ),
@@ -179,10 +179,10 @@ export class ExpenseModalFormComponent implements OnInit {
           this.expenseForm.controls.paymentType.controls.paymentTypeCategoryID
             .value
         ),
-        expenseTypeName: 'NOT USED FOR ADD',
-        paymentTypeName: 'NOT USED FOR ADD',
-        paymentTypeDescription: 'NOT USED FOR ADD',
-        paymentTypeCategoryName: 'NOT USED FOR ADD',
+        expenseTypeName: 'NOT USED',
+        paymentTypeName: 'NOT USED',
+        paymentTypeDescription: 'NOT USED',
+        paymentTypeCategoryName: 'NOT USED',
         isIncome:
           this.expenseForm.controls.checkboxes.controls.isIncome.value ??
           (false as boolean),

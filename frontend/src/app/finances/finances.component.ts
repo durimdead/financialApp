@@ -83,8 +83,6 @@ export class FinancesComponent {
       .afterClosed()
       .subscribe((result: Expense | '') => {
         if (result !== '') {
-          console.log('finances.component.openEditExpenseModal()::::');
-          console.log(result);
           this.editExpense(result, expenseID);
         }
       });
@@ -114,13 +112,12 @@ export class FinancesComponent {
         subscription.unsubscribe();
       });
     } catch (e) {
-      console.log('Error occurred:');
-      console.log(e);
+      console.error('Error occurred:');
+      console.error(e);
     }
   }
 
   private deleteExpense(expenseID: number) {
-    // console.log('trigger expense deleted - expenseID: ' + expenseID);
     const subscription = this.financeService
       .deleteExpense(expenseID)
       .subscribe({
@@ -128,7 +125,7 @@ export class FinancesComponent {
           if (results.httpStatusCode === 200) {
             this.updateExpensesFromDatasource();
           } else {
-            console.log(
+            console.error(
               'server error deleting expenseID ' +
                 expenseID +
                 '. Error: ' +
@@ -137,8 +134,8 @@ export class FinancesComponent {
           }
         },
         error: (error: Error) => {
-          console.log('error deleting expenseID ' + expenseID + '. Error: ');
-          console.log(error);
+          console.error('error deleting expenseID ' + expenseID + '. Error: ');
+          console.error(error);
         },
       });
 
@@ -175,8 +172,6 @@ export class FinancesComponent {
   }
 
   private editExpense(expenseToEdit: Expense, expenseID: number) {
-    console.log('finances.component.editExpense()::::');
-    console.log(expenseToEdit);
     const subscription = this.financeService
       .editExpense(expenseToEdit, expenseID)
       .subscribe({
@@ -209,8 +204,8 @@ export class FinancesComponent {
   updateExpensesFromDatasource() {
     const subscription = this.financeService.expenseFetchAll().subscribe({
       error: (error: Error) => {
-        console.log('error fetching expenses from server: ');
-        console.log(error);
+        console.error('error fetching expenses from server: ');
+        console.error(error);
       },
       complete: () => {
         this.expenseData = this.financeService.EXPENSE_DATA;

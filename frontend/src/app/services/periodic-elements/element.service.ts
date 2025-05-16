@@ -139,7 +139,7 @@ export class ElementService {
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
       return this.httpAddElement(elementToAdd);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       throw e;
     }
   }
@@ -217,7 +217,7 @@ export class ElementService {
       // posts the element to update and updates the datasource appropriately if we don't get an error back.
       return this.httpUpdateElement(elementToUpdate);
     } catch (e) {
-      console.log(e);
+      console.error(e);
       throw e;
     }
   }

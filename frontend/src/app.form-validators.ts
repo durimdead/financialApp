@@ -147,9 +147,6 @@ export class FormValidators {
         currentErrorMessage = 'Unknown validation error.';
       }
 
-      console.log(formControl);
-      console.log(currentErrorMessage);
-
       //TODO: still need to fix this part to show multiple lines rather than a "::::" separator
       if (messageToShow.length > 0) {
         messageToShow += ' :::: ';
@@ -304,13 +301,10 @@ export class FormValidators {
         // updated date, which is driven by the database's temporal tables.
         lastUpdated: new Date(),
       };
-	  console.log('extractExpenseToSubmit::: returning object:');
-	  console.log(newExpense);
 	  return newExpense;
     }
     // the form is invalid, ensure we show which have issues
     this.markFormGroupAsDirtyTouched(this.expenseForm);
-	console.log('extractExpenseToSubmit::: returning "undefined":');
 	return undefined;
   }
 

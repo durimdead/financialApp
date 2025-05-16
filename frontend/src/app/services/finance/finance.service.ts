@@ -186,8 +186,6 @@ export class FinanceService {
     let returnValue = this.expenseData().find(
       (item) => item.expenseID === expenseID
     ) as Expense;
-	console.log('finance.service.getExpenseByID:::: expenseID = ' + expenseID);
-	console.log(returnValue);
     return returnValue;
   }
 
@@ -197,7 +195,6 @@ export class FinanceService {
 
   // on blur of search section, attempt to match it to an existing search result and select it.
   selectFromListIfMatched(searchType: string, searchboxInputID: string) {
-    console.log('blurred: ' + searchType);
     let currentSearchboxElement = document.getElementById(
       searchboxInputID
     ) as HTMLInputElement;
@@ -214,13 +211,10 @@ export class FinanceService {
       matchFound = true;
     } else {
       resultsToCheck.forEach((currentElement: HTMLElement) => {
-        console.log('checking new element');
-        console.log(currentElement);
         if (
           currentElement.innerHTML.trim().toLowerCase() ===
           currentSearchValue.trim().toLowerCase()
         ) {
-          console.log('found match');
           currentElement.click();
           matchFound = true;
           return;

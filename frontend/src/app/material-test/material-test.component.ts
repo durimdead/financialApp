@@ -127,7 +127,7 @@ export class MaterialTestComponent implements AfterViewInit {
           if (results.httpStatusCode === 200) {
             this.updateElementsDataFromSource();
           } else {
-            console.log(
+            console.error(
               'server error deleting elementId ' +
                 elementId +
                 '. Error: ' +
@@ -136,8 +136,8 @@ export class MaterialTestComponent implements AfterViewInit {
           }
         },
         error: (error: Error) => {
-          console.log('error deleting elementId ' + elementId + '. Error: ');
-          console.log(error);
+          console.error('error deleting elementId ' + elementId + '. Error: ');
+          console.error(error);
         },
       });
 
@@ -153,7 +153,7 @@ export class MaterialTestComponent implements AfterViewInit {
         if (results.httpStatusCode === 200) {
           this.updateElementsDataFromSource();
         } else {
-          console.log(
+          console.error(
             'server error updating elementId ' +
               element.elementID +
               '. Error: ' +
@@ -162,10 +162,10 @@ export class MaterialTestComponent implements AfterViewInit {
         }
       },
       error: (error: Error) => {
-        console.log(
+        console.error(
           'error updating elementId ' + element.elementID + '. Error: '
         );
-        console.log(error);
+        console.error(error);
       },
     });
 
@@ -182,7 +182,7 @@ export class MaterialTestComponent implements AfterViewInit {
           if (results.httpStatusCode === 200) {
             this.updateElementsDataFromSource();
           } else {
-            console.log(
+            console.error(
               'server error adding element - element name "' +
                 elementToAdd.elementName +
                 '". Error: ' +
@@ -191,12 +191,12 @@ export class MaterialTestComponent implements AfterViewInit {
           }
         },
         error: (error: Error) => {
-          console.log(
+          console.error(
             'error adding new element - element name - "' +
               elementToAdd.elementName +
               '". Error: '
           );
-          console.log(error);
+          console.error(error);
         },
       });
 
@@ -224,7 +224,7 @@ export class MaterialTestComponent implements AfterViewInit {
             this.saveEditedElement(result);
           } catch (e) {
             //TODO: better error handling
-            console.log(e);
+            console.error(e);
           }
         }
       });
@@ -237,8 +237,8 @@ export class MaterialTestComponent implements AfterViewInit {
   updateElementsDataFromSource() {
     const subscription = this.elementService.elementsFetcher().subscribe({
       error: (error: Error) => {
-        console.log('error fetching elements from server: ');
-        console.log(error);
+        console.error('error fetching elements from server: ');
+        console.error(error);
       },
       complete: () => {
         this.refreshMatTableDataSource();

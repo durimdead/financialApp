@@ -16,14 +16,6 @@ export class ExpenseDialogRoutingComponent {
   readonly inputData = inject(MAT_DIALOG_DATA);
   private CRUD_STATES = CRUD_STATES;
 
-ngOnInit(){
-	// console.log('in modal routing');
-	// console.log(this.inputData);
-	// console.log(this.inputData.expenseState);
-	// console.log(this.getCrudStates().create);
-	// console.log(this.inputData.expenseState == this.getCrudStates().create);
-}
-
   getCrudStates() {
     return this.CRUD_STATES;
   }

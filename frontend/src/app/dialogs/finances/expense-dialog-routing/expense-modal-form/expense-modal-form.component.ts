@@ -59,46 +59,43 @@ export class ExpenseModalFormComponent implements OnInit {
 
   // set all the values for the form from the expense input
   ngOnInit(): void {
-    switch (this.crudOperation) {
-      case this.CRUD_STATES.create.toString():
-        this.crudOperation = 'Create';
-        break;
-      case this.CRUD_STATES.update.toString():
-        this.crudOperation = 'Edit';
-        break;
+    if (this.crudOperation === this.CRUD_STATES.create) {
+      this.crudOperation = 'Create';
+    } else if (this.crudOperation === this.CRUD_STATES.update) {
+      this.crudOperation = 'Edit';
+      this.expenseForm.controls.expenseDate.setValue(
+        new Date(this.expenseData().expenseDate.toString())
+          .toISOString()
+          .substring(0, 10)
+      );
+      this.expenseForm.controls.expenseDescription.setValue(
+        this.expenseData().expenseDescription
+      );
+      this.expenseForm.controls.expenseAmount.setValue(
+        this.expenseData().expenseAmount.toString()
+      );
+      this.expenseForm.controls.expenseType.controls.expenseTypeName.setValue(
+        this.expenseData().expenseTypeName.toString()
+      );
+      this.expenseForm.controls.paymentType.controls.paymentTypeName.setValue(
+        this.expenseData().paymentTypeName.toString()
+      );
+      this.expenseForm.controls.expenseType.controls.expenseTypeID.setValue(
+        this.expenseData().expenseTypeID
+      );
+      this.expenseForm.controls.paymentType.controls.paymentTypeID.setValue(
+        this.expenseData().paymentTypeID
+      );
+      this.expenseForm.controls.paymentType.controls.paymentTypeCategoryID.setValue(
+        this.expenseData().paymentTypeCategoryID
+      );
+      this.expenseForm.controls.checkboxes.controls.isInvestment.setValue(
+        this.expenseData().isInvestment
+      );
+      this.expenseForm.controls.checkboxes.controls.isIncome.setValue(
+        this.expenseData().isIncome
+      );
     }
-    this.expenseForm.controls.expenseDate.setValue(
-      new Date(this.expenseData().expenseDate.toString())
-        .toISOString()
-        .substring(0, 10)
-    );
-    this.expenseForm.controls.expenseDescription.setValue(
-      this.expenseData().expenseDescription
-    );
-    this.expenseForm.controls.expenseAmount.setValue(
-      this.expenseData().expenseAmount.toString()
-    );
-    this.expenseForm.controls.expenseType.controls.expenseTypeName.setValue(
-      this.expenseData().expenseTypeName.toString()
-    );
-    this.expenseForm.controls.paymentType.controls.paymentTypeName.setValue(
-      this.expenseData().paymentTypeName.toString()
-    );
-    this.expenseForm.controls.expenseType.controls.expenseTypeID.setValue(
-      this.expenseData().expenseTypeID
-    );
-    this.expenseForm.controls.paymentType.controls.paymentTypeID.setValue(
-      this.expenseData().paymentTypeID
-    );
-    this.expenseForm.controls.paymentType.controls.paymentTypeCategoryID.setValue(
-      this.expenseData().paymentTypeCategoryID
-    );
-    this.expenseForm.controls.checkboxes.controls.isInvestment.setValue(
-      this.expenseData().isInvestment
-    );
-    this.expenseForm.controls.checkboxes.controls.isIncome.setValue(
-      this.expenseData().isIncome
-    );
   }
 
   expenseForm = new FormGroup({

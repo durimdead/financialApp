@@ -1,14 +1,15 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, inject, signal, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSortModule, MatSort, Sort } from '@angular/material/sort';
 import { CRUD_STATES, CrudState, Expense } from '../../app.interfaces';
 import { FinanceService } from '../services/finance/finance.service';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { ExpenseDialogRoutingComponent } from '../dialogs/finances/expense-dialog-routing/expense-dialog-routing.component';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-finances',
@@ -23,16 +24,31 @@ import { ExpenseDialogRoutingComponent } from '../dialogs/finances/expense-dialo
   templateUrl: './finances.component.html',
   styleUrl: './finances.component.css',
 })
-export class FinancesComponent {
+export class FinancesComponent implements AfterViewInit {
   //TODO: start filling in with code for the finance component items.
   private financeService = inject(FinanceService);
   private destroyRef = inject(DestroyRef);
-  readonly dialog = inject(MatDialog);
+  private _liveAnnouncer = inject(LiveAnnouncer);
   private expenseData = this.financeService.EXPENSE_DATA;
   private CRUD_STATES = CRUD_STATES;
+  readonly dialog = inject(MatDialog);
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngAfterViewInit() {
     this.updateExpensesFromDatasource();
+    this.dataSource.sort = this.sort;
+  }
+
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 
   dataSource = new MatTableDataSource(this.expenseData());

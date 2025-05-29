@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, DestroyRef, inject, signal, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,7 +24,6 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   styleUrl: './finances.component.css',
 })
 export class FinancesComponent implements AfterViewInit {
-  //TODO: start filling in with code for the finance component items.
   private financeService = inject(FinanceService);
   private destroyRef = inject(DestroyRef);
   private _liveAnnouncer = inject(LiveAnnouncer);

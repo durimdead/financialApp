@@ -8,9 +8,8 @@ describe('ExpenseDialogAddComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExpenseDialogAddComponent]
-    })
-    .compileComponents();
+      imports: [ExpenseDialogAddComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ExpenseDialogAddComponent);
     component = fixture.componentInstance;

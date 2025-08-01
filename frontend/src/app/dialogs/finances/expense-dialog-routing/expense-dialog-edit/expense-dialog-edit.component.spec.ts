@@ -6,6 +6,7 @@ import {
 } from '@angular/material/dialog';
 
 import { ExpenseDialogEditComponent } from './expense-dialog-edit.component';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('ExpenseDialogEditComponent', () => {
   let component: ExpenseDialogEditComponent;
@@ -17,9 +18,10 @@ describe('ExpenseDialogEditComponent', () => {
       providers: [
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatDialogRef, useValue: {} },
+        HttpClient,
+		HttpHandler
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ExpenseDialogEditComponent);
     component = fixture.componentInstance;

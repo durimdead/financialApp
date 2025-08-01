@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpenseModalFormComponent } from './expense-modal-form.component';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('ExpenseModalFormComponent', () => {
   let component: ExpenseModalFormComponent;
@@ -8,9 +9,9 @@ describe('ExpenseModalFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExpenseModalFormComponent]
-    })
-    .compileComponents();
+      imports: [ExpenseModalFormComponent],
+      providers: [HttpClient, HttpHandler],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ExpenseModalFormComponent);
     component = fixture.componentInstance;

@@ -14,7 +14,7 @@ builder.Services.AddOpenApi(options =>
         document.Info.Contact = new OpenApiContact
         {
             Name = "David Lancellotti (CODUR LLC)",
-            Email = "[Redacted]"
+            Email = "david.lancellotti.jobs+sampleProject@gmail.com"
         };
         return Task.CompletedTask;
     });

@@ -1,9 +1,0 @@
-@if(inputData.elementState === getElementCrudStates().create){
-	<app-dialog-add-element/>
-}
-@else if (inputData.elementState === getElementCrudStates().update) {
-	<app-dialog-edit-element [elementData]="inputData.elementData"/>
-}
-@else if (inputData.elementState === getElementCrudStates().delete) {
-	<app-dialog-delete-element-confirmation [elementData]="inputData.elementData"/>
-}

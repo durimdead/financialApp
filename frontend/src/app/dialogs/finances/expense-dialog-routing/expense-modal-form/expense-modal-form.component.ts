@@ -55,7 +55,9 @@ export class ExpenseModalFormComponent implements OnInit {
   public dialogRef = inject(MatDialogRef<ExpenseDialogAddComponent>);
   search_expenseTypeResults = signal<ExpenseType[]>([]);
   search_paymentTypeResults = signal<PaymentType[]>([]);
-  crudOperation: string = this.inputData.expenseState.toString();
+  // force "toString()" by using ["" + value] - using [value!.toString()] was giving unit tests errors
+  // crudOperation: string = this.inputData.expenseState!.toString();
+  crudOperation: string = "" + this.inputData.expenseState;
 
   // set all the values for the form from the expense input
   ngOnInit(): void {

@@ -17,6 +17,11 @@ describe('NavbarComponent', () => {
     fixture.detectChanges();
   });
 
+//   it('should detect "Finances" button', () => {
+// 	let button = fixture.debugElement.nativeElement.querySelector("#nav-button-finances");
+// 	expect(button).toBeTruthy();
+//   })
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

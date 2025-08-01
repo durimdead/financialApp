@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpenseModalFormComponent } from './expense-modal-form.component';
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 describe('ExpenseModalFormComponent', () => {
   let component: ExpenseModalFormComponent;
@@ -10,7 +11,12 @@ describe('ExpenseModalFormComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ExpenseModalFormComponent],
-      providers: [HttpClient, HttpHandler],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MatDialogRef, useValue: {} },
+        HttpClient,
+        HttpHandler,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExpenseModalFormComponent);

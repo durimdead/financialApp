@@ -3,7 +3,6 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using FinanceApi.Models.Testing;
 using FinanceApi.Models.Expenses;
 using FinanceApi.Services.RepositoryServices.Expenses;
 using FinanceApi.Models.JsonDeserialization.Expenses;

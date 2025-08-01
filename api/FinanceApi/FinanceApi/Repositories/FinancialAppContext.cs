@@ -9,8 +9,6 @@ namespace FinanceApi.Repositories
     public class FinancialAppContext : DbContext
     {
         public FinancialAppContext(DbContextOptions options) : base(options) { }
-
-        public virtual DbSet<vPeriodicElement> vPeriodicElement { get; set; }
         public virtual DbSet<vExpenseType> vExpenseType { get; set; }
         public virtual DbSet<vPaymentTypeCategory> vPaymentTypeCategory { get; set; }
         public virtual DbSet<vPaymentType> vPaymentType { get; set; }

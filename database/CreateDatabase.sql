@@ -173,22 +173,6 @@ GO
 USE [FinancialApp]
 GO
 
-CREATE TABLE [dbo].[PeriodicElement](
-    [PeriodicElementId] INT IDENTITY(1,1) NOT NULL
-    ,[PeriodicElementName] VARCHAR(100) NOT NULL
-    ,[PeriodicElementSymbol] VARCHAR(3) NOT NULL
-    ,[PeriodicElementWeight] FLOAT NOT NULL
-	,CONSTRAINT [AK_PeriodicElement_PeriodicElementName] UNIQUE(PeriodicElementName)
-    ,CONSTRAINT [PK_PeriodicElementID] PRIMARY KEY CLUSTERED
-    ([PeriodicElementId] ASC) 
-    ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
-    ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
-    ,PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo)
-    )
-    WITH (SYSTEM_VERSIONING = ON (HISTORY_TABLE = [dbo].[PeriodicElementAudit])
-);
-GO
-
 -- date night, car maintenance, tolls, grocery, etc.
 CREATE TABLE [dbo].[ExpenseType](
     [ExpenseTypeID] INT IDENTITY(1,1) NOT NULL
@@ -304,138 +288,6 @@ GO
 ************************************************************************/
 USE [FinancialApp]
 GO
-/*
-===========================================================================================================================================
-=    Author:
-=        David Lancellotti
-=
-=    Create date: 
-=        03/17/2025 12:00PM
-=
-=    Description:
-=        Update or insert a periodic element record with the relevant information
-=
-=    UPDATES:
-=                                DateTime
-=    Author                        mm/dd/yyyy HH:mm    Description
-=    =====================        =============        =======================================================================================
-=
-=
-===========================================================================================================================================
-*/
-CREATE PROCEDURE [dbo].[usp_PeriodicElementUpsert]
-    @periodicElementID AS INT
-    ,@periodicElementName AS VARCHAR(50)
-    ,@periodicElementSymbol AS VARCHAR(3)
-    ,@periodicElementWeight AS DECIMAL(10,6)
-AS
-SET XACT_ABORT, NOCOUNT ON
-DECLARE @starttrancount int
-BEGIN TRY
-    SELECT @starttrancount = @@TRANCOUNT
-
-    IF @starttrancount = 0
-        BEGIN TRANSACTION
-
-        -- trim our varchar inputs to ensure we have no whitespace
-        SET @periodicElementName = LTRIM(RTRIM(@periodicElementName));
-        SET @periodicElementSymbol = LTRIM(RTRIM(@periodicElementSymbol));
-
-        -- if we can find a record with the periodicElementID pushed in, let's update the information for it
-        IF EXISTS(SELECT 1 FROM [dbo].[PeriodicElement] WHERE [PeriodicElementId] = @periodicElementID)
-        BEGIN;
-            UPDATE [dbo].[PeriodicElement]
-            SET
-                [PeriodicElementName] = @periodicElementName
-                ,[PeriodicElementSymbol] = @periodicElementSymbol
-                ,[PeriodicElementWeight] = @periodicElementWeight
-            WHERE
-                [PeriodicElementId] = @periodicElementID
-        END;
-        -- else, we check to see if the periodicElementID sent in is 0 - indicating a new record
-        ELSE IF (@periodicElementID = 0)
-        BEGIN;
-            INSERT INTO [dbo].[PeriodicElement](
-                [PeriodicElementName]
-                ,[PeriodicElementSymbol]
-                ,[PeriodicElementWeight]
-            )
-            VALUES(
-                @periodicElementName
-                ,@periodicElementSymbol
-                ,@periodicElementWeight
-            );
-        END;
-        -- if the ID doesn't exists and is not 0, the periodic element doesn't exist and we can't update it.
-        ELSE
-        BEGIN;
-            DECLARE @errorMessage VARCHAR(100) = 'The PeriodicElementID does not exist: ' + CONVERT(VARCHAR(20), @periodicElementID);
-            THROW 51001, @errorMessage , 1;
-        END;
-
-    IF @starttrancount = 0 
-        COMMIT TRANSACTION
-END TRY
-BEGIN CATCH
-    IF XACT_STATE() <> 0 AND @starttrancount = 0 
-        ROLLBACK TRANSACTION;
-    THROW;
-END CATCH
-GO
-
-
-
-
-/*
-===========================================================================================================================================
-=    Author:
-=        David Lancellotti
-=
-=    Create date: 
-=        03/17/2025 12:00PM
-=
-=    Description:
-=        Delete a periodic element record given the PeriodicElementID
-=
-=    UPDATES:
-=                                DateTime
-=    Author                        mm/dd/yyyy HH:mm    Description
-=    =====================        =============        =======================================================================================
-=
-=
-===========================================================================================================================================
-*/
-CREATE PROCEDURE [dbo].[usp_PeriodicElementDelete]
-    @periodicElementID AS INT
-AS
-SET XACT_ABORT, NOCOUNT ON
-DECLARE @starttrancount int
-BEGIN TRY
-    SELECT @starttrancount = @@TRANCOUNT
-
-    IF @starttrancount = 0
-        BEGIN TRANSACTION
-
-        -- if we can find a record for the periodicElementID pushed in, delete it.
-        -- if we don't find it - no matter, the periodic element doesn't exist anyway and there's nothing to do
-        IF EXISTS(SELECT 1 FROM [dbo].[PeriodicElement] WHERE [PeriodicElementId] = @periodicElementID)
-        BEGIN;
-            DELETE FROM [dbo].[PeriodicElement]
-            WHERE
-                [PeriodicElementId] = @periodicElementID
-        END;
-
-    IF @starttrancount = 0 
-        COMMIT TRANSACTION
-END TRY
-BEGIN CATCH
-    IF XACT_STATE() <> 0 AND @starttrancount = 0 
-        ROLLBACK TRANSACTION;
-    THROW;
-END CATCH
-GO
-
-
 
 /*
 ===========================================================================================================================================
@@ -1047,17 +899,6 @@ GO
 USE [FinancialApp]
 GO
 
-CREATE VIEW [dbo].[vPeriodicElement]
-AS
-SELECT
-    [PeriodicElementId]
-    ,[PeriodicElementName]
-    ,[PeriodicElementSymbol]
-    ,[PeriodicElementWeight]
-FROM
-    [dbo].[PeriodicElement]
-GO
-
 CREATE VIEW [dbo].[vExpenseType]
 AS
 SELECT
@@ -1153,18 +994,6 @@ GO
 ************************************************************************/
 USE [FinancialApp]
 GO
-
--- Periodic Elements for "test" area
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Hydrogen', 'H', 1.0079
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Helium', 'He', 4.0026
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Lithium', 'Li', 6.941
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Beryllium', 'Be', 9.0122
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Boron', 'B', 10.811
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Carbon', 'C', 12.0107
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Nitrogen', 'N', 14.0067
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Oxygen', 'O', 15.9994
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Fluorine', 'F', 18.9984
-exec [dbo].[usp_PeriodicElementUpsert] 0, 'Neon', 'Ne', 20.1797
 
 -- expense type
 exec [dbo].[usp_ExpenseTypeUpsert] 0, 'other', 'this expense does not fit into any other category';

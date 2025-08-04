@@ -4,146 +4,11 @@
     "title": "FinanceApi | v1",
     "contact": {
       "name": "David Lancellotti (CODUR LLC)",
-      "email": "[Redacted]"
+      "email": "david.lancellotti.jobs+sampleProject@gmail.com"
     },
     "version": "1.0.0"
   },
   "paths": {
-    "/api/PeriodicElements": {
-      "get": {
-        "tags": [
-          "PeriodicElements"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "PeriodicElements"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JsonElement"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JsonElement"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/JsonElement"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "PeriodicElements"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JsonElement"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/JsonElement"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/JsonElement"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/PeriodicElements/{id}": {
-      "get": {
-        "tags": [
-          "PeriodicElements"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/PeriodicElements/{elementId}": {
-      "delete": {
-        "tags": [
-          "PeriodicElements"
-        ],
-        "parameters": [
-          {
-            "name": "elementId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/Expenses": {
       "get": {
         "tags": [
@@ -575,9 +440,6 @@
     }
   },
   "tags": [
-    {
-      "name": "PeriodicElements"
-    },
     {
       "name": "Expenses"
     },

@@ -44,42 +44,73 @@ export class FinanceService {
     );
   }
 
-  searchExpenseTypes(expenseTypeSearchString: string) {
-    return this.httpSearchExpenseTypes(expenseTypeSearchString);
+  // fetches all expenses with no search criteria
+  private httpFetchAllExpenses(urlExpenses: string) {
+    return this.httpClient.get<{
+      httpStatusCode: number;
+      expenseData: Expense[];
+      errorMessage: string;
+    }>(urlExpenses);
   }
 
-  searchPaymentTypes(paymentTypeSearchString: string) {
-    return this.httpSearchPaymentTypes(paymentTypeSearchString);
-  }
-
+  // adds a new expense to the database
   addExpense(expenseToAdd: Expense) {
     //TODO: do we add additional validation here? Is there a decently easy way to do so?
     return this.httpAddExpense(expenseToAdd);
   }
 
-  editExpense(expenseToEdit: Expense, expenseID: number) {
-    return this.httpEditExpense(expenseToEdit, expenseID);
-  }
-
-  private httpSearchExpenseTypes(expenseTypeSearchString: string) {
-    const paramData = { expenseTypeSearchString: expenseTypeSearchString };
-    const params = new HttpParams().append(
-      'expenseTypeSearchString',
-      expenseTypeSearchString.toString()
-    );
+  // calls the API method to add a new expense to the database.
+  private httpAddExpense(expenseToAdd: Expense) {
+    const expenseParam = JSON.stringify(expenseToAdd);
     const headers = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
       }),
-      params: params,
     };
     return this.httpClient.post<{
       httpStatusCode: number;
-      expenseTypeData: ExpenseType[];
       errorMessage: string;
-    }>(this.urlSearchExpenseTypes, paramData, headers);
+    }>(this.urlExpenses, expenseParam, headers);
   }
 
+  // update expense details with "expenseToEdit" information for "expenseID" expense
+  editExpense(expenseToEdit: Expense, expenseID: number) {
+    return this.httpEditExpense(expenseToEdit, expenseID);
+  }
+
+  // http call to update expense details with "expenseToEdit" information for "expenseID" expense
+  private httpEditExpense(expenseToEdit: Expense, expenseID: number) {
+    const expenseParam = JSON.stringify(expenseToEdit);
+    const headers = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json; charset=utf-8',
+      }),
+    };
+    return this.httpClient.put<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlExpenses, expenseParam, headers);
+  }
+
+  // deletes expense with "expenseID"
+  deleteExpense(expenseID: number) {
+    return this.httpDeleteExpense(expenseID);
+  }
+
+  // deletes the expense with the expenseID sent in
+  private httpDeleteExpense(expenseID: number) {
+    return this.httpClient.delete<{
+      httpStatusCode: number;
+      errorMessage: string;
+    }>(this.urlExpenses + expenseID);
+  }
+
+  // returns set of payment types containing the "expenseTypeSearchString"
+  searchPaymentTypes(paymentTypeSearchString: string) {
+    return this.httpSearchPaymentTypes(paymentTypeSearchString);
+  }
+
+  // http call to return set of payment types containing the "paymentTypeSearchString"
   private httpSearchPaymentTypes(paymentTypeSearchString: string) {
     const paramData = { paymentTypeSearchString: paymentTypeSearchString };
     const params = new HttpParams().append(
@@ -99,48 +130,29 @@ export class FinanceService {
     }>(this.urlSearchPaymentTypes, paramData, headers);
   }
 
-  // calls the API method to add a new expense to the database.
-  private httpAddExpense(expenseToAdd: Expense) {
-    const expenseParam = JSON.stringify(expenseToAdd);
+  // returns set of expense types containing the "expenseTypeSearchString"
+  searchExpenseTypes(expenseTypeSearchString: string) {
+    return this.httpSearchExpenseTypes(expenseTypeSearchString);
+  }
+
+  // http call to return set of expense types containing the "expenseTypeSearchString"
+  private httpSearchExpenseTypes(expenseTypeSearchString: string) {
+    const paramData = { expenseTypeSearchString: expenseTypeSearchString };
+    const params = new HttpParams().append(
+      'expenseTypeSearchString',
+      expenseTypeSearchString.toString()
+    );
     const headers = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json; charset=utf-8',
       }),
+      params: params,
     };
     return this.httpClient.post<{
       httpStatusCode: number;
+      expenseTypeData: ExpenseType[];
       errorMessage: string;
-    }>(this.urlExpenses, expenseParam, headers);
-  }
-
-  private httpEditExpense(expenseToEdit: Expense, expenseID: number) {
-    const expenseParam = JSON.stringify(expenseToEdit);
-    const headers = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json; charset=utf-8',
-      }),
-    };
-    return this.httpClient.put<{
-      httpStatusCode: number;
-      errorMessage: string;
-    }>(this.urlExpenses, expenseParam, headers);
-  }
-
-  // fetches all expenses with no search criteria
-  private httpFetchAllExpenses(urlExpenses: string) {
-    return this.httpClient.get<{
-      httpStatusCode: number;
-      expenseData: Expense[];
-      errorMessage: string;
-    }>(urlExpenses);
-  }
-
-  // deletes the expense with the expenseID sent in
-  private httpDeleteExpense(expenseID: number) {
-    return this.httpClient.delete<{
-      httpStatusCode: number;
-      errorMessage: string;
-    }>(this.urlExpenses + expenseID);
+    }>(this.urlSearchExpenseTypes, paramData, headers);
   }
 
   // get the data for opening any of the crud modals for a given expense.
@@ -189,10 +201,6 @@ export class FinanceService {
     return returnValue;
   }
 
-  deleteExpense(expenseID: number) {
-    return this.httpDeleteExpense(expenseID);
-  }
-
   // on blur of search section, attempt to match it to an existing search result and select it.
   selectFromListIfMatched(searchType: string, searchboxInputID: string) {
     let currentSearchboxElement = document.getElementById(
@@ -222,10 +230,10 @@ export class FinanceService {
       });
     }
 
-    // no match found, but section "blur" event happened: hide the search results.
-    if (!matchFound) {
-      //   this.hideElement('searchResults_' + searchType);
-    }
+    // // no match found, but section "blur" event happened: hide the search results.
+    // if (!matchFound) {
+    //   this.hideElement('searchResults_' + searchType);
+    // }
   }
   ////////////////////////////////////////////////////
   ////////////////////////////////////////////////////

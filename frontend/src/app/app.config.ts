@@ -20,18 +20,18 @@ function loggingInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn){
     
     // look through the request type and output some information if this happens to be a "response" event
     return next(request).pipe(
-        tap({
-            next: event => {
-                if (event.type === HttpEventType.Response){
-                    // console.log('[Incoming Response]')
-                    // console.log('event status: ');
-                    // console.log(event.status);
-                    // console.log('event body: ');
-                    // console.log(event.body);
-                    // console.log('----------------------------------------------------------------------------');
-                }
-            }
-        })
+        // tap({
+        //     next: event => {
+        //         if (event.type === HttpEventType.Response){
+        //             console.log('[Incoming Response]')
+        //             console.log('event status: ');
+        //             console.log(event.status);
+        //             console.log('event body: ');
+        //             console.log(event.body);
+        //             console.log('----------------------------------------------------------------------------');
+        //         }
+        //     }
+        // })
     );
 }
 

@@ -8,9 +8,9 @@
     ".NETCoreApp,Version=v9.0": {
       "FinanceApi/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.OpenApi": "9.0.7",
+          "Microsoft.AspNetCore.OpenApi": "9.0.9",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.3",
-          "Microsoft.Extensions.ApiDescription.Server": "9.0.7"
+          "Microsoft.Extensions.ApiDescription.Server": "9.0.9"
         },
         "runtime": {
           "FinanceApi.dll": {}
@@ -51,14 +51,14 @@
           }
         }
       },
-      "Microsoft.AspNetCore.OpenApi/9.0.7": {
+      "Microsoft.AspNetCore.OpenApi/9.0.9": {
         "dependencies": {
           "Microsoft.OpenApi": "1.6.17"
         },
         "runtime": {
           "lib/net9.0/Microsoft.AspNetCore.OpenApi.dll": {
-            "assemblyVersion": "9.0.7.0",
-            "fileVersion": "9.0.725.31702"
+            "assemblyVersion": "9.0.9.0",
+            "fileVersion": "9.0.925.42003"
           }
         }
       },
@@ -186,7 +186,7 @@
           }
         }
       },
-      "Microsoft.Extensions.ApiDescription.Server/9.0.7": {},
+      "Microsoft.Extensions.ApiDescription.Server/9.0.9": {},
       "Microsoft.Extensions.Caching.Abstractions/9.0.3": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "9.0.3"
@@ -617,12 +617,12 @@
       "path": "azure.identity/1.11.4",
       "hashPath": "azure.identity.1.11.4.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.OpenApi/9.0.7": {
+    "Microsoft.AspNetCore.OpenApi/9.0.9": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-8aG0mkgmA38IDJ0ca5HIpdexKjHXIh0z1kIdw5WyM6CrD4+CEt97UgSwBBBCHG6QQKV0hj2mfkwtEcqrJBcu8g==",
-      "path": "microsoft.aspnetcore.openapi/9.0.7",
-      "hashPath": "microsoft.aspnetcore.openapi.9.0.7.nupkg.sha512"
+      "sha512": "sha512-3Sina0gS/CTYt9XG6DUFPdXOmJui7e551U0kO2bIiDk3vZ2sctxxenN+cE1a5CrUpjIVZfZr32neWYYRO+Piaw==",
+      "path": "microsoft.aspnetcore.openapi/9.0.9",
+      "hashPath": "microsoft.aspnetcore.openapi.9.0.9.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
       "type": "package",
@@ -687,12 +687,12 @@
       "path": "microsoft.entityframeworkcore.sqlserver/9.0.3",
       "hashPath": "microsoft.entityframeworkcore.sqlserver.9.0.3.nupkg.sha512"
     },
-    "Microsoft.Extensions.ApiDescription.Server/9.0.7": {
+    "Microsoft.Extensions.ApiDescription.Server/9.0.9": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-51aeqSIFKvZgXhLwMBP5VFySJoSTJhgMhMUsH42GNSOZ8SJl7013b6c4IM8xOxVF2SHUSxm7dENrDvhdJv9bvA==",
-      "path": "microsoft.extensions.apidescription.server/9.0.7",
-      "hashPath": "microsoft.extensions.apidescription.server.9.0.7.nupkg.sha512"
+      "sha512": "sha512-e2ILNZ0omhAoMt0sAhDcNNediY3wxRInzE0FNAdSlKjy7nL2V2kQ5FkbVuYWaf1GwkfUsq+dxAHaox3Z/t352Q==",
+      "path": "microsoft.extensions.apidescription.server/9.0.9",
+      "hashPath": "microsoft.extensions.apidescription.server.9.0.9.nupkg.sha512"
     },
     "Microsoft.Extensions.Caching.Abstractions/9.0.3": {
       "type": "package",

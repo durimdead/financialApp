@@ -179,7 +179,7 @@ CREATE TABLE [dbo].[ExpenseType](
     ,[ExpenseTypeName] VARCHAR(50) NOT NULL
     ,[ExpenseTypeDescription] VARCHAR(250)
 	,CONSTRAINT [AK_ExpenseType_ExpenseTypeName] UNIQUE(ExpenseTypeName)
-    ,CONSTRAINT [ExpenseTypeID] PRIMARY KEY CLUSTERED
+    ,CONSTRAINT [PK_ExpenseTypeID] PRIMARY KEY CLUSTERED
     ([ExpenseTypeID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
     ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
@@ -194,7 +194,7 @@ CREATE TABLE [dbo].[PaymentTypeCategory](
     [PaymentTypeCategoryID] INT IDENTITY(1,1) NOT NULL
     ,[PaymentTypeCategoryName] VARCHAR(30) NOT NULL
 	,CONSTRAINT [AK_PaymentTypeCategory_PaymentTypeCategoryName] UNIQUE(PaymentTypeCategoryName)
-    ,CONSTRAINT [PaymentTypeCategoryID] PRIMARY KEY CLUSTERED
+    ,CONSTRAINT [PK_PaymentTypeCategoryID] PRIMARY KEY CLUSTERED
     ([PaymentTypeCategoryID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
     ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
@@ -211,7 +211,7 @@ CREATE TABLE [dbo].[PaymentType](
     ,[PaymentTypeName] VARCHAR(50) NOT NULL
     ,[PaymentTypeDescription] VARCHAR(250) NOT NULL
 	,CONSTRAINT [AK_PaymentType_PaymentTypeName] UNIQUE(PaymentTypeName)
-    ,CONSTRAINT [PaymentTypeID] PRIMARY KEY CLUSTERED
+    ,CONSTRAINT [PK_PaymentTypeID] PRIMARY KEY CLUSTERED
     ([PaymentTypeID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
     ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END
@@ -238,7 +238,7 @@ CREATE TABLE [dbo].[Expense](
     ,[IsInvestment] BIT NOT NULL
 	,[ExpenseDate] DATE NOT NULL
 	,[ExpenseAmount] DECIMAL(20,4) -- can store up to 1 quadrillion with 4 decimal places to cover most to all currency types
-    ,CONSTRAINT [ExpenseID] PRIMARY KEY CLUSTERED
+    ,CONSTRAINT [PK_ExpenseID] PRIMARY KEY CLUSTERED
     ([ExpenseID] ASC)
     ,[ValidFrom] datetime2 GENERATED ALWAYS AS ROW START
     ,[ValidTo] datetime2 GENERATED ALWAYS AS ROW END

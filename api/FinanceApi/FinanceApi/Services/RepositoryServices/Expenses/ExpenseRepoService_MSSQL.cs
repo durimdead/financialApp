@@ -1,17 +1,18 @@
-﻿using System.Linq;
-using FinanceApi.Models;
+﻿using FinanceApi.Models;
 using FinanceApi.Models.Expenses;
 using FinanceApi.Repositories;
 using FinanceApi.Repositories.EF_Models;
+using FinanceApi.Repositories.Interfaces;
 using FinanceApi.Services.RepositoryServices.Expenses.Interfaces;
+using System.Linq;
 
 namespace FinanceApi.Services.RepositoryServices.Expenses
 {
-    public class ExpenseRepoService : IExpensesRepository
+    public class ExpenseRepoService_MSSQL : IExpensesRepository
     {
-        private readonly ILogger<ExpenseRepoService> _logger;
-        private readonly FinancialAppContext _context;
-        public ExpenseRepoService(ILogger<ExpenseRepoService> logger, FinancialAppContext context)
+        private readonly ILogger<IExpensesRepository> _logger;
+        private readonly IExpenseDbContext _context;
+        public ExpenseRepoService_MSSQL(ILogger<IExpensesRepository> logger, IExpenseDbContext context)
         {
             _logger = logger;
             _context = context;

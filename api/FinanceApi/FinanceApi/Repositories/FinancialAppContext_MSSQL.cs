@@ -1,14 +1,15 @@
 ﻿using FinanceApi.Repositories;
 using FinanceApi.Repositories.EF_Models;
+using FinanceApi.Repositories.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace FinanceApi.Repositories
 {
-    public class FinancialAppContext : DbContext
+    public class FinancialAppContext_MSSQL : DbContext, IExpenseDbContext
     {
-        public FinancialAppContext(DbContextOptions options) : base(options) { }
+        public FinancialAppContext_MSSQL(DbContextOptions options) : base(options) { }
         public virtual DbSet<vExpenseType> vExpenseType { get; set; }
         public virtual DbSet<vPaymentTypeCategory> vPaymentTypeCategory { get; set; }
         public virtual DbSet<vPaymentType> vPaymentType { get; set; }

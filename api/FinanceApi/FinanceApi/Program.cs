@@ -1,4 +1,5 @@
 using FinanceApi.Repositories;
+using FinanceApi.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -32,7 +33,8 @@ builder.Services.AddCors(options =>
                             .AllowCredentials();
                       });
 });
-builder.Services.AddDbContext<FinancialAppContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAppDatabase")));
+builder.Services.AddDbContext<FinancialAppContext_MSSQL>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAppDatabase")));
+//builder.Services.AddDbContext<FinancialAppContext_Postgres>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FinancialAppDatabase")));
 
 // Add services to the container.
 builder.Services.AddControllers();

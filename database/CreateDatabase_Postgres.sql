@@ -177,3 +177,192 @@ BEGIN
 			was_success_out_param = false;
 END;
 $$;
+
+
+
+
+
+
+/************************************************************************
+*
+*
+*           BEGIN Views
+*
+*
+************************************************************************/
+SET search_path TO FinancialApp;
+CREATE OR REPLACE VIEW public.v_expense_type
+AS
+SELECT
+    expense_type_id 			AS "ExpenseTypeID"
+    ,expense_type_name 			AS "ExpenseTypeName"
+    ,expense_type_description 	AS "ExpenseTypeDescription"
+FROM
+    public.expense_type
+;
+
+CREATE OR REPLACE VIEW public.v_payment_type_category
+AS
+SELECT
+    payment_type_category_id 	AS "PaymentTypeCategoryID"
+    ,payment_type_category_name AS "PaymentTypeCategoryName"
+FROM
+    public.payment_type_category
+;
+
+CREATE OR REPLACE VIEW public.v_payment_type
+AS
+SELECT
+    pt.payment_type_id              	AS "PaymentTypeID"
+    ,pt.payment_type_name           	AS "PaymentTypeName"
+    ,pt.payment_type_description   		AS "PaymentTypeDescription"
+    ,ptc.payment_type_category_id   	AS "PaymentTypeCategoryID"
+    ,ptc.payment_type_category_name 	AS "PaymentTypeCategoryName"
+FROM
+    public.payment_type pt
+        JOIN public.payment_type_category ptc ON pt.payment_type_category_id = ptc.payment_type_category_id
+;
+
+CREATE OR REPLACE VIEW public.v_expense
+AS
+SELECT
+    e.expense_id                   	AS "ExpenseID"
+	,e.expense_date					AS "ExpenseDate"
+	,e.expense_description			AS "ExpenseDescription"
+	,e.expense_amount				AS "ExpenseAmount"
+    ,e.is_income                   	AS "IsIncome"
+    ,e.is_investment               	AS "IsInvenstment"
+    ,et.expense_type_id             AS "ExpenseTypeID"
+    ,pt.payment_type_id            	AS "PaymentTypeID"
+    ,ptc.payment_type_category_id   AS "PaymentTypeCategoryID"
+FROM
+    public.expense e
+        JOIN public.expense_type et ON e.expense_type_id = et.expense_type_id
+        JOIN public.payment_type pt ON e.payment_type_id = pt.payment_type_id
+        JOIN public.payment_type_category ptc ON e.payment_type_category_id = ptc.payment_type_category_id
+;
+
+CREATE OR REPLACE VIEW public.v_expense_detail
+AS
+SELECT
+    e.expense_id                   		AS "ExpenseID"
+	,e.expense_date						AS "ExpenseDate"
+	,e.expense_description				AS "ExpenseDescription"
+	,e.expense_amount					AS "ExpenseAmount"
+    ,et.expense_type_name           	AS "ExpenseTypeName"
+    ,pt.payment_type_name           	AS "PaymentTypeName"
+    ,ptc.payment_type_category_name  	AS "PaymentTypeCategoryName"
+    ,e.is_income                   		AS "IsIncome"
+    ,e.is_investment               		AS "IsInvestment"
+    ,et.expense_type_id             	AS "ExpenseTypeID"
+    ,pt.payment_type_id             	AS "PaymentTypeID"
+    ,pt.payment_type_description    	AS "PaymentTypeDescription"
+    ,ptc.payment_type_category_id    	AS "PaymentTypeCategoryID"
+FROM
+    public.expense e
+        JOIN public.expense_type et ON e.expense_type_id = et.expense_type_id
+        JOIN public.payment_type pt ON e.payment_type_id = pt.payment_type_id
+        JOIN public.payment_type_category ptc ON e.payment_type_category_id = ptc.payment_type_category_id
+;
+
+
+/************************************************************************
+*       #########################################################
+*           
+*           END Views
+*           
+*       #########################################################
+************************************************************************/
+
+
+/************************************************************************
+*
+*
+*           BEGIN Aliased Views
+*
+*
+************************************************************************/
+SET search_path TO FinancialApp;
+CREATE OR REPLACE VIEW public."vExpenseType"
+AS
+SELECT
+    "ExpenseTypeID"
+    ,"ExpenseTypeName"
+    ,"ExpenseTypeDescription"
+FROM
+    public.v_expense_type
+;
+
+CREATE OR REPLACE VIEW public."vPaymentTypeCategory"
+AS
+SELECT
+    "PaymentTypeCategoryID"
+    ,"PaymentTypeCategoryName"
+FROM
+    public.v_payment_type_category
+;
+
+CREATE OR REPLACE VIEW public."vPaymentType"
+AS
+SELECT
+    "PaymentTypeID"
+	,"PaymentTypeName"
+    ,"PaymentTypeDescription"
+    ,"PaymentTypeCategoryID"
+    ,"PaymentTypeCategoryName"
+FROM
+    public.v_payment_type
+;
+
+CREATE OR REPLACE VIEW public."vExpense"
+AS
+SELECT
+    "ExpenseID"
+	,"ExpenseDate"
+	,"ExpenseDescription"
+	,"ExpenseAmount"
+    ,"IsIncome"
+    ,"IsInvenstment"
+    ,"ExpenseTypeID"
+    ,"PaymentTypeID"
+    ,"PaymentTypeCategoryID"
+FROM
+    public.v_expense
+;
+
+CREATE OR REPLACE VIEW public."vExpenseDetail"
+AS
+SELECT
+    "ExpenseID"
+	,"ExpenseDate"
+	,"ExpenseDescription"
+	,"ExpenseAmount"
+    ,"ExpenseTypeName"
+    ,"PaymentTypeName"
+    ,"PaymentTypeCategoryName"
+    ,"IsIncome"
+    ,"IsInvestment"
+    ,"ExpenseTypeID"
+    ,"PaymentTypeID"
+    ,"PaymentTypeDescription"
+    ,"PaymentTypeCategoryID"
+FROM
+    public.v_expense_detail
+;
+
+/************************************************************************
+*       #########################################################
+*           
+*           END Aliased Views
+*           
+*       #########################################################
+************************************************************************/
+
+
+/*
+select * from public.v_expense;
+select * from public.v_expense_detail;
+select * from public.v_expense_type;
+select * from public.v_payment_type_category;
+select * from public.v_payment_type;
+*/

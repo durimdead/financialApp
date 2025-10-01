@@ -42,3 +42,5 @@ api/FinanceApi/.vs/FinanceApi/FileContentIndex/e04c1a67-5837-49a3-a1af-b190d81bb
 /api/FinanceApi/FinanceApi/obj/project.nuget.cache
 /api/FinanceApi/.vs/FinanceApi/CopilotIndices
 /api/FinanceApi/FinanceApi/bin
+/api/FinanceApi/FinanceApi/obj/Debug/net9.0/FinanceApi.assets.cache
+/api/FinanceApi/FinanceApi/obj/FinanceApi.csproj.nuget.g.targets

@@ -530,7 +530,7 @@ BEGIN TRY
         COMMIT TRANSACTION
 END TRY
 BEGIN CATCH
-    IF XACT_STATE() <> 0 AND @starttrancount = 0 
+    IF XACT_STATE() <> 0 AND @starttrancount = 0
         ROLLBACK TRANSACTION;
     THROW;
 END CATCH

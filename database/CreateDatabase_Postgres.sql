@@ -322,6 +322,62 @@ $$;
 
 
 
+
+
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        10/02/2025 01:00PM
+=
+=    Description:
+=        Delete a payment type record given the payment type ID
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE OR REPLACE PROCEDURE public.payment_type_delete(
+    payment_type_id_param INT
+	,OUT was_success_out_param BOOLEAN
+	,OUT exception_message_text_out_param TEXT
+	,OUT exception_detail_out_param TEXT
+	,OUT exception_hint_out_param TEXT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+BEGIN
+
+	-- if we can find a record for the payment type ID pushed in, delete it.
+	-- if we don't find it - no matter, the payment type doesn't exist anyway and there's nothing to do
+	IF EXISTS(SELECT FROM public.payment_type WHERE payment_type_id = payment_type_id_param) THEN
+		DELETE FROM public.payment_type
+		WHERE
+			payment_type_id = payment_type_id_param
+		;
+	END IF;
+	
+	was_success_out_param = true;
+
+	-- catch any exception that happens throughout the execution of the stored procedure
+	EXCEPTION
+		WHEN OTHERS THEN
+			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
+									exception_detail_out_param = PG_EXCEPTION_DETAIL,
+									exception_hint_out_param = PG_EXCEPTION_HINT;
+			was_success_out_param = false;
+END;
+$$;
+
+
+
 /*
 ===========================================================================================================================================
 =    Author:

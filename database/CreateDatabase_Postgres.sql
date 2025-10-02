@@ -244,7 +244,81 @@ BEGIN
 END;
 $$;
 
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        10/02/2025 01:00PM
+=
+=    Description:
+=       Update or insert a payment type record with the relevant information.
+=       Additionally, ensure that the payment type id exists - throws error if it does not.
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE OR REPLACE PROCEDURE public.payment_type_upsert(
+    payment_type_id_param INT
+    ,payment_type_name_param VARCHAR(50)
+	,payment_type_description_param VARCHAR(250)
+	,payment_type_category_id_param INT
+	,OUT was_success_out_param BOOLEAN
+	,OUT exception_message_text_out_param TEXT
+	,OUT exception_detail_out_param TEXT
+	,OUT exception_hint_out_param TEXT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+BEGIN
+	-- trim our varchar inputs to ensure we have no whitespace
+	SELECT TRIM(BOTH ' ' FROM payment_type_name_param) INTO payment_type_name_param;
+	SELECT TRIM(BOTH ' ' FROM payment_type_description_param) INTO payment_type_description_param;
 
+	-- if we can find a record with the payment_type_id pushed in, let's update the information for it
+	IF EXISTS (SELECT FROM public.payment_type WHERE payment_type_id = payment_type_id_param) THEN
+		UPDATE public.payment_type
+		SET
+			payment_type_name = payment_type_name_param
+			,payment_type_description = payment_type_description_param
+			,payment_type_category_id = payment_type_category_id_param
+		WHERE
+			payment_type_id = payment_type_id_param;
+	-- else, we check to see if the payment_type_id sent in is 0 - indicating a new record
+	ELSIF (payment_type_id_param = 0) THEN
+		INSERT INTO public.payment_type(
+			payment_type_name
+			,payment_type_description
+			,payment_type_category_id
+		)
+		VALUES(
+			payment_type_name_param
+			,payment_type_description_param
+			,payment_type_category_id_param
+		);
+	-- if the ID doesn't exists and is not 0, the payment type category doesn't exist and we can't update it.
+	ELSE
+		RAISE EXCEPTION 'The payment_type_id % does not exist', payment_type_id_param;
+	END IF;
+
+	was_success_out_param = true;
+
+	-- catch any exception that happens throughout the execution of the stored procedure
+	EXCEPTION
+		WHEN OTHERS THEN
+			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
+									exception_detail_out_param = PG_EXCEPTION_DETAIL,
+									exception_hint_out_param = PG_EXCEPTION_HINT;
+			was_success_out_param = false;
+END;
+$$;
 
 
 

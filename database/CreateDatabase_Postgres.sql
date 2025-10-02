@@ -322,6 +322,134 @@ $$;
 
 
 
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        10/02/2025 01:00PM
+=
+=    Description:
+=       Update or insert a expense record with the relevant information.
+=       Additionally, ensure that the FK IDs exist - throws error if any do not.
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE OR REPLACE PROCEDURE public.expense_upsert(
+    expense_id_param INT
+	,expense_type_id_param INT
+	,payment_type_id_param INT
+	,payment_type_category_id_param INT
+    ,expense_description_param VARCHAR(250)
+	,is_income_param BIT
+	,is_investment_param BIT
+	,expense_date_param DATE
+	,expense_amount_param DECIMAL(20, 4)
+	,OUT was_success_out_param BOOLEAN
+	,OUT exception_message_text_out_param TEXT
+	,OUT exception_detail_out_param TEXT
+	,OUT exception_hint_out_param TEXT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+BEGIN
+	-- trim our varchar inputs to ensure we have no whitespace
+	SELECT TRIM(BOTH ' ' FROM expense_description_param) INTO expense_description_param;
+
+	/***************************
+	 * Check for FKs existing
+	 **************************/
+	-- Ensure that the expense type ID exists
+	IF NOT EXISTS(SELECT FROM public.expense_type WHERE expense_type_id = expense_type_id_param) THEN
+		RAISE EXCEPTION 'The expense type ID % does not exist', expense_type_id_param;
+	END IF;
+
+	-- Ensure that the paymentTypeID exists
+	IF NOT EXISTS(SELECT 1 FROM public.payment_type WHERE payment_type_id = payment_type_id_param) THEN
+		RAISE EXCEPTION 'The payment type ID % does not exist', payment_type_id_param;
+	END IF;
+
+	-- Ensure that the payment type category ID exists
+	IF NOT EXISTS(SELECT 1 FROM public.payment_type_category WHERE payment_type_category_id = payment_type_category_id_param) THEN
+		RAISE EXCEPTION 'The payment type category ID % does not exist', payment_type_category_id_param;
+	END IF;
+
+	/***************************
+	 * ### END FK check
+	 **************************/
+
+	-- throw error if we have a null date for the expense date
+	IF (expense_date_param IS NULL) THEN
+		RAISE EXCEPTION 'Expense Date cannot be null and must have a value';
+	END IF;
+
+	-- throw error if the expense amount is 0 as you cannot have an expense (or income) = 0
+	IF (expense_amount_param = 0) THEN
+		RAISE EXCEPTION 'Expense Amount cannot be valued at "0"';
+	END IF;
+
+	-- if we can find a record with the expense_id pushed in, let's update the information for it
+	IF EXISTS (SELECT FROM public.expense WHERE expense_id = expense_id_param) THEN
+		UPDATE public.expense
+		SET
+			expense_type_id 				= expense_type_id_param
+			,payment_type_id				= payment_type_id_param
+			,payment_type_category_id 		= payment_type_category_id_param
+			,expense_description			= expense_description_param
+			,is_income						= is_income_param
+			,is_investment					= is_investment_param
+			,expense_date					= expense_date_param
+			,expense_amount					= expense_amount_param
+		WHERE
+			expense_id = expense_id_param;
+	-- else, we check to see if the expense_id_param sent in is 0 - indicating a new record
+	ELSIF (expense_id_param = 0) THEN
+		INSERT INTO public.expense(
+			expense_type_id
+			,payment_type_id
+			,payment_type_category_id
+			,expense_description
+			,is_income
+			,is_investment
+			,expense_date
+			,expense_amount
+		)
+		VALUES(
+			expense_type_id_param
+			,payment_type_id_param
+			,payment_type_category_id_param
+			,expense_description_param
+			,is_income_param
+			,is_investment_param
+			,expense_date_param
+			,expense_amount_param
+		);
+	-- if the ID doesn't exists and is not 0, the payment type category doesn't exist and we can't update it.
+	ELSE
+		RAISE EXCEPTION 'The expense ID % does not exist', expense_id_param;
+	END IF;
+
+	was_success_out_param = true;
+
+	-- catch any exception that happens throughout the execution of the stored procedure
+	EXCEPTION
+		WHEN OTHERS THEN
+			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
+									exception_detail_out_param = PG_EXCEPTION_DETAIL,
+									exception_hint_out_param = PG_EXCEPTION_HINT;
+			was_success_out_param = false;
+END;
+$$;
+
+
 
 /************************************************************************
 *

@@ -162,7 +162,7 @@ BEGIN
 		);
 	-- if the ID doesn't exists and is not 0, the expense type doesn't exist and we can't update it.
 	ELSE
-		RAISE EXCEPTION 'The expense_type_id does not exist';
+		RAISE EXCEPTION 'The expense_type_id % does not exist', expense_type_id_param;
 	END IF;
 
 	was_success_out_param = true;

@@ -162,7 +162,7 @@ BEGIN
 		);
 	-- if the ID doesn't exists and is not 0, the expense type doesn't exist and we can't update it.
 	ELSE
-		RAISE EXCEPTION 'The expense_type_id % does not exist', expense_type_id_param;
+		RAISE EXCEPTION 'The expense type ID % does not exist', expense_type_id_param;
 	END IF;
 
 	was_success_out_param = true;
@@ -229,7 +229,7 @@ BEGIN
 		);
 	-- if the ID doesn't exists and is not 0, the payment type category doesn't exist and we can't update it.
 	ELSE
-		RAISE EXCEPTION 'The payment_type_category_id % does not exist', payment_type_category_id_param;
+		RAISE EXCEPTION 'The payment type category ID % does not exist', payment_type_category_id_param;
 	END IF;
 
 	was_success_out_param = true;
@@ -305,7 +305,7 @@ BEGIN
 		);
 	-- if the ID doesn't exists and is not 0, the payment type category doesn't exist and we can't update it.
 	ELSE
-		RAISE EXCEPTION 'The payment_type_id % does not exist', payment_type_id_param;
+		RAISE EXCEPTION 'The payment type ID % does not exist', payment_type_id_param;
 	END IF;
 
 	was_success_out_param = true;

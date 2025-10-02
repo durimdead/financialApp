@@ -450,6 +450,58 @@ END;
 $$;
 
 
+/*
+===========================================================================================================================================
+=    Author:
+=        David Lancellotti
+=
+=    Create date: 
+=        10/02/2025 01:00PM
+=
+=    Description:
+=        Delete a expense record given the expenseID
+=
+=    UPDATES:
+=                                DateTime
+=    Author                        mm/dd/yyyy HH:mm    Description
+=    =====================        =============        =======================================================================================
+=
+=
+===========================================================================================================================================
+*/
+CREATE OR REPLACE PROCEDURE public.expense_delete(
+    expense_id_param INT
+	,OUT was_success_out_param BOOLEAN
+	,OUT exception_message_text_out_param TEXT
+	,OUT exception_detail_out_param TEXT
+	,OUT exception_hint_out_param TEXT
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+BEGIN
+
+	-- if we can find a record for the expense ID pushed in, delete it.
+	-- if we don't find it - no matter, the expense doesn't exist anyway and there's nothing to do
+	IF EXISTS(SELECT FROM public.expense WHERE expense_id = expense_id_param) THEN
+		DELETE FROM public.expense
+		WHERE
+			expense_id = expense_id_param
+		;
+	END IF;
+	
+	was_success_out_param = true;
+
+	-- catch any exception that happens throughout the execution of the stored procedure
+	EXCEPTION
+		WHEN OTHERS THEN
+			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
+									exception_detail_out_param = PG_EXCEPTION_DETAIL,
+									exception_hint_out_param = PG_EXCEPTION_HINT;
+			was_success_out_param = false;
+END;
+$$;
+
 
 /************************************************************************
 *
@@ -637,11 +689,13 @@ INSERT INTO public.payment_type_category(payment_type_category_name)
 VALUES('cash');
 
 -- payment type
+-- call public.payment_type_upsert(5, 'test payment type', 'ignore this', 2, false, '', '', '');
 INSERT INTO public.payment_type(payment_type_name, payment_type_description, payment_type_category_id)
 VALUES	('cash', 'hard currency physically changing hands (i.e. not a cash app)', 1)
 		,('cash app', 'virtual currency changing hands (i.e. paypal, venmo, zelle, etc.)', 1);
 
 -- expense
+-- call public.expense_upsert(0, 1, 3, 2, 'test expense', 0::BIT, 0::BIT, now()::DATE, 1.01::NUMERIC(20,4), false, '','','');
 insert into public.expense(expense_type_id, payment_type_id, payment_type_category_id, expense_description, is_income, is_investment, expense_date, expense_amount)
 VALUES(1, 1, 1, 'sample hard cash transation', 0::bit, 0::bit, now(), 100.00)
 		,(1, 2, 1, 'sample cash app transation', 0::bit, 0::bit, now(), 234.22);

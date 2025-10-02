@@ -125,19 +125,39 @@ namespace FinanceApi.Repositories
         public void usp_ExpenseUpsert(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, double expenseAmount, int expenseID = 0)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@expenseID", expenseID));
-            parameters.Add(new SqlParameter("@expenseTypeID", expenseTypeID));
-            parameters.Add(new SqlParameter("@paymentTypeID", paymentTypeID));
-            parameters.Add(new SqlParameter("@paymentTypeCategoryID", paymentTypeCategoryID));
-            parameters.Add(new SqlParameter("@expenseDescription", expenseDescription));
-            parameters.Add(new SqlParameter("@isIncome", isIncome));
-            parameters.Add(new SqlParameter("@isInvestment", isInvestment));
-            parameters.Add(new SqlParameter("@expenseDate", expenseDate));
-            parameters.Add(new SqlParameter("@expenseAmount", expenseAmount));
+            bool out_wasSuccessful = false;
+            string out_errorMessage = string.Empty;
+            string out_errorDetail = string.Empty;
+            string out_errorHint = string.Empty;
 
-            // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_ExpenseUpsert @expenseID, @expenseTypeID, @paymentTypeID, @paymentTypeCategoryID, @expenseDescription, @isIncome, @isInvestment, @expenseDate, @expenseAmount", parameters);
+            try
+            {
+                // execute sproc
+                this.Database.ExecuteSqlRaw(
+                    "CALL public.expense_upsert({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})"
+                    , expenseID
+                    , expenseTypeID
+                    , paymentTypeID
+                    , paymentTypeCategoryID
+                    , expenseDescription
+                    , (Byte)(isIncome ? 1 : 0)
+                    , (Byte)(isInvestment ? 1 : 0)
+                    , expenseDate
+                    , expenseAmount
+                    , out_wasSuccessful
+                    , out_errorMessage
+                    , out_errorDetail
+                    , out_errorHint
+                    );
+                if (!out_wasSuccessful)
+                {
+                    throw new Exception("Error occurred when executing expense create / edit. See inner exception for more details.", new Exception(string.Format("MESSAGE : %s ::: DETAIL : %s ::: HINT : %s", out_errorMessage, out_errorDetail, out_errorHint)));
+                }
+            }
+            catch (Exception ex)
+            {
+                out_errorMessage = ex.Message;
+            }
         }
 
         /// <summary>

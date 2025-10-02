@@ -33,8 +33,8 @@ builder.Services.AddCors(options =>
                             .AllowCredentials();
                       });
 });
-builder.Services.AddDbContext<FinancialAppContext_MSSQL>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAppDatabase_MSSQL")));
-//builder.Services.AddDbContext<FinancialAppContext_Postgres>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FinancialAppDatabase_Postgres")));
+//builder.Services.AddDbContext<FinancialAppContext_MSSQL>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("FinancialAppDatabase_MSSQL")));
+builder.Services.AddDbContext<FinancialAppContext_Postgres>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("FinancialAppDatabase_Postgres")));
 
 // Add services to the container.
 builder.Services.AddControllers();

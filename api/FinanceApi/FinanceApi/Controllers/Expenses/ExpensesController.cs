@@ -21,8 +21,8 @@ namespace FinanceApi.Controllers.Expenses
         public ExpensesController(ILogger<ExpensesController> logger, ILogger<IExpensesRepository> expenseLogger, DbContextOptions options)
         {
             _logger = logger;
-            _expenseService = new ExpenseRepoService_MSSQL(expenseLogger, new FinancialAppContext_MSSQL(options));
-            //_expenseService = new ExpenseRepoService_Postgres(expenseLogger, new FinancialAppContext_Postgres(options));
+            //_expenseService = new ExpenseRepoService_MSSQL(expenseLogger, new FinancialAppContext_MSSQL(options));
+            _expenseService = new ExpenseRepoService_Postgres(expenseLogger, new FinancialAppContext_Postgres(options));
         }
 
         /// <summary>

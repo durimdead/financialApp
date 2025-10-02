@@ -13,21 +13,6 @@ namespace FinanceApi.Repositories.Interfaces
         public DbSet<vExpenseDetail> vExpenseDetail { get; set; }
 
         /// <summary>
-        /// Update / insert record to the PeriodicElement table
-        /// </summary>
-        /// <param name="periodicElementName">Name of Periodic Element</param>
-        /// <param name="periodicElementSymbol">Symbol of element</param>
-        /// <param name="periodicElementWeight">Weight of element</param>
-        /// <param name="periodicElementID">ID of the record (only required for update - has default of "0" for inserts)</param>
-        public void usp_PeriodicElementUpsert(string periodicElementName, string periodicElementSymbol, double periodicElementWeight, int periodicElementID = 0);
-
-        /// <summary>
-        /// Delete a Periodic Element record from the database
-        /// </summary>
-        /// <param name="periodicElementID">ID of record to delete</param>
-        public void usp_PeriodicElementDelete(int periodicElementID);
-
-        /// <summary>
         /// Update / insert record to the ExpenseType table
         /// </summary>
         /// <param name="expenseTypeName">name of expense type</param>

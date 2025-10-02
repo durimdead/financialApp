@@ -15,40 +15,6 @@ namespace FinanceApi.Repositories
         public virtual DbSet<vExpenseDetail> vExpenseDetail { get; set; }
 
         /// <summary>
-        /// Update / insert record to the PeriodicElement table
-        /// </summary>
-        /// <param name="periodicElementName">Name of Periodic Element</param>
-        /// <param name="periodicElementSymbol">Symbol of element</param>
-        /// <param name="periodicElementWeight">Weight of element</param>
-        /// <param name="periodicElementID">ID of the record (only required for update - has default of "0" for inserts)</param>
-        public void usp_PeriodicElementUpsert(string periodicElementName, string periodicElementSymbol, double periodicElementWeight, int periodicElementID = 0)
-        {
-            // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@periodicElementName", periodicElementName));
-            parameters.Add(new SqlParameter("@periodicElementSymbol", periodicElementSymbol));
-            parameters.Add(new SqlParameter("@periodicElementWeight", periodicElementWeight));
-            parameters.Add(new SqlParameter("@periodicElementID", periodicElementID));
-
-            // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_PeriodicElementUpsert @periodicElementID, @periodicElementName, @periodicElementSymbol, @periodicElementWeight", parameters);
-        }
-
-        /// <summary>
-        /// Delete a Periodic Element record from the database
-        /// </summary>
-        /// <param name="periodicElementID">ID of record to delete</param>
-        public void usp_PeriodicElementDelete(int periodicElementID)
-        {
-            // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@periodicElementID", periodicElementID));
-
-            // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_PeriodicElementDelete @periodicElementID", parameters);
-        }
-
-        /// <summary>
         /// Update / insert record to the ExpenseType table
         /// </summary>
         /// <param name="expenseTypeName">name of expense type</param>

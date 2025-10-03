@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
+using static FinanceApi.Models.Enums.ConfigEnums;
 
 namespace FinanceApi.Controllers.Expenses
 {
@@ -18,11 +19,10 @@ namespace FinanceApi.Controllers.Expenses
     {
         private readonly ILogger<ExpensesController> _logger;
         private readonly IExpensesRepository _expenseService;
-        public ExpensesController(ILogger<ExpensesController> logger, ILogger<IExpensesRepository> expenseLogger, DbContextOptions options)
+        public ExpensesController(ILogger<ExpensesController> logger, ILogger<IExpensesRepository> expenseLogger, IExpensesRepository expenseService)
         {
             _logger = logger;
-            //_expenseService = new ExpenseRepoService_MSSQL(expenseLogger, new FinancialAppContext_MSSQL(options));
-            _expenseService = new ExpenseRepoService_Postgres(expenseLogger, new FinancialAppContext_Postgres(options));
+            _expenseService = expenseService;
         }
 
         /// <summary>

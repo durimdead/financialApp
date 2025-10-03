@@ -7,8 +7,10 @@ using FinanceApi.Services.RepositoryServices.Expenses.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Text.Json;
+using static FinanceApi.Models.Enums.ConfigEnums;
 
 namespace FinanceApi.Controllers.Expenses
 {
@@ -18,11 +20,10 @@ namespace FinanceApi.Controllers.Expenses
     {
         private readonly ILogger<PaymentTypesController> _logger;
         private readonly IExpensesRepository _expenseService;
-        public PaymentTypesController(ILogger<PaymentTypesController> logger, ILogger<IExpensesRepository> expenseLogger, DbContextOptions options)
+        public PaymentTypesController(ILogger<PaymentTypesController> logger, ILogger<IExpensesRepository> expenseLogger, IExpensesRepository expenseService)
         {
             _logger = logger;
-            //_expenseService = new ExpenseRepoService_MSSQL(expenseLogger, new FinancialAppContext_MSSQL(options));
-            _expenseService = new ExpenseRepoService_Postgres(expenseLogger, new FinancialAppContext_Postgres(options));
+            _expenseService = expenseService;
         }
 
 

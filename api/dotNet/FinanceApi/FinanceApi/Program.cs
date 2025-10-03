@@ -37,6 +37,8 @@ builder.Services.AddCors(options =>
                             .AllowCredentials();
                       });
 });
+
+// set up the correct injectables for the database type (defaults to "mssql")
 var databaseType = builder.Configuration.GetValue<string>("AppSettings:DatabaseType");
 if (databaseType == null || databaseType == string.Empty || databaseType.ToLower() == "mssql")
 {

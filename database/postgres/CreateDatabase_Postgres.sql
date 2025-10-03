@@ -1,11 +1,27 @@
-/************************************************************************
-*
-*
-*           BEGIN table creation for FinancialApp database
-*
-*
-************************************************************************/
+-- set scope and drop all sprocs, views, FKs, etc
 SET search_path TO FinancialApp;
+
+-- drop all the stored procedures
+DROP PROCEDURE IF EXISTS public.proc_expense_type_upsert;
+DROP PROCEDURE IF EXISTS public.proc_expense_type_delete;
+DROP PROCEDURE IF EXISTS public.proc_payment_type_category_upsert;
+DROP PROCEDURE IF EXISTS public.proc_payment_type_category_delete;
+DROP PROCEDURE IF EXISTS public.proc_payment_type_upsert;
+DROP PROCEDURE IF EXISTS public.proc_payment_type_delete;
+DROP PROCEDURE IF EXISTS public.proc_expense_upsert;
+DROP PROCEDURE IF EXISTS public.proc_expense_delete;
+
+-- DROP all views if they exist
+DROP VIEW IF EXISTS public."vExpenseType";
+DROP VIEW IF EXISTS public."vPaymentTypeCategory";
+DROP VIEW IF EXISTS public."vPaymentType";
+DROP VIEW IF EXISTS public."vExpense";
+DROP VIEW IF EXISTS public."vExpenseDetail";
+DROP VIEW IF EXISTS public.v_expense_type;
+DROP VIEW IF EXISTS public.v_payment_type_category;
+DROP VIEW IF EXISTS public.v_payment_type;
+DROP VIEW IF EXISTS public.v_expense;
+DROP VIEW IF EXISTS public.v_expense_detail;
 
 -- DROP fkey constraints for public.payment_type if they exist
 ALTER TABLE IF EXISTS public.payment_type
@@ -19,33 +35,44 @@ ALTER TABLE IF EXISTS public.expense
 ALTER TABLE IF EXISTS public.expense
     DROP CONSTRAINT IF EXISTS expense_expense_type_id_fkey;
 
--- date night, car maintenance, tolls, grocery, etc.
+-- DROP all tables if they exist
 DROP TABLE IF EXISTS public.expense_type;
+DROP TABLE IF EXISTS public.payment_type_category;
+DROP TABLE IF EXISTS public.payment_type;
+DROP TABLE IF EXISTS public.expense;
+
+/************************************************************************
+*
+*
+*           BEGIN table creation for FinancialApp database
+*
+*
+************************************************************************/
+
+-- date night, car maintenance, tolls, grocery, etc.
 CREATE TABLE IF NOT EXISTS public.expense_type
 (
     expense_type_id serial NOT NULL
-	,expense_type_name VARCHAR(50) NOT NULL
-    ,expense_type_description VARCHAR(250)
+	,expense_type_name TEXT NOT NULL
+    ,expense_type_description TEXT
     ,CONSTRAINT expensetype_expense_type_id_pkey PRIMARY KEY (expense_type_id)
     ,CONSTRAINT expensetype_expense_type_name_key UNIQUE (expense_type_name)
 );
 
 -- credit card, debit card, cash app, check, etc
-DROP TABLE IF EXISTS public.payment_type_category;
 CREATE TABLE public.payment_type_category(
     payment_type_category_id SERIAL NOT NULL
-    ,payment_type_category_name VARCHAR(30) NOT NULL
+    ,payment_type_category_name TEXT NOT NULL
     ,CONSTRAINT payment_type_category_payment_type_category_id_pkey PRIMARY KEY (payment_type_category_id)
 	,CONSTRAINT payment_type_category_payment_type_category_name_key UNIQUE(payment_type_category_name)
 );
 
 -- chase freedom, chase debit, cash, venmo, zelle, etc
-DROP TABLE IF EXISTS public.payment_type;
 CREATE TABLE public.payment_type(
     payment_type_id SERIAL NOT NULL
     ,payment_type_category_id INT NOT NULL
-    ,payment_type_name VARCHAR(50) NOT NULL
-    ,payment_type_description VARCHAR(250) NOT NULL
+    ,payment_type_name TEXT NOT NULL
+    ,payment_type_description TEXT NOT NULL
 	,CONSTRAINT payment_type_payment_type_name_key UNIQUE(payment_type_name)
     ,CONSTRAINT payment_type_payment_type_id_pkey PRIMARY KEY (payment_type_id)
 );
@@ -56,15 +83,14 @@ ALTER TABLE public.payment_type
         REFERENCES public.payment_type_category (payment_type_category_id);
 
 
-DROP TABLE IF EXISTS public.expense;
 CREATE TABLE public.expense(
     expense_id SERIAL NOT NULL
     ,expense_type_id INT NOT NULL
     ,payment_type_id INT NOT NULL
     ,payment_type_category_id INT NOT NULL
-    ,expense_description VARCHAR(200) NOT NULL
-    ,is_income BIT NOT NULL
-    ,is_investment BIT NOT NULL
+    ,expense_description TEXT NOT NULL
+    ,is_income BOOLEAN NOT NULL
+    ,is_investment BOOLEAN NOT NULL
 	,expense_date DATE NOT NULL
 	,expense_amount DECIMAL(20,4) -- can store up to 1 quadrillion with 4 decimal places to cover most to all currency types
     ,CONSTRAINT expense_expense_id_pkey PRIMARY KEY (expense_id)
@@ -125,18 +151,17 @@ SET search_path TO FinancialApp;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.expense_type_upsert(
+CREATE OR REPLACE PROCEDURE public.proc_expense_type_upsert(
     expense_type_id_param INT
-    ,expense_type_name_param VARCHAR(50)
-	,expense_type_description_param VARCHAR(250)
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
+    ,expense_type_name_param TEXT
+	,expense_type_description_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 	-- trim our varchar inputs to ensure we have no whitespace
 	SELECT TRIM(BOTH ' ' FROM expense_type_name_param) INTO expense_type_name_param;
@@ -164,16 +189,14 @@ BEGIN
 	ELSE
 		RAISE EXCEPTION 'The expense type ID % does not exist', expense_type_id_param;
 	END IF;
-
-	was_success_out_param = true;
-
+	
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -197,16 +220,15 @@ $$;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.expense_type_delete(
+CREATE OR REPLACE PROCEDURE public.proc_expense_type_delete(
     expense_type_id_param INT
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 
 	-- if we can find a record for the expense type ID pushed in, delete it.
@@ -217,16 +239,14 @@ BEGIN
 			expense_type_id = expense_type_id_param
 		;
 	END IF;
-	
-	was_success_out_param = true;
 
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -250,17 +270,16 @@ $$;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.payment_type_category_upsert(
+CREATE OR REPLACE PROCEDURE public.proc_payment_type_category_upsert(
     payment_type_category_id_param INT
-    ,payment_type_category_name_param VARCHAR(50)
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
+    ,payment_type_category_name_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 	-- trim our varchar inputs to ensure we have no whitespace
 	SELECT TRIM(BOTH ' ' FROM payment_type_category_name_param) INTO payment_type_category_name_param;
@@ -285,15 +304,13 @@ BEGIN
 		RAISE EXCEPTION 'The payment type category ID % does not exist', payment_type_category_id_param;
 	END IF;
 
-	was_success_out_param = true;
-
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -318,16 +335,15 @@ $$;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.payment_type_category_delete(
+CREATE OR REPLACE PROCEDURE public.proc_payment_type_category_delete(
     payment_type_category_id_param INT
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 
 	-- if we can find a record for the payment type category ID pushed in, delete it.
@@ -338,16 +354,14 @@ BEGIN
 			payment_type_category_id = payment_type_category_id_param
 		;
 	END IF;
-	
-	was_success_out_param = true;
 
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -371,19 +385,18 @@ $$;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.payment_type_upsert(
+CREATE OR REPLACE PROCEDURE public.proc_payment_type_upsert(
     payment_type_id_param INT
-    ,payment_type_name_param VARCHAR(50)
-	,payment_type_description_param VARCHAR(250)
+    ,payment_type_name_param TEXT
+	,payment_type_description_param TEXT
 	,payment_type_category_id_param INT
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 	-- trim our varchar inputs to ensure we have no whitespace
 	SELECT TRIM(BOTH ' ' FROM payment_type_name_param) INTO payment_type_name_param;
@@ -415,15 +428,13 @@ BEGIN
 		RAISE EXCEPTION 'The payment type ID % does not exist', payment_type_id_param;
 	END IF;
 
-	was_success_out_param = true;
-
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -450,16 +461,15 @@ $$;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.payment_type_delete(
+CREATE OR REPLACE PROCEDURE public.proc_payment_type_delete(
     payment_type_id_param INT
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 
 	-- if we can find a record for the payment type ID pushed in, delete it.
@@ -470,16 +480,14 @@ BEGIN
 			payment_type_id = payment_type_id_param
 		;
 	END IF;
-	
-	was_success_out_param = true;
 
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -505,24 +513,23 @@ $$;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.expense_upsert(
+CREATE OR REPLACE PROCEDURE public.proc_expense_upsert(
     expense_id_param INT
 	,expense_type_id_param INT
 	,payment_type_id_param INT
 	,payment_type_category_id_param INT
-    ,expense_description_param VARCHAR(250)
-	,is_income_param BIT
-	,is_investment_param BIT
+    ,expense_description_param TEXT
+	,is_income_param BOOLEAN
+	,is_investment_param BOOLEAN
 	,expense_date_param DATE
 	,expense_amount_param DECIMAL(20, 4)
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 	-- trim our varchar inputs to ensure we have no whitespace
 	SELECT TRIM(BOTH ' ' FROM expense_description_param) INTO expense_description_param;
@@ -600,15 +607,13 @@ BEGIN
 		RAISE EXCEPTION 'The expense ID % does not exist', expense_id_param;
 	END IF;
 
-	was_success_out_param = true;
-
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -632,16 +637,15 @@ $$;
 =
 ===========================================================================================================================================
 */
-CREATE OR REPLACE PROCEDURE public.expense_delete(
+CREATE OR REPLACE PROCEDURE public.proc_expense_delete(
     expense_id_param INT
-	,OUT was_success_out_param BOOLEAN
-	,OUT exception_message_text_out_param TEXT
-	,OUT exception_detail_out_param TEXT
-	,OUT exception_hint_out_param TEXT
 )
 LANGUAGE plpgsql
 AS $$
 DECLARE
+	exception_message_text TEXT;
+	exception_detail TEXT;
+	exception_hint TEXT;
 BEGIN
 
 	-- if we can find a record for the expense ID pushed in, delete it.
@@ -652,16 +656,14 @@ BEGIN
 			expense_id = expense_id_param
 		;
 	END IF;
-	
-	was_success_out_param = true;
 
 	-- catch any exception that happens throughout the execution of the stored procedure
 	EXCEPTION
 		WHEN OTHERS THEN
-			GET STACKED DIAGNOSTICS exception_message_text_out_param = MESSAGE_TEXT,
-									exception_detail_out_param = PG_EXCEPTION_DETAIL,
-									exception_hint_out_param = PG_EXCEPTION_HINT;
-			was_success_out_param = false;
+			GET STACKED DIAGNOSTICS exception_message_text = MESSAGE_TEXT,
+									exception_detail = PG_EXCEPTION_DETAIL,
+									exception_hint = PG_EXCEPTION_HINT;
+			RAISE EXCEPTION 'MESSAGE : % :::: DETAIL % :::: HINT %', exception_message_text, exception_detail, exception_hint;
 END;
 $$;
 
@@ -842,26 +844,19 @@ FROM
 *           
 *       #########################################################
 ************************************************************************/
-
 -- expense type
-INSERT INTO public.expense_type(expense_type_name, expense_type_description)
-VALUES('other', 'this expense does not fit into any other category')
+call public.proc_expense_type_upsert(0, 'other', 'this expense does not fit into any other category', false, '', '', '');
 
 -- payment type category
-INSERT INTO public.payment_type_category(payment_type_category_name)
-VALUES('cash');
+call public.proc_payment_type_category_upsert(0, 'cash', false, '', '', '');
 
 -- payment type
--- call public.payment_type_upsert(5, 'test payment type', 'ignore this', 2, false, '', '', '');
-INSERT INTO public.payment_type(payment_type_name, payment_type_description, payment_type_category_id)
-VALUES	('cash', 'hard currency physically changing hands (i.e. not a cash app)', 1)
-		,('cash app', 'virtual currency changing hands (i.e. paypal, venmo, zelle, etc.)', 1);
+call public.proc_payment_type_upsert(0, 'cash', 'hard currency physically changing hands (i.e. not a cash app)', 1, false, '', '', '');
+call public.proc_payment_type_upsert(0, 'cash app', 'virtual currency changing hands (i.e. paypal, venmo, zelle, etc.)', 1, false, '', '', '');
 
 -- expense
--- call public.expense_upsert(0, 1, 3, 2, 'test expense', 0::BIT, 0::BIT, now()::DATE, 1.01::NUMERIC(20,4), false, '','','');
-insert into public.expense(expense_type_id, payment_type_id, payment_type_category_id, expense_description, is_income, is_investment, expense_date, expense_amount)
-VALUES(1, 1, 1, 'sample hard cash transation', 0::bit, 0::bit, now(), 100.00)
-		,(1, 2, 1, 'sample cash app transation', 0::bit, 0::bit, now(), 234.22);
+call public.proc_expense_upsert(0, 1, 1, 1, 'sample hard cash transation', false::BOOLEAN, false::BOOLEAN, now()::DATE, 100.00, false, '','','');
+call public.proc_expense_upsert(0, 1, 2, 1, 'sample cash app transation', false::BOOLEAN, false::BOOLEAN, now()::DATE, 234.22, false, '','','');
 
 /*
 select * from public.v_expense;

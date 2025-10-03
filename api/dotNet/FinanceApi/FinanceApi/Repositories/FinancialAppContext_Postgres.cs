@@ -1,7 +1,12 @@
-﻿using FinanceApi.Repositories.EF_Models;
+﻿using FinanceApi.Models.Expenses;
+using FinanceApi.Repositories.EF_Models;
 using FinanceApi.Repositories.Interfaces;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using NpgsqlTypes;
+using System.Data;
 
 namespace FinanceApi.Repositories
 {
@@ -23,13 +28,13 @@ namespace FinanceApi.Repositories
         public void usp_ExpenseTypeUpsert(string expenseTypeName, string expenseTypeDescription, int expenseTypeID = 0)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@expenseTypeID", expenseTypeID));
-            parameters.Add(new SqlParameter("@expenseTypeName", expenseTypeName));
-            parameters.Add(new SqlParameter("@expenseTypeDescription", expenseTypeDescription));
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("expense_type_id_param", NpgsqlDbType.Integer) { Value = expenseTypeID });
+            parameters.Add(new NpgsqlParameter("expense_type_name_param", NpgsqlDbType.Text) { Value = expenseTypeName });
+            parameters.Add(new NpgsqlParameter("expense_type_description_param", NpgsqlDbType.Text) { Value = expenseTypeDescription });
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_ExpenseTypeUpsert @expenseTypeID, @expenseTypeName, @expenseTypeDescription", parameters);
+            this.Database.ExecuteSqlRaw("CALL public.proc_expense_type_upsert({0}, {1}, {2});", parameters);
         }
 
         /// <summary>
@@ -39,11 +44,11 @@ namespace FinanceApi.Repositories
         public void usp_ExpenseTypeDelete(int expenseTypeID)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@expenseTypeID", expenseTypeID));
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("expense_type_id_param", NpgsqlDbType.Integer) { Value = expenseTypeID });
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_ExpenseTypeDelete @expenseTypeID", parameters);
+            this.Database.ExecuteSqlRaw("CALL public.proc_expense_type_delete({0});", parameters);
         }
 
         /// <summary>
@@ -54,12 +59,12 @@ namespace FinanceApi.Repositories
         public void usp_PaymentTypeCategoryUpsert(string paymentTypeCategoryName, int paymentTypeCategoryID = 0)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@paymentTypeCategoryID", paymentTypeCategoryID));
-            parameters.Add(new SqlParameter("@paymentTypeCategoryName", paymentTypeCategoryName));
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("payment_type_category_id_param", NpgsqlDbType.Integer) { Value = paymentTypeCategoryID });
+            parameters.Add(new NpgsqlParameter("payment_type_category_name_param", NpgsqlDbType.Text) { Value = paymentTypeCategoryName });
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_PaymentTypeCategoryUpsert @paymentTypeCategoryID, @paymentTypeCategoryName", parameters);
+            this.Database.ExecuteSqlRaw("CALL public.proc_payment_type_category_upsert({0}, {1});", parameters);
         }
 
         /// <summary>
@@ -69,11 +74,11 @@ namespace FinanceApi.Repositories
         public void usp_PaymentTypeCategoryDelete(int paymentTypeCategoryID)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@paymentTypeCategoryID", paymentTypeCategoryID));
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("payment_type_category_id_param", NpgsqlDbType.Integer) { Value = paymentTypeCategoryID });
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_PaymentTypeCategoryDelete @paymentTypeCategoryID", parameters);
+            this.Database.ExecuteSqlRaw("CALL public.proc_payment_type_category_delete({0});", parameters);
         }
 
         /// <summary>
@@ -86,14 +91,14 @@ namespace FinanceApi.Repositories
         public void usp_PaymentTypeUpsert(string paymentTypeName, string paymentTypeDescription, int paymentTypeCategoryID, int paymentTypeID = 0)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@paymentTypeID", paymentTypeID));
-            parameters.Add(new SqlParameter("@paymentTypeName", paymentTypeName));
-            parameters.Add(new SqlParameter("@paymentTypeDescription", paymentTypeDescription));
-            parameters.Add(new SqlParameter("@paymentTypeCategoryID", paymentTypeCategoryID));
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("payment_type_id_param", NpgsqlDbType.Integer) { Value = paymentTypeID });
+            parameters.Add(new NpgsqlParameter("payment_type_name_param", NpgsqlDbType.Text) { Value = paymentTypeName });
+            parameters.Add(new NpgsqlParameter("payment_type_description_param", NpgsqlDbType.Text) { Value = paymentTypeDescription });
+            parameters.Add(new NpgsqlParameter("payment_type_category_id_param", NpgsqlDbType.Integer) { Value = paymentTypeCategoryID });
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_PaymentTypeUpsert @paymentTypeID, @paymentTypeName, @paymentTypeDescription, @paymentTypeCategoryID", parameters);
+            this.Database.ExecuteSqlRaw("CALL public.proc_payment_type_upsert({0},{1},{2},{3});", parameters);
         }
 
         /// <summary>
@@ -103,11 +108,11 @@ namespace FinanceApi.Repositories
         public void usp_PaymentTypeDelete(int paymentTypeID)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@paymentTypeID", paymentTypeID));
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("payment_type_id_param", NpgsqlDbType.Integer) { Value = paymentTypeID });
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_PaymentTypeDelete @paymentTypeID", parameters);
+            this.Database.ExecuteSqlRaw("CALL public.proc_payment_type_delete({0});", parameters);
         }
 
         /// <summary>
@@ -125,39 +130,19 @@ namespace FinanceApi.Repositories
         public void usp_ExpenseUpsert(int expenseTypeID, int paymentTypeID, int paymentTypeCategoryID, string expenseDescription, bool isIncome, bool isInvestment, DateOnly expenseDate, double expenseAmount, int expenseID = 0)
         {
             // parameterize the data for executing the stored procedure
-            bool out_wasSuccessful = false;
-            string out_errorMessage = string.Empty;
-            string out_errorDetail = string.Empty;
-            string out_errorHint = string.Empty;
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("expense_id_param", NpgsqlDbType.Integer) { Value = expenseID });
+            parameters.Add(new NpgsqlParameter("expense_type_id_param", NpgsqlDbType.Integer) { Value = expenseTypeID });
+            parameters.Add(new NpgsqlParameter("payment_type_id_param", NpgsqlDbType.Integer) { Value = paymentTypeID });
+            parameters.Add(new NpgsqlParameter("payment_type_category_id_param", NpgsqlDbType.Integer) { Value = paymentTypeCategoryID });
+            parameters.Add(new NpgsqlParameter("expense_description_param", NpgsqlDbType.Text) { Value = expenseDescription });
+            parameters.Add(new NpgsqlParameter("is_income_param", NpgsqlDbType.Boolean) { Value = isIncome });
+            parameters.Add(new NpgsqlParameter("is_investment_param", NpgsqlDbType.Boolean) { Value = isInvestment });
+            parameters.Add(new NpgsqlParameter("expense_date_param", NpgsqlDbType.Date) { Value = expenseDate });
+            parameters.Add(new NpgsqlParameter("expense_amount_param", NpgsqlDbType.Double) { Value = expenseAmount });
 
-            try
-            {
-                // execute sproc
-                this.Database.ExecuteSqlRaw(
-                    "CALL public.expense_upsert({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12})"
-                    , expenseID
-                    , expenseTypeID
-                    , paymentTypeID
-                    , paymentTypeCategoryID
-                    , expenseDescription
-                    , (Byte)(isIncome ? 1 : 0)
-                    , (Byte)(isInvestment ? 1 : 0)
-                    , expenseDate
-                    , expenseAmount
-                    , out_wasSuccessful
-                    , out_errorMessage
-                    , out_errorDetail
-                    , out_errorHint
-                    );
-                if (!out_wasSuccessful)
-                {
-                    throw new Exception("Error occurred when executing expense create / edit. See inner exception for more details.", new Exception(string.Format("MESSAGE : %s ::: DETAIL : %s ::: HINT : %s", out_errorMessage, out_errorDetail, out_errorHint)));
-                }
-            }
-            catch (Exception ex)
-            {
-                out_errorMessage = ex.Message;
-            }
+            // execute sproc
+            this.Database.ExecuteSqlRaw("CALL public.proc_expense_upsert({0},{1},{2},{3},{4},{5},{6},{7},{8}::DECIMAL(20, 4));", parameters);
         }
 
         /// <summary>
@@ -167,11 +152,11 @@ namespace FinanceApi.Repositories
         public void usp_ExpenseDelete(int expenseID)
         {
             // parameterize the data for executing the stored procedure
-            var parameters = new List<SqlParameter>();
-            parameters.Add(new SqlParameter("@expenseID", expenseID));
+            var parameters = new List<NpgsqlParameter>();
+            parameters.Add(new NpgsqlParameter("expense_id_param", NpgsqlDbType.Integer) { Value = expenseID });
 
             // execute sproc
-            this.Database.ExecuteSqlRaw("exec usp_ExpenseDelete @expenseID", parameters);
+            this.Database.ExecuteSqlRaw("CALL public.proc_expense_delete({0});", parameters);
         }
     }
 }

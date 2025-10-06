@@ -1,5 +1,6 @@
 export const environment = {
-  apiUrl: 'https://localhost:7107/api/',
+  //   apiUrl: 'https://localhost:7107/api/',
+  apiUrl: 'http://localhost:3000/api/',
   expensesController: 'Expenses/',
   expenseTypesController: 'ExpenseTypes/',
   paymentTypesController: 'PaymentTypes/',

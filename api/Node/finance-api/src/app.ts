@@ -1,8 +1,19 @@
 import express from "express";
+import cors from "cors";
 import expensesRoutes from "./routes/expensesRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
+// Configure CORS options
+const corsOptions: cors.CorsOptions = {
+	origin: ['http://localhost:4200','https://localhost:4200'], // Replace with your frontend URL
+	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	credentials: true, // Allow sending cookies/authentication headers
+	optionsSuccessStatus: 204, // Status for preflight requests
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
 
 app.use(express.json());
 

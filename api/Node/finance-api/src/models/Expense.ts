@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn } from "typeorm";
 
 // @Entity()
-// export class v_expense_detail {
+// export class Expense {
 //   @PrimaryColumn()
 //   expenseID: number;
 //   @Column()

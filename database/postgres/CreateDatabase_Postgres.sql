@@ -679,9 +679,9 @@ SET search_path TO FinancialApp;
 CREATE OR REPLACE VIEW public.v_expense_type
 AS
 SELECT
-    expense_type_id 			AS "ExpenseTypeID"
-    ,expense_type_name 			AS "ExpenseTypeName"
-    ,expense_type_description 	AS "ExpenseTypeDescription"
+    expense_type_id 			AS expense_type_id
+    ,expense_type_name 			AS expense_type_name
+    ,expense_type_description 	AS expense_type_description
 FROM
     public.expense_type
 ;
@@ -689,8 +689,8 @@ FROM
 CREATE OR REPLACE VIEW public.v_payment_type_category
 AS
 SELECT
-    payment_type_category_id 	AS "PaymentTypeCategoryID"
-    ,payment_type_category_name AS "PaymentTypeCategoryName"
+    payment_type_category_id 	AS payment_type_category_id
+    ,payment_type_category_name AS payment_type_category_name
 FROM
     public.payment_type_category
 ;
@@ -698,11 +698,11 @@ FROM
 CREATE OR REPLACE VIEW public.v_payment_type
 AS
 SELECT
-    pt.payment_type_id              	AS "PaymentTypeID"
-    ,pt.payment_type_name           	AS "PaymentTypeName"
-    ,pt.payment_type_description   		AS "PaymentTypeDescription"
-    ,ptc.payment_type_category_id   	AS "PaymentTypeCategoryID"
-    ,ptc.payment_type_category_name 	AS "PaymentTypeCategoryName"
+    pt.payment_type_id              	AS payment_type_id
+    ,pt.payment_type_name           	AS payment_type_name
+    ,pt.payment_type_description   		AS payment_type_description
+    ,ptc.payment_type_category_id   	AS payment_type_category_id
+    ,ptc.payment_type_category_name 	AS payment_type_category_name
 FROM
     public.payment_type pt
         JOIN public.payment_type_category ptc ON pt.payment_type_category_id = ptc.payment_type_category_id
@@ -711,15 +711,15 @@ FROM
 CREATE OR REPLACE VIEW public.v_expense
 AS
 SELECT
-    e.expense_id                   	AS "ExpenseID"
-	,e.expense_date					AS "ExpenseDate"
-	,e.expense_description			AS "ExpenseDescription"
-	,e.expense_amount				AS "ExpenseAmount"
-    ,e.is_income                   	AS "IsIncome"
-    ,e.is_investment               	AS "IsInvenstment"
-    ,et.expense_type_id             AS "ExpenseTypeID"
-    ,pt.payment_type_id            	AS "PaymentTypeID"
-    ,ptc.payment_type_category_id   AS "PaymentTypeCategoryID"
+    e.expense_id                   	AS expense_id
+	,e.expense_date					AS expense_date
+	,e.expense_description			AS expense_description
+	,e.expense_amount				AS expense_amount
+    ,e.is_income                   	AS is_income
+    ,e.is_investment               	AS is_investment
+    ,et.expense_type_id             AS expense_type_id
+    ,pt.payment_type_id            	AS payment_type_id
+    ,ptc.payment_type_category_id   AS payment_type_category_id
 FROM
     public.expense e
         JOIN public.expense_type et ON e.expense_type_id = et.expense_type_id
@@ -730,19 +730,19 @@ FROM
 CREATE OR REPLACE VIEW public.v_expense_detail
 AS
 SELECT
-    e.expense_id                   		AS "ExpenseID"
-	,e.expense_date						AS "ExpenseDate"
-	,e.expense_description				AS "ExpenseDescription"
-	,e.expense_amount					AS "ExpenseAmount"
-    ,et.expense_type_name           	AS "ExpenseTypeName"
-    ,pt.payment_type_name           	AS "PaymentTypeName"
-    ,ptc.payment_type_category_name  	AS "PaymentTypeCategoryName"
-    ,e.is_income                   		AS "IsIncome"
-    ,e.is_investment               		AS "IsInvestment"
-    ,et.expense_type_id             	AS "ExpenseTypeID"
-    ,pt.payment_type_id             	AS "PaymentTypeID"
-    ,pt.payment_type_description    	AS "PaymentTypeDescription"
-    ,ptc.payment_type_category_id    	AS "PaymentTypeCategoryID"
+    e.expense_id                   		AS expense_id
+	,e.expense_date						AS expense_date
+	,e.expense_description				AS expense_description
+	,e.expense_amount					AS expense_amount
+    ,et.expense_type_name           	AS expense_type_name
+    ,pt.payment_type_name           	AS payment_type_name
+    ,ptc.payment_type_category_name  	AS payment_type_category_name
+    ,e.is_income                   		AS is_income
+    ,e.is_investment               		AS is_investment
+    ,et.expense_type_id             	AS expense_type_id
+    ,pt.payment_type_id             	AS payment_type_id
+    ,pt.payment_type_description    	AS payment_type_description
+    ,ptc.payment_type_category_id    	AS payment_type_category_id
 FROM
     public.expense e
         JOIN public.expense_type et ON e.expense_type_id = et.expense_type_id
@@ -773,9 +773,9 @@ SET search_path TO FinancialApp;
 CREATE OR REPLACE VIEW public."vExpenseType"
 AS
 SELECT
-    "ExpenseTypeID"
-    ,"ExpenseTypeName"
-    ,"ExpenseTypeDescription"
+    expense_type_id				AS "ExpenseTypeID"
+    ,expense_type_name			AS "ExpenseTypeName"
+    ,expense_type_description	AS "ExpenseTypeDescription"
 FROM
     public.v_expense_type
 ;
@@ -783,8 +783,8 @@ FROM
 CREATE OR REPLACE VIEW public."vPaymentTypeCategory"
 AS
 SELECT
-    "PaymentTypeCategoryID"
-    ,"PaymentTypeCategoryName"
+    payment_type_category_id		AS "PaymentTypeCategoryID"
+    ,payment_type_category_name		AS "PaymentTypeCategoryName"
 FROM
     public.v_payment_type_category
 ;
@@ -792,11 +792,11 @@ FROM
 CREATE OR REPLACE VIEW public."vPaymentType"
 AS
 SELECT
-    "PaymentTypeID"
-	,"PaymentTypeName"
-    ,"PaymentTypeDescription"
-    ,"PaymentTypeCategoryID"
-    ,"PaymentTypeCategoryName"
+    payment_type_id					AS "PaymentTypeID"
+	,payment_type_name				AS "PaymentTypeName"
+    ,payment_type_description		AS "PaymentTypeDescription"
+    ,payment_type_category_id		AS "PaymentTypeCategoryID"
+    ,payment_type_category_name		AS "PaymentTypeCategoryName"
 FROM
     public.v_payment_type
 ;
@@ -804,15 +804,15 @@ FROM
 CREATE OR REPLACE VIEW public."vExpense"
 AS
 SELECT
-    "ExpenseID"
-	,"ExpenseDate"
-	,"ExpenseDescription"
-	,"ExpenseAmount"
-    ,"IsIncome"
-    ,"IsInvenstment"
-    ,"ExpenseTypeID"
-    ,"PaymentTypeID"
-    ,"PaymentTypeCategoryID"
+    expense_id					AS "ExpenseID"
+	,expense_date				AS "ExpenseDate"
+	,expense_description		AS "ExpenseDescription"
+	,expense_amount				AS "ExpenseAmount"
+    ,is_income					AS "IsIncome"
+    ,is_investment				AS "IsInvenstment"
+    ,expense_type_id			AS "ExpenseTypeID"
+    ,payment_type_id			AS "PaymentTypeID"
+    ,payment_type_category_id	AS "PaymentTypeCategoryID"
 FROM
     public.v_expense
 ;
@@ -820,19 +820,19 @@ FROM
 CREATE OR REPLACE VIEW public."vExpenseDetail"
 AS
 SELECT
-    "ExpenseID"
-	,"ExpenseDate"
-	,"ExpenseDescription"
-	,"ExpenseAmount"
-    ,"ExpenseTypeName"
-    ,"PaymentTypeName"
-    ,"PaymentTypeCategoryName"
-    ,"IsIncome"
-    ,"IsInvestment"
-    ,"ExpenseTypeID"
-    ,"PaymentTypeID"
-    ,"PaymentTypeDescription"
-    ,"PaymentTypeCategoryID"
+    expense_id					AS "ExpenseID"	
+	,expense_date				AS "ExpenseDate"	
+	,expense_description		AS "ExpenseDescription"	
+	,expense_amount				AS "ExpenseAmount"	
+    ,expense_type_name			AS "ExpenseTypeName"	
+    ,payment_type_name			AS "PaymentTypeName"	
+    ,payment_type_category_name	AS "PaymentTypeCategoryName"	
+    ,is_income					AS "IsIncome"	
+    ,is_investment				AS "IsInvestment"	
+    ,expense_type_id			AS "ExpenseTypeID"	
+    ,payment_type_id			AS "PaymentTypeID"	
+    ,payment_type_description	AS "PaymentTypeDescription"	
+    ,payment_type_category_id	AS "PaymentTypeCategoryID"	
 FROM
     public.v_expense_detail
 ;

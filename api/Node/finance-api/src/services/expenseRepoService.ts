@@ -5,7 +5,6 @@ export default class ExpenseRepoService {
   private vExpenseDetail = AppDataSource.getRepository(v_expense_details);
 
   getAllExpenseDetails() {
-    console.log("in getAllExpenseDetails()");
     return this.vExpenseDetail.find();
   }
 

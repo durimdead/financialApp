@@ -8,7 +8,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME || "FinancialAppAccount",
   password: process.env.DB_PASSWORD || "myTestAccount123",
   database: process.env.DB_NAME || "FinancialApp",
-  synchronize: true, // Use with caution in production; consider migrations
+  synchronize: false, // Use with caution in production; consider migrations
   logging: false,
   entities: ["src/entity/**/*.ts"], // Path to your entity files
   migrations: [],

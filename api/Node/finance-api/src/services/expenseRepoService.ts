@@ -1,15 +1,18 @@
 import { AppDataSource } from "../data-source";
-import { v_expense_details } from "../entity/v_expense_details"
+// import { v_expense_detail } from "../entity/v_expense_detail_old";
+import { v_expense_detail } from "../entity/v_expense_details"
+import { v_expenses } from "../entity/v_expenses";
 
 export default class ExpenseRepoService {
-  private vExpenseDetail = AppDataSource.getRepository(v_expense_details);
+	private vExpenseDetail = AppDataSource.getRepository(v_expense_detail);
 
-  getAllExpenseDetails() {
-    return this.vExpenseDetail.find();
-  }
+	public async getAllExpenseDetails() {
+		const expenses = await this.vExpenseDetail.find();
+		return expenses;
+	}
 
-  getExpenseDetailsById(expenseId: number){
-	return this.vExpenseDetail.findBy({ExpenseID: expenseId});
-  }
-
+	public async getExpenseDetailsById(expenseId: number){
+		const expenses = await this.vExpenseDetail.findBy({ExpenseID: expenseId});
+		return expenses;
+	}
 }

@@ -4,11 +4,13 @@ import { v_expense_detail } from "../entity/v_expense_details"
 import { v_expense } from "../entity/v_expense";
 import { v_expense_type } from "../entity/v_expense_type";
 import { v_payment_type_category } from "../entity/v_payment_type_category";
+import { v_payment_type } from "../entity/v_payment_type";
 
 export default class ExpenseRepoService {
   private vExpenseDetail = AppDataSource.getRepository(v_expense_detail);
   private vExpense = AppDataSource.getRepository(v_expense);
   private vExpenseType = AppDataSource.getRepository(v_expense_type);
+  private vPaymentType = AppDataSource.getRepository(v_payment_type);
   private vPaymentTypeCategory = AppDataSource.getRepository(
     v_payment_type_category
   );
@@ -50,6 +52,17 @@ export default class ExpenseRepoService {
   public async getPaymentTypeCategoryById(paymentTypeCategoryID: number) {
     const expenses = await this.vPaymentTypeCategory.findBy({
       PaymentTypeCategoryID: paymentTypeCategoryID,
+    });
+    return expenses;
+  }
+
+  public async getPaymentType() {
+    const expenses = await this.vPaymentType.find();
+  }
+
+  public async getPaymentTypeById(paymentTypeID: number) {
+    const expenses = await this.vPaymentType.findBy({
+      PaymentTypeID: paymentTypeID,
     });
     return expenses;
   }

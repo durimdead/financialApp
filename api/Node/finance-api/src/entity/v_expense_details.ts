@@ -4,24 +4,6 @@ import { ViewEntity, ViewColumn} from "typeorm";
 	name: "v_expense_detail",
 	expression: '',
 	synchronize: false
-  	// expression: `
-	// SELECT 
-	// 	expense_id
-	// 	,expense_date
-	// 	,expense_description
-	// 	,expense_amount
-	// 	,expense_type_name
-	// 	,payment_type_name
-	// 	,payment_type_category_name
-	// 	,is_income
-	// 	,is_investment
-	// 	,expense_type_id
-	// 	,payment_type_id
-	// 	,payment_type_description
-	// 	,payment_type_category_id
-	// FROM
-	// 	v_expense_detail
-	// `,
 })
 export class v_expense_detail {
   @ViewColumn({name: 'expense_id'})

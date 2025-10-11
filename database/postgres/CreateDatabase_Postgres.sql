@@ -1,3 +1,65 @@
+/*******************************************************************************
+*
+*
+*	Creating the Account for the database. Run this before anything else.
+*
+*
+*******************************************************************************/
+CREATE ROLE "FinancialAppAccount" WITH
+	NOSUPERUSER
+	NOCREATEDB
+	NOCREATEROLE
+	INHERIT
+	NOREPLICATION
+	NOBYPASSRLS
+	CONNECTION LIMIT -1
+	PASSWORD 'myTestAccount123';
+
+ALTER ROLE "FinancialAppAccount"
+	LOGIN;
+
+GRANT pg_read_all_data, pg_create_subscription TO "FinancialAppAccount";
+/*******************************************************************************
+*
+*	
+*	### END Creating the Account for the database.
+*
+*
+*******************************************************************************/
+
+/*******************************************************************************
+*
+*
+*	Create the actual database. This block MUST be run on its own
+*
+*
+*******************************************************************************/
+CREATE DATABASE "FinancialApp"
+    WITH
+    OWNER = "FinancialAppAccount"
+    ENCODING = 'UTF8'
+    LOCALE_PROVIDER = 'libc'
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+/*******************************************************************************
+*
+*
+*	###END Creation of actual database.
+*
+*
+*******************************************************************************/
+
+
+/*******************************************************************************
+*
+*	EVERYTHING below this section can be run all at once 
+* 		This section includes : schema, views, sprocs, and sample data
+*
+*******************************************************************************/
+
+
+
 -- set scope and drop all sprocs, views, FKs, etc
 SET search_path TO FinancialApp;
 
@@ -845,18 +907,18 @@ FROM
 *       #########################################################
 ************************************************************************/
 -- expense type
-call public.proc_expense_type_upsert(0, 'other', 'this expense does not fit into any other category', false, '', '', '');
+call public.proc_expense_type_upsert(0, 'other', 'this expense does not fit into any other category');
 
 -- payment type category
-call public.proc_payment_type_category_upsert(0, 'cash', false, '', '', '');
+call public.proc_payment_type_category_upsert(0, 'cash');
 
 -- payment type
-call public.proc_payment_type_upsert(0, 'cash', 'hard currency physically changing hands (i.e. not a cash app)', 1, false, '', '', '');
-call public.proc_payment_type_upsert(0, 'cash app', 'virtual currency changing hands (i.e. paypal, venmo, zelle, etc.)', 1, false, '', '', '');
+call public.proc_payment_type_upsert(0, 'cash', 'hard currency physically changing hands (i.e. not a cash app)', 1);
+call public.proc_payment_type_upsert(0, 'cash app', 'virtual currency changing hands (i.e. paypal, venmo, zelle, etc.)', 1);
 
 -- expense
-call public.proc_expense_upsert(0, 1, 1, 1, 'sample hard cash transation', false::BOOLEAN, false::BOOLEAN, now()::DATE, 100.00, false, '','','');
-call public.proc_expense_upsert(0, 1, 2, 1, 'sample cash app transation', false::BOOLEAN, false::BOOLEAN, now()::DATE, 234.22, false, '','','');
+call public.proc_expense_upsert(0, 1, 1, 1, 'sample hard cash transation', false::BOOLEAN, false::BOOLEAN, now()::DATE, 100.00);
+call public.proc_expense_upsert(0, 1, 2, 1, 'sample cash app transation', false::BOOLEAN, false::BOOLEAN, now()::DATE, 234.22);
 
 /*
 select * from public.v_expense;

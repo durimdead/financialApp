@@ -15,11 +15,20 @@ export default class ExpenseRepoService {
     v_payment_type_category
   );
 
+  /**
+   *	Gets all expenses with their full details
+   *	@returns - List of all expenses with all details
+   */
   public async getAllExpenseDetails() {
     const expenses = await this.vExpenseDetail.find();
     return expenses;
   }
 
+  /**
+   *	Gets expense with full details based on ID
+   *	@param expenseID - The ID of the expense to get details for
+   *	@returns - List of all expenses with all details
+   */
   public async getExpenseDetailsById(expenseID: number) {
     const expenses = await this.vExpenseDetail.findBy({ ExpenseID: expenseID });
     return expenses;

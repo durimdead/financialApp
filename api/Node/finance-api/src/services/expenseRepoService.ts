@@ -26,53 +26,93 @@ export default class ExpenseRepoService {
 
   /**
    *	Gets expense with full details based on ID
-   *	@param expenseID - The ID of the expense to get details for
-   *	@returns - List of all expenses with all details
+   *	@param expenseID The ID of the expense to get details for
+   *	@returns List of all expenses with all details
    */
   public async getExpenseDetailsById(expenseID: number) {
-    const expenses = await this.vExpenseDetail.findBy({ ExpenseID: expenseID });
-    return expenses;
+    const expense = await this.vExpenseDetail.findBy({ ExpenseID: expenseID });
+    return expense;
   }
 
+  /**
+   * Get a list of the base information on all expenses
+   * @returns a list of all expenses with base information on them.
+   */
   public async getExpenses() {
     const expenses = await this.vExpense.find();
+	return expenses
   }
 
+  /**
+   * Get a list of the base information an expense based on expenseID
+   * @param expenseID The ID of the expense to get information for
+   * @returns A single expense object
+   */
   public async getExpenseById(expenseID: number) {
-    const expenses = await this.vExpense.findBy({ ExpenseID: expenseID });
-    return expenses;
+    const expense = await this.vExpense.findBy({ ExpenseID: expenseID });
+    return expense;
   }
 
+  /**
+   * Get a list of all Expense Types
+   * @return A list of all Expense Types
+   */
   public async getExpenseTypes() {
-    const expenses = await this.vExpenseType.find();
+    const expenseTypes = await this.vExpenseType.find();
+	return expenseTypes;
   }
 
+  /**
+   * Get a single expense type by expenseTypeID
+   * @param expenseTypeID The ID of the Expense Type to get
+   * @returns A single Expense Type
+   */
   public async getExpenseTypeById(expenseTypeID: number) {
-    const expenses = await this.vExpenseType.findBy({
+    const expenseType = await this.vExpenseType.findBy({
       ExpenseTypeID: expenseTypeID,
     });
-    return expenses;
+    return expenseType;
   }
 
-  public async getPaymentTypeCategory() {
-    const expenses = await this.vPaymentTypeCategory.find();
+  /**
+   * Get a list of all Payment Type Categories
+   * @returns A list of all Payment Type Categories
+   */
+  public async getPaymentTypeCategories() {
+    const paymentTypeCategories = await this.vPaymentTypeCategory.find();
+	return paymentTypeCategories;
   }
 
+  /**
+   * Get a single PaymentTypeCategory based on paymentTypeCategoryID
+   * @param paymentTypeCategoryID ID of the Payment Type Category to get
+   * @returns A single Payment Type Category
+   */
   public async getPaymentTypeCategoryById(paymentTypeCategoryID: number) {
-    const expenses = await this.vPaymentTypeCategory.findBy({
+    const paymentTypeCategory = await this.vPaymentTypeCategory.findBy({
       PaymentTypeCategoryID: paymentTypeCategoryID,
     });
-    return expenses;
+    return paymentTypeCategory;
   }
 
-  public async getPaymentType() {
-    const expenses = await this.vPaymentType.find();
+  /**
+   * Get all Payment Types
+   * @returns A list of Payment Types
+   */
+  public async getPaymentTypes() {
+    const paymentTypes = await this.vPaymentType.find();
+	return paymentTypes;
   }
 
+  /**
+   * Get a single Payment Type based on paymentTypeID
+   * @param paymentTypeID ID of the Payment Type to get
+   * @returns A single Payment Type
+   */
   public async getPaymentTypeById(paymentTypeID: number) {
-    const expenses = await this.vPaymentType.findBy({
+    const paymentType = await this.vPaymentType.findBy({
       PaymentTypeID: paymentTypeID,
     });
-    return expenses;
+    return paymentType;
   }
 }

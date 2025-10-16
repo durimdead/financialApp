@@ -7,13 +7,13 @@ import { ViewEntity, ViewColumn } from "typeorm";
 })
 export class v_expense_type {
   @ViewColumn({ name: "expense_type_id" })
-  ExpenseTypeID?: number;
+  expenseTypeID?: number;
 
   @ViewColumn({ name: "expense_type_name" })
-  ExpenseTypeName?: string;
+  expenseTypeName?: string;
 
   @ViewColumn({ name: "expense_type_description" })
-  ExpenseTypeDescription?: string;
+  expenseTypeDescription?: string;
   
   //   @ViewColumn({ name: "" })
   //   LastUpdated?: Date;

@@ -7,19 +7,19 @@ import { ViewEntity, ViewColumn} from "typeorm";
 })
 export class v_payment_type {
   @ViewColumn({ name: "payment_type_id" })
-  PaymentTypeID?: number;
+  paymentTypeID?: number;
 
   @ViewColumn({ name: "payment_type_category_id" })
-  PaymentTypeCategoryID?: number;
+  paymentTypeCategoryID?: number;
 
   @ViewColumn({ name: "payment_type_name" })
-  PaymentTypeName?: string;
+  paymentTypeName?: string;
 
   @ViewColumn({ name: "payment_type_description" })
-  PaymentTypeDescription?: string;
+  paymentTypeDescription?: string;
 
   @ViewColumn({ name: "payment_type_category_name" })
-  PaymentTypeCategoryName?: string;
+  paymentTypeCategoryName?: string;
 
   // @ViewColumn()
   // LastUpdated?: Date;

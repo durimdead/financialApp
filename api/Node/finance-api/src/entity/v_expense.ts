@@ -7,31 +7,31 @@ import { ViewEntity, ViewColumn } from "typeorm";
 })
 export class v_expense {
   @ViewColumn({ name: "expense_id" })
-  ExpenseID?: number;
+  expenseID?: number;
 
   @ViewColumn({ name: "expense_type_id" })
-  ExpenseTypeID?: number;
+  expenseTypeID?: number;
   
   @ViewColumn({ name: "payment_type_id" })
-  PaymentTypeID?: number;
+  paymentTypeID?: number;
 
   @ViewColumn({ name: "payment_type_category_id" })
-  PaymentTypeCategoryID?: number;
+  paymentTypeCategoryID?: number;
 
   @ViewColumn({ name: "is_income" })
-  IsIncome?: boolean;
+  isIncome?: boolean;
 
   @ViewColumn({ name: "is_investment" })
-  IsInvestment?: boolean;
+  isInvestment?: boolean;
 
   @ViewColumn({ name: "expense_description" })
-  ExpenseDescription?: string;
+  expenseDescription?: string;
 
   @ViewColumn({ name: "expense_amount" })
-  ExpenseAmount?: number;
+  expenseAmount?: number;
 
   @ViewColumn({ name: "expense_date" })
-  ExpenseDate?: Date;
+  expenseDate?: Date;
 
 //   @ViewColumn({ name: "" })
 //   LastUpdated?: Date;

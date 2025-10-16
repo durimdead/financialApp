@@ -30,7 +30,7 @@ export default class ExpenseRepoService {
    *	@returns List of all expenses with all details
    */
   public async getExpenseDetailsById(expenseID: number) {
-    const expense = await this.vExpenseDetail.findBy({ ExpenseID: expenseID });
+    const expense = await this.vExpenseDetail.findBy({ expenseID: expenseID });
     return expense;
   }
 
@@ -49,7 +49,7 @@ export default class ExpenseRepoService {
    * @returns A single expense object
    */
   public async getExpenseById(expenseID: number) {
-    const expense = await this.vExpense.findBy({ ExpenseID: expenseID });
+    const expense = await this.vExpense.findBy({ expenseID: expenseID });
     return expense;
   }
 
@@ -69,7 +69,7 @@ export default class ExpenseRepoService {
    */
   public async getExpenseTypeById(expenseTypeID: number) {
     const expenseType = await this.vExpenseType.findBy({
-      ExpenseTypeID: expenseTypeID,
+      expenseTypeID: expenseTypeID,
     });
     return expenseType;
   }
@@ -90,7 +90,7 @@ export default class ExpenseRepoService {
    */
   public async getPaymentTypeCategoryById(paymentTypeCategoryID: number) {
     const paymentTypeCategory = await this.vPaymentTypeCategory.findBy({
-      PaymentTypeCategoryID: paymentTypeCategoryID,
+      paymentTypeCategoryID: paymentTypeCategoryID,
     });
     return paymentTypeCategory;
   }
@@ -111,7 +111,7 @@ export default class ExpenseRepoService {
    */
   public async getPaymentTypeById(paymentTypeID: number) {
     const paymentType = await this.vPaymentType.findBy({
-      PaymentTypeID: paymentTypeID,
+      paymentTypeID: paymentTypeID,
     });
     return paymentType;
   }

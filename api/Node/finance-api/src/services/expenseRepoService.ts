@@ -14,6 +14,7 @@ export default class ExpenseRepoService {
   private vPaymentTypeCategory = AppDataSource.getRepository(
     v_payment_type_category
   );
+  private financeAppDB = AppDataSource;
 
   /**
    *	Gets all expenses with their full details
@@ -114,5 +115,18 @@ export default class ExpenseRepoService {
       paymentTypeID: paymentTypeID,
     });
     return paymentType;
+  }
+
+  
+  public async upsertExpense(expenseID: number, expenseTypeID: number, paymentTypeID: number, paymentTypeCategoryID: number, expenseDescription: string, isIncome: boolean, isInvestment: boolean, expenseDate: Date, expenseAmount: number){
+    try{
+		const result = await this.financeAppDB.query(
+      "CALL proc_expense_upsert($1, $2, $3, $4, $5, $6::BOOLEAN, $7::BOOLEAN, $8::DATE, $9)", // Pass NULL for OUT parameters to receive results
+      [expenseID, expenseTypeID, paymentTypeID, paymentTypeCategoryID, expenseDescription, isIncome, isInvestment, expenseDate, expenseAmount]
+    );
+	}
+	catch (e){
+		console.log(e);
+	}
   }
 }

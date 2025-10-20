@@ -23,7 +23,7 @@ export const putExpenses = async (req: Request, res: Response, next: NextFunctio
 	try{
 		const expenseDetails = req.body;
 		console.log(expenseDetails);
-		// const result = await expenseRepoService.upsertExpense(expenseDetails)
+		// const result = await expenseRepoService.upsertExpense(0, 1, 1, 1, "testing sproc call", false, false, new Date(), 100.00);
 		res.json({ "httpStatusCode": 200, "errorMessage": "" });
 	}
 	catch(error){

@@ -19,11 +19,32 @@ export const getExpenses = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
+export const postExpenses = async (req: Request, res: Response, next: NextFunction) => {
+	try{
+		const expenseDetails = req.body;
+		console.log('post expenses');
+		// const result = await expenseRepoService.upsertExpense(0, 1, 1, 1, "testing post expenses call", false, false, new Date(), 100.00);
+		res.json({ "httpStatusCode": 200, "errorMessage": "" });
+	}
+	catch(error){
+		next(error);
+	}
+}
+
 export const putExpenses = async (req: Request, res: Response, next: NextFunction) => {
 	try{
 		const expenseDetails = req.body;
-		console.log(expenseDetails);
-		const result = await expenseRepoService.upsertExpense(expenseDetails.expenseID, expenseDetails.expenseTypeID, expenseDetails.paymentTypeID, expenseDetails.paymentTypeCategoryID, expenseDetails.expenseDescription, expenseDetails.isIncome, expenseDetails.isInvestment, expenseDetails.expenseDate, expenseDetails.expenseAmount);
+		const result = await expenseRepoService.upsertExpense(
+			expenseDetails.expenseID,
+			expenseDetails.expenseTypeID,
+			expenseDetails.paymentTypeID,
+			expenseDetails.paymentTypeCategoryID,
+			expenseDetails.expenseDescription,
+			expenseDetails.isIncome,
+			expenseDetails.isInvestment,
+			expenseDetails.expenseDate,
+			expenseDetails.expenseAmount
+		);
 		res.json({ "httpStatusCode": 200, "errorMessage": "" });
 	}
 	catch(error){

@@ -79,7 +79,7 @@ export default class ExpenseRepoService {
    * Get a list of all Payment Type Categories
    * @returns A list of all Payment Type Categories
    */
-  public async getPaymentTypeCategories() {
+  public async getAllPaymentTypeCategories() {
     const paymentTypeCategories = await this.vPaymentTypeCategory.find();
 	return paymentTypeCategories;
   }
@@ -100,7 +100,7 @@ export default class ExpenseRepoService {
    * Get all Payment Types
    * @returns A list of Payment Types
    */
-  public async getPaymentTypes() {
+  public async getAllPaymentTypes() {
     const paymentTypes = await this.vPaymentType.find();
 	return paymentTypes;
   }

@@ -58,7 +58,7 @@ export default class ExpenseRepoService {
    * Get a list of all Expense Types
    * @return A list of all Expense Types
    */
-  public async getExpenseTypes() {
+  public async getAllExpenseTypes() {
     const expenseTypes = await this.vExpenseType.find();
 	return expenseTypes;
   }
@@ -116,7 +116,6 @@ export default class ExpenseRepoService {
     });
     return paymentType;
   }
-
   
   public async upsertExpense(expenseID: number, expenseTypeID: number, paymentTypeID: number, paymentTypeCategoryID: number, expenseDescription: string, isIncome: boolean, isInvestment: boolean, expenseDate: Date, expenseAmount: number){
     try{

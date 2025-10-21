@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import expensesRoutes from "./routes/expensesRoutes";
+import expenseTypesRoutes from "./routes/expenseTypesRoutes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/Expenses", expensesRoutes);
+app.use("/api/ExpenseTypes", expenseTypesRoutes);
 
 // Global error handler (should be after routes)
 app.use(errorHandler);

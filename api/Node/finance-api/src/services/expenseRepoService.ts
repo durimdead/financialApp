@@ -75,6 +75,11 @@ export default class ExpenseRepoService {
     return expenseType;
   }
 
+  /**
+   * Get a set of expense types by partial search string
+   * @param expenseTypeNameSearchString the string partial to search on
+   * @returns a list of expense types whose expenseTypeName matches the partial search string
+   */
   public async getExpenseTypesByPartialName_SearchString(expenseTypeNameSearchString: string){
 	const expenseTypes = await this.vExpenseType
 		.createQueryBuilder("v_et")

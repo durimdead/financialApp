@@ -75,6 +75,16 @@ export default class ExpenseRepoService {
     return expenseType;
   }
 
+  public async getExpenseTypesByPartialName_SearchString(expenseTypeNameSearchString: string){
+	const expenseTypes = await this.vExpenseType
+		.createQueryBuilder("v_et")
+		.where("v_et.expenseTypeName like :expenseTypeName", {
+		expenseTypeName: `%${expenseTypeNameSearchString}%`
+		})
+		.getMany();
+    return expenseTypes;
+  }
+
   /**
    * Get a list of all Payment Type Categories
    * @returns A list of all Payment Type Categories

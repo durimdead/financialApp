@@ -8,7 +8,23 @@ export const getExpenseTypes = async (req: Request, res: Response, next: NextFun
 		let expenseTypeData = await expenseRepoService.getAllExpenseTypes();
 		let returnValue = {
 			httpStatusCode: 200,
-			expenseData: expenseTypeData,
+			expenseTypeData: expenseTypeData,
+			errorMessage: "",
+		};
+		res.json(returnValue);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export const getExpenseTypesBySearchString = async (req: Request, res: Response, next: NextFunction) => {
+	try{
+		const searchString = req.query.expenseTypeSearchString?.toString() ?? "";
+		console.log(searchString);
+		let expenseTypeData = await expenseRepoService.getExpenseTypesByPartialName_SearchString(searchString!);
+		let returnValue = {
+			httpStatusCode: 200,
+			expenseTypeData: expenseTypeData,
 			errorMessage: "",
 		};
 		res.json(returnValue);

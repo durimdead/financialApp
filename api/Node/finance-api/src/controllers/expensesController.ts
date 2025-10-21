@@ -5,7 +5,7 @@ const expenseRepoService: ExpenseRepoService = new ExpenseRepoService();
 
 /**
  * Gets all expenses in the database with their full details
- * @param req the request object sent in
+ * @param req the request object sent in - no special input data required here
  * @param res sends back {httpStatusCode:number, expenseData:[], errorMessage: string}
  * @param next used for error handling
  */

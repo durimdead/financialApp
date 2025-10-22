@@ -20,8 +20,7 @@ export const getPaymentTypes = async (req: Request, res: Response, next: NextFun
 export const getPaymentTypesBySearchString = async (req: Request, res: Response, next: NextFunction) => {
 	try{
 		const searchString = req.query.paymentTypeSearchString?.toString() ?? "";
-		console.log(searchString);
-		const paymentTypeData = await expenseRepoService.getAllPaymentTypes();
+		const paymentTypeData = await expenseRepoService.getPaymentTypesByPartialName_SearchString(searchString);
 		const returnValue = {
 			httpStatusCode: 200,
 			paymentTypeData: paymentTypeData,

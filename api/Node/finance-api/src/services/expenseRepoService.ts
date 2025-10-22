@@ -131,6 +131,21 @@ export default class ExpenseRepoService {
     });
     return paymentType;
   }
+
+  /**
+   * Get a set of payment types by partial search string
+   * @param paymentTypeNameSearchString the string partial to search on
+   * @returns a list of payment types whose paymentTypeName matches the partial search string
+   */
+  public async getPaymentTypesByPartialName_SearchString(paymentTypeNameSearchString: string){
+	const paymentTypes = await this.vPaymentType
+		.createQueryBuilder("v_pt")
+		.where("v_pt.paymentTypeName like :paymentTypeName", {
+			paymentTypeName: `%${paymentTypeNameSearchString}%`
+		})
+		.getMany();
+    return paymentTypes;
+  }
   
   public async upsertExpense(expenseID: number, expenseTypeID: number, paymentTypeID: number, paymentTypeCategoryID: number, expenseDescription: string, isIncome: boolean, isInvestment: boolean, expenseDate: Date, expenseAmount: number){
     try{

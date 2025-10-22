@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
+import { errorHandler } from "./middlewares/errorHandler";
 import expensesRoutes from "./routes/expensesRoutes";
 import expenseTypesRoutes from "./routes/expenseTypesRoutes";
-import { errorHandler } from "./middlewares/errorHandler";
+import paymentTypesRoutes from "./routes/paymentTypesRoutes";
 
 const app = express();
 // Configure CORS options
@@ -21,6 +22,7 @@ app.use(express.json());
 // Routes
 app.use("/api/Expenses", expensesRoutes);
 app.use("/api/ExpenseTypes", expenseTypesRoutes);
+app.use("/api/PaymentTypes", paymentTypesRoutes);
 
 // Global error handler (should be after routes)
 app.use(errorHandler);

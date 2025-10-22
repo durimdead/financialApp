@@ -5,10 +5,26 @@ const expenseRepoService: ExpenseRepoService = new ExpenseRepoService();
 
 export const getPaymentTypes = async (req: Request, res: Response, next: NextFunction) => {
 	try{
-		const paymentTypesData = await expenseRepoService.getAllPaymentTypes();
+		const paymentTypeData = await expenseRepoService.getAllPaymentTypes();
 		const returnValue = {
 			httpStatusCode: 200,
-			expenseTypeData: paymentTypesData,
+			paymentTypeData: paymentTypeData,
+			errorMessage: "",
+		}; 
+		res.json(returnValue);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export const getPaymentTypesBySearchString = async (req: Request, res: Response, next: NextFunction) => {
+	try{
+		const searchString = req.query.paymentTypeSearchString?.toString() ?? "";
+		console.log(searchString);
+		const paymentTypeData = await expenseRepoService.getAllPaymentTypes();
+		const returnValue = {
+			httpStatusCode: 200,
+			paymentTypeData: paymentTypeData,
 			errorMessage: "",
 		}; 
 		res.json(returnValue);

@@ -147,6 +147,18 @@ export default class ExpenseRepoService {
     return paymentTypes;
   }
   
+  /**
+   * 
+   * @param expenseID expenseID to upsert (0 for new record)
+   * @param expenseTypeID expenseTypeID of the record
+   * @param paymentTypeID paymentTypeID of the record
+   * @param paymentTypeCategoryID paymentTypeCategory of the record
+   * @param expenseDescription expenseDescription of the record
+   * @param isIncome true if this expense is income
+   * @param isInvestment true if this expense is an investment
+   * @param expenseDate the date of the expense (Date, not DateTime)
+   * @param expenseAmount The amount of the expense (allows for up to 4 decimal places)
+   */
   public async upsertExpense(expenseID: number, expenseTypeID: number, paymentTypeID: number, paymentTypeCategoryID: number, expenseDescription: string, isIncome: boolean, isInvestment: boolean, expenseDate: Date, expenseAmount: number){
     try{
 		const result = await this.financeAppDB.query(

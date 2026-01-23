@@ -7,3 +7,10 @@
 /api/dotNet/FinanceApi/FinanceApi/bin
 /api/dotNet/FinanceApi/FinanceApi/obj
 /api/dotNet/FinanceApi/.vs
+/api/dotNet/FinanceApi/FinanceApi/obj/FinanceApi.csproj.nuget.dgspec.json
+/api/dotNet/FinanceApi/FinanceApi/obj/FinanceApi.csproj.nuget.g.props
+/api/dotNet/FinanceApi/FinanceApi/obj/FinanceApi.csproj.nuget.g.targets
+/api/dotNet/FinanceApi/FinanceApi/obj/project.assets.json
+/api/dotNet/FinanceApi/FinanceApi/obj/project.nuget.cache
+/api/dotNet/FinanceApi/FinanceApi/obj/Debug/net9.0/FinanceApi.assets.cache
+/api/dotNet/FinanceApi/FinanceApi/obj/Debug/net9.0/FinanceApi.csproj.AssemblyReference.cache

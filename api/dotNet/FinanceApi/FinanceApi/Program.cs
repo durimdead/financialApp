@@ -5,7 +5,6 @@ using FinanceApi.Services.RepositoryServices.Expenses;
 using FinanceApi.Services.RepositoryServices.Expenses.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 using static FinanceApi.Models.Enums.ConfigEnums;
 
 var allowLocalhostOrigins = "localhost";
@@ -16,7 +15,7 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
-        document.Info.Contact = new OpenApiContact
+        document.Info.Contact = new Microsoft.OpenApi.OpenApiContact
         {
             Name = "David Lancellotti (CODUR LLC)",
             Email = "david.lancellotti.jobs+sampleProject@gmail.com"

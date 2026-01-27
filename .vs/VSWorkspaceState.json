@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
+<<<<<<< HEAD
     ""
   ],
   "SelectedNode": "\\FinanceApi.sln",
+=======
+    "",
+    "\\api",
+    "\\api\\dotNet",
+    "\\api\\dotNet\\FinanceApi"
+  ],
+  "SelectedNode": "\\api\\dotNet\\FinanceApi\\FinanceApi.sln",
+>>>>>>> development
   "PreviewInSolutionExplorer": false
 }

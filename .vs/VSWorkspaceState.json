@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\api",
-    "\\api\\FinanceApi"
+    ""
   ],
-  "SelectedNode": "\\api\\FinanceApi\\FinanceApi.sln",
+  "SelectedNode": "\\FinanceApi.sln",
   "PreviewInSolutionExplorer": false
 }

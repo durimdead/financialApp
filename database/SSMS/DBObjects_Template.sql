@@ -81,6 +81,30 @@ GO
 
 
 
+/********************************************************************************************************************************************************************
+*   ####### UNIQUE CONSTRAINT #######
+*
+*   Variables:
+*       - TargetTable : 
+*           The table you are defining the FK for
+*       - KeyName : 
+*           Name you wish to give the alternate key (AKA unique constraint)
+*       - Column1, Column2, ... : 
+*           The columns included in the unique constraint. Must have 1 column used at minimum
+*   Usage : 
+*       - Ensure you are scoped to the database that you would like to run this script for!
+*       - Find/replace each variable name with the appropriate information
+*   example : 
+*       - You have a [dbo].[User] table with a column for [UserEmailAddress], and you want to only have each email address appear once in the table.
+*
+*           ALTER TABLE [dbo].[User]
+*			ADD CONSTRAINT AK_User_EmailAddress UNIQUE ([UserEmailAddress]);   
+*			GO  
+********************************************************************************************************************************************************************/
+ALTER TABLE [dbo].[TargetTable]
+ADD CONSTRAINT AK_TargetTable_KeyName UNIQUE ([Column1], [Column2], ...);   
+GO  
+
 
 
 
